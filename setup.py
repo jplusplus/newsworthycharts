@@ -20,8 +20,9 @@ setup(
     license="MIT",
     packages=[name],
     zip_safe=False,
-    install_requires=[],
+    install_requires=[
+        boto3
+    ],
     include_package_data=True,
-    download_url="https://github.com/jplusplus/newsworthycharts/archive/%s.tar.gz"
-                 % version,
+    download_url="https://github.com/jplusplus/newsworthycharts/archive/%s.tar.gz" % version,
 )
