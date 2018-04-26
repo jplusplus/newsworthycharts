@@ -81,6 +81,9 @@ class Chart(object):
         self._regular_font = ['Open Sans', 'Helvetica', 'Arial']
         self.font.set_family(self._regular_font)
 
+        self.condensed_font = self.font.copy()
+        self.condensed_font.set_family(self._condensed_font)
+
         # Customizable colors
         self._strong_color = to_rgba(strong_color, 1)
 
@@ -155,7 +158,7 @@ class Chart(object):
         `add_caption` should be executed _after_ `add_title`, `add_xlabel` and
         `add_ylabel.`
         """
-        self.plt.figtext(0.01, 0.01, caption,
+        self.fig.figtext(0.01, 0.01, caption,
                          color=NEUTRAL_COLOR,
                          fontname=self._regular_font,
                          fontsize=self._fontsize_small)
@@ -182,8 +185,9 @@ class Chart(object):
         wrap_at = 50.0 / self._factor
         lines = wrap(title, wrap_at)  # split to list of lines
         title_with_linebreaks = "\n".join(lines)
-        title = self.plt.title(title_with_linebreaks, wrap=True, loc="left",
-                               fontname=self._condensed_font)
+        title = self.fig.suptitle(title_with_linebreaks, wrap=True,
+                                  horizontalalignment="left",
+                                  fontproperties=self.condensed_font)
 
         # how many percent of height is the font title size?
         line_height = self._fontsize_title / float(self.h)
@@ -231,9 +235,15 @@ class Chart(object):
         for file_format in MIME_TYPES.keys():
             self.render(key, file_format)
 
-    def __repr__(self):
+    def __str__(self):
+        # Return main title or id
+        if self.fig._suptitle:
+            return self.fig._suptitle.get_text()
+        else:
+            return str(id(self))
 
+    def __repr__(self):
         # Use type(self).__name__ to get the right class name for sub classes
-        return "<{cls}: {id} ({h} x {w})>".format(cls=type(self).__name__,
-                                                  id=id(self),
-                                                  w=self.w, h=self.h)
+        return "<{cls}: {name} ({h} x {w})>".format(cls=type(self).__name__,
+                                                    name=str(self),
+                                                    w=self.w, h=self.h)
