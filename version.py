@@ -1,7 +1,7 @@
 # encoding: utf-8
 from datetime import date
 
-name = "newsworthy-charts"
+name = "newsworthycharts"
 
 short_version = "0.0.0"
 long_version = short_version + "-dev0"
