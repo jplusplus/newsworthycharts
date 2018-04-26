@@ -56,7 +56,6 @@ class Chart(object):
         """
 
         self.s3_bucket = s3_bucket
-        self.font = FontProperties()
 
         # Styling
         # Style reference: https://matplotlib.org/users/customizing.html
@@ -72,6 +71,7 @@ class Chart(object):
         # https://github.com/matplotlib/matplotlib/issues/2305/
         w, h = plt.gcf().get_size_inches()
 
+        self.font = FontProperties()
         fontsize = w * 2.2 * factor
         self._fontsize = w * 2.2 * factor
         self._fontsize_small = fontsize * 0.8
@@ -85,7 +85,11 @@ class Chart(object):
         self.font.set_family(REGULAR_FONT)
 
         self.condensed_font = self.font.copy()
+        self.small_font = self.font.copy()
+        self.title_font = self.font.copy()
         self.condensed_font.set_family(CONDENSED_FONT)
+        self.small_font.set_size(self._fontsize_small)
+        self.title_font.set_size(self._fontsize_title)
 
         # Customizable colors
         self._strong_color = to_rgba(strong_color, 1)
@@ -103,7 +107,7 @@ class Chart(object):
         # Apply custom params
         plt.rcParams.update(rcParams)
 
-        self.fig = plt.figure()
+        #self.fig = plt.figure()
         self.fig, self.ax = plt.subplots()
         self.w, self.h = width, height
 
@@ -186,11 +190,13 @@ class Chart(object):
         # Dynamic rescaling based on actual with seems difficult in matplotlib
         # This works pretty well.
         wrap_at = 50.0 / self._factor
+        print("wrapping at {}".format(wrap_at))
         lines = wrap(title, wrap_at)  # split to list of lines
+        print(lines)
         title_with_linebreaks = "\n".join(lines)
         title = self.fig.suptitle(title_with_linebreaks, wrap=True,
                                   horizontalalignment="left",
-                                  fontproperties=self.condensed_font)
+                                  fontproperties=self.title_font)
 
         # how many percent of height is the font title size?
         line_height = self._fontsize_title / float(self.h)
@@ -202,20 +208,21 @@ class Chart(object):
 
     def add_xlabel(self, label):
         """Adds a label to the x axis."""
-        self._xlabel = self.plt.xlabel(label, fontname=self._regular_font,
-                                       fontsize=self._fontsize_small, labelpad=self._fontsize)
+        self.ax.set_xlabel(label, fontproperties=self.small_font,
+                           labelpad=self._fontsize)
 
     def add_ylabel(self, label):
         """Adds a label to the y axis."""
-        self._ylabel = self.plt.ylabel(label, fontname=self._regular_font,
-                                       fontsize=self._fontsize_small, labelpad=self._fontsize)
+        self.ax.set_ylabel(label, fontproperties=self.small_font,
+                           labelpad=self._fontsize)
 
     def render(self, key, img_format):
         """
          Save an image file from the plot object to Amazon S3.
         """
         if environ.get("ENV") == "development":
-            self.plt.savefig("test.%s" % img_format, format=img_format)
+            self.fig.savefig("test.%s" % img_format, format=img_format)
+        return
         # Save plot in memory, to write it directly to S3
         buf = BytesIO()
         self.plt.savefig(buf, format=img_format)
