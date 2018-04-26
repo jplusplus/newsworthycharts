@@ -11,6 +11,17 @@ Installing
   pip install newsworthy-charts
 
 
+Using
+-----
+
+.. code:: python3
+  >>> from newsworthycharts import Chart
+  >>> c = Chart(600, 800)
+  >>> c
+  <Chart: 139689239312144 (800 x 600)>
+  >>>
+
+
 Changelog
 ---------
 
