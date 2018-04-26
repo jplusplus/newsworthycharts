@@ -9,3 +9,15 @@ Installing
 
 .. code:: bash
   pip install newsworthy-charts
+
+
+Changelog
+---------
+
+- 1.0.0
+  - First version
+
+Todo
+----
+
+- Pass a Publisher class instance to Chart to allow for alternatives to S3
