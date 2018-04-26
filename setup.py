@@ -21,7 +21,8 @@ setup(
     packages=[name],
     zip_safe=False,
     install_requires=[
-        boto3
+        "boto3=>1.6",
+        "matplotlib>=2",
     ],
     include_package_data=True,
     download_url="https://github.com/jplusplus/newsworthycharts/archive/%s.tar.gz" % version,
