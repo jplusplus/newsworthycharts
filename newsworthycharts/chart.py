@@ -5,14 +5,23 @@ from os import environ
 from io import BytesIO
 from textwrap import wrap
 import boto3
-import matplotlib
+# import matplotlib
+# matplotlib.use('Agg')  # Set backend before further imports
+# moved to matplotlibrc
 from matplotlib.colors import to_rgba
-matplotlib.use('Agg')
+from matplotlib import pyplot as plt
+from matplotlib.font_manager import FontProperties
 
 # Define colors as rgba to be able to adjust opacity
-NEUTRAL_COLOR = to_rgba("#999999", 1)  # Default data color
-EXTRA_STRONG_COLOR = to_rgba("#993333", 1)  # For e.g. highlighting elements in an already highlighted series
+NEUTRAL_COLOR = to_rgba("#999999", 1)
+""" Default data color """
+STRONG_COLOR = to_rgba("#5aa69d", 1)
+""" Default color for highlighting """
+EXTRA_STRONG_COLOR = to_rgba("#993333", 1)
+""" Default color for e.g. highlighting elements in
+    an already highlighted series """
 
+# This also serves as list of available output formats
 MIME_TYPES = {
     'png': "image/png",
     'svg': "image/svg+xml",
@@ -29,23 +38,24 @@ class Chart(object):
     """ Encapsulates a matplotlib plt object
     """
 
-    def __init__(self, width, height, size='normal', strong_color="#5aa69d",
-                 rcParams={}, s3_bucket=environ.get("S3_BUCKET")):
+    def __init__(self, width: int, height: int, size: str='normal',
+                 strong_color: str=STRONG_COLOR, rcParams: dict={},
+                 s3_bucket: str=environ.get("S3_BUCKET")):
         """
-         TODO use the OO interface of matplotlib
         :param width: width in pixels
         :param height: height in pixels
         :param size: 'normal'|'small', use small to increase size of elements
-            if entended to display as mini chart.
+            if intended to display as mini chart.
         :param strong_color (str): color used for highlights, preferably as HEX
         :param rcParams (dict): override defult rcParams
+        :param s3_bucket (str): The name of an S3 bucket
         """
-        from matplotlib import pyplot as plt
 
-        self.s3_bucket = s3_bucket or "newsworthy"  # FIXME
+        self.s3_bucket = s3_bucket
+        self.font = FontProperties()
+
         # Styling
         # Style reference: https://matplotlib.org/users/customizing.html
-
         # When a chart is rendered as 'small' texts and elements
         # are enlarged
         factor = {
@@ -53,57 +63,46 @@ class Chart(object):
             "small": 1.8
         }[size]
         self._factor = factor
+
         # Set size of chart
         # https://github.com/matplotlib/matplotlib/issues/2305/
         w, h = plt.gcf().get_size_inches()
-        self.w, self.h = width, height
+
         fontsize = w * 2.2 * factor
         self._fontsize = w * 2.2 * factor
         self._fontsize_small = fontsize * 0.8
         self._fontsize_title = fontsize * 1.4
         self._linewidth = w * 0.4 * factor
         self._markersize = 8.0 * factor
+        self.font.set_size(fontsize)
 
         # Typography
         self._condensed_font = ['Open Sans Condensed', 'Ubuntu Condensed']
         self._regular_font = ['Open Sans', 'Helvetica', 'Arial']
+        self.font.set_family(self._regular_font)
 
         # Customizable colors
         self._strong_color = to_rgba(strong_color, 1)
 
         plt.rcParams['font.size'] = fontsize
         plt.rcParams['axes.titlesize'] = self._fontsize_title
-        plt.rcParams['axes.titleweight'] = 'semibold'
 
         plt.rcParams['xtick.labelsize'] = self._fontsize_small
         plt.rcParams['ytick.labelsize'] = self._fontsize_small
         plt.rcParams['legend.fontsize'] = fontsize
         plt.rcParams['figure.titlesize'] = fontsize
-        plt.rcParams['axes.labelweight'] = 'normal'
         plt.rcParams['font.family'] = self._regular_font
         plt.rcParams['font.monospace'] = 'Ubuntu Mono'
-
-        # Axes and ticks
-        plt.rcParams['axes.grid'] = False
-        plt.rcParams['axes.axisbelow'] = True
-        plt.rcParams['axes.spines.left'] = False
-        plt.rcParams['axes.spines.top'] = False
-        plt.rcParams['axes.spines.right'] = False
-        plt.rcParams['ytick.left'] = False
-        plt.rcParams['xtick.minor.bottom'] = False
-
-        # Background
-        plt.rcParams['axes.facecolor'] = 'white'  # background
-        plt.rcParams['grid.color'] = "#dedede"
 
         # Apply custom params
         plt.rcParams.update(rcParams)
 
+        self.fig = plt.figure()
+        self.fig, self.ax = plt.subplots()
+        self.w, self.h = width, height
+
         self._xlabel = None
         self._ylabel = None
-
-        self.fig, self.ax = plt.subplots()
-        self.plt = plt
 
         dpi = self.fig.get_dpi()
         real_width = float(width)/float(dpi)
@@ -174,7 +173,6 @@ class Chart(object):
         # be overwritten
         self.plt.subplots_adjust(bottom=offset)
 
-
     def add_title(self, title):
         """ Adds a title """
         # Wrap title at a given number of chars
@@ -232,3 +230,10 @@ class Chart(object):
         """
         for file_format in MIME_TYPES.keys():
             self.render(key, file_format)
+
+    def __repr__(self):
+
+        # Use type(self).__name__ to get the right class name for sub classes
+        return "<{cls}: {id} ({h} x {w})>".format(cls=type(self).__name__,
+                                                  id=id(self),
+                                                  w=self.w, h=self.h)
