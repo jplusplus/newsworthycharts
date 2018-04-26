@@ -13,6 +13,7 @@ setup(
     version=version,
     description=short_desc,
     long_description=readme(),
+    long_description_content_type='text/x-rst',
     url="https://github.com/jplusplus/newsworthycharts",
     author=authors,
     author_email=email,
