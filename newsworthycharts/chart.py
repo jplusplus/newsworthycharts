@@ -21,6 +21,10 @@ EXTRA_STRONG_COLOR = to_rgba("#993333", 1)
 """ Default color for e.g. highlighting elements in
     an already highlighted series """
 
+# Default typefacec
+CONDENSED_FONT = ['Open Sans Condensed', 'Ubuntu Condensed']
+REGULAR_FONT = ['Open Sans', 'Helvetica', 'Arial']
+
 # This also serves as list of available output formats
 MIME_TYPES = {
     'png': "image/png",
@@ -77,12 +81,11 @@ class Chart(object):
         self.font.set_size(fontsize)
 
         # Typography
-        self._condensed_font = ['Open Sans Condensed', 'Ubuntu Condensed']
-        self._regular_font = ['Open Sans', 'Helvetica', 'Arial']
-        self.font.set_family(self._regular_font)
+        self._regular_font = REGULAR_FONT
+        self.font.set_family(REGULAR_FONT)
 
         self.condensed_font = self.font.copy()
-        self.condensed_font.set_family(self._condensed_font)
+        self.condensed_font.set_family(CONDENSED_FONT)
 
         # Customizable colors
         self._strong_color = to_rgba(strong_color, 1)
