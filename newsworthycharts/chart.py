@@ -11,6 +11,9 @@ import boto3
 from matplotlib.colors import to_rgba
 from matplotlib import pyplot as plt
 from matplotlib.font_manager import FontProperties
+# Storage dependencies:
+from shutil import copyfileobj
+import os
 
 # Define colors as rgba to be able to adjust opacity
 NEUTRAL_COLOR = to_rgba("#999999", 1)
@@ -38,11 +41,51 @@ class AmazonError(Exception):
     pass
 
 
+class Storage(object):
+    """ Base class for storages. A storage is responsible for saving a
+    image byte stream to a file, database blob or similar.
+
+    A Storage subclass must implement a save() method.
+    """
+    def __init__(self):
+        pass
+
+    def save(self, key, stream, filetype):
+        """
+        :param key (str): A key for the save object
+        :param stream (BytesIO): A stream containing the file data
+        :param filetype (str): A filetype. See MIME_TYPES for valid values
+        """
+        raise NotImplementedError("The save class must be overwritten.")
+
+
+class LocalStorage(Storage):
+    """ Save images as a file on the local file system.
+    """
+    def __init__(self, path="."):
+        """
+        :param path (str): Path to local folder where files are saved.
+        """
+        self.path = path
+
+    def save(self, key, stream, filetype):
+        """
+        :param key (str): Used for creating filename. Files may be oberwritten.
+        :param stream (BytesIO): A stream containing the file data
+        :param filetype (str): File extension
+        """
+        stream.seek(0)
+        filename = os.path.join(self.path, key + "." + filetype)
+        with open(filename, "wb") as f:
+            copyfileobj(stream, f, length=131072)
+
+
 class Chart(object):
     """ Encapsulates a matplotlib plt object
     """
 
-    def __init__(self, width: int, height: int, size: str='normal',
+    def __init__(self, width: int, height: int, storage=LocalStorage(),
+                 size: str='normal',
                  strong_color: str=STRONG_COLOR, rcParams: dict={},
                  s3_bucket: str=environ.get("S3_BUCKET")):
         """
@@ -56,6 +99,7 @@ class Chart(object):
         """
 
         self.s3_bucket = s3_bucket
+        self.storage = storage
 
         # Styling
         # Style reference: https://matplotlib.org/users/customizing.html
@@ -220,13 +264,12 @@ class Chart(object):
         """
          Save an image file from the plot object to Amazon S3.
         """
-        if environ.get("ENV") == "development":
-            self.fig.savefig("test.%s" % img_format, format=img_format)
-        return
-        # Save plot in memory, to write it directly to S3
+        # Save plot in memory, to write it directly to storage
         buf = BytesIO()
-        self.plt.savefig(buf, format=img_format)
+        self.fig.savefig(buf, format=img_format)
         buf.seek(0)
+        self.storage.save(key, buf, img_format)
+        return
 
         filename = key + "." + img_format
         mime_type = MIME_TYPES[img_format]
