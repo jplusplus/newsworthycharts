@@ -14,5 +14,5 @@ ytick.left        : False
 xtick.minor.bottom: False
 
 # Background
-axes.facecolor    : "white"  # background
+axes.facecolor    : "#ffffff"
 grid.color        : "#dedede"
