@@ -28,6 +28,7 @@ REGULAR_FONT = ['Open Sans', 'Helvetica', 'Arial']
 
 image_formats = MIME_TYPES.keys()
 
+
 class Chart(object):
     """ Encapsulates a matplotlib plt object
     """
@@ -240,10 +241,6 @@ class Chart(object):
         for file_format in image_formats:
             self.render(key, file_format)
 
-    @title.setter
-    def title(self, t):
-        self._title = t
-
     @property
     def title(self):
         """ A user could have manipulated the fig property directly,
@@ -255,6 +252,10 @@ class Chart(object):
             return self.fig._suptitle.get_text()
         else:
             return None
+
+    @title.setter
+    def title(self, t):
+        self._title = t
 
     def __str__(self):
         # Return main title or id
