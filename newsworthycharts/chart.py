@@ -10,10 +10,7 @@ from textwrap import wrap
 from matplotlib.colors import to_rgba
 from matplotlib import pyplot as plt
 from matplotlib.font_manager import FontProperties
-# Storage dependencies:
-from shutil import copyfileobj
-import boto3
-import os
+from .mimetypes import MIME_TYPES
 
 # Define colors as rgba to be able to adjust opacity
 NEUTRAL_COLOR = to_rgba("#999999", 1)
@@ -28,91 +25,7 @@ EXTRA_STRONG_COLOR = to_rgba("#993333", 1)
 CONDENSED_FONT = ['Open Sans Condensed', 'Ubuntu Condensed']
 REGULAR_FONT = ['Open Sans', 'Helvetica', 'Arial']
 
-# This also serves as list of available output formats
-MIME_TYPES = {
-    'png': "image/png",
-    'svg': "image/svg+xml",
-    'eps': "application/postscript"
-}
-
-
-class AmazonUploadError(Exception):
-    """ Error uploading to Amazon S3 """
-    pass
-
-
-class Storage(object):
-    """ Base class for storages. A storage is responsible for saving a
-    image byte stream to a file, database blob or similar.
-
-    A Storage subclass must implement a save() method.
-    """
-    def __init__(self):
-        pass
-
-    def save(self, key, stream, filetype):
-        """
-        :param key (str): A key for the save object
-        :param stream (BytesIO): A stream containing the file data
-        :param filetype (str): A filetype. See MIME_TYPES for valid values
-        """
-        raise NotImplementedError("The save class must be overwritten.")
-
-    def __repr__(self):
-        # Use type(self).__name__ to get the right class name for sub classes
-        return "<{cls}: {name}>".format(cls=type(self).__name__,
-                                        name=str(id(self)))
-
-
-class LocalStorage(Storage):
-    """ Save images as a file on the local file system.
-    """
-    def __init__(self, path="."):
-        """
-        :param path (str): Path to local folder where files are saved.
-        """
-        self.path = path
-
-    def save(self, key, stream, filetype):
-        """
-        :param key (str): Used for creating filename. Files may be oberwritten.
-        :param stream (BytesIO): A stream containing the file data
-        :param filetype (str): File extension
-        """
-        stream.seek(0)
-        filename = os.path.join(self.path, key + "." + filetype)
-        with open(filename, "wb") as f:
-            copyfileobj(stream, f, length=131072)
-
-
-class S3Storage(Storage):
-    """ Save images to an S3 bucket.
-    """
-    def __init__(self, bucket, prefix=None):
-        """
-        :param bucket (str): An S3 bucket name.
-        :param prefix (str): Optionally a S3 prefix (path)
-        """
-        s3_client = boto3.resource('s3')
-        self.bucket = s3_client.Bucket(bucket)
-        self.prefix = prefix
-
-    def save(self, key, stream, filetype):
-        """
-        :param key (str): Used for creating filename. Files may be oberwritten.
-        :param stream (BytesIO): A stream containing the file data
-        :param filetype (str): File extension
-        """
-        stream.seek(0)
-        filename = "/".join(x.strip("/")
-                            for x in [self.prefix, key]) + "." + filetype
-        mime_type = MIME_TYPES[img_format]
-        try:
-            self.bucket.put_object(Key=filename, Body=stream,
-                                   ACL='public-read', ContentType=mime_type)
-        except Exception as e:
-            raise AmazonUploadError(e)
-
+image_formats = MIME_TYPES.keys()
 
 class Chart(object):
     """ Encapsulates a matplotlib plt object
@@ -324,7 +237,7 @@ class Chart(object):
         """
         Render all available formats
         """
-        for file_format in MIME_TYPES.keys():
+        for file_format in image_formats:
             self.render(key, file_format)
 
     @title.setter
