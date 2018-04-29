@@ -87,29 +87,31 @@ class Chart(object):
         self.font.set_family(REGULAR_FONT)
 
         self.condensed_font = self.font.copy()
-        self.small_font = self.font.copy()
-        self.title_font = self.font.copy()
         self.condensed_font.set_family(CONDENSED_FONT)
+
+        self.small_font = self.font.copy()
         self.small_font.set_size(self._fontsize_small)
+
+        self.title_font = self.condensed_font.copy()
         self.title_font.set_size(self._fontsize_title)
 
         # Customizable colors
         self._strong_color = to_rgba(strong_color, 1)
 
-        plt.rcParams['font.size'] = fontsize
-        plt.rcParams['axes.titlesize'] = self._fontsize_title
+        #plt.rcParams['font.size'] = fontsize
+        #plt.rcParams['axes.titlesize'] = self._fontsize_title
 
-        plt.rcParams['xtick.labelsize'] = self._fontsize_small
-        plt.rcParams['ytick.labelsize'] = self._fontsize_small
-        plt.rcParams['legend.fontsize'] = fontsize
-        plt.rcParams['figure.titlesize'] = fontsize
-        plt.rcParams['font.family'] = self._regular_font
-        plt.rcParams['font.monospace'] = 'Ubuntu Mono'
+        #plt.rcParams['xtick.labelsize'] = self._fontsize_small
+        #plt.rcParams['ytick.labelsize'] = self._fontsize_small
+        #plt.rcParams['legend.fontsize'] = fontsize
+        #plt.rcParams['figure.titlesize'] = fontsize
+        #plt.rcParams['font.family'] = self._regular_font
+        #plt.rcParams['font.monospace'] = 'Ubuntu Mono'
 
         # Apply custom params
-        plt.rcParams.update(rcParams)
+        #plt.rcParams.update(rcParams)
 
-        #self.fig = plt.figure()
+        # self.fig = plt.figure()
         self.fig, self.ax = plt.subplots()
         self.w, self.h = width, height
 
@@ -185,16 +187,14 @@ class Chart(object):
         # be overwritten
         self.plt.subplots_adjust(bottom=offset)
 
-    def _add_title(self, title):
+    def _add_title(self, title_text):
         """ Adds a title """
         # Wrap title at a given number of chars
         # If the font family is changed wrap_at should be reviewed
         # Dynamic rescaling based on actual with seems difficult in matplotlib
         # This works pretty well.
         wrap_at = 50.0 / self._factor
-        print("wrapping at {}".format(wrap_at))
-        lines = wrap(title, wrap_at)  # split to list of lines
-        print(lines)
+        lines = wrap(title_text, wrap_at)  # split to list of lines
         title_with_linebreaks = "\n".join(lines)
         title = self.fig.suptitle(title_with_linebreaks, wrap=True,
                                   horizontalalignment="left",
@@ -235,9 +235,9 @@ class Chart(object):
         if self.ylabel is not None:
             self._add_ylabel(self.ylabel)
         if self.xlabel is not None:
-            plt._add_xlabel(self.xlabel)
+            self._add_xlabel(self.xlabel)
         if self.caption is not None:
-            chart._add_caption(self.caption)
+            self._add_caption(self.caption)
 
         # Save plot in memory, to write it directly to storage
         buf = BytesIO()
