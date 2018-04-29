@@ -4,7 +4,6 @@ robot writer and other similar projects.
 from os import environ
 from io import BytesIO
 from textwrap import wrap
-import boto3
 # import matplotlib
 # matplotlib.use('Agg')  # Set backend before further imports
 # moved to matplotlibrc
@@ -13,6 +12,7 @@ from matplotlib import pyplot as plt
 from matplotlib.font_manager import FontProperties
 # Storage dependencies:
 from shutil import copyfileobj
+import boto3
 import os
 
 # Define colors as rgba to be able to adjust opacity
@@ -36,8 +36,8 @@ MIME_TYPES = {
 }
 
 
-class AmazonError(Exception):
-    """ Error connecting or uploading to Amazon S3 """
+class AmazonUploadError(Exception):
+    """ Error uploading to Amazon S3 """
     pass
 
 
@@ -57,6 +57,11 @@ class Storage(object):
         :param filetype (str): A filetype. See MIME_TYPES for valid values
         """
         raise NotImplementedError("The save class must be overwritten.")
+
+    def __repr__(self):
+        # Use type(self).__name__ to get the right class name for sub classes
+        return "<{cls}: {name}>".format(cls=type(self).__name__,
+                                        name=str(id(self)))
 
 
 class LocalStorage(Storage):
@@ -80,10 +85,38 @@ class LocalStorage(Storage):
             copyfileobj(stream, f, length=131072)
 
 
+class S3Storage(Storage):
+    """ Save images to an S3 bucket.
+    """
+    def __init__(self, bucket, prefix=None):
+        """
+        :param bucket (str): An S3 bucket name.
+        :param prefix (str): Optionally a S3 prefix (path)
+        """
+        s3_client = boto3.resource('s3')
+        self.bucket = s3_client.Bucket(bucket)
+        self.prefix = prefix
+
+    def save(self, key, stream, filetype):
+        """
+        :param key (str): Used for creating filename. Files may be oberwritten.
+        :param stream (BytesIO): A stream containing the file data
+        :param filetype (str): File extension
+        """
+        stream.seek(0)
+        filename = "/".join(x.strip("/")
+                            for x in [self.prefix, key]) + "." + filetype
+        mime_type = MIME_TYPES[img_format]
+        try:
+            self.bucket.put_object(Key=filename, Body=stream,
+                                   ACL='public-read', ContentType=mime_type)
+        except Exception as e:
+            raise AmazonUploadError(e)
+
+
 class Chart(object):
     """ Encapsulates a matplotlib plt object
     """
-
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  size: str='normal',
                  strong_color: str=STRONG_COLOR, rcParams: dict={},
@@ -163,7 +196,7 @@ class Chart(object):
         real_height = float(height)/float(dpi)
         self.fig.set_size_inches(real_width, real_height)
 
-    def annotate_point(self, text, xy, direction, **kwargs):
+    def _annotate_point(self, text, xy, direction, **kwargs):
         """Adds a label to a given point.
 
         :param text: text content of label
@@ -203,7 +236,7 @@ class Chart(object):
 
         return self.plt.annotate(text, xy=xy, **opts)
 
-    def add_caption(self, caption):
+    def _add_caption(self, caption):
         """ Adds a caption. Supports multiline input.
 
         `add_caption` should be executed _after_ `add_title`, `add_xlabel` and
@@ -227,7 +260,7 @@ class Chart(object):
         # be overwritten
         self.plt.subplots_adjust(bottom=offset)
 
-    def add_title(self, title):
+    def _add_title(self, title):
         """ Adds a title """
         # Wrap title at a given number of chars
         # If the font family is changed wrap_at should be reviewed
@@ -246,40 +279,46 @@ class Chart(object):
         line_height = self._fontsize_title / float(self.h)
 
         # add some padding
-        padd = 1 + line_height * .2
+        padd = 1 + line_height * 0.2
         title.set_y(padd)  # 1.1 would add 10% height
         self.fig.tight_layout()
 
-    def add_xlabel(self, label):
+    def _add_xlabel(self, label):
         """Adds a label to the x axis."""
         self.ax.set_xlabel(label, fontproperties=self.small_font,
                            labelpad=self._fontsize)
 
-    def add_ylabel(self, label):
+    def _add_ylabel(self, label):
         """Adds a label to the y axis."""
         self.ax.set_ylabel(label, fontproperties=self.small_font,
                            labelpad=self._fontsize)
 
+    def _add_data(self):
+        """ Add some data to the chart """
+        pass
+
     def render(self, key, img_format):
         """
-         Save an image file from the plot object to Amazon S3.
+         Apply all changes, render file, and send to storage.
         """
+
+        # Apply all changes, in the correct order for consistent rendering
+        if self.data is not None:
+            self._add_data(self.data)
+        if self.title is not None:
+            self._add_title(self.title)
+        if self.ylabel is not None:
+            self._add_ylabel(self.ylabel)
+        if self.xlabel is not None:
+            plt._add_xlabel(self.xlabel)
+        if self.caption is not None:
+            chart._add_caption(self.caption)
+
         # Save plot in memory, to write it directly to storage
         buf = BytesIO()
         self.fig.savefig(buf, format=img_format)
         buf.seek(0)
         self.storage.save(key, buf, img_format)
-        return
-
-        filename = key + "." + img_format
-        mime_type = MIME_TYPES[img_format]
-        try:
-            s3_client = boto3.resource('s3')
-            bucket = s3_client.Bucket(self.s3_bucket)
-            bucket.put_object(Key=filename, Body=buf,
-                              ACL='public-read', ContentType=mime_type)
-        except Exception:
-            raise AmazonError
 
     def render_all(self, key):
         """
@@ -287,6 +326,22 @@ class Chart(object):
         """
         for file_format in MIME_TYPES.keys():
             self.render(key, file_format)
+
+    @title.setter
+    def title(self, t):
+        self._title = t
+
+    @property
+    def title(self):
+        """ A user could have manipulated the fig property directly,
+        so check for a title there as well.
+        """
+        if self._title is not None:
+            return self._title
+        elif self.fig._suptitle:
+            return self.fig._suptitle.get_text()
+        else:
+            return None
 
     def __str__(self):
         # Return main title or id
