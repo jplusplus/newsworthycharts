@@ -1,17 +1,20 @@
-""" Create charts and upload them the to Amazon S3. For use with Newsworthy's
-robot writer and other similar projects.
+""" Create charts and upload and store them as files.
+For use with Newsworthy's robot writer and other similar projects.
 """
 from os import environ
+import os
 from io import BytesIO
 from textwrap import wrap
-# import matplotlib
 # matplotlib.use('Agg')  # Set backend before further imports
 # moved to matplotlibrc
 from matplotlib.colors import to_rgba
 from matplotlib import pyplot as plt
+from matplotlib import rc_file
 from matplotlib.font_manager import FontProperties
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
+
+HERE = os.path.dirname(__file__)
 
 # Define colors as rgba to be able to adjust opacity
 NEUTRAL_COLOR = to_rgba("#999999", 1)
@@ -32,6 +35,12 @@ image_formats = MIME_TYPES.keys()
 class Chart(object):
     """ Encapsulates a matplotlib plt object
     """
+    data = None
+    title = None
+    xlabel = None
+    ylabel = None
+    caption = None
+
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  size: str='normal',
                  strong_color: str=STRONG_COLOR, rcParams: dict={}):
@@ -42,10 +51,12 @@ class Chart(object):
             if intended to display as mini chart.
         :param strong_color (str): color used for highlights, preferably as HEX
         :param rcParams (dict): override defult rcParams
-        :param s3_bucket (str): The name of an S3 bucket
         """
 
-        self.s3_bucket = s3_bucket
+        # Load default style
+        # Dynamically loading them here allows us to provide alternate styles.
+        rc_file(os.path.join(HERE, 'matplotlibrc'))
+
         self.storage = storage
 
         # Styling
