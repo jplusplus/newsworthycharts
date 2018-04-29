@@ -11,6 +11,7 @@ from matplotlib.colors import to_rgba
 from matplotlib import pyplot as plt
 from matplotlib.font_manager import FontProperties
 from .mimetypes import MIME_TYPES
+from .storage import LocalStorage
 
 # Define colors as rgba to be able to adjust opacity
 NEUTRAL_COLOR = to_rgba("#999999", 1)
@@ -32,8 +33,7 @@ class Chart(object):
     """
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  size: str='normal',
-                 strong_color: str=STRONG_COLOR, rcParams: dict={},
-                 s3_bucket: str=environ.get("S3_BUCKET")):
+                 strong_color: str=STRONG_COLOR, rcParams: dict={}):
         """
         :param width: width in pixels
         :param height: height in pixels
