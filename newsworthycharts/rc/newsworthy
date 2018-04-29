@@ -8,11 +8,11 @@ axes.axisbelow    : True
 axes.spines.left  : False
 axes.spines.top   : False
 axes.spines.right : False
-axes.titleweight  : 'semibold'
-axes.labelweight  : 'normal'
+axes.titleweight  : 400
+axes.labelweight  : 300
 ytick.left        : False
 xtick.minor.bottom: False
 
 # Background
-axes.facecolor    : "#ffffff"
-grid.color        : "#dedede"
+axes.facecolor    : #ffffff
+grid.color        : #dedede

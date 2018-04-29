@@ -42,7 +42,7 @@ class Chart(object):
     caption = None
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
-                 size: str='normal',
+                 size: str='normal', style: str='newsworthy',
                  strong_color: str=STRONG_COLOR, rcParams: dict={}):
         """
         :param width: width in pixels
@@ -55,7 +55,7 @@ class Chart(object):
 
         # Load default style
         # Dynamically loading them here allows us to provide alternate styles.
-        rc_file(os.path.join(HERE, 'matplotlibrc'))
+        rc_file(os.path.join(HERE, 'rc', style))
 
         self.storage = storage
 
