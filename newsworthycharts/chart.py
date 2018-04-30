@@ -1,29 +1,19 @@
 """ Create charts and upload and store them as files.
 For use with Newsworthy's robot writer and other similar projects.
 """
-from os import environ
-import os
 from io import BytesIO
-import yaml
-from matplotlib.colors import to_rgba
-from matplotlib import rc_file, rcParams
 from matplotlib.font_manager import FontProperties
+from .utils import loadstyle
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
-HERE = os.path.dirname(__file__)
-
 image_formats = MIME_TYPES.keys()
 
 
-class StyleNotFoundError(FileNotFoundError):
-    pass
-
-
 class Chart(object):
-    """ Encapsulates a matplotlib plt object
+    """ Convenience wrapper around a Matplotlib figure
     """
     data = None
     # Use getter/setter because user can manipulate the fig title in more ways
@@ -45,51 +35,18 @@ class Chart(object):
 
         self.storage = storage
         self.w, self.h = width, height
-
-        # Load style file
-        style_file = os.path.join(HERE, 'rc', style)
-        try:
-            # Check rc directory for built in styles first
-            rc_file(style_file)
-        except FileNotFoundError as e:
-            # Current working dir or path
-            style_file = style
-            try:
-                rc_file(style_file)
-            except FileNotFoundError as e:
-                raise StyleNotFoundError("No such style file found")
-
-        # The style files may also contain an extra section with typography
-        # for titles and captions (these can only be separately style in code,
-        # as of Matplotlib 2.2)
-        # This is a hack, but it's nice to have all styling in one file
-        # The extra styling is prefixed with `#!`
-        with open(style_file, 'r') as f:
-            doc = f.readlines()
-            rcParamsNewsworthy = "\n".join([d[2:]
-                                           for d in doc if d.startswith("#!")])
-        rcParamsNewsworthy = yaml.load(rcParamsNewsworthy)
-        title_font = [x.strip()
-                      for x in rcParamsNewsworthy["title_font"]
-                      .split(",")]
-        color = rcParamsNewsworthy.get("neutral_color",
-                                       rcParams["figure.edgecolor"])
-        strong_color = rcParamsNewsworthy.get("strong_color", color)
-        self.neutral_color = to_rgba("#" + str(color), 1)
-        self.strong_color = to_rgba("#" + str(strong_color), 1)
-
-        self._fontsize = rcParams["font.size"]
+        self.style = loadstyle(style)
 
         # Dynamic typography
         self.font = FontProperties()
-        self.font.set_family(rcParams["font.sans-serif"])
+        self.font.set_family(self.style["font.sans-serif"])
 
         self.small_font = self.font.copy()
         self.small_font.set_size("small")
 
         self.title_font = self.font.copy()
-        self.title_font.set_family(title_font)
-        self.title_font.set_size(rcParams["figure.titlesize"])
+        self.title_font.set_family(self.style["title_font"])
+        self.title_font.set_size(self.style["figure.titlesize"])
 
         self.fig = Figure()
         FigureCanvas(self.fig)
@@ -145,14 +102,14 @@ class Chart(object):
         """ Adds a caption. Supports multiline input.
         """
         text = self.fig.text(0.01, 0.01, caption,
-                             color=self.neutral_color, wrap=True,
+                             color=self.style["neutral_color"], wrap=True,
                              fontproperties=self.small_font)
 
         # Increase the bottom padding by the height of the text bbox
         # We need to draw the text first, to know its dimensions
         self.fig.draw(renderer=self.fig.canvas.renderer)
         bbox = text.get_window_extent()
-        margin = rcParams["figure.subplot.bottom"]
+        margin = self.style["figure.subplot.bottom"]
         margin += bbox.height / float(self.h)
         self.fig.subplots_adjust(bottom=margin)
 
