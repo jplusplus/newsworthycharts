@@ -9,4 +9,4 @@ share
 pyvenv.cfg
 man
 test.*
-*~
+*~.ipynb_checkpoints
