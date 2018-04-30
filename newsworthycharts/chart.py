@@ -4,9 +4,6 @@ For use with Newsworthy's robot writer and other similar projects.
 from os import environ
 import os
 from io import BytesIO
-from textwrap import wrap
-# matplotlib.use('Agg')  # Set backend before further imports
-# moved to matplotlibrc
 from matplotlib.colors import to_rgba
 from matplotlib import pyplot as plt
 from matplotlib import rc_file
@@ -174,29 +171,20 @@ class Chart(object):
 
     def _add_title(self, title_text):
         """ Adds a title """
-        # Wrap title at a given number of chars
-        # wrap_at = 50.0 / self._factor
-        # lines = wrap(title_text, wrap_at)  # split to list of lines
-        # title_with_linebreaks = "\n".join(lines)
         self.fig.suptitle(title_text, wrap=True,
                           multialignment="left",
                           fontproperties=self.title_font)
-
-        # how many percent of height is the font title size?
-        # line_height = self._fontsize_title / float(self.h)
-        # add some space above plot area
-        # self.fig.subplots_adjust(top=line_height * 0.2 * len(lines))
         self.fig.tight_layout()
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
-        self.ax.set_xlabel(label, fontproperties=self.small_font,
-                           labelpad=self._fontsize)
+        self.ax.set_xlabel(label, fontproperties=self.small_font)
+        self.fig.tight_layout()
 
     def _add_ylabel(self, label):
         """Adds a label to the y axis."""
-        self.ax.set_ylabel(label, fontproperties=self.small_font,
-                           labelpad=self._fontsize)
+        self.ax.set_ylabel(label, fontproperties=self.small_font)
+        self.fig.tight_layout()
 
     def _add_data(self):
         """ Add some data to the chart """
