@@ -26,7 +26,7 @@ EXTRA_STRONG_COLOR = to_rgba("#993333", 1)
     an already highlighted series """
 
 # Default typefacec
-CONDENSED_FONT = ['Open Sans Condensed', 'Ubuntu Condensed']
+TITLE_FONT = ['Open Sans Condensed', 'Ubuntu Condensed']
 REGULAR_FONT = ['Open Sans', 'Helvetica', 'Arial']
 
 image_formats = MIME_TYPES.keys()
@@ -82,34 +82,19 @@ class Chart(object):
         self._markersize = 8.0 * factor
         self.font.set_size(fontsize)
 
-        # Typography
+        # Dynamic typography
         self._regular_font = REGULAR_FONT
         self.font.set_family(REGULAR_FONT)
-
-        self.condensed_font = self.font.copy()
-        self.condensed_font.set_family(CONDENSED_FONT)
 
         self.small_font = self.font.copy()
         self.small_font.set_size(self._fontsize_small)
 
-        self.title_font = self.condensed_font.copy()
+        self.title_font = self.font.copy()
+        self.title_font.set_family(TITLE_FONT)
         self.title_font.set_size(self._fontsize_title)
 
         # Customizable colors
         self._strong_color = to_rgba(strong_color, 1)
-
-        #plt.rcParams['font.size'] = fontsize
-        #plt.rcParams['axes.titlesize'] = self._fontsize_title
-
-        #plt.rcParams['xtick.labelsize'] = self._fontsize_small
-        #plt.rcParams['ytick.labelsize'] = self._fontsize_small
-        #plt.rcParams['legend.fontsize'] = fontsize
-        #plt.rcParams['figure.titlesize'] = fontsize
-        #plt.rcParams['font.family'] = self._regular_font
-        #plt.rcParams['font.monospace'] = 'Ubuntu Mono'
-
-        # Apply custom params
-        #plt.rcParams.update(rcParams)
 
         # self.fig = plt.figure()
         self.fig, self.ax = plt.subplots()
