@@ -4,9 +4,10 @@ For use with Newsworthy's robot writer and other similar projects.
 from os import environ
 import os
 from io import BytesIO
+import yaml
 from matplotlib.colors import to_rgba
 from matplotlib import pyplot as plt
-from matplotlib import rc_file
+from matplotlib import rc_file, rcParams
 from matplotlib.font_manager import FontProperties
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
@@ -22,10 +23,6 @@ EXTRA_STRONG_COLOR = to_rgba("#993333", 1)
 """ Default color for e.g. highlighting elements in
     an already highlighted series """
 
-# Default typefacec
-TITLE_FONT = ['Open Sans Condensed', 'Ubuntu Condensed']
-REGULAR_FONT = ['Open Sans', 'Helvetica', 'Arial']
-
 image_formats = MIME_TYPES.keys()
 
 
@@ -33,28 +30,42 @@ class Chart(object):
     """ Encapsulates a matplotlib plt object
     """
     data = None
-    title = None
+    # Use getter/setter because user can manipulate the fig title in more ways
+    _title = None
     xlabel = None
     ylabel = None
     caption = None
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  size: str='normal', style: str='newsworthy',
-                 strong_color: str=STRONG_COLOR, rcParams: dict={}):
+                 strong_color: str=STRONG_COLOR):
         """
         :param width: width in pixels
         :param height: height in pixels
         :param size: 'normal'|'small', use small to increase size of elements
             if intended to display as mini chart.
-        :param strong_color (str): color used for highlights, preferably as HEX
-        :param rcParams (dict): override defult rcParams
         """
+
+        self.storage = storage
 
         # Load default style
         # Dynamically loading them here allows us to provide alternate styles.
-        rc_file(os.path.join(HERE, 'rc', style))
+        style_file = os.path.join(HERE, 'rc', style)
+        rc_file(style_file)
 
-        self.storage = storage
+        # The style files may also contain an extra section with typography
+        # for titles and captions (these can only be separately style in code,
+        # as of Matplotlib 2.2)
+        # This is a hack, but it's nice to have all styling in one file
+        # The extra styling is prefixed with `#!`
+        with open(style_file, 'r') as f:
+            doc = f.readlines()
+            rcParamsNewsworthy = "\n".join([d[2:]
+                                           for d in doc if d.startswith("#!")])
+        rcParamsNewsworthy = yaml.load(rcParamsNewsworthy)
+        title_font = [x.trim()
+                      for x in rcParamsNewsworthy["rcParamsNewsworthy"]
+                      .split(",")]
 
         # Styling
         # Style reference: https://matplotlib.org/users/customizing.html
@@ -80,14 +91,13 @@ class Chart(object):
         self.font.set_size(fontsize)
 
         # Dynamic typography
-        self._regular_font = REGULAR_FONT
-        self.font.set_family(REGULAR_FONT)
+        self.font.set_family(rcParams["font.sans-serif"])
 
         self.small_font = self.font.copy()
         self.small_font.set_size(self._fontsize_small)
 
         self.title_font = self.font.copy()
-        self.title_font.set_family(TITLE_FONT)
+        self.title_font.set_family(title_font)
         self.title_font.set_size(self._fontsize_title)
 
         # Customizable colors
@@ -96,9 +106,6 @@ class Chart(object):
         # self.fig = plt.figure()
         self.fig, self.ax = plt.subplots()
         self.w, self.h = width, height
-
-        self._xlabel = None
-        self._ylabel = None
 
         dpi = self.fig.get_dpi()
         real_width = float(width)/float(dpi)
@@ -115,8 +122,7 @@ class Chart(object):
         :param kwags: any params accepted by plt.annotate
         """
         opts = {
-            "fontname": self._regular_font,
-            "fontsize": self._fontsize,
+            "fontproperties": self.small_font,
             "textcoords": "offset pixels",
         }
         offset = 10  # px between point and text
@@ -147,27 +153,23 @@ class Chart(object):
 
     def _add_caption(self, caption):
         """ Adds a caption. Supports multiline input.
-
-        `add_caption` should be executed _after_ `add_title`, `add_xlabel` and
-        `add_ylabel.`
         """
-        self.fig.figtext(0.01, 0.01, caption,
-                         color=NEUTRAL_COLOR,
-                         fontname=self._regular_font,
-                         fontsize=self._fontsize_small)
-        # Add some extra space to fit a two line caption
+        self.fig.text(0.01, 0.01, caption,
+                      color=NEUTRAL_COLOR, wrap=True,
+                      fontproperties=self.small_font)
+
+        # Add some extra space
         n_caption_rows = len(caption.split("\n"))
         line_height = self._fontsize / float(self.h)
-        offset = line_height * (4 + n_caption_rows)
-
+        offset = line_height * (3 + n_caption_rows)
         # And some further spacing if there is an axis label
-        if self._xlabel is not None:
+        if self.xlabel is not None:
             # This amount is approximate
             offset += line_height * 2
 
         # If .tight_layout() is run after .subplots_adjust() changes will
         # be overwritten
-        self.plt.subplots_adjust(bottom=offset)
+        self.fig.subplots_adjust(bottom=offset)
 
     def _add_title(self, title_text):
         """ Adds a title """
