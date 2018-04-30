@@ -16,7 +16,7 @@ class Chart(object):
     """ Convenience wrapper around a Matplotlib figure
     """
     data = None
-    # Use getter/setter because user can manipulate the fig title in more ways
+    # Use getter/setter for title as user might manipulate it though .fig
     _title = None
     xlabel = None
     ylabel = None
@@ -39,7 +39,6 @@ class Chart(object):
 
         # Dynamic typography
         self.font = FontProperties()
-        self.font.set_family(self.style["font.sans-serif"])
 
         self.small_font = self.font.copy()
         self.small_font.set_size("small")
@@ -55,8 +54,8 @@ class Chart(object):
 
         # Calculate size in inches
         dpi = self.fig.get_dpi()
-        real_width = float(width)/float(dpi)
-        real_height = float(height)/float(dpi)
+        real_width = float(width)/dpi
+        real_height = float(height)/dpi
         self.fig.set_size_inches(real_width, real_height)
 
     def _annotate_point(self, text, xy, direction, **kwargs):
@@ -135,7 +134,6 @@ class Chart(object):
         """
          Apply all changes, render file, and send to storage.
         """
-
         # Apply all changes, in the correct order for consistent rendering
         if self.data is not None:
             self._add_data(self.data)
@@ -183,8 +181,8 @@ class Chart(object):
 
     def __str__(self):
         # Return main title or id
-        if self.fig._suptitle:
-            return self.fig._suptitle.get_text()
+        if self.title is not None:
+            return self.title
         else:
             return str(id(self))
 
