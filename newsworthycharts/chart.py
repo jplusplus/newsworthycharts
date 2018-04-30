@@ -29,6 +29,7 @@ class Chart(object):
     xlabel = None
     ylabel = None
     caption = None
+    annotations = []
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  style: str='newsworthy'):
@@ -133,7 +134,7 @@ class Chart(object):
         # Override default opts if passed to the function
         opts.update(kwargs)
 
-        return self.plt.annotate(text, xy=xy, **opts)
+        return self.ax.annotate(text, xy=xy, **opts)
 
     def _add_caption(self, caption):
         """ Adds a caption. Supports multiline input.
@@ -184,6 +185,8 @@ class Chart(object):
         # Apply all changes, in the correct order for consistent rendering
         if self.data is not None:
             self._add_data(self.data)
+        for a in self.annotations:
+            self._annotate_point(a["text"], a["xy"], a["direction"])
         if self.title is not None:
             self._add_title(self.title)
         if self.ylabel is not None:
