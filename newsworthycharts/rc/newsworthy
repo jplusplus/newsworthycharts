@@ -8,7 +8,7 @@ axes.axisbelow    : True
 axes.spines.left  : False
 axes.spines.top   : False
 axes.spines.right : False
-axes.titleweight  : 400
+axes.titleweight  : 500
 axes.labelweight  : 300
 ytick.left        : False
 xtick.minor.bottom: False
@@ -16,3 +16,9 @@ xtick.minor.bottom: False
 # Background
 axes.facecolor    : DDDDDD
 grid.color        : DEDEDE
+
+# Type
+font.family       : sans-serif
+font.sans-serif   : Open Sans, Helvetica, Arial
+font.monospace    : Ubuntu Mono
+figure.titlesize  : large
