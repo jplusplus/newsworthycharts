@@ -14,7 +14,8 @@ ytick.left        : False
 xtick.minor.bottom: False
 
 # Background
-axes.facecolor    : DDDDDD
+figure.facecolor  : FFFFFF
+axes.facecolor    : FFFFFF
 grid.color        : DEDEDE
 
 # Type
