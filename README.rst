@@ -8,25 +8,71 @@ Installing
 ----------
 
 .. code:: bash
+
   pip install newsworthy-charts
 
 
 Using
 -----
 
-.. code:: python3
-  >>> from newsworthycharts import Chart
-  >>> c = Chart(600, 800)
-  >>> c
-  <Chart: 139689239312144 (800 x 600)>
-  >>>
+This module comes with two classes, `Chart` and `Storage` (and it's subclasses).
+When using the Chart class, the generated chart will be saved as a local file:
 
+.. code:: python3
+
+  from newsworthycharts import Chart
+  c = Chart(600, 800)
+  c.title = "Number of smiles per second"
+  c.xlabel = "Time"
+  c.ylabel = "Smiles"
+  c.caption = "Source: Ministry of smiles."
+  c.render("test", "png")
+
+If you want more control, you can use a _storage_ to save file to a specific
+location or cloud service:
+
+.. code:: python3
+
+  from newsworthycharts import Chart
+  from newsworthycharts import S3Storage
+
+  s3 = S3Storage("my_bucket")
+  c = Chart(600, 800, storage=s3)
+  c.title = "Number of smiles per second"
+  c.xlabel = "Time"
+  c.ylabel = "Smiles"
+  c.caption = "Source: Ministry of smiles."
+  c.render("test", "png")
+
+
+To store a file in a local folder, use the `LocalStorage` class:
+
+.. code:: python3
+  from newsworthycharts import LocalStorage
+
+  storage = LocalStorage("/path/to/generated/charts")
+
+Charts are styled using built-in or user-defined styles:
+
+.. code:: python3
+
+  from newsworthycharts import Chart
+
+  # This chart has the newsworthy default style
+  c = Chart(600, 800, style="newsworthy")
+
+  # Style can also be the path to a style file (absolute or relative to current working directory)
+  c2 = Chart(600, 800, style="path/to/styles/mystyle.mplstyle")
+
+To set up you own style, copy the build-in default: <https://github.com/jplusplus/newsworthycharts/blob/master/newsworthycharts/rc/newsworthy>
+
+Newsworthycharts will look first among the predefined style files for the requested style, so if you have a custom style file in you working directory you need to give it a unique name not already in use.
 
 Changelog
 ---------
 
-- 1.0.0
-  - First version
+- 1.0.0.dev1
+  - First version, still in development
 
 Todo
 ----
