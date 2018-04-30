@@ -118,17 +118,14 @@ class Chart(object):
         self.fig.suptitle(title_text, wrap=True,
                           multialignment="left",
                           fontproperties=self.title_font)
-        self.fig.tight_layout(pad=2)
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
         self.ax.set_xlabel(label, fontproperties=self.small_font)
-        self.fig.tight_layout()
 
     def _add_ylabel(self, label):
         """Adds a label to the y axis."""
         self.ax.set_ylabel(label, fontproperties=self.small_font)
-        self.fig.tight_layout()
 
     def _add_data(self):
         """ Add some data to the chart """
@@ -150,6 +147,8 @@ class Chart(object):
             self._add_ylabel(self.ylabel)
         if self.xlabel is not None:
             self._add_xlabel(self.xlabel)
+        # tight_layout after _add_caption would ruin extra padding added there
+        self.fig.tight_layout()
         if self.caption is not None:
             self._add_caption(self.caption)
 
