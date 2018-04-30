@@ -63,8 +63,8 @@ class Chart(object):
             rcParamsNewsworthy = "\n".join([d[2:]
                                            for d in doc if d.startswith("#!")])
         rcParamsNewsworthy = yaml.load(rcParamsNewsworthy)
-        title_font = [x.trim()
-                      for x in rcParamsNewsworthy["rcParamsNewsworthy"]
+        title_font = [x.strip()
+                      for x in rcParamsNewsworthy["title_font"]
                       .split(",")]
 
         # Styling
@@ -79,34 +79,35 @@ class Chart(object):
 
         # Set size of chart
         # https://github.com/matplotlib/matplotlib/issues/2305/
-        w, h = plt.gcf().get_size_inches()
+        # w, h = plt.gcf().get_size_inches()
 
+        self._fontsize = rcParams["font.size"]
         self.font = FontProperties()
-        fontsize = w * 2.2 * factor
-        self._fontsize = w * 2.2 * factor
-        self._fontsize_small = fontsize * 0.8
-        self._fontsize_title = fontsize * 1.4
-        self._linewidth = w * 0.4 * factor
-        self._markersize = 8.0 * factor
-        self.font.set_size(fontsize)
+        #fontsize = w * 2.2 * factor
+        #self._fontsize = w * 2.2 * factor
+        #self._fontsize_small = fontsize * 0.8
+        #self._fontsize_title = fontsize * 1.4
+        #self._linewidth = w * 0.4 * factor
+        #self._markersize = 8.0 * factor
+        #self.font.set_size(fontsize)
 
         # Dynamic typography
         self.font.set_family(rcParams["font.sans-serif"])
 
         self.small_font = self.font.copy()
-        self.small_font.set_size(self._fontsize_small)
+        self.small_font.set_size("small")
 
         self.title_font = self.font.copy()
         self.title_font.set_family(title_font)
-        self.title_font.set_size(self._fontsize_title)
+        self.title_font.set_size(rcParams["figure.titlesize"])
 
         # Customizable colors
         self._strong_color = to_rgba(strong_color, 1)
 
-        # self.fig = plt.figure()
         self.fig, self.ax = plt.subplots()
         self.w, self.h = width, height
 
+        # Calculate size in inches
         dpi = self.fig.get_dpi()
         real_width = float(width)/float(dpi)
         real_height = float(height)/float(dpi)
@@ -160,7 +161,7 @@ class Chart(object):
 
         # Add some extra space
         n_caption_rows = len(caption.split("\n"))
-        line_height = self._fontsize / float(self.h)
+        line_height = self._fontsize * 1.6 / float(self.h)
         offset = line_height * (3 + n_caption_rows)
         # And some further spacing if there is an axis label
         if self.xlabel is not None:
