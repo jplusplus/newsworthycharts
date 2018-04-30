@@ -2,6 +2,9 @@
 # CocoaAgg MacOSX Qt4Agg Qt5Agg TkAgg WX WXAgg Agg Cairo GDK PS PDF SVG
 backend : Agg
 
+# Resolution
+figure.dpi        : 150
+
 # Axes and ticks
 axes.grid         : False
 axes.axisbelow    : True
@@ -21,9 +24,12 @@ grid.color        : DEDEDE
 # Type
 font.family       : sans-serif
 font.sans-serif   : Open Sans, Helvetica, Arial
+font.size         : 10
 font.monospace    : Ubuntu Mono
-figure.titlesize  : x-large
+figure.titlesize  : xx-large
 
 # Some custom settings for Newsworthy
 # Prefix each line with #!
 #! title_font    : Open Sans Condensed, Ubuntu Condensed
+#! neutral_color : 999999
+#! strong_color  : 5aa69d

@@ -14,16 +14,10 @@ from .storage import LocalStorage
 
 HERE = os.path.dirname(__file__)
 
-# Define colors as rgba to be able to adjust opacity
-NEUTRAL_COLOR = to_rgba("#999999", 1)
-""" Default data color """
-STRONG_COLOR = to_rgba("#5aa69d", 1)
-""" Default color for highlighting """
-EXTRA_STRONG_COLOR = to_rgba("#993333", 1)
-""" Default color for e.g. highlighting elements in
-    an already highlighted series """
-
 image_formats = MIME_TYPES.keys()
+
+class StyleNotFoundError(FileNotFoundError):
+    pass
 
 
 class Chart(object):
@@ -37,21 +31,30 @@ class Chart(object):
     caption = None
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
-                 size: str='normal', style: str='newsworthy',
-                 strong_color: str=STRONG_COLOR):
+                 style: str='newsworthy'):
         """
         :param width: width in pixels
         :param height: height in pixels
-        :param size: 'normal'|'small', use small to increase size of elements
-            if intended to display as mini chart.
+        :param storage: storage object that will handle file saving. Default
+                        LocalStorage() class will save a file the working dir.
+        :param style: a predefined style or the path to a custom style file
         """
 
         self.storage = storage
+        self.w, self.h = width, height
 
-        # Load default style
-        # Dynamically loading them here allows us to provide alternate styles.
+        # Load style file
         style_file = os.path.join(HERE, 'rc', style)
-        rc_file(style_file)
+        try:
+            # Check rc directory for built in styles first
+            rc_file(style_file)
+        except FileNotFoundError as e:
+            # Current working dir or path
+            style_file = style
+            try:
+                rc_file(style_file)
+            except FileNotFoundError as e:
+                raise StyleNotFoundError("No such style file found")
 
         # The style files may also contain an extra section with typography
         # for titles and captions (these can only be separately style in code,
@@ -66,32 +69,16 @@ class Chart(object):
         title_font = [x.strip()
                       for x in rcParamsNewsworthy["title_font"]
                       .split(",")]
-
-        # Styling
-        # Style reference: https://matplotlib.org/users/customizing.html
-        # When a chart is rendered as 'small' texts and elements
-        # are enlarged
-        factor = {
-            "normal": 1.0,
-            "small": 1.8
-        }[size]
-        self._factor = factor
-
-        # Set size of chart
-        # https://github.com/matplotlib/matplotlib/issues/2305/
-        # w, h = plt.gcf().get_size_inches()
+        color = rcParamsNewsworthy.get("neutral_color",
+                                       rcParams["figure.edgecolor"])
+        strong_color = rcParamsNewsworthy.get("strong_color", color)
+        self.neutral_color = to_rgba("#" + str(color), 1)
+        self.strong_color = to_rgba("#" + str(strong_color), 1)
 
         self._fontsize = rcParams["font.size"]
-        self.font = FontProperties()
-        #fontsize = w * 2.2 * factor
-        #self._fontsize = w * 2.2 * factor
-        #self._fontsize_small = fontsize * 0.8
-        #self._fontsize_title = fontsize * 1.4
-        #self._linewidth = w * 0.4 * factor
-        #self._markersize = 8.0 * factor
-        #self.font.set_size(fontsize)
 
         # Dynamic typography
+        self.font = FontProperties()
         self.font.set_family(rcParams["font.sans-serif"])
 
         self.small_font = self.font.copy()
@@ -101,11 +88,7 @@ class Chart(object):
         self.title_font.set_family(title_font)
         self.title_font.set_size(rcParams["figure.titlesize"])
 
-        # Customizable colors
-        self._strong_color = to_rgba(strong_color, 1)
-
         self.fig, self.ax = plt.subplots()
-        self.w, self.h = width, height
 
         # Calculate size in inches
         dpi = self.fig.get_dpi()
@@ -156,7 +139,7 @@ class Chart(object):
         """ Adds a caption. Supports multiline input.
         """
         self.fig.text(0.01, 0.01, caption,
-                      color=NEUTRAL_COLOR, wrap=True,
+                      color=self.neutral_color, wrap=True,
                       fontproperties=self.small_font)
 
         # Add some extra space
