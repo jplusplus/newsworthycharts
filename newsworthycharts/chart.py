@@ -175,22 +175,17 @@ class Chart(object):
     def _add_title(self, title_text):
         """ Adds a title """
         # Wrap title at a given number of chars
-        # If the font family is changed wrap_at should be reviewed
-        # Dynamic rescaling based on actual with seems difficult in matplotlib
-        # This works pretty well.
-        wrap_at = 50.0 / self._factor
-        lines = wrap(title_text, wrap_at)  # split to list of lines
-        title_with_linebreaks = "\n".join(lines)
-        title = self.fig.suptitle(title_with_linebreaks, wrap=True,
-                                  horizontalalignment="left",
-                                  fontproperties=self.title_font)
+        # wrap_at = 50.0 / self._factor
+        # lines = wrap(title_text, wrap_at)  # split to list of lines
+        # title_with_linebreaks = "\n".join(lines)
+        self.fig.suptitle(title_text, wrap=True,
+                          multialignment="left",
+                          fontproperties=self.title_font)
 
         # how many percent of height is the font title size?
-        line_height = self._fontsize_title / float(self.h)
-
-        # add some padding
-        padd = 1 + line_height * 0.2
-        title.set_y(padd)  # 1.1 would add 10% height
+        # line_height = self._fontsize_title / float(self.h)
+        # add some space above plot area
+        # self.fig.subplots_adjust(top=line_height * 0.2 * len(lines))
         self.fig.tight_layout()
 
     def _add_xlabel(self, label):
