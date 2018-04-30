@@ -139,22 +139,17 @@ class Chart(object):
     def _add_caption(self, caption):
         """ Adds a caption. Supports multiline input.
         """
-        self.fig.text(0.01, 0.01, caption,
-                      color=self.neutral_color, wrap=True,
-                      fontproperties=self.small_font)
+        text = self.fig.text(0.01, 0.01, caption,
+                             color=self.neutral_color, wrap=True,
+                             fontproperties=self.small_font)
 
-        # Add some extra space
-        n_caption_rows = len(caption.split("\n"))
-        line_height = self._fontsize * 1.6 / float(self.h)
-        offset = line_height * (3 + n_caption_rows)
-        # And some further spacing if there is an axis label
-        if self.xlabel is not None:
-            # This amount is approximate
-            offset += line_height * 2
-
-        # If .tight_layout() is run after .subplots_adjust() changes will
-        # be overwritten
-        self.fig.subplots_adjust(bottom=offset)
+        # Increase the bottom padding by the height of the text bbox
+        # We need to draw the text first, to know its dimensions
+        self.fig.draw(renderer=self.fig.canvas.renderer)
+        bbox = text.get_window_extent()
+        margin = rcParams["figure.subplot.bottom"]
+        margin += bbox.height / float(self.h)
+        self.fig.subplots_adjust(bottom=margin)
 
     def _add_title(self, title_text):
         """ Adds a title """
