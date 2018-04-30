@@ -9,3 +9,4 @@ share
 pyvenv.cfg
 man
 test.*
+*~
