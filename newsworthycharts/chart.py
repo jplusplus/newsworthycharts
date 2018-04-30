@@ -6,15 +6,17 @@ import os
 from io import BytesIO
 import yaml
 from matplotlib.colors import to_rgba
-from matplotlib import pyplot as plt
 from matplotlib import rc_file, rcParams
 from matplotlib.font_manager import FontProperties
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 HERE = os.path.dirname(__file__)
 
 image_formats = MIME_TYPES.keys()
+
 
 class StyleNotFoundError(FileNotFoundError):
     pass
@@ -89,7 +91,10 @@ class Chart(object):
         self.title_font.set_family(title_font)
         self.title_font.set_size(rcParams["figure.titlesize"])
 
-        self.fig, self.ax = plt.subplots()
+        self.fig = Figure()
+        FigureCanvas(self.fig)
+        self.ax = self.fig.add_subplot(111)
+        # self.fig, self.ax = plt.subplots()
 
         # Calculate size in inches
         dpi = self.fig.get_dpi()
@@ -156,7 +161,7 @@ class Chart(object):
         self.fig.suptitle(title_text, wrap=True,
                           multialignment="left",
                           fontproperties=self.title_font)
-        self.fig.tight_layout()
+        self.fig.tight_layout(pad=2)
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
