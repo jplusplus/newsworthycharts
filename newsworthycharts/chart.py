@@ -66,6 +66,14 @@ class Chart(object):
         real_height = float(height)/dpi
         self.fig.set_size_inches(real_width, real_height)
 
+    def _rel_height(self, obj):
+        """ Get the relative height of a chart object to the whole canvas.
+        """
+        # We must draw the figure to know all sizes
+        self.fig.draw(renderer=self.fig.canvas.renderer)
+        bbox = obj.get_window_extent()
+        return bbox.height / float(self.h)
+
     def _annotate_point(self, text, xy, direction, **kwargs):
         """Adds a label to a given point.
 
@@ -113,24 +121,18 @@ class Chart(object):
                              fontproperties=self.small_font)
 
         # Increase the bottom padding by the height of the text bbox
-        # We need to draw the text first, to know its dimensions
-        self.fig.draw(renderer=self.fig.canvas.renderer)
-        bbox = text.get_window_extent()
         margin = self.style["figure.subplot.bottom"]
-        margin += bbox.height / float(self.h)
+        margin += self._rel_height(text)
         self.fig.subplots_adjust(bottom=margin)
 
     def _add_title(self, title_text):
         """ Adds a title """
         text = self.fig.suptitle(title_text, wrap=True,
-                          multialignment="left",
-                          fontproperties=self.title_font)
+                                 multialignment="left",
+                                 fontproperties=self.title_font)
 
-        self.fig.draw(renderer=self.fig.canvas.renderer)
-        bbox = text.get_window_extent()
-        margin = self.style["figure.subplot.top"]
-        margin -= (bbox.height / float(self.h)) * 0.25
-        self.fig.subplots_adjust(top=margin)
+        padding = self.style["figure.subplot.top"]
+        self.fig.subplots_adjust(top=padding)
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
