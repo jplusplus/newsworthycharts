@@ -22,20 +22,26 @@ class Chart(object):
     ylabel = None
     caption = None
     annotations = []
+    series = []
+    # TODO: Create custom list classes: https://stackoverflow.com/questions/3487434/overriding-append-method-after-inheriting-from-a-python-list#3488283
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
-                 style: str='newsworthy'):
+                 style: str='newsworthy', language: str='en-GB'):
         """
         :param width: width in pixels
         :param height: height in pixels
         :param storage: storage object that will handle file saving. Default
                         LocalStorage() class will save a file the working dir.
         :param style: a predefined style or the path to a custom style file
+        :param language: a BCP 47 language tag (eg `en`, `sv-FI`)
         """
 
         self.storage = storage
         self.w, self.h = width, height
         self.style = loadstyle(style)
+        from langcodes import standardize_tag
+        # Standardize and check if language tag is a valid BCP 47 tag
+        self.language = standardize_tag(language)
 
         # Dynamic typography
         self.font = FontProperties()
@@ -126,8 +132,8 @@ class Chart(object):
         """Adds a label to the y axis."""
         self.ax.set_ylabel(label, fontproperties=self.small_font)
 
-    def _add_data(self):
-        """ Add some data to the chart """
+    def _add_series(self):
+        """ Add serial data to the chart """
         pass
 
     def render(self, key, img_format):
@@ -137,6 +143,8 @@ class Chart(object):
         # Apply all changes, in the correct order for consistent rendering
         if self.data is not None:
             self._add_data(self.data)
+        for s in self.series:
+            self._add_series(s)
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
         if self.title is not None:
