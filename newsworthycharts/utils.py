@@ -48,3 +48,12 @@ def loadstyle(style_name):
     style["strong_color"] = to_rgba("#" + str(strong_color), 1)
 
     return style
+
+
+def rpad(list_, item, length):
+    """
+     Right pad a list to a certain length, using `item`
+    """
+    if list_ is None:
+        list_ = []
+    return list_ + [item for i in range(max(0, length-len(list_)))]
