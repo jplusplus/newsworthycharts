@@ -1,6 +1,7 @@
 """ Various utility methods """
 from matplotlib import rc_file, rcParams
 from matplotlib.colors import to_rgba
+from datetime import datetime
 import os
 import yaml
 
@@ -64,3 +65,8 @@ def to_float(s):
     if s is None:
         return None
     return float(s)
+
+
+def to_date(s):
+    """Convert date string to datetime date."""
+    return datetime.strptime(s, "%Y-%m-%d")

@@ -2,15 +2,15 @@
 For use with Newsworthy's robot writer and other similar projects.
 """
 from io import BytesIO
+from math import inf
 from matplotlib.font_manager import FontProperties
-from .utils import loadstyle, rpad, to_float
+from .utils import loadstyle, rpad, to_float, to_date
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
 from .formatter import Formatter
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
-from datetime import datetime
 from langcodes import standardize_tag
 
 image_formats = MIME_TYPES.keys()
@@ -245,20 +245,72 @@ class SerialChart(Chart):
 
         # Select a date to highlight
         if self.highlight is not None:
-            highlight_date = datetime.strptime(self.highlight, "%Y-%m-%d")
+            highlight_date = to_date(self.highlight)
         else:
             # Use last date. max works well on ISO date strings
-            highlight_date = datetime.strptime(max([x[-1][0] for x in series]), "%Y-%m-%d")
+            highlight_date = to_date(max([x[-1][0] for x in series]))
 
         # Make sure there are as many labels as series
         self.labels = rpad(self.labels, None, len(series))
 
-        # Store max y value while we are looping the data, to adjust y axis
+        # Store y values while we are looping the data, to adjust axis,
+        # and highlight diff
         ymax = 0
         ymin = self.ymin
+        highlight_diff = {
+            'y0': inf,
+            'y1': -inf
+        }
         for i, serie in enumerate(series):
             values = [to_float(x[1]) for x in serie]
-            dates = [datetime.strptime(x[0], "%Y-%m-%d") for x in serie]
+            dates = [to_date(x[0]) for x in serie]
+
+            highlight_value = values[dates.index(highlight_date)]
 
             ymax = max(ymax, max([x for x in values if x is not None]))
             ymin = min(ymin, min([x for x in values if x is not None]))
+            highlight_diff['y0'] = min(highlight_diff['y0'], highlight_value)
+            highlight_diff['y1'] = max(highlight_diff['y1'], highlight_value)
+
+            if self.type == "line":
+                line, = self.ax.plot(dates, values,
+                                     color=self.style["neutral_color"],
+                                     zorder=2)
+
+                line.set_label(self.labels[i])
+
+                # highlight
+                self.ax.plot(highlight_date, highlight_value,
+                             c=self.style["strong_color"],
+                             marker='o',
+                             zorder=2)
+
+            elif self.type == "bars":
+                colors = []
+                for timepoint in dates:
+                    if timepoint == highlight_date:
+                        colors.append(self.style["strong_color"])
+                    else:
+                        colors.append(self.style["neutral_color"])
+
+                # Replace None values with 0's to be able to plot bars
+                values = [0 if v is None else v for v in values]
+                bars = self.ax.bar(dates, values,
+                                    color=colors,
+                                    zorder=2)
+
+                bars.set_label(self.labels[i])
+
+            value_label = y_formatter(highlight_value)
+            xy = (highlight_date, highlight_value)
+            self._annotate_point(value_label, xy, direction="right")  # FIXME
+
+            """
+            # Add highlight_change trend line
+            if args.highlight_change and i == 0:
+                changedates = [datetime.strptime(x, "%Y-%m-%d") for x in literal_eval(args.highlight_change)]
+                changedata = [data[dates.index(d)] for d in changedates]
+                line, = ax.plot(changedates, changedata,
+                                 color=highlight_color, zorder=4, marker='o',
+                                 linestyle='dashed')
+            """
