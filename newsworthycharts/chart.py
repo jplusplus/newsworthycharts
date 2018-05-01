@@ -122,9 +122,15 @@ class Chart(object):
 
     def _add_title(self, title_text):
         """ Adds a title """
-        self.fig.suptitle(title_text, wrap=True,
+        text = self.fig.suptitle(title_text, wrap=True,
                           multialignment="left",
                           fontproperties=self.title_font)
+
+        self.fig.draw(renderer=self.fig.canvas.renderer)
+        bbox = text.get_window_extent()
+        margin = self.style["figure.subplot.top"]
+        margin -= (bbox.height / float(self.h)) * 0.25
+        self.fig.subplots_adjust(top=margin)
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
@@ -148,14 +154,14 @@ class Chart(object):
         self._add_data(self.data)
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
-        if self.title is not None:
-            self._add_title(self.title)
         if self.ylabel is not None:
             self._add_ylabel(self.ylabel)
         if self.xlabel is not None:
             self._add_xlabel(self.xlabel)
         # tight_layout after _add_caption would ruin extra padding added there
         self.fig.tight_layout()
+        if self.title is not None:
+            self._add_title(self.title)
         if self.caption is not None:
             self._add_caption(self.caption)
 
