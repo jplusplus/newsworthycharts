@@ -3,7 +3,7 @@ For use with Newsworthy's robot writer and other similar projects.
 """
 from io import BytesIO
 from matplotlib.font_manager import FontProperties
-from .utils import loadstyle
+from .utils import loadstyle, rpad
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
 from .formatter import Formatter
@@ -19,7 +19,6 @@ image_formats = MIME_TYPES.keys()
 class Chart(object):
     """ Convenience wrapper around a Matplotlib figure
     """
-    data = None
     # Use getter/setter for title as user might manipulate it though .fig
     _title = None
     xlabel = None
@@ -27,7 +26,8 @@ class Chart(object):
     caption = None
     highlight = None
     annotations = []
-    data = []
+    data = []  # A list of datasets
+    labels = []  # Optionally one label for each dataset
     # TODO: Create custom list classes: https://stackoverflow.com/questions/3487434/overriding-append-method-after-inheriting-from-a-python-list#3488283
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
@@ -248,3 +248,6 @@ class SerialChart(Chart):
         else:
             # Use last date. max works well on ISO date strings
             highlight_date = datetime.strptime(max([x[-1][0] for x in series))
+
+        # Make sure there are as many labels as series
+        self.labels = rpad(self.labels, None, len(self.data))
