@@ -24,6 +24,7 @@ class Chart(object):
     xlabel = None
     ylabel = None
     caption = None
+    highlight = None
     annotations = []
     data = []
     # TODO: Create custom list classes: https://stackoverflow.com/questions/3487434/overriding-append-method-after-inheriting-from-a-python-list#3488283
@@ -202,7 +203,8 @@ class Chart(object):
 
 
 class SerialChart(Chart):
-    """ Plot a timeseries, as a line or bar plot
+    """ Plot a timeseries, as a line or bar plot. Data should be iterables of
+    (value, date string) tuples, eg `[(2, "2010-01-01"), (2.3, "2010-02-01")]`
     """
 
     _units = "count"
