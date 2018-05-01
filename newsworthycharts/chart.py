@@ -3,7 +3,7 @@ For use with Newsworthy's robot writer and other similar projects.
 """
 from io import BytesIO
 from matplotlib.font_manager import FontProperties
-from .utils import loadstyle, rpad
+from .utils import loadstyle, rpad, to_float
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
 from .formatter import Formatter
@@ -210,6 +210,7 @@ class SerialChart(Chart):
 
     _units = "count"
     _type = "bars"
+    ymin = 0
 
     @property
     def units(self):
@@ -247,7 +248,17 @@ class SerialChart(Chart):
             highlight_date = datetime.strptime(self.highlight, "%Y-%m-%d")
         else:
             # Use last date. max works well on ISO date strings
-            highlight_date = datetime.strptime(max([x[-1][0] for x in series))
+            highlight_date = datetime.strptime(max([x[-1][0] for x in series]), "%Y-%m-%d")
 
         # Make sure there are as many labels as series
-        self.labels = rpad(self.labels, None, len(self.data))
+        self.labels = rpad(self.labels, None, len(series))
+
+        # Store max y value while we are looping the data, to adjust y axis
+        ymax = 0
+        ymin = self.ymin
+        for i, serie in enumerate(series):
+            values = [to_float(x[1]) for x in serie]
+            dates = [datetime.strptime(x[0], "%Y-%m-%d") for x in serie]
+
+            ymax = max(ymax, max([x for x in values if x is not None]))
+            ymin = min(ymin, min([x for x in values if x is not None]))

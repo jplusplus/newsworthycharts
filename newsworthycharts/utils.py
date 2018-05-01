@@ -57,3 +57,10 @@ def rpad(list_, item, length):
     if list_ is None:
         list_ = []
     return list_ + [item for i in range(max(0, length-len(list_)))]
+
+
+def to_float(s):
+    """Convert string to float, but also handles None."""
+    if s is None:
+        return None
+    return float(s)
