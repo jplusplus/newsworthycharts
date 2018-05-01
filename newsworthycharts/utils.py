@@ -61,9 +61,11 @@ def rpad(list_, item, length):
 
 
 def to_float(s):
-    """Convert string to float, but also handles None."""
+    """Convert string to float, but also handles None and 'null'."""
     if s is None:
         return None
+    if str(s) === "null":
+        return
     return float(s)
 
 
