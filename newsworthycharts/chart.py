@@ -6,8 +6,11 @@ from matplotlib.font_manager import FontProperties
 from .utils import loadstyle
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
+from .formatter import Formatter
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
+from matplotlib.ticker import FuncFormatter
+from langcodes import standardize_tag
 
 image_formats = MIME_TYPES.keys()
 
@@ -22,7 +25,7 @@ class Chart(object):
     ylabel = None
     caption = None
     annotations = []
-    series = []
+    data = []
     # TODO: Create custom list classes: https://stackoverflow.com/questions/3487434/overriding-append-method-after-inheriting-from-a-python-list#3488283
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
@@ -39,17 +42,14 @@ class Chart(object):
         self.storage = storage
         self.w, self.h = width, height
         self.style = loadstyle(style)
-        from langcodes import standardize_tag
         # Standardize and check if language tag is a valid BCP 47 tag
         self.language = standardize_tag(language)
 
         # Dynamic typography
-        self.font = FontProperties()
-
-        self.small_font = self.font.copy()
+        self.small_font = FontProperties()
         self.small_font.set_size("small")
 
-        self.title_font = self.font.copy()
+        self.title_font = FontProperties()
         self.title_font.set_family(self.style["title_font"])
         self.title_font.set_size(self.style["figure.titlesize"])
 
@@ -132,9 +132,11 @@ class Chart(object):
         """Adds a label to the y axis."""
         self.ax.set_ylabel(label, fontproperties=self.small_font)
 
-    def _add_series(self):
-        """ Add serial data to the chart """
-        pass
+    def _add_data(self):
+        """ Plot data to the chart.
+        Typically defined by a more specific subclass
+        """
+        raise NotImplementedError("This method should be overridden")
 
     def render(self, key, img_format):
         """
@@ -143,8 +145,6 @@ class Chart(object):
         # Apply all changes, in the correct order for consistent rendering
         if self.data is not None:
             self._add_data(self.data)
-        for s in self.series:
-            self._add_series(s)
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
         if self.title is not None:
@@ -199,3 +199,40 @@ class Chart(object):
         return "<{cls}: {name} ({h} x {w})>".format(cls=type(self).__name__,
                                                     name=str(self),
                                                     w=self.w, h=self.h)
+
+
+class SerialChart(Chart):
+    """ Plot a timeseries, as a line or bar plot
+    """
+
+    _units = "count"
+    _type = "bars"
+
+    @property
+    def units(self):
+        return self._units
+
+    @units.setter
+    def units(self, val):
+        if val in ["count", "percent"]:
+            self._units = val
+        else:
+            raise ValueError("Supported units are count and percent")
+
+    @property
+    def type(self):
+        return self._type
+
+    @type.setter
+    def type(self, val):
+        if val in ["bars", "line"]:
+            self._type = val
+        else:
+            raise ValueError("Supported units are bars and line")
+
+    def _add_data(self, serie):
+        if self.units == "percent":
+            y_formatter = FuncFormatter(Formatter(self.language).percent)
+        else:
+            y_formatter = FuncFormatter(Formatter(self.language).number)
+        self.ax.yaxis.set_major_formatter(y_formatter)
