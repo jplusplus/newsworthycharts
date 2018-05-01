@@ -10,6 +10,7 @@ from .formatter import Formatter
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
+from datetime import datetime
 from langcodes import standardize_tag
 
 image_formats = MIME_TYPES.keys()
@@ -144,8 +145,7 @@ class Chart(object):
          Apply all changes, render file, and send to storage.
         """
         # Apply all changes, in the correct order for consistent rendering
-        if self.data is not None:
-            self._add_data(self.data)
+        self._add_data(self.data)
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
         if self.title is not None:
@@ -203,8 +203,9 @@ class Chart(object):
 
 
 class SerialChart(Chart):
-    """ Plot a timeseries, as a line or bar plot. Data should be iterables of
-    (value, date string) tuples, eg `[(2, "2010-01-01"), (2.3, "2010-02-01")]`
+    """ Plot a timeseries, as a line or bar plot. Data should be a list of
+    iterables of (value, date string) tuples, eg:
+    `[ [("2010-01-01", 2), ("2010-02-01", 2.3)] ]`
     """
 
     _units = "count"
@@ -232,9 +233,18 @@ class SerialChart(Chart):
         else:
             raise ValueError("Supported units are bars and line")
 
-    def _add_data(self, serie):
+    def _add_data(self, series):
+
+        # Format Y axis
         if self.units == "percent":
             y_formatter = FuncFormatter(Formatter(self.language).percent)
         else:
             y_formatter = FuncFormatter(Formatter(self.language).number)
         self.ax.yaxis.set_major_formatter(y_formatter)
+
+        # Select a date to highlight
+        if self.highlight is not None:
+            highlight_date = datetime.strptime(self.highlight, "%Y-%m-%d")
+        else:
+            # Use last date. max works well on ISO date strings
+            highlight_date = datetime.strptime(max([x[-1][0] for x in series))
