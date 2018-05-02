@@ -1,7 +1,6 @@
 """ Custom locators and related methods
 """
 from matplotlib.dates import YearLocator, MonthLocator, DayLocator
-from matplotlib.ticker import MaxNLocator
 
 
 def get_best_locator(delta, points):
@@ -11,10 +10,7 @@ def get_best_locator(delta, points):
     enough clues for the reader to easily understand the graph.
     """
     if delta.months > 12:
-        if points > 4:
-            return MaxNLocator(5)
-        else:
-            return YearLocator
+        return YearLocator
     elif delta.months > 1:
         return MonthLocator
     else:
