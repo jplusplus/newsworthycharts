@@ -9,9 +9,22 @@ def get_best_locator(delta, points):
     trying to keep the x axis as clean as possible, while still including
     enough clues for the reader to easily understand the graph.
     """
-    if delta.months > 12:
-        return YearLocator
-    elif delta.months > 1:
-        return MonthLocator
+    print(delta.days, points)
+    if delta.days > 365:
+        if points > 20:
+            return YearLocator(10)
+        if points > 10:
+            return YearLocator(5)
+        elif points > 5:
+            return YearLocator(2)
+        else:
+            return YearLocator()
+    elif delta.days > 30:
+        if points > 8:
+            return MonthLocator(4)
+        elif points > 5:
+            return MonthLocator(2)
+        else:
+            return MonthLocator()
     else:
-        return DayLocator
+        return DayLocator()
