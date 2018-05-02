@@ -8,10 +8,12 @@ from .utils import loadstyle, rpad, to_float, to_date
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
 from .formatter import Formatter
+from .locator import get_best_locator
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
 from langcodes import standardize_tag
+from datetime import datetime
 
 image_formats = MIME_TYPES.keys()
 
@@ -265,6 +267,8 @@ class SerialChart(Chart):
         # and highlight diff
         ymax = 0
         ymin = self.ymin
+        xmin = datetime.max
+        xmax = datetime.min
         highlight_diff = {
             'y0': inf,
             'y1': -inf
@@ -275,6 +279,8 @@ class SerialChart(Chart):
 
             highlight_value = values[dates.index(highlight_date)]
 
+            xmax = max(xmax, max(dates))
+            xmin = min(xmin, min(dates))
             ymax = max(ymax, max([x for x in values if x is not None]))
             ymin = min(ymin, min([x for x in values if x is not None]))
             highlight_diff['y0'] = min(highlight_diff['y0'], highlight_value)
@@ -285,7 +291,8 @@ class SerialChart(Chart):
                                      color=self.style["neutral_color"],
                                      zorder=2)
 
-                line.set_label(self.labels[i])
+                if self.labels[i]:
+                    line.set_label(self.labels[i])
 
                 # highlight
                 self.ax.plot(highlight_date, highlight_value,
@@ -304,14 +311,30 @@ class SerialChart(Chart):
                 # Replace None values with 0's to be able to plot bars
                 values = [0 if v is None else v for v in values]
                 bars = self.ax.bar(dates, values,
-                                    color=colors,
-                                    zorder=2)
+                                   color=colors,
+                                   zorder=2)
 
-                bars.set_label(self.labels[i])
+                if self.labels[i]:
+                    bars.set_label(self.labels[i])
 
+            # Highlight point
             value_label = y_formatter(highlight_value)
             xy = (highlight_date, highlight_value)
-            self._annotate_point(value_label, xy, direction="right")  # FIXME
+            self._annotate_point(value_label, xy, direction="right")  # FIXME dir
+
+            # Adjust y axis to data range
+            self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
+
+            # Grid
+            self.ax.yaxis.grid(True)
+
+            # X locator
+            delta = xmax - xmin
+            maxlen = max([len(s) for s in series])
+            x_locator = get_best_locator(delta, maxlen)
+            self.ax.xaxis.set_major_locator(x_locator)
+
+            # X formatter
 
             """
             # Add highlight_change trend line
