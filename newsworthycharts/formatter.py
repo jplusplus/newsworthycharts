@@ -59,5 +59,8 @@ class Formatter(object):
         x = round(Decimal(x), decimals)
         return format_decimal(x, locale=self.l)
 
+    def short_month(self, x, *args, **kwargs):
+        return self.l.months['format']['abbreviated'][x]
+
     def month(self, x, *args, **kwargs):
         return self.l.months['format']['wide'][x]

@@ -338,7 +338,7 @@ class SerialChart(Chart):
                 # that can select both locator and formatter (to make sure
                 # they go nicely together)
                 fmt = FuncFormatter(lambda x, pos:
-                                    Formatter(self.language).month(pos+1))
+                                    Formatter(self.language).short_month(pos+1))
                 self.ax.xaxis.set_major_formatter(fmt)
 
             # Highlight point
