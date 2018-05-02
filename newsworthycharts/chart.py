@@ -12,6 +12,7 @@ from .locator import get_best_locator
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
+from matplotlib.dates import DateFormatter
 from langcodes import standardize_tag
 from datetime import datetime
 
@@ -246,13 +247,6 @@ class SerialChart(Chart):
 
     def _add_data(self, series):
 
-        # Format Y axis
-        if self.units == "percent":
-            y_formatter = FuncFormatter(Formatter(self.language).percent)
-        else:
-            y_formatter = FuncFormatter(Formatter(self.language).number)
-        self.ax.yaxis.set_major_formatter(y_formatter)
-
         # Select a date to highlight
         if self.highlight is not None:
             highlight_date = to_date(self.highlight)
@@ -317,13 +311,15 @@ class SerialChart(Chart):
                 if self.labels[i]:
                     bars.set_label(self.labels[i])
 
-            # Highlight point
-            value_label = y_formatter(highlight_value)
-            xy = (highlight_date, highlight_value)
-            self._annotate_point(value_label, xy, direction="right")  # FIXME dir
-
             # Adjust y axis to data range
             self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
+
+            # Y formatter
+            if self.units == "percent":
+                y_formatter = FuncFormatter(Formatter(self.language).percent)
+            else:
+                y_formatter = FuncFormatter(Formatter(self.language).number)
+            self.ax.yaxis.set_major_formatter(y_formatter)
 
             # Grid
             self.ax.yaxis.grid(True)
@@ -335,7 +331,22 @@ class SerialChart(Chart):
             self.ax.xaxis.set_major_locator(x_locator)
 
             # X formatter
+            if delta.days > 365:
+                self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
+            else:
+                # TODO: Move formatting code to an AxisFormatter class,
+                # that can select both locator and formatter (to make sure
+                # they go nicely together)
+                fmt = FuncFormatter(lambda x, pos:
+                                    Formatter(self.language).month(pos+1))
+                self.ax.xaxis.set_major_formatter(fmt)
 
+            # Highlight point
+            value_label = y_formatter(highlight_value)
+            xy = (highlight_date, highlight_value)
+            self._annotate_point(value_label, xy, direction="right")  # FIXME dir
+
+            # Trend line
             """
             # Add highlight_change trend line
             if args.highlight_change and i == 0:
