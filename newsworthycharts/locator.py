@@ -19,11 +19,7 @@ def get_best_locator(delta, points):
         else:
             return YearLocator()
     elif delta.days > 30:
-        if points > 8:
-            return MonthLocator(4)
-        elif points > 5:
-            return MonthLocator(2)
-        else:
-            return MonthLocator()
+        # FIXME dont print every month
+        return MonthLocator()
     else:
         return DayLocator()
