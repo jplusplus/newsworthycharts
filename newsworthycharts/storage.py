@@ -60,7 +60,7 @@ class LocalStorage(Storage):
 class S3Storage(Storage):
     """ Save images to an S3 bucket.
     """
-    def __init__(self, bucket, prefix=""):
+    def __init__(self, bucket, prefix=None):
         """
         :param bucket (str): An S3 bucket name.
         :param prefix (str): Optionally a S3 prefix (path)
@@ -76,8 +76,11 @@ class S3Storage(Storage):
         :param filetype (str): File extension
         """
         stream.seek(0)
-        filename = "/".join(x.strip("/")
-                            for x in [self.prefix, key]) + "." + filetype
+        if self.prefix is not None:
+            filename = "/".join(x.strip("/")
+                                for x in [self.prefix, key]) + "." + filetype
+        else:
+            filename = key + "." + filetype
         mime_type = MIME_TYPES[filetype]
         try:
             self.bucket.put_object(Key=filename, Body=stream,
