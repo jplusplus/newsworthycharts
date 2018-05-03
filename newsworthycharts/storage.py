@@ -60,7 +60,7 @@ class LocalStorage(Storage):
 class S3Storage(Storage):
     """ Save images to an S3 bucket.
     """
-    def __init__(self, bucket, prefix=None):
+    def __init__(self, bucket, prefix=""):
         """
         :param bucket (str): An S3 bucket name.
         :param prefix (str): Optionally a S3 prefix (path)
