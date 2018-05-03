@@ -271,14 +271,21 @@ class SerialChart(Chart):
             values = [to_float(x[1]) for x in serie]
             dates = [to_date(x[0]) for x in serie]
 
-            highlight_value = values[dates.index(highlight_date)]
+            try:
+                highlight_value = values[dates.index(highlight_date)]
+            except ValueError:
+                # If this date is not in series, silently ignore
+                highlight_value = None
 
             xmax = max(xmax, max(dates))
             xmin = min(xmin, min(dates))
             ymax = max(ymax, max([x for x in values if x is not None]))
             ymin = min(ymin, min([x for x in values if x is not None]))
-            highlight_diff['y0'] = min(highlight_diff['y0'], highlight_value)
-            highlight_diff['y1'] = max(highlight_diff['y1'], highlight_value)
+            if highlight_value:
+                highlight_diff['y0'] = min(highlight_diff['y0'],
+                                           highlight_value)
+                highlight_diff['y1'] = max(highlight_diff['y1'],
+                                           highlight_value)
 
             if self.type == "line":
                 line, = self.ax.plot(dates, values,
@@ -289,10 +296,11 @@ class SerialChart(Chart):
                     line.set_label(self.labels[i])
 
                 # highlight
-                self.ax.plot(highlight_date, highlight_value,
-                             c=self.style["strong_color"],
-                             marker='o',
-                             zorder=2)
+                if highlight_value:
+                    self.ax.plot(highlight_date, highlight_value,
+                                 c=self.style["strong_color"],
+                                 marker='o',
+                                 zorder=2)
 
             elif self.type == "bars":
                 colors = []
@@ -342,9 +350,10 @@ class SerialChart(Chart):
                 self.ax.xaxis.set_major_formatter(fmt)
 
             # Highlight point
-            value_label = y_formatter(highlight_value)
-            xy = (highlight_date, highlight_value)
-            self._annotate_point(value_label, xy, direction="right")  # FIXME dir
+            if highlight_value:
+                value_label = y_formatter(highlight_value)
+                xy = (highlight_date, highlight_value)
+                self._annotate_point(value_label, xy, direction="right")  # FIXME dir
 
             # Trend line
             """
