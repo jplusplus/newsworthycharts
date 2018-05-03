@@ -78,7 +78,7 @@ class S3Storage(Storage):
         stream.seek(0)
         filename = "/".join(x.strip("/")
                             for x in [self.prefix, key]) + "." + filetype
-        mime_type = MIME_TYPES[img_format]
+        mime_type = MIME_TYPES[filetype]
         try:
             self.bucket.put_object(Key=filename, Body=stream,
                                    ACL='public-read', ContentType=mime_type)
