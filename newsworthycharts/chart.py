@@ -314,6 +314,7 @@ class SerialChart(Chart):
                 values = [0 if v is None else v for v in values]
                 bars = self.ax.bar(dates, values,
                                    color=colors,
+                                   width=320,  # FIXME use (delta.unit / ticks)
                                    zorder=2)
 
                 if self.labels[i]:
