@@ -25,6 +25,7 @@ setup(
         "matplotlib>=2",
         "langcodes>=1.1",
         "Babel>=2",
+        "PyYAML>=3",
     ],
     include_package_data=True,
     download_url="https://github.com/jplusplus/newsworthycharts/archive/%s.tar.gz" % version,
