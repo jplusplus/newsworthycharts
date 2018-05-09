@@ -344,7 +344,7 @@ class SerialChart(Chart):
                                    width=320,  # FIXME use (delta.unit / ticks)
                                    zorder=2)
 
-                if len(labels) > i:
+                if len(self.labels) > i:
                     bars.set_label(self.labels[i])
 
         # Annotate highlighted points/bars
@@ -352,6 +352,7 @@ class SerialChart(Chart):
             value_label = a_formatter(hv)
             xy = (highlight_date, hv)
             if hv == max(highlight_values):
+                # Also used for single series, eg all bars charts
                 self._annotate_point(value_label, xy, direction="up")
             elif hv == min(highlight_values):
                 self._annotate_point(value_label, xy, direction="down")
@@ -368,6 +369,11 @@ class SerialChart(Chart):
             diff = a_formatter(abs(y0-y1))
             xy = (highlight_date, (y0 + y1) / 2)
             self._annotate_point(diff, xy, direction="right")
+
+        # Shade area between lines
+        if len(series) > 1:
+            # TODO not yet implemented
+            pass
 
         # Y axis formatting
         self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
