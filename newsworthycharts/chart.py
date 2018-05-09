@@ -291,11 +291,11 @@ class SerialChart(Chart):
         }
         highlight_values = []
         for i, serie in enumerate(series):
-            # Use strong color for first series
-            if i:
-                color = self.style["neutral_color"]
-            else:
+            # Use strong color for first series, if multiple
+            if i == 0 and len(series) > 1:
                 color = self.style["strong_color"]
+            else:
+                color = self.style["neutral_color"]
 
             values = [to_float(x[1]) for x in serie]
             dates = [to_date(x[0]) for x in serie]
