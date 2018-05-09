@@ -393,10 +393,7 @@ class SerialChart(Chart):
 
         # Add labels
         if any(self.labels):
-            if self.type == "line":
-                self.fig.legend(loc='lower right')
-            else:
-                self.fig.legend(loc='upper left')
+            self.ax.legend(loc='best')
 
         # Trend line
         """
