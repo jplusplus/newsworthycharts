@@ -5,13 +5,17 @@ from datetime import datetime
 
 
 def get_year_ticks(dates, max_ticks=5):
-    """ Get `max_ticks` evenly distributed yearly ticks from a list of dates,
-    including start and end dates.
+    """ Get `max_ticks` or less evenly distributed yearly ticks from a
+    list of dates, including start and end years. All ticks fall on January 1.
     """
 
     # Get unique years in the data
     years = sorted(list(set([y.year for y in dates])))
     max_ticks = min(max_ticks, len(years))
+    # Avoid N2 < ticks < N, where there will be odd looking gaps
+    if round(len(years)/2) < max_ticks < len(years):
+        max_ticks = round(len(years)/2)
+
     # -2 for the ends
     # +1 because cutting a cake in n+1 pieces gives n cuts
     if max_ticks > 1:
