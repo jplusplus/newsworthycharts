@@ -13,8 +13,9 @@ def get_year_ticks(dates, max_ticks=5):
     years = sorted(list(set([y.year for y in dates])))
     max_ticks = min(max_ticks, len(years))
     # Avoid N2 < ticks < N, where there will be odd looking gaps
-    if round(len(years)/2) < max_ticks < len(years):
-        max_ticks = round(len(years)/2)
+    if len(years) > 3:
+        if round(len(years)/2) < max_ticks < len(years):
+            max_ticks = round(len(years)/2)
 
     # -2 for the ends
     # +1 because cutting a cake in n+1 pieces gives n cuts
