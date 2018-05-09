@@ -4,7 +4,7 @@ For use with Newsworthy's robot writer and other similar projects.
 from io import BytesIO
 from math import inf
 from matplotlib.font_manager import FontProperties
-from .utils import loadstyle, rpad, to_float, to_date
+from .utils import loadstyle, to_float, to_date
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
 from .formatter import Formatter
@@ -275,9 +275,6 @@ class SerialChart(Chart):
         else:
             y_formatter = FuncFormatter(formatter.number)
             a_formatter = y_formatter
-
-        # Make sure there are as many labels as series
-        # self.labels = rpad(self.labels, None, len(series))
 
         # Store y values while we are looping the data, to adjust axis,
         # and highlight diff
