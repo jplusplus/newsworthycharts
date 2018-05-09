@@ -360,7 +360,6 @@ class SerialChart(Chart):
 
         # Highlight diff
         # Only if more than one series has a value at this point
-        print(highlight_values)
         if len(highlight_values) > 1 and self.type == "line":
             y0, y1 = highlight_diff['y0'], highlight_diff['y1']
             self.ax.vlines(highlight_date, y0, y1,
