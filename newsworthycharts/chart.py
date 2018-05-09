@@ -244,7 +244,7 @@ class SerialChart(Chart):
         if val in ["bars", "line"]:
             self._type = val
         else:
-            raise ValueError("Supported units are bars and line")
+            raise ValueError("Supported types are bars and line")
 
     def _add_data(self, series):
 
