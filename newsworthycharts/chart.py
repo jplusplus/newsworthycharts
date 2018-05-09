@@ -8,7 +8,7 @@ from .utils import loadstyle, rpad, to_float, to_date
 from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
 from .formatter import Formatter
-from .locator import get_best_locator
+from .locator import get_best_locator, get_year_ticks
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
@@ -320,49 +320,49 @@ class SerialChart(Chart):
                 if self.labels[i]:
                     bars.set_label(self.labels[i])
 
-            # Adjust y axis to data range
-            self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
+        # Adjust y axis to data range
+        self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
 
-            # Y formatter
-            if self.units == "percent":
-                y_formatter = FuncFormatter(Formatter(self.language).percent)
-            else:
-                y_formatter = FuncFormatter(Formatter(self.language).number)
-            self.ax.yaxis.set_major_formatter(y_formatter)
+        # Y formatter
+        if self.units == "percent":
+            y_formatter = FuncFormatter(Formatter(self.language).percent)
+        else:
+            y_formatter = FuncFormatter(Formatter(self.language).number)
+        self.ax.yaxis.set_major_formatter(y_formatter)
 
-            # Grid
-            self.ax.yaxis.grid(True)
+        # Grid
+        self.ax.yaxis.grid(True)
 
-            # X locator
-            delta = xmax - xmin
-            maxlen = max([len(s) for s in series])
-            x_locator = get_best_locator(delta, maxlen)
-            self.ax.xaxis.set_major_locator(x_locator)
+        # X ticks
+        # FIXME: Use all dates, this is just a leftover from last serie
+        ticks = get_year_ticks(dates, max_ticks=5)
+        self.ax.set_xticks()
 
-            # X formatter
-            if delta.days > 365:
-                self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
-            else:
-                # TODO: Move formatting code to an AxisFormatter class,
-                # that can select both locator and formatter (to make sure
-                # they go nicely together)
-                fmt = FuncFormatter(lambda x, pos:
-                                    Formatter(self.language).short_month(pos+1))
-                self.ax.xaxis.set_major_formatter(fmt)
+        # X formatter
+        delta = xmax - xmin
+        if delta.days > 365:
+            self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
+        else:
+            # TODO: Move formatting code to an AxisFormatter class,
+            # that can select both locator and formatter (to make sure
+            # they go nicely together)
+            fmt = FuncFormatter(lambda x, pos:
+                                Formatter(self.language).short_month(pos+1))
+            self.ax.xaxis.set_major_formatter(fmt)
 
-            # Highlight point
-            if highlight_value:
-                value_label = y_formatter(highlight_value)
-                xy = (highlight_date, highlight_value)
-                self._annotate_point(value_label, xy, direction="right")  # FIXME dir
+        # Highlight point
+        if highlight_value:
+            value_label = y_formatter(highlight_value)
+            xy = (highlight_date, highlight_value)
+            self._annotate_point(value_label, xy, direction="right")  # FIXME dir
 
-            # Trend line
-            """
-            # Add highlight_change trend line
-            if args.highlight_change and i == 0:
-                changedates = [datetime.strptime(x, "%Y-%m-%d") for x in literal_eval(args.highlight_change)]
-                changedata = [data[dates.index(d)] for d in changedates]
-                line, = ax.plot(changedates, changedata,
-                                 color=highlight_color, zorder=4, marker='o',
-                                 linestyle='dashed')
-            """
+        # Trend line
+        """
+        # Add highlight_change trend line
+        if args.highlight_change and i == 0:
+            changedates = [datetime.strptime(x, "%Y-%m-%d") for x in literal_eval(args.highlight_change)]
+            changedata = [data[dates.index(d)] for d in changedates]
+            line, = ax.plot(changedates, changedata,
+                             color=highlight_color, zorder=4, marker='o',
+                             linestyle='dashed')
+        """
