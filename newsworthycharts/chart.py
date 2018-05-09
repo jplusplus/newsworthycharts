@@ -313,7 +313,6 @@ class SerialChart(Chart):
                                            highlight_value)
                 highlight_diff['y1'] = max(highlight_diff['y1'],
                                            highlight_value)
-
             if self.type == "line":
                 line, = self.ax.plot(dates, values,
                                      color=color,
@@ -360,9 +359,10 @@ class SerialChart(Chart):
                 self._annotate_point(value_label, xy, direction="left")
 
         # Highlight diff
-        # Only if more than one series has a value at this point
-        if len(highlight_values) > 1 and self.type == "line":
-            y0, y1 = highlight_diff['y0'], highlight_diff['y1']
+        y0, y1 = highlight_diff['y0'], highlight_diff['y1']
+        # Only if more than one series has a value at this point, and they
+        # are actually different
+        if (y0 != y1) and (len(highlight_values) > 1) and self.type == "line":
             self.ax.vlines(highlight_date, y0, y1,
                            colors=self.style["neutral_color"],
                            linestyles='dashed')
@@ -370,10 +370,14 @@ class SerialChart(Chart):
             xy = (highlight_date, (y0 + y1) / 2)
             self._annotate_point(diff, xy, direction="right")
 
-        # Shade area between lines
-        if len(series) > 1:
-            # TODO not yet implemented
-            pass
+        # Shade area between lines if there are exactly 2 series
+        # For more series, the chart will get messy with shading
+        if len(series) == 2:
+            all_dates = sorted(list(set([to_date(x[0]) for x in series[0]] + [to_date(x[0]) for x in series[1]])))
+            self.ax.fill_between(all_dates,
+                                 [to_float(x[1]) for x in series[0]],
+                                 [to_float(x[1]) for x in series[1]],
+                                 facecolor="#f7f4f4", alpha=0.5)
 
         # Y axis formatting
         self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
