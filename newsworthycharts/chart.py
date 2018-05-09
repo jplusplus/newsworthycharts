@@ -264,6 +264,18 @@ class SerialChart(Chart):
             # Use last date. max works well on ISO date strings
             highlight_date = to_date(max([x[-1][0] for x in series]))
 
+        # Formatters for axis and annotations
+        formatter = Formatter(self.language, scale="celsius")
+        if self.units == "percent":
+            y_formatter = FuncFormatter(formatter.percent)
+            a_formatter = y_formatter
+        elif self.units == "degrees":
+            y_formatter = FuncFormatter(formatter.temperature_short)
+            a_formatter = FuncFormatter(formatter.temperature)
+        else:
+            y_formatter = FuncFormatter(formatter.number)
+            a_formatter = y_formatter
+
         # Make sure there are as many labels as series
         self.labels = rpad(self.labels, None, len(series))
 
@@ -336,27 +348,18 @@ class SerialChart(Chart):
                 if self.labels[i]:
                     bars.set_label(self.labels[i])
 
-        # Adjust y axis to data range
+            # Annotate highlighted point/bar
+            if highlight_value:
+                value_label = a_formatter(highlight_value)
+                xy = (highlight_date, highlight_value)
+                self._annotate_point(value_label, xy, direction="right")  # FIXME dir
+
+
+        # Y axis formatting
         self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
-
-        # Formatters
-        formatter = Formatter(self.language, scale="celsius")
-        if self.units == "percent":
-            y_formatter = FuncFormatter(formatter.percent)
-            a_formatter = y_formatter
-        elif self.units == "degrees":
-            y_formatter = FuncFormatter(formatter.temperature_short)
-            a_formatter = FuncFormatter(formatter.temperature)
-        else:
-            y_formatter = FuncFormatter(formatter.number)
-            a_formatter = y_formatter
-
         self.ax.yaxis.set_major_formatter(y_formatter)
-
-        # Grid
         self.ax.yaxis.grid(True)
 
-        # FIXME: Use all dates, this is just a leftover from last serie
         delta = xmax - xmin
         # X ticks and formatter
         if delta.days > 365:
@@ -369,12 +372,6 @@ class SerialChart(Chart):
             fmt = FuncFormatter(lambda x, pos:
                                 Formatter(self.language).short_month(pos+1))
             self.ax.xaxis.set_major_formatter(fmt)
-
-        # Highlight point
-        if highlight_value:
-            value_label = a_formatter(highlight_value)
-            xy = (highlight_date, highlight_value)
-            self._annotate_point(value_label, xy, direction="right")  # FIXME dir
 
         # Trend line
         """
