@@ -277,7 +277,7 @@ class SerialChart(Chart):
             a_formatter = y_formatter
 
         # Make sure there are as many labels as series
-        self.labels = rpad(self.labels, None, len(series))
+        # self.labels = rpad(self.labels, None, len(series))
 
         # Store y values while we are looping the data, to adjust axis,
         # and highlight diff
@@ -322,7 +322,7 @@ class SerialChart(Chart):
                                      color=color,
                                      zorder=2)
 
-                if self.labels[i]:
+                if len(self.labels) > i:
                     line.set_label(self.labels[i])
 
                 # add highlight marker
@@ -347,7 +347,7 @@ class SerialChart(Chart):
                                    width=320,  # FIXME use (delta.unit / ticks)
                                    zorder=2)
 
-                if self.labels[i]:
+                if len(labels) > i:
                     bars.set_label(self.labels[i])
 
         # Annotate highlighted points/bars
@@ -392,7 +392,7 @@ class SerialChart(Chart):
             self.ax.xaxis.set_major_formatter(fmt)
 
         # Add labels
-        if any(self.labels):
+        if len(self.labels):
             self.ax.legend(loc='best')
 
         # Trend line
