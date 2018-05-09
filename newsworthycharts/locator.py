@@ -4,23 +4,23 @@ from matplotlib.dates import YearLocator, MonthLocator, DayLocator
 from datetime import datetime
 
 
-def get_year_ticks(dates, max_ticks=5):
-    """ Get `max_ticks` or less evenly distributed yearly ticks from a
-    list of dates, including start and end years. All ticks fall on January 1.
+def get_year_ticks(start_date, end_date, max_ticks=5):
+    """ Get `max_ticks` or less evenly distributed yearly ticks, including
+    start and end years. All ticks fall on January 1.
     """
 
-    # Get unique years in the data
-    years = sorted(list(set([y.year for y in dates])))
-    max_ticks = min(max_ticks, len(years))
+    years = range(start_date.year, end_date.year+1)
+    n_years = len(years)
+    max_ticks = min(max_ticks, n_years)
     # Avoid N2 < ticks < N, where there will be odd looking gaps
-    if len(years) > 3:
-        if round(len(years)/2) < max_ticks < len(years):
-            max_ticks = round(len(years)/2)
+    if n_years > 3:
+        if round(n_years/2) < max_ticks < n_years:
+            max_ticks = round(n_years/2)
 
     # -2 for the ends
     # +1 because cutting a cake in n+1 pieces gives n cuts
     if max_ticks > 1:
-        cuts = len(years)/(max_ticks-2+1)
+        cuts = n_years/(max_ticks-2+1)
     else:
         cuts = 0
     selected_years = [years[int(x * cuts)] for x in range(0, max_ticks-1)]

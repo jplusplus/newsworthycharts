@@ -278,6 +278,12 @@ class SerialChart(Chart):
             'y1': -inf
         }
         for i, serie in enumerate(series):
+            # Use strong color for first series
+            if i:
+                color = self.style["neutral_color"]
+            else:
+                color = self.style["strong_color"]
+
             values = [to_float(x[1]) for x in serie]
             dates = [to_date(x[0]) for x in serie]
 
@@ -299,7 +305,7 @@ class SerialChart(Chart):
 
             if self.type == "line":
                 line, = self.ax.plot(dates, values,
-                                     color=self.style["neutral_color"],
+                                     color=color,
                                      zorder=2)
 
                 if self.labels[i]:
@@ -308,7 +314,7 @@ class SerialChart(Chart):
                 # highlight
                 if highlight_value:
                     self.ax.plot(highlight_date, highlight_value,
-                                 c=self.style["strong_color"],
+                                 c=color,
                                  marker='o',
                                  zorder=2)
 
@@ -354,7 +360,7 @@ class SerialChart(Chart):
         delta = xmax - xmin
         # X ticks and formatter
         if delta.days > 365:
-            ticks = get_year_ticks(dates, max_ticks=self.max_ticks)
+            ticks = get_year_ticks(xmin, xmax, max_ticks=self.max_ticks)
             self.ax.set_xticks(ticks)
             self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
         else:
