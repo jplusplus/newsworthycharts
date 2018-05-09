@@ -222,6 +222,7 @@ class SerialChart(Chart):
     _units = "count"
     _type = "bars"
     ymin = 0
+    max_ticks = 5
 
     @property
     def units(self):
@@ -333,19 +334,16 @@ class SerialChart(Chart):
         # Grid
         self.ax.yaxis.grid(True)
 
-        # X ticks
         # FIXME: Use all dates, this is just a leftover from last serie
-        ticks = get_year_ticks(dates, max_ticks=5)
-        self.ax.set_xticks()
-
-        # X formatter
         delta = xmax - xmin
+        # X ticks and formatter
         if delta.days > 365:
+            ticks = get_year_ticks(dates, max_ticks=self.max_ticks)
+            self.ax.set_xticks(ticks)
             self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
         else:
-            # TODO: Move formatting code to an AxisFormatter class,
-            # that can select both locator and formatter (to make sure
-            # they go nicely together)
+            loc = get_best_locator(delta, len(dates))
+            self.ax.xaxis.set_major_locator(loc)
             fmt = FuncFormatter(lambda x, pos:
                                 Formatter(self.language).short_month(pos+1))
             self.ax.xaxis.set_major_formatter(fmt)
