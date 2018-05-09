@@ -361,6 +361,19 @@ class SerialChart(Chart):
             else:
                 self._annotate_point(value_label, xy, direction="left")
 
+        # Highlight diff
+        # Only if more than one series has a value at this point
+        print(highlight_values)
+        if len(highlight_values) > 1 and self.type == "line":
+            y0, y1 = highlight_diff['y0'], highlight_diff['y1']
+            self.ax.vlines(highlight_date, y0, y1,
+                           colors=self.style["neutral_color"],
+                           linestyles='dashed',
+                           label="HEJ")
+            diff = a_formatter(abs(y0-y1))
+            xy = (highlight_date, (y0 + y1) / 2)
+            self._annotate_point(diff, xy, direction="right")
+
         # Y axis formatting
         self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
         self.ax.yaxis.set_major_formatter(y_formatter)
