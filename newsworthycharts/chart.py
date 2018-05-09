@@ -361,8 +361,8 @@ class SerialChart(Chart):
         # Highlight diff
         y0, y1 = highlight_diff['y0'], highlight_diff['y1']
         # Only if more than one series has a value at this point, and they
-        # are actually different
-        if (y0 != y1) and (len(highlight_values) > 1) and self.type == "line":
+        # actually look different
+        if (a_formatter(y0) != a_formatter(y1)) and (len(highlight_values) > 1) and self.type == "line":
             self.ax.vlines(highlight_date, y0, y1,
                            colors=self.style["neutral_color"],
                            linestyles='dashed')
