@@ -2,6 +2,7 @@
  Module for doing (very) simple i18n work.
 """
 from babel.numbers import format_decimal, format_percent, Locale
+from babel.units import format_unit
 from decimal import Decimal
 
 
@@ -17,13 +18,14 @@ class Formatter(object):
       >>> fmt.percent(0.14)
       "14 %"
     """
-    def __init__(self, lang, decimals=None):
+    def __init__(self, lang, decimals=None, scale="celcius"):
         """
         :param decimals (int): force formatting to N number of decimals
         """
         self.l = Locale.parse(lang.replace("-", "_"))
         self.language = self.l.language
         self.decimals = decimals
+        self.scale = scale
 
     def __repr__(self):
         return "Formatter: " + repr(self.l)
@@ -41,6 +43,23 @@ class Formatter(object):
             x = round(x, self.decimals)
 
         return format_percent(x, locale=self.l)
+
+    def temperature_short(self, x, *args, **kwargs):
+        """ Format a temperature in deegrees, without scale letter """
+
+        x = round(x, self.decimals)
+
+        str = format_unit(x, 'temperature-generic', locale=self.l)
+        return str
+
+    def temperature_long(self, x, *args, **kwargs):
+        """ Format a temperature in deegrees, with scale letter """
+
+        x = round(x, self.decimals)
+
+        scale = "temperature-{}".format(self.scale)
+        str = format_unit(x, scale, "short", locale=self.l)
+        return str
 
     def number(self, x, *args, **kwargs):
         """Format as number.

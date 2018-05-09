@@ -215,10 +215,16 @@ class Chart(object):
 
     @units.setter
     def units(self, val):
-        if val in ["count", "percent"]:
+        """ Units, used for number formatting. Note that 'degrees' is designed
+        for temperatures. In some languages there are typographical differences
+        between angles and temperate notation.
+        For instance, English charts will have `45 °`, not `45°`.
+        """
+        allowed_units = ["count", "percent", "degrees"]
+        if val in allowed_units:
             self._units = val
         else:
-            raise ValueError("Supported units are count and percent")
+            raise ValueError("Supported units are: {}".format(allowed_units))
 
     def __repr__(self):
         # Use type(self).__name__ to get the right class name for sub classes
@@ -327,11 +333,18 @@ class SerialChart(Chart):
         # Adjust y axis to data range
         self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
 
-        # Y formatter
+        # Formatters
+        formatter = Formatter(self.language, scale="celsius")
         if self.units == "percent":
-            y_formatter = FuncFormatter(Formatter(self.language).percent)
+            y_formatter = FuncFormatter(formatter.percent)
+            a_formatter = y_formatter
+        elif self.units == "degrees":
+            y_formatter = FuncFormatter(formatter.temperature_short)
+            a_formatter = FuncFormatter(formatter.temperature_long)
         else:
-            y_formatter = FuncFormatter(Formatter(self.language).number)
+            y_formatter = FuncFormatter(formatter.number)
+            a_formatter = y_formatter
+
         self.ax.yaxis.set_major_formatter(y_formatter)
 
         # Grid
@@ -353,7 +366,7 @@ class SerialChart(Chart):
 
         # Highlight point
         if highlight_value:
-            value_label = y_formatter(highlight_value)
+            value_label = a_formatter(highlight_value)
             xy = (highlight_date, highlight_value)
             self._annotate_point(value_label, xy, direction="right")  # FIXME dir
 
