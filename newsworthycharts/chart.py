@@ -368,8 +368,7 @@ class SerialChart(Chart):
             y0, y1 = highlight_diff['y0'], highlight_diff['y1']
             self.ax.vlines(highlight_date, y0, y1,
                            colors=self.style["neutral_color"],
-                           linestyles='dashed',
-                           label="HEJ")
+                           linestyles='dashed')
             diff = a_formatter(abs(y0-y1))
             xy = (highlight_date, (y0 + y1) / 2)
             self._annotate_point(diff, xy, direction="right")
@@ -391,6 +390,13 @@ class SerialChart(Chart):
             fmt = FuncFormatter(lambda x, pos:
                                 Formatter(self.language).short_month(pos+1))
             self.ax.xaxis.set_major_formatter(fmt)
+
+        # Add labels
+        if any(self.labels):
+            if self.type == "line":
+                self.fig.legend(loc='lower right')
+            else:
+                self.fig.legend(loc='upper left')
 
         # Trend line
         """
