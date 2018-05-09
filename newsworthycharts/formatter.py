@@ -52,7 +52,7 @@ class Formatter(object):
         str = format_unit(x, 'temperature-generic', locale=self.l)
         return str
 
-    def temperature_long(self, x, *args, **kwargs):
+    def temperature(self, x, *args, **kwargs):
         """ Format a temperature in deegrees, with scale letter """
 
         x = round(x, self.decimals)

@@ -216,9 +216,9 @@ class Chart(object):
     @units.setter
     def units(self, val):
         """ Units, used for number formatting. Note that 'degrees' is designed
-        for temperatures. In some languages there are typographical differences
-        between angles and temperate notation.
-        For instance, English charts will have `45 °`, not `45°`.
+        for temperature degrees.
+        In some languages there are typographical differences between
+        angles and short temperature notation.
         """
         allowed_units = ["count", "percent", "degrees"]
         if val in allowed_units:
@@ -346,7 +346,7 @@ class SerialChart(Chart):
             a_formatter = y_formatter
         elif self.units == "degrees":
             y_formatter = FuncFormatter(formatter.temperature_short)
-            a_formatter = FuncFormatter(formatter.temperature_long)
+            a_formatter = FuncFormatter(formatter.temperature)
         else:
             y_formatter = FuncFormatter(formatter.number)
             a_formatter = y_formatter
