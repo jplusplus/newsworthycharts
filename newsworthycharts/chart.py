@@ -289,6 +289,7 @@ class SerialChart(Chart):
             'y0': inf,
             'y1': -inf
         }
+        highlight_values = []
         for i, serie in enumerate(series):
             # Use strong color for first series
             if i:
@@ -301,6 +302,7 @@ class SerialChart(Chart):
 
             try:
                 highlight_value = values[dates.index(highlight_date)]
+                highlight_values.append(highlight_value)
             except ValueError:
                 # If this date is not in series, silently ignore
                 highlight_value = None
@@ -323,7 +325,7 @@ class SerialChart(Chart):
                 if self.labels[i]:
                     line.set_label(self.labels[i])
 
-                # highlight
+                # add highlight marker
                 if highlight_value:
                     self.ax.plot(highlight_date, highlight_value,
                                  c=color,
@@ -348,12 +350,16 @@ class SerialChart(Chart):
                 if self.labels[i]:
                     bars.set_label(self.labels[i])
 
-            # Annotate highlighted point/bar
-            if highlight_value:
-                value_label = a_formatter(highlight_value)
-                xy = (highlight_date, highlight_value)
-                self._annotate_point(value_label, xy, direction="right")  # FIXME dir
-
+        # Annotate highlighted points/bars
+        for hv in highlight_values:
+            value_label = a_formatter(hv)
+            xy = (highlight_date, hv)
+            if hv == max(highlight_values):
+                self._annotate_point(value_label, xy, direction="up")
+            elif hv == min(highlight_values):
+                self._annotate_point(value_label, xy, direction="down")
+            else:
+                self._annotate_point(value_label, xy, direction="left")
 
         # Y axis formatting
         self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
