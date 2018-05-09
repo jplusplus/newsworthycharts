@@ -22,8 +22,11 @@ image_formats = MIME_TYPES.keys()
 class Chart(object):
     """ Convenience wrapper around a Matplotlib figure
     """
-    # Use getter/setter for title as user might manipulate it though .fig
+    # Properties managed through getters/setters
     _title = None
+    _units = "count"
+
+    # Simple properties
     xlabel = None
     ylabel = None
     caption = None
@@ -206,6 +209,17 @@ class Chart(object):
         else:
             return str(id(self))
 
+    @property
+    def units(self):
+        return self._units
+
+    @units.setter
+    def units(self, val):
+        if val in ["count", "percent"]:
+            self._units = val
+        else:
+            raise ValueError("Supported units are count and percent")
+
     def __repr__(self):
         # Use type(self).__name__ to get the right class name for sub classes
         return "<{cls}: {name} ({h} x {w})>".format(cls=type(self).__name__,
@@ -219,21 +233,10 @@ class SerialChart(Chart):
     `[ [("2010-01-01", 2), ("2010-02-01", 2.3)] ]`
     """
 
-    _units = "count"
     _type = "bars"
     ymin = 0
     max_ticks = 5
 
-    @property
-    def units(self):
-        return self._units
-
-    @units.setter
-    def units(self, val):
-        if val in ["count", "percent"]:
-            self._units = val
-        else:
-            raise ValueError("Supported units are count and percent")
 
     @property
     def type(self):
