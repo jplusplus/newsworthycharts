@@ -16,7 +16,6 @@ from matplotlib.ticker import FuncFormatter
 from matplotlib.dates import DateFormatter
 from langcodes import standardize_tag
 
-
 image_formats = MIME_TYPES.keys()
 
 
@@ -242,7 +241,6 @@ class SerialChart(Chart):
     _type = "bars"
     max_ticks = 5
 
-
     @property
     def type(self):
         return self._type
@@ -260,8 +258,8 @@ class SerialChart(Chart):
         if self.highlight is not None:
             highlight_date = to_date(self.highlight)
         else:
-            # Use last date. max works well on ISO date strings
-            highlight_date = to_date(max([x[-1][0] for x in series]))
+            # Use last date
+            highlight_date = to_date(self.data.x_points[-1])
 
         # Formatters for axis and annotations
         formatter = Formatter(self.language, scale="celsius")
