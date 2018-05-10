@@ -15,7 +15,7 @@ from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
 from matplotlib.dates import DateFormatter
 from langcodes import standardize_tag
-from datetime import datetime
+
 
 image_formats = MIME_TYPES.keys()
 
@@ -277,8 +277,6 @@ class SerialChart(Chart):
 
         # Store y values while we are looping the data, to adjust axis,
         # and highlight diff
-        xmin = datetime.max
-        xmax = datetime.min
         highlight_diff = {
             'y0': inf,
             'y1': -inf
@@ -301,8 +299,6 @@ class SerialChart(Chart):
                 # If this date is not in series, silently ignore
                 highlight_value = None
 
-            xmax = max(xmax, max(dates))
-            xmin = min(xmin, min(dates))
             if highlight_value:
                 highlight_diff['y0'] = min(highlight_diff['y0'],
                                            highlight_value)
@@ -368,8 +364,7 @@ class SerialChart(Chart):
         # Shade area between lines if there are exactly 2 series
         # For more series, the chart will get messy with shading
         if len(series) == 2:
-            all_dates = sorted([to_date(x) for x in self.data.x_points])
-            self.ax.fill_between(all_dates,
+            self.ax.fill_between([to_date(x) for x in self.data.x_points],
                                  [to_float(x[1]) for x in series[0]],
                                  [to_float(x[1]) for x in series[1]],
                                  facecolor="#f7f4f4", alpha=0.5)
@@ -381,6 +376,7 @@ class SerialChart(Chart):
         self.ax.yaxis.set_major_formatter(y_formatter)
         self.ax.yaxis.grid(True)
 
+        xmin, xmax = to_date(self.data.x_points[0]), to_date(self.data.x_points[-1])
         delta = xmax - xmin
         # X ticks and formatter
         if delta.days > 365:

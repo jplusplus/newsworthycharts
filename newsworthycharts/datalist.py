@@ -13,7 +13,7 @@ class DataList(MutableSequence):
     """
     min_val = inf
     max_val = -inf
-    x_points = set()
+    _x_points = set()
 
     def __init__(self, *args):
         self.list = list()
@@ -25,7 +25,11 @@ class DataList(MutableSequence):
         values = [x for x in values if x is not None]
         self.min_val = min(self.min_val, min(values))
         self.max_val = max(self.max_val, max(values))
-        self.x_points.update([x[0] for x in v])
+        self._x_points.update([x[0] for x in v])
+
+    @property
+    def x_points(self):
+        return sorted(list(self._x_points))
 
     def __len__(self):
         return len(self.list)
