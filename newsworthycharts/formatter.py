@@ -58,7 +58,7 @@ class Formatter(object):
         x = round(x, self.decimals or 1)
 
         scale = "temperature-{}".format(self.scale)
-        str = format_unit(2, scale, "short", locale=self.l)
+        str = format_unit(x, scale, "short", locale=self.l)
         return str
 
     def number(self, x, *args, **kwargs):
