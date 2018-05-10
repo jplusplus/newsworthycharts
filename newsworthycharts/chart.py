@@ -273,6 +273,10 @@ class SerialChart(Chart):
             y_formatter = FuncFormatter(formatter.number)
             a_formatter = y_formatter
 
+        # Number of days on x axis (Matplotlib will use days as unit here)
+        xmin, xmax = to_date(self.data.x_points[0]), to_date(self.data.x_points[-1])
+        delta = xmax - xmin
+
         # Store y values while we are looping the data, to adjust axis,
         # and highlight diff
         highlight_diff = {
@@ -327,9 +331,10 @@ class SerialChart(Chart):
 
                 # Replace None values with 0's to be able to plot bars
                 values = [0 if v is None else v for v in values]
+                bar_width = delta.days * 0.96 / len(self.data.x_points)
                 bars = self.ax.bar(dates, values,
                                    color=colors,
-                                   width=320,  # FIXME use (delta.unit / ticks)
+                                   width=bar_width,
                                    zorder=2)
 
                 if len(self.labels) > i:
@@ -374,8 +379,6 @@ class SerialChart(Chart):
         self.ax.yaxis.set_major_formatter(y_formatter)
         self.ax.yaxis.grid(True)
 
-        xmin, xmax = to_date(self.data.x_points[0]), to_date(self.data.x_points[-1])
-        delta = xmax - xmin
         # X ticks and formatter
         if delta.days > 365:
             ticks = get_year_ticks(xmin, xmax, max_ticks=self.max_ticks)
