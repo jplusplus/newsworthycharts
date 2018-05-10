@@ -9,6 +9,7 @@ from .mimetypes import MIME_TYPES
 from .storage import LocalStorage
 from .formatter import Formatter
 from .locator import get_best_locator, get_year_ticks
+from .datalist import DataList
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
@@ -32,9 +33,8 @@ class Chart(object):
     caption = None
     highlight = None
     annotations = []
-    data = []  # A list of datasets
+    data = DataList()  # A list of datasets
     labels = []  # Optionally one label for each dataset
-    # TODO: Create custom list classes: https://stackoverflow.com/questions/3487434/overriding-append-method-after-inheriting-from-a-python-list#3488283
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  style: str='newsworthy', language: str='en-GB'):
@@ -240,7 +240,6 @@ class SerialChart(Chart):
     """
 
     _type = "bars"
-    ymin = 0
     max_ticks = 5
 
 
@@ -278,8 +277,6 @@ class SerialChart(Chart):
 
         # Store y values while we are looping the data, to adjust axis,
         # and highlight diff
-        ymax = 0
-        ymin = self.ymin
         xmin = datetime.max
         xmax = datetime.min
         highlight_diff = {
@@ -306,8 +303,6 @@ class SerialChart(Chart):
 
             xmax = max(xmax, max(dates))
             xmin = min(xmin, min(dates))
-            ymax = max(ymax, max([x for x in values if x is not None]))
-            ymin = min(ymin, min([x for x in values if x is not None]))
             if highlight_value:
                 highlight_diff['y0'] = min(highlight_diff['y0'],
                                            highlight_value)
@@ -373,14 +368,16 @@ class SerialChart(Chart):
         # Shade area between lines if there are exactly 2 series
         # For more series, the chart will get messy with shading
         if len(series) == 2:
-            all_dates = sorted(list(set([to_date(x[0]) for x in series[0]] + [to_date(x[0]) for x in series[1]])))
+            all_dates = sorted([to_date(x) for x in self.data.x_points])
             self.ax.fill_between(all_dates,
                                  [to_float(x[1]) for x in series[0]],
                                  [to_float(x[1]) for x in series[1]],
                                  facecolor="#f7f4f4", alpha=0.5)
 
         # Y axis formatting
-        self.ax.set_ylim(ymin=ymin, ymax=ymax*1.15)
+        self.ax.set_ylim(ymin=min(0, self.data.min_val),
+                         ymax=self.data.max_val * 1.15)
+
         self.ax.yaxis.set_major_formatter(y_formatter)
         self.ax.yaxis.grid(True)
 
