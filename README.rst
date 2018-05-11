@@ -20,16 +20,21 @@ When using the Chart class, the generated chart will be saved as a local file:
 
 .. code:: python3
 
-  from newsworthycharts import Chart
+  from newsworthycharts import SerialChart
+
+
   c = Chart(600, 800)
   c.title = "Number of smiles per second"
   c.xlabel = "Time"
   c.ylabel = "Smiles"
   c.caption = "Source: Ministry of smiles."
+  data_serie_1 = [("2008-01-01", 6.1), ("2009-01-01", 5.9), ("2010-01-01", 6.8)]
+  c.data.append(data_serie_1)
+  c.highlight = "2010-01-01"
   c.render("test", "png")
 
-If you want more control, you can use a _storage_ to save file to a specific
-location or cloud service:
+You can use a _storage_ object to save file to
+a specific location or cloud service:
 
 .. code:: python3
 
@@ -73,8 +78,3 @@ Changelog
 
 - 1.0.0.dev1
   - First version, still in development
-
-Todo
-----
-
-- Pass a Publisher class instance to Chart to allow for alternatives to S3
