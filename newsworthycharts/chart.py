@@ -417,9 +417,6 @@ class SerialChart(Chart):
                 dates = [to_date(x) for x in self.trendline]
                 alldates = [to_date(x[0]) for x in self.data[0]]
                 values = [self.data[0][alldates.index(d)][1] for d in dates]
-                print(alldates)
-                print(dates)
-                print(values)
 
             self.ax.plot(dates, values,
                          color=self.style["strong_color"], zorder=4,
