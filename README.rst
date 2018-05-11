@@ -76,5 +76,5 @@ Newsworthycharts will look first among the predefined style files for the reques
 Changelog
 ---------
 
-- 1.0.0.dev1
+- 1.0.0.dev*
   - First version, still in development
