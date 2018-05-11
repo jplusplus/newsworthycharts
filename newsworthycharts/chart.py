@@ -412,12 +412,14 @@ class SerialChart(Chart):
                 # data points
                 dates = [to_date(x[0]) for x in self.trendline]
                 values = [to_float(x[1]) for x in self.trendline]
+                marker = None  # TODO: print marker if on point
             else:
                 # timepoints, get values from first series
                 dates = [to_date(x) for x in self.trendline]
                 alldates = [to_date(x[0]) for x in self.data[0]]
                 values = [self.data[0][alldates.index(d)][1] for d in dates]
+                marker = 'o'
 
             self.ax.plot(dates, values,
                          color=self.style["strong_color"], zorder=4,
-                         marker='o', linestyle='dashed')
+                         marker=marker, linestyle='dashed')
