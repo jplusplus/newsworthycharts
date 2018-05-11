@@ -34,6 +34,8 @@ class Chart(object):
     annotations = []
     data = DataList()  # A list of datasets
     labels = []  # Optionally one label for each dataset
+    trendline = []  # List of x positions, or data points
+
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  style: str='newsworthy', language: str='en-GB'):
@@ -402,13 +404,20 @@ class SerialChart(Chart):
         if len(self.labels):
             self.ax.legend(loc='best')
 
-        # Trend line
-        """
-        # Add highlight_change trend line
-        if args.highlight_change and i == 0:
-            changedates = [datetime.strptime(x, "%Y-%m-%d") for x in literal_eval(args.highlight_change)]
-            changedata = [data[dates.index(d)] for d in changedates]
-            line, = ax.plot(changedates, changedata,
-                             color=highlight_color, zorder=4, marker='o',
-                             linestyle='dashed')
-        """
+        # Trend/change line
+        # Will use first serie
+        if self.trendline:
+            # Check if we have a list of single (x-) values, or data points
+            if all(len(x) == 2 for x in self.trendline):
+                # data points
+                dates = [to_date(x[0]) for x in self.trendline]
+                values = [to_float(x[1]) for x in self.trendline]
+            else:
+                # timepoints, get values from first series
+                dates = [to_date(x) for x in self.trendline]
+                alldates = [to_date(x[0]) for x in self.data[0]]
+                values = [self.data[0][alldates.index(d)] for d in dates]
+
+            self.ax.plot(dates, values,
+                         color=self.style["strong_color"], zorder=4,
+                         marker='o', linestyle='dashed')
