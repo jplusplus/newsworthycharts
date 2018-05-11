@@ -240,6 +240,7 @@ class SerialChart(Chart):
 
     _type = "bars"
     max_ticks = 5
+    ymin = 0  # Set this to None to automatically adjust y axis to data
 
     @property
     def type(self):
@@ -373,7 +374,13 @@ class SerialChart(Chart):
                                  facecolor="#f7f4f4", alpha=0.5)
 
         # Y axis formatting
-        self.ax.set_ylim(ymin=min(0, self.data.min_val),
+        # TODO: Clea up this, and add proper handling to negative ymax cases
+        padding_bottom = self.data.min_val * 0.15
+        if self.ymin is not None:
+            ymin = min(self.ymin, self.data.min_val - padding_bottom)
+        else:
+            ymin = self.data.min_val - padding_bottom
+        self.ax.set_ylim(ymin=ymin,
                          ymax=self.data.max_val * 1.15)
 
         self.ax.yaxis.set_major_formatter(y_formatter)
