@@ -8,13 +8,15 @@ def readme():
         return f.read()
 
 
+repo = "https://github.com/jplusplus/newsworthycharts"
+
 setup(
     name=name,
     version=version,
     description=short_desc,
     long_description=readme(),
     long_description_content_type='text/x-rst',
-    url="https://github.com/jplusplus/newsworthycharts",
+    url=repo,
     author=authors,
     author_email=email,
     license="MIT",
@@ -29,5 +31,5 @@ setup(
         "PyYAML>=3",
     ],
     include_package_data=True,
-    download_url="https://github.com/jplusplus/newsworthycharts/archive/%s.tar.gz" % version,
+    download_url="{}/archive/{}.tar.gz".format(repo, version),
 )
