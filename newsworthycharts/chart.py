@@ -461,7 +461,7 @@ class SerialChart(Chart):
                 # data points
                 dates = [to_date(x[0]) for x in self.trendline]
                 values = [to_float(x[1]) for x in self.trendline]
-                marker = None  # TODO: print marker if on point
+                marker = "_"
             else:
                 # timepoints, get values from first series
                 dates = [to_date(x) for x in self.trendline]
