@@ -31,6 +31,9 @@ class Chart(object):
     ylabel = None
     caption = None
     highlight = None
+    # We will try to guess interval the data, but explicitly providing a value
+    # is safer. Used for finetuning.
+    interval = None  # ["yearly", "quarterly", "monthly", "weekly", "daily"]
     annotations = []
     data = DataList()  # A list of datasets
     labels = []  # Optionally one label for each dataset
@@ -255,6 +258,28 @@ class SerialChart(Chart):
         else:
             raise ValueError("Supported types are bars and line")
 
+    def _guess_interval(self):
+        """ Return a probable interval, e.g. "montly", given current data
+        """
+        interval = "yearly"
+        for serie in self.data:
+            dates = [to_date(x[0]) for x in serie]
+            years = [x.year for x in dates]
+            months = [x.month for x in dates]
+            yearmonths = [x[0][:7] for x in serie]
+            weeks = [str(x.year) + str(x.isocalendar()[1]) for x in dates]
+            if len(years) > len(set(years)):
+                # there are years with more than one point
+                if all(m in ["01", "04", "07", "10"] for m in months):
+                    interval = "quarterly"
+                else:
+                    interval = "monthly"
+                    if len(yearmonths) > len(set(yearmonths)):
+                        interval = "weekly"
+                    if len(weeks) > len(set(weeks)):
+                        interval = "daily"
+        return interval
+
     def _add_data(self, series):
 
         # Select a date to highlight
@@ -263,6 +288,10 @@ class SerialChart(Chart):
         else:
             # Use last date
             highlight_date = to_date(self.data.x_points[-1])
+
+        # Make an educated guess about the interval of the data
+        if self.interval is None:
+            self.interval = self._guess_interval()
 
         # Formatters for axis and annotations
         formatter = Formatter(self.language, scale="celsius")
