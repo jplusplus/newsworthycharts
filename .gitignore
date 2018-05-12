@@ -11,4 +11,4 @@ man
 test.*
 *~
 .ipynb_*
-
+/build/
