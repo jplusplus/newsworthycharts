@@ -13,7 +13,10 @@ class StyleNotFoundError(FileNotFoundError):
 
 
 def loadstyle(style_name):
-    """ Load a custom style file, adding both rcParams and custom params """
+    """ Load a custom style file, adding both rcParams and custom params.
+    Writing a proper parser for these settings is in the Matplotlib backlog,
+    so let's keep calm and avoid inventing their wheel.
+    """
 
     style = {}
     style_file = os.path.join(HERE, 'rc', style_name)
