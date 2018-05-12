@@ -258,6 +258,20 @@ class SerialChart(Chart):
         else:
             raise ValueError("Supported types are bars and line")
 
+    def _days_in(self, interval):
+        """ Estimated whole number of days in a given interval.
+        Return a typical number, used for calculating bar widths, and other
+        minor charts tweaks.
+        """
+        days_per_interval = {
+            'yearly': 365,
+            'quarterly': 91,
+            'monthly': 30,
+            'weekly': 7,
+            'daily': 1,
+        }
+        return days_per_interval[interval]
+
     def _guess_interval(self):
         """ Return a probable interval, e.g. "montly", given current data
         """
@@ -363,10 +377,16 @@ class SerialChart(Chart):
 
                 # Replace None values with 0's to be able to plot bars
                 values = [0 if v is None else v for v in values]
-                bar_width = delta.days * 0.96 / len(self.data.x_points)
+                if self.interval is None:
+                    # if no interval provided, self._guess_interval() somehow
+                    # failed to come up with a proper estimate
+                    bar_w = delta.days * 0.96 / self.len(self.data.x_points)
+                else:
+                    bar_w = self._days_in(self.interval) * 0.96
+
                 bars = self.ax.bar(dates, values,
                                    color=colors,
-                                   width=bar_width,
+                                   width=bar_w,
                                    zorder=2)
 
                 if len(self.labels) > i:
