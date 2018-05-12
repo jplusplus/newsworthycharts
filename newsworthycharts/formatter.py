@@ -49,7 +49,7 @@ class Formatter(object):
 
         x = round(x, self.decimals or 1)
 
-        str = format_unit(x, 'temperature-generic', locale=self.l)
+        str = format_unit(x, 'temperature-generic', "short", locale=self.l)
         return str
 
     def temperature(self, x, *args, **kwargs):
