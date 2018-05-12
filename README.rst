@@ -7,7 +7,7 @@ By `Journalism++ Stockholm <http://jplusplus.org/sv>`_.
 Installing
 ----------
 
-.. code:: bash
+.. code-block:: bash
 
   pip install newsworthy-charts
 
@@ -18,7 +18,7 @@ Using
 This module comes with two classes, `Chart` and `Storage` (and it's subclasses).
 When using the Chart class, the generated chart will be saved as a local file:
 
-.. code:: python3
+.. code-block:: python3
 
   from newsworthycharts import SerialChart
 
@@ -36,7 +36,7 @@ When using the Chart class, the generated chart will be saved as a local file:
 You can use a _storage_ object to save file to
 a specific location or cloud service:
 
-.. code:: python3
+.. code-block:: python3
 
   from newsworthycharts import Chart
   from newsworthycharts import S3Storage
@@ -52,14 +52,15 @@ a specific location or cloud service:
 
 To store a file in a local folder, use the `LocalStorage` class:
 
-.. code:: python3
+.. code-block:: python3
+
   from newsworthycharts import LocalStorage
 
   storage = LocalStorage("/path/to/generated/charts")
 
 Charts are styled using built-in or user-defined styles:
 
-.. code:: python3
+.. code-block:: python3
 
   from newsworthycharts import Chart
 
