@@ -30,6 +30,11 @@ figure.titlesize  : xx-large
 
 # Some custom settings for Newsworthy
 # Prefix each line with #!
-#! title_font    : Open Sans Condensed, Ubuntu Condensed
-#! neutral_color : 999999
-#! strong_color  : 5aa69d
+
+#! title_font         : Open Sans Condensed, Ubuntu Condensed
+#! neutral_color      : 999999
+#! strong_color       : 5aa69d
+
+# Fill between lines
+#! fill_between_color : F7F4F4
+#! fill_between_alpha : 0.5

@@ -45,8 +45,12 @@ def loadstyle(style_name):
     color = rcParamsNewsworthy.get("neutral_color",
                                    rcParams["figure.edgecolor"])
     strong_color = rcParamsNewsworthy.get("strong_color", color)
+    fill_between_color = rcParamsNewsworthy.get("fill_between_color", "F7F4F4")
+    fill_between_alpha = rcParamsNewsworthy.get("fill_between_alpha", 0.5)
     style["neutral_color"] = to_rgba("#" + str(color), 1)
     style["strong_color"] = to_rgba("#" + str(strong_color), 1)
+    style["fill_between_color"] = to_rgba("#" + str(fill_between_color), 1)
+    style["fill_between_alpha"] = float(fill_between_alpha)
 
     return style
 

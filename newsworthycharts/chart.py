@@ -1,4 +1,4 @@
-""" Create charts and upload and store them as files.
+""" Create charts and store them as images.
 For use with Newsworthy's robot writer and other similar projects.
 """
 from io import BytesIO
@@ -31,8 +31,8 @@ class Chart(object):
     ylabel = None
     caption = None
     highlight = None
-    # We will try to guess interval the data, but explicitly providing a value
-    # is safer. Used for finetuning.
+    # We will try to guess interval based on the data,
+    # but explicitly providing a value is safer. Used for finetuning.
     interval = None  # ["yearly", "quarterly", "monthly", "weekly", "daily"]
     annotations = []
     data = DataList()  # A list of datasets
@@ -97,7 +97,7 @@ class Chart(object):
             "fontproperties": self.small_font,
             "textcoords": "offset pixels",
         }
-        offset = 10  # px between point and text
+        offset = 10  # px between point and text FIXME remove hardcoded value
         if direction == "up":
             opts["verticalalignment"] = "bottom"
             opts["horizontalalignment"] = "center"
@@ -206,13 +206,6 @@ class Chart(object):
     def title(self, t):
         self._title = t
 
-    def __str__(self):
-        # Return main title or id
-        if self.title is not None:
-            return self.title
-        else:
-            return str(id(self))
-
     @property
     def units(self):
         return self._units
@@ -222,13 +215,20 @@ class Chart(object):
         """ Units, used for number formatting. Note that 'degrees' is designed
         for temperature degrees.
         In some languages there are typographical differences between
-        angles and short temperature notation.
+        angles and short temperature notation (e.g. 45° vs 45 °).
         """
         allowed_units = ["count", "percent", "degrees"]
         if val in allowed_units:
             self._units = val
         else:
             raise ValueError("Supported units are: {}".format(allowed_units))
+
+    def __str__(self):
+        # Return main title or id
+        if self.title is not None:
+            return self.title
+        else:
+            return str(id(self))
 
     def __repr__(self):
         # Use type(self).__name__ to get the right class name for sub classes
@@ -422,7 +422,8 @@ class SerialChart(Chart):
             self.ax.fill_between([to_date(x) for x in self.data.x_points],
                                  [to_float(x[1]) for x in series[0]],
                                  [to_float(x[1]) for x in series[1]],
-                                 facecolor="#f7f4f4", alpha=0.5)
+                                 facecolor=self.style["fill_between_color"],
+                                 alpha=self.style["fill_between_alpha"])
 
         # Y axis formatting
         # TODO: Clea up this, and add proper handling to negative ymax cases
