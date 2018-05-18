@@ -357,9 +357,11 @@ class SerialChart(Chart):
                 highlight_diff['y1'] = max(highlight_diff['y1'],
                                            highlight_value)
             if self.type == "line":
+                # Put first series on top
+                zo = 2 + (i == 0)
                 line, = self.ax.plot(dates, values,
                                      color=color,
-                                     zorder=2)
+                                     zorder=zo)
 
                 if len(self.labels) > i:
                     line.set_label(self.labels[i])
