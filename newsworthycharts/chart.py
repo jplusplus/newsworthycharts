@@ -84,7 +84,9 @@ class Chart(object):
         bbox = obj.get_window_extent()
         return bbox.height / float(self.h)
 
-    def _annotate_point(self, text, xy, direction, **kwargs):
+    def _annotate_point(self, text, xy,
+                        direction,
+                        **kwargs):
         """Adds a label to a given point.
 
         :param text: text content of label
@@ -97,6 +99,9 @@ class Chart(object):
             "fontproperties": self.small_font,
             "textcoords": "offset pixels",
         }
+        if "color" not in opts:
+            opts["color"] = self.style["neutral_color"]
+
         offset = 10  # px between point and text FIXME remove hardcoded value
         if direction == "up":
             opts["verticalalignment"] = "bottom"
@@ -477,4 +482,6 @@ class SerialChart(Chart):
             for i, date in enumerate(dates):
                 xy = (date, values[i])
                 # TODO: find an algorithm for positioning this text
-                self._annotate_point(a_formatter(values[i]), xy, direction="up")
+                self._annotate_point(a_formatter(values[i]), xy,
+                                     color=self.style["strong_color"],
+                                     direction="up")
