@@ -482,6 +482,16 @@ class SerialChart(Chart):
             for i, date in enumerate(dates):
                 xy = (date, values[i])
                 # TODO: find an algorithm for positioning this text
+                if i < len(dates)-1:
+                    if values[i] < values[i+1]:
+                        dir = "down"
+                    else:
+                        dir = "up"
+                else:
+                    if values[i-1] < values[i]:
+                        dir = "up"
+                    else:
+                        dir = "down"
                 self._annotate_point(a_formatter(values[i]), xy,
                                      color=self.style["strong_color"],
-                                     direction="up")
+                                     direction=dir)
