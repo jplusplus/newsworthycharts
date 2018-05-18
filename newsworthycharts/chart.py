@@ -475,3 +475,9 @@ class SerialChart(Chart):
             self.ax.plot(dates, values,
                          color=self.style["strong_color"], zorder=4,
                          marker=marker, linestyle='dashed')
+
+            # Annotate points in trendline
+            for i, date in enumerate(dates):
+                xy = (date, values[i])
+                # TODO: find an algorithm for positioning this text
+                self._annotate_point(a_formatter(values[i]), xy, direction="up")
