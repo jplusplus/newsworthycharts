@@ -299,9 +299,6 @@ class SerialChart(Chart):
         # Select a date to highlight
         if self.highlight is not None:
             highlight_date = to_date(self.highlight)
-        else:
-            # Use last date
-            highlight_date = to_date(self.data.x_points[-1])
 
         # Make an educated guess about the interval of the data
         if self.interval is None:
@@ -340,14 +337,16 @@ class SerialChart(Chart):
             values = [to_float(x[1]) for x in serie]
             dates = [to_date(x[0]) for x in serie]
 
-            try:
-                highlight_value = values[dates.index(highlight_date)]
-                highlight_values.append(highlight_value)
-            except ValueError:
-                # If this date is not in series, silently ignore
-                highlight_value = None
+            highlight_value = None
+            if self.highlight:
+                try:
+                    highlight_value = values[dates.index(highlight_date)]
+                    highlight_values.append(highlight_value)
+                except ValueError:
+                    # If this date is not in series, silently ignore
+                    pass
 
-            if highlight_value:
+            if self.highlight and highlight_value:
                 highlight_diff['y0'] = min(highlight_diff['y0'],
                                            highlight_value)
                 highlight_diff['y1'] = max(highlight_diff['y1'],
@@ -408,7 +407,10 @@ class SerialChart(Chart):
         y0, y1 = highlight_diff['y0'], highlight_diff['y1']
         # Only if more than one series has a value at this point, and they
         # actually look different
-        if (a_formatter(y0) != a_formatter(y1)) and (len(highlight_values) > 1) and self.type == "line":
+        print(self.highlight)
+        print(highlight_date)
+        print(highlight_values)
+        if self.highlight and (len(highlight_values) > 1) and (a_formatter(y0) != a_formatter(y1)) and self.type == "line":
             self.ax.vlines(highlight_date, y0, y1,
                            colors=self.style["neutral_color"],
                            linestyles='dashed')
