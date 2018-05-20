@@ -39,6 +39,8 @@ class Chart(object):
     labels = []  # Optionally one label for each dataset
     trendline = []  # List of x positions, or data points
 
+    _annotations = []
+
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  style: str='newsworthy', language: str='en-GB'):
@@ -102,7 +104,7 @@ class Chart(object):
         if "color" not in opts:
             opts["color"] = self.style["neutral_color"]
 
-        offset = 10  # px between point and text FIXME remove hardcoded value
+        offset = 16  # px between point and text FIXME remove hardcoded value
         if direction == "up":
             opts["verticalalignment"] = "bottom"
             opts["horizontalalignment"] = "center"
@@ -126,7 +128,9 @@ class Chart(object):
         # Override default opts if passed to the function
         opts.update(kwargs)
 
-        return self.ax.annotate(text, xy=xy, **opts)
+        ann = self.ax.annotate(text, xy=xy, **opts)
+        # ann = self.ax.text(text, xy[0], xy[1])
+        self._annotations.append(ann)
 
     def _add_caption(self, caption):
         """ Adds a caption. Supports multiline input.
@@ -497,3 +501,9 @@ class SerialChart(Chart):
                 self._annotate_point(a_formatter(values[i]), xy,
                                      color=self.style["strong_color"],
                                      direction=dir)
+
+            #from adjustText import adjust_text
+            #x = [a.xy[0] for a in self._annotations]
+            #y = [a.xy[1] for a in self._annotations]
+            #adjust_text(self._annotations,
+            #            x=x, y=y)
