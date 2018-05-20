@@ -29,6 +29,7 @@ setup(
         "langcodes>=1.1",
         "Babel>=2",
         "PyYAML>=3",
+        "adjustText>=0.4",
     ],
     include_package_data=True,
     download_url="{}/archive/{}.tar.gz".format(repo, version),
