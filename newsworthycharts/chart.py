@@ -380,7 +380,7 @@ class SerialChart(Chart):
             elif self.type == "bars":
                 colors = []
                 for timepoint in dates:
-                    if timepoint == highlight_date:
+                    if highlight_value and timepoint == highlight_date:
                         colors.append(self.style["strong_color"])
                     else:
                         colors.append(self.style["neutral_color"])
