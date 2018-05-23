@@ -52,7 +52,7 @@ def test_meta_data():
     c.data.append([("a", 2), ("b", 3), ("d", 4)])
     assert(c.data.min_val == 2)
     assert(c.data.max_val == 6)
-    assert(len(c.data.x_points) == 4)
+    assert(c.data.x_points == ["a", "b", "c", "d"])
 
 
 def test_filled_values():
