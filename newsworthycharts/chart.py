@@ -172,7 +172,8 @@ class Chart(object):
          Apply all changes, render file, and send to storage.
         """
         # Apply all changes, in the correct order for consistent rendering
-        self._add_data(self.data)
+        if len(self.data):
+            self._add_data()
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
         if self.ylabel is not None:
@@ -303,8 +304,9 @@ class SerialChart(Chart):
                         interval = "daily"
         return interval
 
-    def _add_data(self, series):
+    def _add_data(self):
 
+        series = self.data
         # Select a date to highlight
         if self.highlight is not None:
             highlight_date = to_date(self.highlight)
