@@ -26,3 +26,19 @@ def test_file_size():
     im = Image.open(container["png"])
     print(im.size)
     assert(im.size == (613, 409))
+
+
+def test_setting_title():
+    t1 = "Rosor i ett sprucket krus, är ändå alltid rosor"
+    t2 = "Äntligen stod prästen i predikstolen!"
+
+    c = Chart(800, 600)
+    assert(c.title is None)
+
+    # Set title by directly manipulating underlaying object
+    c.fig.suptitle(t1)
+    assert(c.title == t1)
+
+    # Set title using setter
+    c.title = t2
+    assert(c.title == t2)
