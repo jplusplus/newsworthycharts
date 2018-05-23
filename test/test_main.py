@@ -42,3 +42,23 @@ def test_setting_title():
     # Set title using setter
     c.title = t2
     assert(c.title == t2)
+
+
+def test_meta_data():
+    """ Check that adding data also updates metadata"""
+
+    c = Chart(900, 600)
+    c.data.append([("a", 5), ("b", 5.5), ("c", 6)])
+    c.data.append([("a", 2), ("b", 3), ("d", 4)])
+    assert(c.data.min_val == 2)
+    assert(c.data.max_val == 6)
+    assert(len(c.data.x_points) == 4)
+
+
+def test_filled_values():
+    """ Check the filled_values method"""
+
+    c = Chart(900, 600)
+    c.data.append([("a", 5), ("b", 5.5), ("c", 6)])
+    c.data.append([("a", 2), ("b", 3), ("d", 4)])
+    assert(c.data.filled_values[1][2] == 3.5)
