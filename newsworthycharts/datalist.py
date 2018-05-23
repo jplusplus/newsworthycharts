@@ -23,7 +23,7 @@ def fill_na(arr):
                        flatnonzero(~mask),
                        arr[~mask])
 
-    return arr
+    return arr.tolist()
 
 
 class DataList(MutableSequence):
