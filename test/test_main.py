@@ -61,4 +61,4 @@ def test_filled_values():
     c = Chart(900, 600)
     c.data.append([("a", 5), ("b", 5.5), ("c", 6)])
     c.data.append([("a", 2), ("b", 3), ("d", 4)])
-    assert(c.data.filled_values[1][2] == 3.5)
+    assert(c.data.filled_values[1] == [2, 3, 3.5, 4])
