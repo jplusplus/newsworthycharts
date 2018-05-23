@@ -30,6 +30,7 @@ setup(
         "Babel>=2",
         "PyYAML>=3",
         "adjustText>=0.4",
+        "numPy",
     ],
     include_package_data=True,
     download_url="{}/archive/{}.tar.gz".format(repo, version),
