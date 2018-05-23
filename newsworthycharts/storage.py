@@ -36,6 +36,27 @@ class Storage(object):
                                         name=str(id(self)))
 
 
+class DictStorage(Storage):
+    """ Saves images as bytestring references in a dictionary.
+        Mostly useful for testing.
+    """
+    def __init__(self, dict):
+        """
+        :param dict (dict): A dictionary that will be filled with
+                            filename: bytestring
+        """
+        self.dict = dict
+
+    def save(self, key, stream, filetype):
+        """
+        :param key (str): Disregarded.
+        :param stream (BytesIO): A stream containing the file data
+        :param filetype (str): File extension, used as dict key
+        """
+        stream.seek(0)
+        self.dict[filetype] = stream
+
+
 class LocalStorage(Storage):
     """ Save images as a file on the local file system.
     """
@@ -47,7 +68,7 @@ class LocalStorage(Storage):
 
     def save(self, key, stream, filetype):
         """
-        :param key (str): Used for creating filename. Files may be oberwritten.
+        :param key (str): Used for creating filename. Files may be overwritten.
         :param stream (BytesIO): A stream containing the file data
         :param filetype (str): File extension
         """
