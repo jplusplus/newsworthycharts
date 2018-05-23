@@ -4,6 +4,26 @@ Holds a class for storing lists of data (timeseries etc), and related methods.
 from collections import MutableSequence
 from math import inf
 from .utils import to_float
+from numpy import array, isnan, interp, flatnonzero
+
+
+def fill_na(arr):
+    """Get an estimate for missing value based on closest non-missing values in
+    series.
+    https://stackoverflow.com/questions/9537543/replace-nans-in-numpy-array-with-closest-non-nan-value
+
+    >>> fill_na([2.0, None, 4.0])
+    [2.0, 3.0, 4.0]
+    """
+    if isinstance(arr, list):
+        arr = array(arr)
+    arr = arr.astype(float)
+    mask = isnan(arr)
+    arr[mask] = interp(flatnonzero(mask),
+                       flatnonzero(~mask),
+                       arr[~mask])
+
+    return arr
 
 
 class DataList(MutableSequence):
@@ -26,6 +46,35 @@ class DataList(MutableSequence):
         self.min_val = min(self.min_val, min(values))
         self.max_val = max(self.max_val, max(values))
         self._x_points.update([x[0] for x in v])
+
+    @property
+    def values(self):
+        """ Return values from each data serie """
+        return [[to_float(x[1]) for x in s] for s in self.list]
+
+    @property
+    def as_dict(self):
+        """ Return data points as dictionaries """
+        return [{x[0]: x[1] for x in s} for s in self.list]
+
+    @property
+    def filled_values(self):
+        """ Return values with all gaps filled, so that each series has the
+        same number of points.
+
+        >>>> dl = DataList([
+                    [("a", 5), ("b", 6), ("c", 7)],
+                    [("a", 1), ("c", 3)]
+             ])
+        >>>> dl.filled_y_values
+        [[5, 6, 7], [1, 2, 3]]
+        """
+
+        x_points = self.x_points
+        return [fill_na([to_float(d[x])
+                        if x in d else None
+                        for x in x_points])
+                for d in self.as_dict]
 
     @property
     def x_points(self):

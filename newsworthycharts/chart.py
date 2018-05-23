@@ -431,9 +431,11 @@ class SerialChart(Chart):
         # Shade area between lines if there are exactly 2 series
         # For more series, the chart will get messy with shading
         if len(series) == 2:
+            # Fill any gaps in series
+            filled_values = self.data.filled_values
             self.ax.fill_between([to_date(x) for x in self.data.x_points],
-                                 [to_float(x[1]) for x in series[0]],
-                                 [to_float(x[1]) for x in series[1]],
+                                 filled_values[0],  # converted to float already
+                                 filled_values[1],
                                  facecolor=self.style["fill_between_color"],
                                  alpha=self.style["fill_between_alpha"])
 
