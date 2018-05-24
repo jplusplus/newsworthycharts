@@ -584,6 +584,7 @@ class CategoricalChart(Chart):
         a_formatter = self._get_annotation_formatter()
         va_formatter = self._get_value_axis_formatter()
         value_axis.set_major_formatter(va_formatter)
+        value_axis.grid(True)
 
         for i, data in enumerate(self.data):
 
