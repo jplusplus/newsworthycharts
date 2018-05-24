@@ -600,10 +600,16 @@ class CategoricalChart(Chart):
                 colors[i] = highlight_color
                 if self.bar_orientation == "horizontal":
                     xy = (values[i], i)
-                    dir = "right"
+                    if values[i] >= 0:
+                        dir = "right"
+                    else:
+                        dir = "left"
                 else:
-                    dir = "up"
                     xy = (i, values[i])
+                    if values[i] >= 0:
+                        dir = "up"
+                    else:
+                        dir = "down"
                 self._annotate_point(a_formatter(values[i]), xy,
                                      direction=dir)
 
