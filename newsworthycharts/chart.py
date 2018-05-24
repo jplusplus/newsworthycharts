@@ -389,12 +389,9 @@ class SerialChart(Chart):
 
                 # Replace None values with 0's to be able to plot bars
                 values = [0 if v is None else v for v in values]
-                if self.interval is None:
-                    # if no interval provided, self._guess_interval() somehow
-                    # failed to come up with a proper estimate
-                    bar_w = delta.days * 0.96 / self.len(self.data.x_points)
-                else:
-                    bar_w = self._days_in(self.interval) * 0.96
+
+                # Set bar width, based on interval
+                bar_w = self._days_in(self.interval) * 0.94
 
                 bars = self.ax.bar(dates, values,
                                    color=colors,
