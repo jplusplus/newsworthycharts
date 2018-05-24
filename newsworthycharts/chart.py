@@ -448,7 +448,11 @@ class SerialChart(Chart):
         y0, y1 = highlight_diff['y0'], highlight_diff['y1']
         # Only if more than one series has a value at this point, and they
         # actually look different
-        if self.highlight and (len(highlight_values) > 1) and (a_formatter(y0) != a_formatter(y1)) and self.type == "line":
+        if self.highlight and\
+           (len(highlight_values) > 1) and\
+           (a_formatter(y0) != a_formatter(y1)) and\
+           self.type == "line":
+
             self.ax.vlines(highlight_date, y0, y1,
                            colors=self.style["neutral_color"],
                            linestyles='dashed')
@@ -462,7 +466,7 @@ class SerialChart(Chart):
             # Fill any gaps in series
             filled_values = self.data.filled_values
             self.ax.fill_between([to_date(x) for x in self.data.x_points],
-                                 filled_values[0],  # converted to float already
+                                 filled_values[0],  # already a float
                                  filled_values[1],
                                  facecolor=self.style["fill_between_color"],
                                  alpha=self.style["fill_between_alpha"])
@@ -534,8 +538,8 @@ class SerialChart(Chart):
                                      color=self.style["strong_color"],
                                      direction=dir)
 
-            #from adjustText import adjust_text
-            #x = [a.xy[0] for a in self._annotations]
-            #y = [a.xy[1] for a in self._annotations]
-            #adjust_text(self._annotations,
-            #            x=x, y=y)
+            # from adjustText import adjust_text
+            # x = [a.xy[0] for a in self._annotations]
+            # y = [a.xy[1] for a in self._annotations]
+            # adjust_text(self._annotations,
+            #             x=x, y=y)
