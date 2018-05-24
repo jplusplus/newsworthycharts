@@ -424,7 +424,6 @@ class SerialChart(Chart):
                 # Set bar width, based on interval
                 bar_w = [self._days_in(self.interval, d) * self.bar_width
                          for d in dates]
-                print(bar_w)
                 bars = self.ax.bar(dates, values,
                                    color=colors,
                                    width=bar_w,
