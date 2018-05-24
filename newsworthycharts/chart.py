@@ -391,7 +391,7 @@ class SerialChart(Chart):
                 values = [0 if v is None else v for v in values]
 
                 # Set bar width, based on interval
-                bar_w = self._days_in(self.interval) * 0.94
+                bar_w = self._days_in(self.interval) * 0.85
 
                 bars = self.ax.bar(dates, values,
                                    color=colors,
