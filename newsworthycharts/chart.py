@@ -79,6 +79,25 @@ class Chart(object):
         real_height = float(height)/dpi
         self.fig.set_size_inches(real_width, real_height)
 
+    def _get_value_axis_formatter(self):
+            formatter = Formatter(self.language, scale="celsius")
+            if self.units == "percent":
+                return FuncFormatter(formatter.percent)
+                a_formatter = y_formatter
+            elif self.units == "degrees":
+                return FuncFormatter(formatter.temperature_short)
+            else:
+                return FuncFormatter(formatter.number)
+
+    def _get_annotation_formatter(self):
+            formatter = Formatter(self.language, scale="celsius")
+            if self.units == "percent":
+                return FuncFormatter(formatter.percent)
+            elif self.units == "degrees":
+                return FuncFormatter(formatter.temperature)
+            else:
+                return FuncFormatter(formatter.number)
+
     def _rel_height(self, obj):
         """ Get the relative height of a chart object to the whole canvas.
         """
@@ -347,16 +366,8 @@ class SerialChart(Chart):
             self.interval = self._guess_interval()
 
         # Formatters for axis and annotations
-        formatter = Formatter(self.language, scale="celsius")
-        if self.units == "percent":
-            y_formatter = FuncFormatter(formatter.percent)
-            a_formatter = y_formatter
-        elif self.units == "degrees":
-            y_formatter = FuncFormatter(formatter.temperature_short)
-            a_formatter = FuncFormatter(formatter.temperature)
-        else:
-            y_formatter = FuncFormatter(formatter.number)
-            a_formatter = y_formatter
+        y_formatter = self._get_value_axis_formatter()
+        a_formatter = self._get_annotation_formatter()
 
         # Number of days on x axis (Matplotlib will use days as unit here)
         xmin, xmax = to_date(self.data.x_points[0]), to_date(self.data.x_points[-1])
@@ -466,7 +477,7 @@ class SerialChart(Chart):
             # Fill any gaps in series
             filled_values = self.data.filled_values
             self.ax.fill_between([to_date(x) for x in self.data.x_points],
-                                 filled_values[0],  # already a float
+                                 filled_values[0],  # already a float1w
                                  filled_values[1],
                                  facecolor=self.style["fill_between_color"],
                                  alpha=self.style["fill_between_alpha"])
@@ -543,3 +554,33 @@ class SerialChart(Chart):
             # y = [a.xy[1] for a in self._annotations]
             # adjust_text(self._annotations,
             #             x=x, y=y)
+
+
+class CategoricalChart(Chart):
+    """ Plot categorical data to a bar chart
+    """
+
+    _bar_orientation = "horizontal"  # [horizontal|vertical]
+
+    @property
+    def bar_orientation(self):
+        return self._bar_orientation
+
+    @bar_orientation.setter
+    def bar_orientation(self, val):
+        if val in ["horizontal", "vertical"]:
+            self._bar_orientation = val
+        else:
+            raise ValueError("Valid oriantations: horizontal | vertical")
+
+    def _add_data(self):
+        if self.bar_orientation == "horizontal":
+            value_axis = self.ax.xaxis
+            category_axis = self.ax.yaxis
+        else:
+            value_axis = self.ax.yaxis
+            category_axis = self.ax.xaxis
+
+        a_formatter = self._get_annotation_formatter()
+        va_formatter = self._get_value_axis_formatter()
+        value_axis.set_major_formatter(va_formatter)
