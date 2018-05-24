@@ -584,3 +584,40 @@ class CategoricalChart(Chart):
         a_formatter = self._get_annotation_formatter()
         va_formatter = self._get_value_axis_formatter()
         value_axis.set_major_formatter(va_formatter)
+
+        for i, data in enumerate(self.data):
+
+            # Replace None values with 0's to be able to plot bars
+            values = [0 if x[1] is None else float(x[1]) for x in data]
+            categories = [x[0] for x in data]
+
+            color = self.style["neutral_color"]
+            highlight_color = self.style["strong_color"]
+
+            colors = [color] * len(values)
+            if self.highlight:
+                i = categories.index(self.highlight)
+                colors[i] = highlight_color
+                if self.bar_orientation == "horizontal":
+                    xy = (values[i], i)
+                    dir = "right"
+                else:
+                    dir = "up"
+                    xy = (i, values[i])
+                self._annotate_point(a_formatter(values[i]), xy,
+                                     direction=dir)
+
+            import numpy
+            label_pos = numpy.arange(len(values))
+
+            if self.bar_orientation == "horizontal":
+                self.ax.barh(label_pos, values, align='center',
+                             color=colors, zorder=2)
+                self.ax.set_yticks(label_pos)
+                self.ax.set_yticklabels(categories)
+                self.ax.invert_yaxis()
+
+            else:
+                self.ax.bar(label_pos, values, color=colors, zorder=2)
+                self.ax.set_xticks(label_pos)
+                self.ax.set_xticklabels(categories)
