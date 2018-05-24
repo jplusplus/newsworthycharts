@@ -15,6 +15,7 @@ from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
 from matplotlib.dates import DateFormatter
 from langcodes import standardize_tag
+from dateutil.relativedelta import relativedelta
 
 image_formats = MIME_TYPES.keys()
 
@@ -254,6 +255,9 @@ class SerialChart(Chart):
     """
 
     _type = "bars"
+    bar_width = 0.9
+    # Percent of period. 0.85 means a bar in a chart with yearly data will be
+    # around 310 or 311 days wide.
     max_ticks = 5
     ymin = 0  # Set this to None to automatically adjust y axis to data
 
@@ -268,19 +272,46 @@ class SerialChart(Chart):
         else:
             raise ValueError("Supported types are bars and line")
 
-    def _days_in(self, interval):
-        """ Estimated whole number of days in a given interval.
-        Return a typical number, used for calculating bar widths, and other
-        minor charts tweaks.
+    def _days_in(self, interval, d=None):
+        """ Return number of days in a given period.
+        If only interval is given, use a typical number of days.
+
+        >>>> _days_in(monthly)
+        30
+        >>>> _days_in(monthly, datetime(2004, 02, 05))
+        29
         """
-        days_per_interval = {
-            'yearly': 365,
-            'quarterly': 91,
-            'monthly': 30,
-            'weekly': 7,
-            'daily': 1,
-        }
-        return days_per_interval[interval]
+        if d is None:
+            return {
+                'yearly': 365,
+                'quarterly': 91,
+                'monthly': 30,
+                'weekly': 7,
+                'daily': 1,
+            }[interval]
+        else:
+            # https://stackoverflow.com/questions/4938429/how-do-we-determine-the-number-of-days-for-a-given-month-in-python
+
+            if interval == "yearly":
+                return (
+                    (d + relativedelta(years=1)).replace(day=1, month=1)
+                    - d.replace(day=1, month=1)
+                ).days
+            elif interval == "quarterly":
+                return (
+                    (d + relativedelta(months=3)).replace(day=1)
+                    - d.replace(day=1)
+                ).days
+            elif interval == "monthly":
+                return (
+                    (d + relativedelta(months=1)).replace(day=1)
+                    - d.replace(day=1)
+                ).days
+            elif interval == "weekly":
+                # Assuming ISO 8601 here
+                return 7
+            elif interval == "daily":
+                return 1
 
     def _guess_interval(self):
         """ Return a probable interval, e.g. "montly", given current data
@@ -391,8 +422,9 @@ class SerialChart(Chart):
                 values = [0 if v is None else v for v in values]
 
                 # Set bar width, based on interval
-                bar_w = self._days_in(self.interval) * 0.85
-
+                bar_w = [self._days_in(self.interval, d) * self.bar_width
+                         for d in dates]
+                print(bar_w)
                 bars = self.ax.bar(dates, values,
                                    color=colors,
                                    width=bar_w,

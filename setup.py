@@ -31,6 +31,7 @@ setup(
         "PyYAML>=3",
         "adjustText>=0.4",
         "numPy",
+        "python-dateutil>=2",
     ],
     include_package_data=True,
     download_url="{}/archive/{}.tar.gz".format(repo, version),
