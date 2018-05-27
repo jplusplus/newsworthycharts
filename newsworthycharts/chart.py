@@ -596,7 +596,7 @@ class CategoricalChart(Chart):
             highlight_color = self.style["strong_color"]
 
             colors = [color] * len(values)
-            if self.highlight:
+            if self.highlight and self.highlight in categories:
                 i = categories.index(self.highlight)
                 colors[i] = highlight_color
                 if self.bar_orientation == "horizontal":
