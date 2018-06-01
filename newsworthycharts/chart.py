@@ -621,10 +621,10 @@ class CategoricalChart(Chart):
                 self.ax.barh(label_pos, values, align='center',
                              color=colors, zorder=2)
                 self.ax.set_yticks(label_pos)
-                self.ax.set_yticklabels(categories)
+                self.ax.set_yticklabels(categories, fontsize='small')
                 self.ax.invert_yaxis()
 
             else:
                 self.ax.bar(label_pos, values, color=colors, zorder=2)
                 self.ax.set_xticks(label_pos)
-                self.ax.set_xticklabels(categories)
+                self.ax.set_xticklabels(categories, fontsize='small')
