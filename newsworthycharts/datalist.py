@@ -40,13 +40,22 @@ class DataList(MutableSequence):
         self.extend(list(args))
 
     def check(self, v):
-        """ Update metadata with newly added data """
+        # Update metadata with newly added data
         values = [to_float(x[1]) for x in v]
         values = [x for x in values if x is not None]
         if len(values):
             self.min_val = min(self.min_val, min(values))
             self.max_val = max(self.max_val, max(values))
         self._x_points.update([x[0] for x in v])
+        # Normalize to 3 digit syntax
+        v = [x if len(x) > 2
+             else (x[0], x[1], None)
+             for x in v]
+        # Automatically enumerate empty x values / category names if empty
+        v = [x if x[0] not in ["", None]
+             else (i, x[1], x[2])
+             for i, x in enumerate(v)]
+        return v
 
     @property
     def values(self):
@@ -91,11 +100,11 @@ class DataList(MutableSequence):
         del self.list[i]
 
     def __setitem__(self, i, v):
-        self.check(v)
+        v = self.check(v)
         self.list[i] = v
 
     def insert(self, i, v):
-        self.check(v)
+        v = self.check(v)
         self.list.insert(i, v)
 
     def __str__(self):
