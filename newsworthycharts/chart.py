@@ -586,7 +586,7 @@ class CategoricalChart(Chart):
         value_axis.set_major_formatter(va_formatter)
         value_axis.grid(True)
 
-        for i, data in enumerate(self.data):
+        for data in self.data:
 
             # Replace None values with 0's to be able to plot bars
             values = [0 if x[1] is None else float(x[1]) for x in data]
@@ -596,23 +596,30 @@ class CategoricalChart(Chart):
             highlight_color = self.style["strong_color"]
 
             colors = [color] * len(values)
-            if self.highlight and self.highlight in categories:
-                i = categories.index(self.highlight)
-                colors[i] = highlight_color
+
+            # Add any annotations given inside the data
+            # and also annotate highlighted value
+            for i, d in enumerate(data):
+                # Get position for any highlighting to happen
                 if self.bar_orientation == "horizontal":
-                    xy = (values[i], i)
-                    if values[i] >= 0:
+                    xy = (d[1], i)
+                    if d[1] >= 0:
                         dir = "right"
                     else:
                         dir = "left"
                 else:
-                    xy = (i, values[i])
-                    if values[i] >= 0:
+                    xy = (i, d[1])
+                    if d[1] >= 0:
                         dir = "up"
                     else:
                         dir = "down"
-                self._annotate_point(a_formatter(values[i]), xy,
-                                     direction=dir)
+
+                if self.highlight and self.highlight == d[0]:
+                    colors[i] = highlight_color
+                    self._annotate_point(a_formatter(d[1]), xy, direction=dir)
+                elif d[2] is not None:
+                    # Only add inlined annotations if not highlighted
+                    self._annotate_point(d[2], xy, direction=dir)
 
             import numpy
             label_pos = numpy.arange(len(values))
