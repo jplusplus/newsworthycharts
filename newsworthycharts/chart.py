@@ -32,6 +32,8 @@ class Chart(object):
     ylabel = None
     caption = None
     highlight = None
+    show_ticks = True  # toggle category names, dates, etc
+
     # We will try to guess interval based on the data,
     # but explicitly providing a value is safer. Used for finetuning.
     interval = None  # ["yearly", "quarterly", "monthly", "weekly", "daily"]
@@ -72,6 +74,8 @@ class Chart(object):
         FigureCanvas(self.fig)
         self.ax = self.fig.add_subplot(111)
         # self.fig, self.ax = plt.subplots()
+        self.value_axis = self.ax.yaxis
+        self.category_axis = self.ax.xaxis
 
         # Calculate size in inches
         dpi = self.fig.get_dpi()
@@ -194,6 +198,8 @@ class Chart(object):
         # Apply all changes, in the correct order for consistent rendering
         if len(self.data):
             self._add_data()
+        if not self.show_ticks:
+            self.category_axis.set_visible(False)
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
         if self.ylabel is not None:
@@ -575,16 +581,13 @@ class CategoricalChart(Chart):
 
     def _add_data(self):
         if self.bar_orientation == "horizontal":
-            value_axis = self.ax.xaxis
-            category_axis = self.ax.yaxis
-        else:
-            value_axis = self.ax.yaxis
-            category_axis = self.ax.xaxis
+            self.value_axis = self.ax.xaxis
+            self.category_axis = self.ax.yaxis
 
         a_formatter = self._get_annotation_formatter()
         va_formatter = self._get_value_axis_formatter()
-        value_axis.set_major_formatter(va_formatter)
-        value_axis.grid(True)
+        self.value_axis.set_major_formatter(va_formatter)
+        self.value_axis.grid(True)
 
         for data in self.data:
 
