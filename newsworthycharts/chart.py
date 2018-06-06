@@ -617,12 +617,14 @@ class CategoricalChart(Chart):
                     else:
                         dir = "down"
 
+                if d[2] is not None:
+                    self._annotate_point(d[2], xy, direction=dir)
+                elif self.highlight and self.highlight == d[0]:
+                    # Only add highlight value if not already annotated
+                    self._annotate_point(a_formatter(d[1]), xy, direction=dir)
+
                 if self.highlight and self.highlight == d[0]:
                     colors[i] = highlight_color
-                    self._annotate_point(a_formatter(d[1]), xy, direction=dir)
-                elif d[2] is not None:
-                    # Only add inlined annotations if not highlighted
-                    self._annotate_point(d[2], xy, direction=dir)
 
             import numpy
             label_pos = numpy.arange(len(values))
