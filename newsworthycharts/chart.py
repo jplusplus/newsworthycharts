@@ -496,11 +496,13 @@ class SerialChart(Chart):
 
         # Y axis formatting
         # TODO: Clea up this, and add proper handling to negative ymax cases
-        padding_bottom = self.data.min_val * 0.15
+        padding_bottom = abs(self.data.min_val * 0.15)
         if self.ymin is not None:
             ymin = min(self.ymin, self.data.min_val - padding_bottom)
         else:
             ymin = self.data.min_val - padding_bottom
+        print(self.data.min_val, ymin)
+
         self.ax.set_ylim(ymin=ymin,
                          ymax=self.data.max_val * 1.15)
 
