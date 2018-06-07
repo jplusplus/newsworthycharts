@@ -106,12 +106,27 @@ class Chart(object):
             else:
                 return FuncFormatter(formatter.number)
 
+    def _text_rel_height(self, obj):
+        """ Get the relative height of a text object to the whole canvas.
+        Will try and guess even if wrap=True.
+        """
+        if not obj.get_wrap():
+            # No autowrapping, use default bbox checking
+            return self._rel_height(obj)
+
+        self.fig.canvas.draw()  # Draw text to find out how big it is
+        t = obj.get_text()
+        r = self.fig.canvas.renderer
+        w, h, d = r.get_text_width_height_descent(t, obj._fontproperties,
+                                                  ismath=obj.is_math_text(t))
+        num_lines = len(obj._get_wrapped_text().split("\n"))
+        return (h * num_lines) / float(self.h)
+
     def _rel_height(self, obj):
         """ Get the relative height of a chart object to the whole canvas.
         """
-        # We must draw the figure to know all sizes
-        self.fig.draw(renderer=self.fig.canvas.renderer)
-        bbox = obj.get_window_extent(self.fig.canvas.renderer)
+        self.fig.canvas.draw()  # We must draw the canvas to know all sizes
+        bbox = obj.get_window_extent()
         return bbox.height / float(self.h)
 
     def _annotate_point(self, text, xy,
@@ -169,7 +184,7 @@ class Chart(object):
 
         # Increase the bottom padding by the height of the text bbox
         margin = self.style["figure.subplot.bottom"]
-        margin += self._rel_height(text)
+        margin += self._text_rel_height(text)
         self.fig.subplots_adjust(bottom=margin)
 
     def _add_title(self, title_text):
@@ -178,8 +193,10 @@ class Chart(object):
                                  multialignment="left",
                                  fontproperties=self.title_font)
 
-        padding_top = self.style["figure.subplot.top"] * 0.96 # FIXME check bbox
-        self.fig.subplots_adjust(top=padding_top)
+        # Increase the top padding by the height of the text bbox
+        # Ignoring self.style["figure.subplot.top"]
+        margin = 1 - self._text_rel_height(text)
+        self.fig.subplots_adjust(top=margin)
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
@@ -671,8 +688,8 @@ class CategoricalChart(Chart):
                 self.ax.invert_yaxis()
 
                 # Redraw to know how much space category names take up
-                self.fig.draw(renderer=self.fig.canvas.renderer)
-                bbox = self.ax.get_window_extent(self.fig.canvas.renderer)
+                self.fig.canvas.draw()
+                bbox = self.ax.get_window_extent()
                 margin = self.style["figure.subplot.left"]
                 margin += 1 - bbox.width / float(self.w) + 0.04
                 # TODO: Why do we need that extra spacing?
