@@ -27,7 +27,7 @@ setup(
         "boto3>=1.6",
         "matplotlib>=2",
         "langcodes>=1.1",
-        "Babel>=2",
+        "Babel>=2.6",
         "PyYAML>=3",
         "adjustText>=0.4",
         "numPy",
