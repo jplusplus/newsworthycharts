@@ -176,8 +176,10 @@ class Chart(object):
                                  multialignment="left",
                                  fontproperties=self.title_font)
 
-        padding = self.style["figure.subplot.top"]
-        self.fig.subplots_adjust(top=padding)
+        padding_top = self.style["figure.subplot.top"] * 0.96
+        # Add some extra space below title
+        padding_left = self.style["figure.subplot.left"]
+        self.fig.subplots_adjust(top=padding_top, left=padding_left)
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
