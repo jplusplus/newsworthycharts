@@ -574,20 +574,7 @@ class SerialChart(Chart):
             # Annotate points in trendline
             for i, date in enumerate(dates):
                 xy = (date, values[i])
-                # TODO: find an algorithm for positioning this text
-                if i < len(dates)-1:
-                    if values[i] < values[i+1]:
-                        dir = "down"
-                    else:
-                        dir = "up"
-                elif i > 0:
-                    if values[i-1] < values[i]:
-                        dir = "up"
-                    else:
-                        dir = "down"
-                else:
-                    # TODO
-                    dir = "up"
+                dir = self._get_annotation_direction(i, values)
                 self._annotate_point(a_formatter(values[i]), xy,
                                      color=self.style["strong_color"],
                                      direction=dir)
