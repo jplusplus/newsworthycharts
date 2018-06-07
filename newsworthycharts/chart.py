@@ -32,7 +32,9 @@ class Chart(object):
     ylabel = None
     caption = None
     highlight = None
-    decimals = 0  # number of decimals to show in annotations, value ticks, etc
+    decimals = None
+    # number of decimals to show in annotations, value ticks, etc
+    # None = auto
     show_ticks = True  # toggle category names, dates, etc
 
     # We will try to guess interval based on the data,
