@@ -5,6 +5,9 @@ backend : Agg
 # Resolution
 figure.dpi        : 150
 
+# Margins
+savefig.pad_inches  : 0.2
+
 # Axes and ticks
 axes.grid         : False
 axes.axisbelow    : True
@@ -26,7 +29,8 @@ font.family       : sans-serif
 font.sans-serif   : Open Sans, Helvetica, Arial
 font.size         : 10
 font.monospace    : Ubuntu Mono
-figure.titlesize  : xx-large
+figure.titlesize  : x-large
+
 
 # Some custom settings for Newsworthy
 # Prefix each line with #!
