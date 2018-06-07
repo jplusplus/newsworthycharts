@@ -32,6 +32,7 @@ class Chart(object):
     ylabel = None
     caption = None
     highlight = None
+    decimals = 0  # number of decimals to show in annotations, value ticks, etc
     show_ticks = True  # toggle category names, dates, etc
 
     # We will try to guess interval based on the data,
@@ -84,7 +85,9 @@ class Chart(object):
         self.fig.set_size_inches(real_width, real_height)
 
     def _get_value_axis_formatter(self):
-            formatter = Formatter(self.language, scale="celsius")
+            formatter = Formatter(self.language,
+                                  decimals= self.decimals,
+                                  scale="celsius")
             if self.units == "percent":
                 return FuncFormatter(formatter.percent)
                 a_formatter = y_formatter
@@ -94,7 +97,9 @@ class Chart(object):
                 return FuncFormatter(formatter.number)
 
     def _get_annotation_formatter(self):
-            formatter = Formatter(self.language, scale="celsius")
+            formatter = Formatter(self.language,
+                                  decimals= self.decimals,
+                                  scale="celsius")
             if self.units == "percent":
                 return FuncFormatter(formatter.percent)
             elif self.units == "degrees":
