@@ -42,7 +42,6 @@ class Formatter(object):
             else:
                 x = round(x, 2)
         else:
-            print(x, round(x, self.decimals+2), format_percent(x, locale=self.l, decimal_quantization=False))
             x = round(x, self.decimals+2)
 
         return format_percent(x, locale=self.l, decimal_quantization=False)
