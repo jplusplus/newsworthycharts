@@ -356,7 +356,7 @@ class SerialChart(Chart):
             weeks = [str(x.year) + str(x.isocalendar()[1]) for x in dates]
             if len(years) > len(set(years)):
                 # there are years with more than one point
-                if all(m in ["01", "04", "07", "10"] for m in months):
+                if all(m in [1, 4, 7, 10] for m in months):
                     interval = "quarterly"
                 else:
                     interval = "monthly"
