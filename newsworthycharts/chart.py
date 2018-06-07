@@ -490,8 +490,19 @@ class SerialChart(Chart):
                 else:
                     dir = "down"
             if self.type == "line":
-                i = dates.index(highlight_date)
-                dir = self._get_annotation_direction(i, values)
+                if len(highlight_values) > 1:
+                    # When highlighting two values on the same point,
+                    # put them in opposite direction
+                    if hv == max(highlight_values):
+                        dir = "up"
+                    elif hv == min(highlight_values):
+                        dir = "down"
+                    else:
+                        dir = "left"  # To the right we have diff annotation
+                else:
+                    # Otherwise, use what works best with the line shape
+                    i = dates.index(highlight_date)
+                    dir = self._get_annotation_direction(i, values)
             self._annotate_point(value_label, xy, direction=dir)
 
         # Highlight diff
