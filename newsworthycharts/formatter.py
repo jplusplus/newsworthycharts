@@ -38,11 +38,14 @@ class Formatter(object):
         if self.decimals is None:
             # Show one decimal by default if values is < 1%
             if abs(x) < 0.01:
-                x = round(x, 1)
+                x = round(x, 1+2)
+            else:
+                x = round(x, 2)
         else:
-            x = round(x, self.decimals)
+            print(x, round(x, self.decimals+2), format_percent(x, locale=self.l, decimal_quantization=False))
+            x = round(x, self.decimals+2)
 
-        return format_percent(x, locale=self.l)
+        return format_percent(x, locale=self.l, decimal_quantization=False)
 
     def temperature_short(self, x, *args, **kwargs):
         """ Format a temperature in deegrees, without scale letter """
