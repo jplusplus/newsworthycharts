@@ -64,9 +64,6 @@ class Chart(object):
         self.language = standardize_tag(language)
 
         # Dynamic typography
-        self.small_font = FontProperties()
-        self.small_font.set_size("small")
-
         self.title_font = FontProperties()
         self.title_font.set_family(self.style["title_font"])
         self.title_font.set_size(self.style["figure.titlesize"])
@@ -127,7 +124,7 @@ class Chart(object):
         :param kwags: any params accepted by plt.annotate
         """
         opts = {
-            "fontproperties": self.small_font,
+            'fontsize': "small",
             "textcoords": "offset pixels",
         }
         if "color" not in opts:
@@ -166,7 +163,7 @@ class Chart(object):
         """
         text = self.fig.text(0.01, 0.01, caption,
                              color=self.style["neutral_color"], wrap=True,
-                             fontproperties=self.small_font)
+                             fontsize="small")
 
         # Increase the bottom padding by the height of the text bbox
         margin = self.style["figure.subplot.bottom"]
@@ -184,11 +181,11 @@ class Chart(object):
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
-        self.ax.set_xlabel(label, fontproperties=self.small_font)
+        self.ax.set_xlabel(label, fontsize="small")
 
     def _add_ylabel(self, label):
         """Adds a label to the y axis."""
-        self.ax.set_ylabel(label, fontproperties=self.small_font)
+        self.ax.set_ylabel(label, fontsize="small")
 
     def _add_data(self):
         """ Plot data to the chart.
