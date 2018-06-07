@@ -366,6 +366,31 @@ class SerialChart(Chart):
                         interval = "daily"
         return interval
 
+    def _get_annotation_direction(self, index, values):
+        """ Given an index and series of values, provide the estimated best
+        direction for an annotation. This will be an educated guess, and the
+        annotation is not guaranteed to be free from overlapping,
+        """
+        num_vals = len(values)
+        if num_vals < 2:
+            return "up"
+        if index == 0:
+            if values[0] < values[1]:
+                return "down"
+            else:
+                return "up"
+        if index == num_vals - 1:
+            if values[-2] <= values[-1]:
+                return "up"
+            else:
+                return "down"
+        val = values[index]
+        if val == max(values[index-1:index+2]):
+            return "up"
+        if val == min(values[index-1:index+2]):
+            return "down"
+        return "up"
+
     def _add_data(self):
 
         series = self.data
@@ -459,13 +484,15 @@ class SerialChart(Chart):
         for hv in highlight_values:
             value_label = a_formatter(hv)
             xy = (highlight_date, hv)
-            if hv == max(highlight_values):
-                # Also used for single series, eg all bars charts
-                self._annotate_point(value_label, xy, direction="up")
-            elif hv == min(highlight_values):
-                self._annotate_point(value_label, xy, direction="down")
-            else:
-                self._annotate_point(value_label, xy, direction="left")
+            if self.type == "bars":
+                if hv >= 0:
+                    dir = "up"
+                else:
+                    dir = "down"
+            if self.type == "line":
+                i = dates.index(highlight_date)
+                dir = self._get_annotation_direction(i, values)
+            self._annotate_point(value_label, xy, direction=dir)
 
         # Highlight diff
         y0, y1 = highlight_diff['y0'], highlight_diff['y1']
@@ -495,7 +522,6 @@ class SerialChart(Chart):
                                  alpha=self.style["fill_between_alpha"])
 
         # Y axis formatting
-        # TODO: Clea up this, and add proper handling to negative ymax cases
         padding_bottom = abs(self.data.min_val * 0.15)
         if self.ymin is not None:
             ymin = min(self.ymin, self.data.min_val - padding_bottom)
@@ -554,11 +580,14 @@ class SerialChart(Chart):
                         dir = "down"
                     else:
                         dir = "up"
-                else:
+                elif i > 0:
                     if values[i-1] < values[i]:
                         dir = "up"
                     else:
                         dir = "down"
+                else:
+                    # TODO
+                    dir = "up"
                 self._annotate_point(a_formatter(values[i]), xy,
                                      color=self.style["strong_color"],
                                      direction=dir)
