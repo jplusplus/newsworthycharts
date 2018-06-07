@@ -111,7 +111,7 @@ class Chart(object):
         """
         # We must draw the figure to know all sizes
         self.fig.draw(renderer=self.fig.canvas.renderer)
-        bbox = obj.get_window_extent()
+        bbox = obj.get_window_extent(self.fig.canvas.renderer)
         return bbox.height / float(self.h)
 
     def _annotate_point(self, text, xy,
@@ -178,10 +178,8 @@ class Chart(object):
                                  multialignment="left",
                                  fontproperties=self.title_font)
 
-        padding_top = self.style["figure.subplot.top"] * 0.96
-        # Add some extra space below title
-        padding_left = self.style["figure.subplot.left"]
-        self.fig.subplots_adjust(top=padding_top, left=padding_left)
+        padding_top = self.style["figure.subplot.top"] * 0.96 # FIXME check bbox
+        self.fig.subplots_adjust(top=padding_top)
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
@@ -202,6 +200,7 @@ class Chart(object):
          Apply all changes, render file, and send to storage.
         """
         # Apply all changes, in the correct order for consistent rendering
+        self.fig.tight_layout()
         if len(self.data):
             self._add_data()
         if not self.show_ticks:
@@ -213,7 +212,7 @@ class Chart(object):
         if self.xlabel is not None:
             self._add_xlabel(self.xlabel)
         # tight_layout after _add_caption would ruin extra padding added there
-        self.fig.tight_layout()
+        # self.fig.tight_layout()
         if self.title is not None:
             self._add_title(self.title)
         if self.caption is not None:
@@ -671,6 +670,13 @@ class CategoricalChart(Chart):
                 self.ax.set_yticklabels(categories, fontsize='small')
                 self.ax.invert_yaxis()
 
+                # Redraw to know how much space category names take up
+                self.fig.draw(renderer=self.fig.canvas.renderer)
+                bbox = self.ax.get_window_extent(self.fig.canvas.renderer)
+                margin = self.style["figure.subplot.left"]
+                margin += 1 - bbox.width / float(self.w) + 0.04
+                # TODO: Why do we need that extra spacing?
+                self.fig.subplots_adjust(left=margin)
             else:
                 self.ax.bar(label_pos, values, color=colors, zorder=2)
                 self.ax.set_xticks(label_pos)
