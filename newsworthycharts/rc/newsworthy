@@ -33,6 +33,7 @@ figure.titleweight : 700
 axes.labelweight  : 300
 xtick.labelsize   : smaller
 ytick.labelsize   : smaller
+legend.fontsize   : smaller
 
 
 # Some custom settings for Newsworthy
