@@ -33,6 +33,7 @@ font.monospace    : Ubuntu Mono
 figure.titlesize  : xx-large
 xtick.labelsize   : smaller
 ytick.labelsize   : smaller
+legend.fontsize   : smaller
 
 
 # Some custom settings for Newsworthy
