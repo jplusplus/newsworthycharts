@@ -15,7 +15,7 @@ axes.axisbelow    : True
 axes.spines.left  : False
 axes.spines.top   : False
 axes.spines.right : False
-axes.titleweight  : 500
+axes.titleweight  : 700
 axes.labelweight  : 300
 ytick.left        : False
 xtick.minor.bottom: False
@@ -30,7 +30,9 @@ font.family       : sans-serif
 font.sans-serif   : Open Sans, Helvetica, Arial
 font.size         : 10
 font.monospace    : Ubuntu Mono
-figure.titlesize  : x-large
+figure.titlesize  : xx-large
+xtick.labelsize   : smaller
+ytick.labelsize   : smaller
 
 
 # Some custom settings for Newsworthy
