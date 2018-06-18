@@ -69,6 +69,7 @@ class Chart(object):
         self.title_font = FontProperties()
         self.title_font.set_family(self.style["title_font"])
         self.title_font.set_size(self.style["figure.titlesize"])
+        self.title_font.set_weight(self.style["figure.titleweight"])
 
         self.fig = Figure()
         FigureCanvas(self.fig)
