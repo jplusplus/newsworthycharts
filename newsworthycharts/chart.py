@@ -34,19 +34,21 @@ class Chart(object):
     highlight = None
     decimals = None
     # number of decimals to show in annotations, value ticks, etc
-    # None = auto
+    # None means automatically chose the best number
+
     show_ticks = True  # toggle category names, dates, etc
 
+    interval = None  # ["yearly", "quarterly", "monthly", "weekly", "daily"]
     # We will try to guess interval based on the data,
     # but explicitly providing a value is safer. Used for finetuning.
-    interval = None  # ["yearly", "quarterly", "monthly", "weekly", "daily"]
-    annotations = []
-    data = DataList()  # A list of datasets
+
+    annotations = []  # Manually added annotations
     labels = []  # Optionally one label for each dataset
     trendline = []  # List of x positions, or data points
+    annotate_trend = True  # Should we add values to points on trendline?
+    data = DataList()  # A list of datasets
 
     _annotations = []
-
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  style: str='newsworthy', language: str='en-GB'):
@@ -601,12 +603,13 @@ class SerialChart(Chart):
                          marker=marker, linestyle='dashed')
 
             # Annotate points in trendline
-            for i, date in enumerate(dates):
-                xy = (date, values[i])
-                dir = self._get_annotation_direction(i, values)
-                self._annotate_point(a_formatter(values[i]), xy,
-                                     color=self.style["strong_color"],
-                                     direction=dir)
+            if self.annotate_trend:
+                for i, date in enumerate(dates):
+                    xy = (date, values[i])
+                    dir = self._get_annotation_direction(i, values)
+                    self._annotate_point(a_formatter(values[i]), xy,
+                                         color=self.style["strong_color"],
+                                         direction=dir)
 
             # from adjustText import adjust_text
             # x = [a.xy[0] for a in self._annotations]
