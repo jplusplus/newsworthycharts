@@ -190,8 +190,7 @@ class Chart(object):
 
     def _add_title(self, title_text):
         """ Adds a title """
-        text = self.fig.suptitle(title_text, wrap=True, x=0,
-                                 horizontalalignment="left",
+        text = self.fig.suptitle(title_text, wrap=True,
                                  multialignment="left",
                                  fontproperties=self.title_font)
 
