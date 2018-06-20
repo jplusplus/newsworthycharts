@@ -696,7 +696,7 @@ class CategoricalChart(Chart):
                 self.fig.canvas.draw()
                 bbox = self.ax.get_window_extent()
                 margin = self.style["figure.subplot.left"]
-                margin += 1 - bbox.width / float(self.w) + 0.04
+                margin += 1 - bbox.width / float(self.w) + bbox.min[0]
                 # TODO: Why do we need that extra spacing?
                 self.fig.subplots_adjust(left=margin)
             else:
