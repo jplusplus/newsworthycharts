@@ -190,7 +190,12 @@ class Chart(object):
 
     def _add_title(self, title_text):
         """ Adds a title """
-        text = self.fig.suptitle(title_text, wrap=True,
+        # Get the position for the yaxis, and align title with it
+        yaxis_bbox = self.ax.yaxis.get_tightbbox(self.fig.canvas.renderer)
+        yaxis_x = yaxis_bbox.max[0] / self.w
+        title_text += "\n"  # Ugly but efficient way to add 1em padding
+        text = self.fig.suptitle(title_text, wrap=True, x=yaxis_x,
+                                 horizontalalignment="left",
                                  multialignment="left",
                                  fontproperties=self.title_font)
 
@@ -229,8 +234,6 @@ class Chart(object):
             self._add_ylabel(self.ylabel)
         if self.xlabel is not None:
             self._add_xlabel(self.xlabel)
-        # tight_layout after _add_caption would ruin extra padding added there
-        # self.fig.tight_layout()
         if self.title is not None:
             self._add_title(self.title)
         if self.caption is not None:
