@@ -147,8 +147,6 @@ class Chart(object):
             'fontsize': "small",
             "textcoords": "offset pixels",
         }
-        if "color" not in opts:
-            opts["color"] = self.style["neutral_color"]
 
         offset = 16  # px between point and text FIXME remove hardcoded value
         if direction == "up":
