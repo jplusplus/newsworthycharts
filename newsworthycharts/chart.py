@@ -692,12 +692,11 @@ class CategoricalChart(Chart):
                 self.ax.set_yticklabels(categories, fontsize='small')
                 self.ax.invert_yaxis()
 
-                # Redraw to know how much space category names take up
-                self.fig.canvas.draw()
-                bbox = self.ax.get_window_extent()
+                # Make sure labels are not cropped
+                #self.fig.canvas.draw()
+                yaxis_bbox = self.ax.yaxis.get_tightbbox(self.fig.canvas.renderer)
                 margin = self.style["figure.subplot.left"]
-                margin += 1 - bbox.width / float(self.w) + bbox.min[0]
-                # TODO: Why do we need that extra spacing?
+                margin -= yaxis_bbox.min[0] / float(self.w)
                 self.fig.subplots_adjust(left=margin)
             else:
                 self.ax.bar(label_pos, values, color=colors, zorder=2)
