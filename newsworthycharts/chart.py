@@ -693,7 +693,6 @@ class CategoricalChart(Chart):
                 self.ax.invert_yaxis()
 
                 # Make sure labels are not cropped
-                #self.fig.canvas.draw()
                 yaxis_bbox = self.ax.yaxis.get_tightbbox(self.fig.canvas.renderer)
                 margin = self.style["figure.subplot.left"]
                 margin -= yaxis_bbox.min[0] / float(self.w)
