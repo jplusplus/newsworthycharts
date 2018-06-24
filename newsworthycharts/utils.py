@@ -54,6 +54,8 @@ def loadstyle(style_name):
     style["strong_color"] = to_rgba("#" + str(strong_color), 1)
     style["fill_between_color"] = to_rgba("#" + str(fill_between_color), 1)
     style["fill_between_alpha"] = float(fill_between_alpha)
+    if "logo" in rcParamsNewsworthy:
+        style["logo"] = rcParamsNewsworthy["logo"]
 
     return style
 
