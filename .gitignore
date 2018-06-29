@@ -12,4 +12,6 @@ test.*
 *~
 .ipynb_*
 /build/
-/.cache/
+Pipfile
+Pipfile.lock
+.cache/
