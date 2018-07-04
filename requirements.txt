@@ -7,3 +7,4 @@ adjustText==0.7.3
 numpy==1.14.5
 pytest==3.6.2
 python-dateutil==2.7.3
+pillow==4.1.1

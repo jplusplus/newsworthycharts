@@ -16,6 +16,8 @@ from matplotlib.ticker import FuncFormatter
 from matplotlib.dates import DateFormatter
 from langcodes import standardize_tag
 from dateutil.relativedelta import relativedelta
+from PIL import Image
+from babel import Locale
 
 image_formats = MIME_TYPES.keys()
 
@@ -35,6 +37,9 @@ class Chart(object):
     decimals = None
     # number of decimals to show in annotations, value ticks, etc
     # None means automatically chose the best number
+    logo = None
+    # Path to image that will be embedded in the caption area
+    # Can also be set though a style property
 
     show_ticks = True  # toggle category names, dates, etc
 
@@ -66,6 +71,7 @@ class Chart(object):
         self.style = loadstyle(style)
         # Standardize and check if language tag is a valid BCP 47 tag
         self.language = standardize_tag(language)
+        self.locale = Locale.parse(self.language)
 
         # Dynamic typography
         self.title_font = FontProperties()
@@ -204,6 +210,7 @@ class Chart(object):
         margin = 1 - self._text_rel_height(text)
         self.fig.subplots_adjust(top=margin)
 
+
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
         self.ax.set_xlabel(label, fontsize="small")
@@ -211,7 +218,6 @@ class Chart(object):
     def _add_ylabel(self, label):
         """Adds a label to the y axis."""
         self.ax.set_ylabel(label, fontsize="small")
-
     def _add_data(self):
         """ Plot data to the chart.
         Typically defined by a more specific subclass
@@ -236,6 +242,24 @@ class Chart(object):
             self._add_xlabel(self.xlabel)
         if self.title is not None:
             self._add_title(self.title)
+        logo = self.style.get("logo", self.logo)
+        if logo:
+            im = Image.open(logo)
+
+            # scale down image if needed to fit
+            print("size", im.size)
+            new_width = min(self.w, im.size[0])
+            new_height = new_width * (im.size[1] / im.size[0])
+            im.thumbnail((new_width, new_height), Image.ANTIALIAS)
+
+            # Position
+            if self.locale.text_direction == "rtl":
+                self.fig.figimage(im, 0, 0)
+            else:
+                self.fig.figimage(im, self.w - im.size[0], 0)
+        # TODO:
+        # - get bbox
+        # - add caption on remaining space
         if self.caption is not None:
             self._add_caption(self.caption)
 
