@@ -198,7 +198,6 @@ class Chart(object):
         # linebreaks, and then restore the original width!
         if hextent is None:
             hextent = (0, self.w)
-        figure_width = self.fig.get_figwidth()
         self._set_size(hextent[1]-hextent[0])
         x1 = hextent[0] / self.w
         text = self.fig.text(x1 + 0.01, 0.01, caption,
@@ -268,7 +267,6 @@ class Chart(object):
             im = Image.open(logo)
 
             # scale down image if needed to fit
-            print("size", im.size)
             new_width = min(self.w, im.size[0])
             new_height = new_width * (im.size[1] / im.size[0])
             im.thumbnail((new_width, new_height), Image.ANTIALIAS)
@@ -277,7 +275,7 @@ class Chart(object):
             if self.locale.text_direction == "rtl":
                 logo_im = self.fig.figimage(im, 0, 0)
                 ext = logo_im.get_extent()
-                caption_hextent=(ext[0], self.w)
+                caption_hextent=(ext[1], self.w)
             else:
                 logo_im = self.fig.figimage(im, self.w - im.size[0], 0)
                 ext = logo_im.get_extent()
