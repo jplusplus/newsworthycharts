@@ -189,18 +189,19 @@ class Chart(object):
         # ann = self.ax.text(text, xy[0], xy[1])
         self._annotations.append(ann)
 
-    def _add_caption(self, caption, bbox=None):
+    def _add_caption(self, caption, hextent=None):
         """ Adds a caption. Supports multiline input.
+            hextent is the left/right extent,  e.g. to avoid overlapping a logo
         """
-        print(bbox)
-        from matplotlib.transforms import Bbox
-        bbox_ = Bbox([[0, 0], [bbox[0], self.h]])
         # Wrap=true is hardcoded to use the extent of the whole figure
         # Our workaround is to resize the figure, draw the text to find the
         # linebreaks, and then restore the original width!
+        if hextent is None:
+            hextent = (0, self.w)
         figure_width = self.fig.get_figwidth()
-        self._set_size(bbox[0])
-        text = self.fig.text(0.01, 0.01, caption,
+        self._set_size(hextent[1]-hextent[0])
+        x1 = hextent[0] / self.w
+        text = self.fig.text(x1 + 0.01, 0.01, caption,
                              color=self.style["neutral_color"], wrap=True,
                              fontsize="small")
         self.fig.canvas.draw()
@@ -262,6 +263,7 @@ class Chart(object):
         if self.title is not None:
             self._add_title(self.title)
         logo = self.style.get("logo", self.logo)
+        caption_hextent = None  # set this if adding a logo
         if logo:
             im = Image.open(logo)
 
@@ -274,14 +276,16 @@ class Chart(object):
             # Position
             if self.locale.text_direction == "rtl":
                 logo_im = self.fig.figimage(im, 0, 0)
+                ext = logo_im.get_extent()
+                caption_hextent=(ext[0], self.w)
             else:
                 logo_im = self.fig.figimage(im, self.w - im.size[0], 0)
-            if self.caption is not None:
-                self._add_caption(self.caption, bbox=logo_im.get_extent())
+                ext = logo_im.get_extent()
+                caption_hextent=(0, ext[0])
 
-        elif self.caption is not None:
+        if self.caption is not None:
             # Add caption without image
-            self._add_caption(self.caption)
+            self._add_caption(self.caption, hextent=caption_hextent)
 
         # Save plot in memory, to write it directly to storage
         buf = BytesIO()
