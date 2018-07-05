@@ -35,6 +35,9 @@ xtick.labelsize   : smaller
 ytick.labelsize   : smaller
 legend.fontsize   : smaller
 
+# Lines, markers
+lines.color       : 999999
+lines.linewidth   : 0.75
 
 # Some custom settings for Newsworthy
 # Prefix each line with #!

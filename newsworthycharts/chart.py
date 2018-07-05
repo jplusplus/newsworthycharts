@@ -570,6 +570,10 @@ class SerialChart(Chart):
                     dir = self._get_annotation_direction(i, values)
             self._annotate_point(value_label, xy, direction=dir)
 
+        # Accentuate y=0
+        if self.data.min_val < 0:
+            self.ax.axhline()
+
         # Highlight diff
         y0, y1 = highlight_diff['y0'], highlight_diff['y1']
         # Only if more than one series has a value at this point, and they
