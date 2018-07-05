@@ -87,9 +87,16 @@ class Chart(object):
         self.category_axis = self.ax.xaxis
 
         # Calculate size in inches
+        self._set_size(width, height)
+
+    def _set_size(self, w, h=None):
+        """ Set figure size, in pixels """
         dpi = self.fig.get_dpi()
-        real_width = float(width)/dpi
-        real_height = float(height)/dpi
+        real_width = float(w)/dpi
+        if h is None:
+            real_height = self.fig.get_figheight()
+        else:
+            real_height = float(h)/dpi
         self.fig.set_size_inches(real_width, real_height)
 
     def _get_value_axis_formatter(self):
@@ -182,12 +189,24 @@ class Chart(object):
         # ann = self.ax.text(text, xy[0], xy[1])
         self._annotations.append(ann)
 
-    def _add_caption(self, caption):
+    def _add_caption(self, caption, bbox=None):
         """ Adds a caption. Supports multiline input.
         """
+        print(bbox)
+        from matplotlib.transforms import Bbox
+        bbox_ = Bbox([[0, 0], [bbox[0], self.h]])
+        # Wrap=true is hardcoded to use the extent of the whole figure
+        # Our workaround is to resize the figure, draw the text to find the
+        # linebreaks, and then restore the original width!
+        figure_width = self.fig.get_figwidth()
+        self._set_size(bbox[0])
         text = self.fig.text(0.01, 0.01, caption,
                              color=self.style["neutral_color"], wrap=True,
                              fontsize="small")
+        self.fig.canvas.draw()
+        wrapped_text = text._get_wrapped_text()
+        text.set_text(wrapped_text)
+        self._set_size(self.w)
 
         # Increase the bottom padding by the height of the text bbox
         margin = self.style["figure.subplot.bottom"]
@@ -254,13 +273,14 @@ class Chart(object):
 
             # Position
             if self.locale.text_direction == "rtl":
-                self.fig.figimage(im, 0, 0)
+                logo_im = self.fig.figimage(im, 0, 0)
             else:
-                self.fig.figimage(im, self.w - im.size[0], 0)
-        # TODO:
-        # - get bbox
-        # - add caption on remaining space
-        if self.caption is not None:
+                logo_im = self.fig.figimage(im, self.w - im.size[0], 0)
+            if self.caption is not None:
+                self._add_caption(self.caption, bbox=logo_im.get_extent())
+
+        elif self.caption is not None:
+            # Add caption without image
             self._add_caption(self.caption)
 
         # Save plot in memory, to write it directly to storage
