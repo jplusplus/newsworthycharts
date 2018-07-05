@@ -4,7 +4,7 @@ from datetime import date
 name = "newsworthycharts"
 
 short_version = "1.0.0"
-long_version = short_version + ".dev17"
+long_version = short_version + ".dev18"
 
 short_desc = """\
 Create charts and publish on Amazon S3.\

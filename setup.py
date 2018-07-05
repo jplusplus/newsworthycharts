@@ -32,7 +32,7 @@ setup(
         "adjustText>=0.4",
         "numPy",
         "python-dateutil>=2",
-        "pillow=>1.3.3",
+        "pillow>=1.3.3",
     ],
     include_package_data=True,
     download_url="{}/archive/{}.tar.gz".format(repo, version),
