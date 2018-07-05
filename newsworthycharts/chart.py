@@ -67,7 +67,7 @@ class Chart(object):
         """
 
         self.storage = storage
-        self.w, self.h = width, height
+        self.w, self.h = int(width), int(height)
         self.style = loadstyle(style)
         # Standardize and check if language tag is a valid BCP 47 tag
         self.language = standardize_tag(language)
@@ -265,7 +265,6 @@ class Chart(object):
         caption_hextent = None  # set this if adding a logo
         if logo:
             im = Image.open(logo)
-
             # scale down image if needed to fit
             new_width = min(self.w, im.size[0])
             new_height = new_width * (im.size[1] / im.size[0])
