@@ -74,6 +74,15 @@ To set up you own style, copy the build-in default: <https://github.com/jplusplu
 
 Newsworthycharts will look first among the predefined style files for the requested style, so if you have a custom style file in you working directory you need to give it a unique name not already in use.
 
+Developing
+----------
+
+To run tests:
+
+.. code-block:: python3
+
+  python3 -m pytest test/test_main.py
+
 Changelog
 ---------
 
