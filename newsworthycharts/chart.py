@@ -71,7 +71,7 @@ class Chart(object):
         self.style = loadstyle(style)
         # Standardize and check if language tag is a valid BCP 47 tag
         self.language = standardize_tag(language)
-        self.locale = Locale.parse(self.language)
+        self.locale = Locale.parse(self.language.replace("-", "_"))
 
         # Dynamic typography
         self.title_font = FontProperties()
@@ -604,7 +604,6 @@ class SerialChart(Chart):
             ymin = min(self.ymin, self.data.min_val - padding_bottom)
         else:
             ymin = self.data.min_val - padding_bottom
-        print(self.data.min_val, ymin)
 
         self.ax.set_ylim(ymin=ymin,
                          ymax=self.data.max_val * 1.15)
