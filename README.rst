@@ -86,5 +86,5 @@ To run tests:
 Changelog
 ---------
 
-- 1.0.0.dev*
+- 1.0.0
   - First version, still in development
