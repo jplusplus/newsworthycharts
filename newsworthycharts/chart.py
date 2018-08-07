@@ -229,7 +229,6 @@ class Chart(object):
         margin = 1 - self._text_rel_height(text)
         self.fig.subplots_adjust(top=margin)
 
-
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
         self.ax.set_xlabel(label, fontsize="small")
@@ -237,15 +236,17 @@ class Chart(object):
     def _add_ylabel(self, label):
         """Adds a label to the y axis."""
         self.ax.set_ylabel(label, fontsize="small")
+
     def _add_data(self):
         """ Plot data to the chart.
         Typically defined by a more specific subclass
         """
         raise NotImplementedError("This method should be overridden")
 
-    def render(self, key, img_format):
+    def _apply_changes_before_rendering(self):
         """
-         Apply all changes, render file, and send to storage.
+         To ensure consistent rendering, we call this method just before
+         rendering file(s). This is where all properties are applied.
         """
         # Apply all changes, in the correct order for consistent rendering
         self.fig.tight_layout()
@@ -284,6 +285,13 @@ class Chart(object):
             # Add caption without image
             self._add_caption(self.caption, hextent=caption_hextent)
 
+    def render(self, key, img_format):
+        """
+         render file, and send to storage.
+        """
+        # Apply all changes, in the correct order for consistent rendering
+        self._apply_changes_before_rendering()
+
         # Save plot in memory, to write it directly to storage
         buf = BytesIO()
         self.fig.savefig(buf, format=img_format)
@@ -294,8 +302,15 @@ class Chart(object):
         """
         Render all available formats
         """
+        # Apply all changes, in the correct order for consistent rendering
+        self._apply_changes_before_rendering()
+
         for file_format in image_formats:
-            self.render(key, file_format)
+            # Save plot in memory, to write it directly to storage
+            buf = BytesIO()
+            self.fig.savefig(buf, format=file_format)
+            buf.seek(0)
+            self.storage.save(key, buf, file_format)
 
     @property
     def title(self):
