@@ -741,11 +741,11 @@ class CategoricalChart(Chart):
 
                 if d[2] is not None:
                     self._annotate_point(d[2], xy, direction=dir)
-                elif self.highlight and self.highlight == d[0]:
+                elif self.highlight is not None and self.highlight == d[0]:
                     # Only add highlight value if not already annotated
                     self._annotate_point(a_formatter(d[1]), xy, direction=dir)
 
-                if self.highlight and self.highlight == d[0]:
+                if self.highlight is not None and self.highlight == d[0]:
                     colors[i] = highlight_color
 
             import numpy
