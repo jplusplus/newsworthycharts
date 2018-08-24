@@ -49,17 +49,23 @@ class Formatter(object):
     def temperature_short(self, x, *args, **kwargs):
         """ Format a temperature in deegrees, without scale letter """
 
-        x = round(x, self.decimals or 1)
+        decimals = self.decimals
+        if decimals is None:
+            decimals = 1
 
+        x = round(Decimal(x), decimals)
         str = format_unit(x, 'temperature-generic', "short", locale=self.l)
         return str
 
     def temperature(self, x, *args, **kwargs):
         """ Format a temperature in deegrees, with scale letter """
 
-        x = round(x, self.decimals or 1)
+        decimals = self.decimals
+        if decimals is None:
+            decimals = 1
 
         scale = "temperature-{}".format(self.scale)
+        x = round(Decimal(x), decimals)
         str = format_unit(x, scale, "short", locale=self.l)
         return str
 

@@ -79,6 +79,10 @@ class Chart(object):
         self.title_font.set_size(self.style["figure.titlesize"])
         self.title_font.set_weight(self.style["figure.titleweight"])
 
+        # By default no decimals if unit is “count”
+        if self.decimals is None and self._units == "count":
+            self.decimals = 0
+
         self.fig = Figure()
         FigureCanvas(self.fig)
         self.ax = self.fig.add_subplot(111)
@@ -101,11 +105,10 @@ class Chart(object):
 
     def _get_value_axis_formatter(self):
             formatter = Formatter(self.language,
-                                  decimals= self.decimals,
+                                  decimals=self.decimals,
                                   scale="celsius")
             if self.units == "percent":
                 return FuncFormatter(formatter.percent)
-                a_formatter = y_formatter
             elif self.units == "degrees":
                 return FuncFormatter(formatter.temperature_short)
             else:
@@ -113,7 +116,6 @@ class Chart(object):
 
     def _get_annotation_formatter(self):
             formatter = Formatter(self.language,
-                                  decimals= self.decimals,
                                   scale="celsius")
             if self.units == "percent":
                 return FuncFormatter(formatter.percent)
