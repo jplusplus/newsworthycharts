@@ -87,7 +87,10 @@ Changelog
 ---------
 
 - 1.1.0
+
   - Fix bug where decimal setting wasn't always respected
   - Make no decimals the default if unit is "count"
+
 - 1.0.0
+
   - First version
