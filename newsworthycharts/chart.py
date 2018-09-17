@@ -259,6 +259,19 @@ class Chart(object):
             self._add_data()
         if not self.show_ticks:
             self.category_axis.set_visible(False)
+        else:
+            # Remove dublicated labels (typically a side effect of using
+            # few decimals while having a lot of values in a small range)
+            pass
+            """
+            self.fig.canvas.draw()
+            tl = [x.get_text() for x in self.value_axis.get_ticklabels()]
+            print(tl)
+            tl = [x if tl[i-1] != x else "" for (i, x) in enumerate(tl)]
+            print(tl)
+            self.value_axis.set_ticklabels(tl)
+            """
+
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
         if self.ylabel is not None:
