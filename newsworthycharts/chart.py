@@ -465,7 +465,9 @@ class SerialChart(Chart):
             else:
                 return "up"
         if index == num_vals - 1:
-            if values[-2] <= values[-1]:
+            # get previous non-None value
+            latest_not_null = [x for x in values[:-1] if x is not None][-1]
+            if latest_not_null <= values[-1]:
                 return "up"
             else:
                 return "down"

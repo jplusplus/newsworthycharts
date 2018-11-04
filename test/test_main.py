@@ -1,6 +1,6 @@
 """ py.test tests for Newsworthycharts
 """
-from newsworthycharts import Chart
+from newsworthycharts import Chart, SerialChart
 from newsworthycharts import LocalStorage, S3Storage
 from newsworthycharts.storage import DictStorage
 from imghdr import what
@@ -62,3 +62,18 @@ def test_filled_values():
     c.data.append([("a", 5), ("b", 5.5), ("c", 6)])
     c.data.append([("a", 2), ("b", 3), ("d", 4)])
     assert(c.data.filled_values[1] == [2, 3, 3.5, 4])
+
+def test_annotaion_with_missing_values_series():
+    """ The test makes sure a bug in _get_annotation_direction was fixed
+    when series containes missing values.
+    """
+    c = SerialChart(900, 600)
+    c.data.append([
+        ("2018-01-01", 5),
+        ("2018-02-01", 6),
+        ("2018-03-01", None),
+        ("2018-04-01", 5),
+    ])
+    c.type = "line"
+    c.highlight = "2018-04-01"
+    c._add_data()
