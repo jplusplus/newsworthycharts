@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.1.1
+
+  - Annotations should now work as expected on series with missing data
+
 - 1.1.0
 
   - Fix bug where decimal setting wasn't always respected
