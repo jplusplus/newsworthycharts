@@ -388,12 +388,11 @@ class SerialChart(Chart):
     # Percent of period. 0.85 means a bar in a chart with yearly data will be
     # around 310 or 311 days wide.
     max_ticks = 5
+    _ymin = None
 
     @property
     def ymin(self):
-        if self._ymin is not None:
-            return self._ymin
-        if
+        # WIP
         return self._ymin
 
     @ymin.setter
