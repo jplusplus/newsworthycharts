@@ -63,7 +63,8 @@ def test_filled_values():
     c.data.append([("a", 2), ("b", 3), ("d", 4)])
     assert(c.data.filled_values[1] == [2, 3, 3.5, 4])
 
-def test_annotaion_with_missing_values_series():
+
+def test_annotation_with_missing_values_series():
     """ The test makes sure a bug in _get_annotation_direction was fixed
     when series containes missing values.
     """
