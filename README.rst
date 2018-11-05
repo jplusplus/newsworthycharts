@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.1.2
+
+  - Move class properties to method properties to make sure multiple Chart instances work as intended/documented. This will make tests run again.
+
 - 1.1.1
 
   - Annotations should now work as expected on series with missing data

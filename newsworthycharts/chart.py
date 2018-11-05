@@ -25,35 +25,6 @@ image_formats = MIME_TYPES.keys()
 class Chart(object):
     """ Convenience wrapper around a Matplotlib figure
     """
-    # Properties managed through getters/setters
-    _title = None
-    _units = "count"
-
-    # Simple properties
-    xlabel = None
-    ylabel = None
-    caption = None
-    highlight = None
-    decimals = None
-    # number of decimals to show in annotations, value ticks, etc
-    # None means automatically chose the best number
-    logo = None
-    # Path to image that will be embedded in the caption area
-    # Can also be set though a style property
-
-    show_ticks = True  # toggle category names, dates, etc
-
-    interval = None  # ["yearly", "quarterly", "monthly", "weekly", "daily"]
-    # We will try to guess interval based on the data,
-    # but explicitly providing a value is safer. Used for finetuning.
-
-    annotations = []  # Manually added annotations
-    labels = []  # Optionally one label for each dataset
-    trendline = []  # List of x positions, or data points
-    annotate_trend = True  # Should we add values to points on trendline?
-    data = DataList()  # A list of datasets
-
-    _annotations = []
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  style: str='newsworthy', language: str='en-GB'):
@@ -66,6 +37,34 @@ class Chart(object):
         :param language: a BCP 47 language tag (eg `en`, `sv-FI`)
         """
 
+        # Properties of this class member
+        # The user can alter these at any time
+        self.data = DataList()  # A list of datasets
+        self.annotate_trend = True  # Print out values at points on trendline?
+        self.trendline = []  # List of x positions, or data points
+        self.labels = []  # Optionally one label for each dataset
+        self.annotations = []  # Manually added annotations
+        self.interval = None  # yearly|quarterly|monthly|weekly|daily
+        # We will try to guess interval based on the data,
+        # but explicitly providing a value is safer. Used for finetuning.
+        self.show_ticks = True  # toggle category names, dates, etc
+        self.xlabel = None
+        self.ylabel = None
+        self.caption = None
+        self.highlight = None
+        self.decimals = None
+        # number of decimals to show in annotations, value ticks, etc
+        # None means automatically chose the best number
+        self.logo = None
+        # Path to image that will be embedded in the caption area
+        # Can also be set though a style property
+
+        # Properties managed through getters/setters
+        self._title = None
+        self._units = "count"
+
+        # Calculated properties
+        self._annotations = []  # Automatically added annotations
         self.storage = storage
         self.w, self.h = int(width), int(height)
         self.style = loadstyle(style)
@@ -383,12 +382,14 @@ class SerialChart(Chart):
     `[ [("2010-01-01", 2), ("2010-02-01", 2.3)] ]`
     """
 
-    _type = "bars"
-    bar_width = 0.9
-    # Percent of period. 0.85 means a bar in a chart with yearly data will be
-    # around 310 or 311 days wide.
-    max_ticks = 5
-    _ymin = None
+    def __init__(self, *args, **kwargs):
+        super(SerialChart, self).__init__(*args, **kwargs)
+        self._type = "bars"
+        self.bar_width = 0.9
+        # Percent of period. 0.85 means a bar in a chart with yearly data will
+        # be around 310 or 311 days wide.
+        self.max_ticks = 5
+        self._ymin = None
 
     @property
     def ymin(self):
@@ -714,7 +715,9 @@ class CategoricalChart(Chart):
     """ Plot categorical data to a bar chart
     """
 
-    _bar_orientation = "horizontal"  # [horizontal|vertical]
+    def __init__(self, *args, **kwargs):
+        super(CategoricalChart, self).__init__(*args, **kwargs)
+        self._bar_orientation = "horizontal"  # [horizontal|vertical]
 
     @property
     def bar_orientation(self):

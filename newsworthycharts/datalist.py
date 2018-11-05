@@ -31,11 +31,11 @@ class DataList(MutableSequence):
     such as min/max values.
     Datasets are on the format [(x1, y1), (x2, y2), ...]
     """
-    min_val = inf
-    max_val = -inf
-    _x_points = set()
 
     def __init__(self, *args):
+        self.min_val = inf
+        self.max_val = -inf
+        self._x_points = set()
         self.list = list()
         self.extend(list(args))
 
