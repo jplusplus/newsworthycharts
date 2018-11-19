@@ -217,13 +217,8 @@ class Chart(object):
     def _add_title(self, title_text):
         """ Adds a title """
         # Get the position for the yaxis, and align title with it
-        yaxis_bbox = self.ax.yaxis.get_tightbbox(self.fig.canvas.renderer)
-        if self.show_ticks:
-            yaxis_x = float(yaxis_bbox.max[0]) / float(self.w)
-        else:
-            yaxis_x = 0
         title_text += "\n"  # Ugly but efficient way to add 1em padding
-        text = self.fig.suptitle(title_text, wrap=True, x=yaxis_x,
+        text = self.fig.suptitle(title_text, wrap=True, x=0,
                                  horizontalalignment="left",
                                  multialignment="left",
                                  fontproperties=self.title_font)
