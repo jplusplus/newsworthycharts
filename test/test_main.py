@@ -1,6 +1,6 @@
 """ py.test tests for Newsworthycharts
 """
-from newsworthycharts import Chart, SerialChart
+from newsworthycharts import Chart, SerialChart, CategoricalChart
 from newsworthycharts import LocalStorage, S3Storage
 from newsworthycharts.storage import DictStorage
 from imghdr import what
@@ -77,4 +77,14 @@ def test_annotation_with_missing_values_series():
     ])
     c.type = "line"
     c.highlight = "2018-04-01"
+    c._add_data()
+
+def test_categorical_chart_with_missing_data():
+    c = CategoricalChart(900, 600)
+    c.data.append([
+        ("2018-01-01", 5),
+        ("2018-02-01", 6),
+        ("2018-03-01", None),
+        ("2018-04-01", 5),
+    ])
     c._add_data()
