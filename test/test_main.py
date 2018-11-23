@@ -1,7 +1,6 @@
 """ py.test tests for Newsworthycharts
 """
 from newsworthycharts import Chart, SerialChart, CategoricalChart
-from newsworthycharts import LocalStorage, S3Storage
 from newsworthycharts.storage import DictStorage
 from imghdr import what
 from PIL import Image
