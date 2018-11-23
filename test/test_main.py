@@ -56,8 +56,17 @@ def test_meta_data():
 def test_language_tag_parsing():
     """ Language tags should be normalized """
 
-    c = Chart(language="sv-Latn-AX")
-    assert(c.language == "sv_AX")
+    c = Chart(10, 10, language="sv-Latn-AX")
+    assert(c.locale.language == "sv")
+    assert(c.locale.territory == "AX")
+
+    # underscore shuold work as separator
+    c = Chart(10, 10, language="sv_AX")
+    assert(c.locale.language == "sv")
+
+    # a macro language tag should fallback to its default specific language
+    c = Chart(10, 10, language="no")
+    assert(c.locale.language == "nb")
 
 
 def test_filled_values():
