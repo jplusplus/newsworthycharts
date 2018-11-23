@@ -89,6 +89,8 @@ Changelog
 - 1.1.2
 
   - Move class properties to method properties to make sure multiple Chart instances work as intended/documented. This will make tests run again.
+  - None values in bar charts are not annotated (trying to annotate None values used to result in a crash)
+  - More tests
 
 - 1.1.1
 
