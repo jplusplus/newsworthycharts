@@ -76,7 +76,7 @@ def test_annotation_with_missing_values_series():
     ])
     c.type = "line"
     c.highlight = "2018-04-01"
-    c._add_data()
+    c._apply_changes_before_rendering()
 
 
 def test_categorical_chart_with_missing_data():
@@ -87,4 +87,4 @@ def test_categorical_chart_with_missing_data():
         ("2018-03-01", None),
         ("2018-04-01", 5),
     ])
-    c._add_data()
+    c._apply_changes_before_rendering()
