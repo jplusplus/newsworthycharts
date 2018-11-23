@@ -53,8 +53,15 @@ def test_meta_data():
     assert(c.data.x_points == ["a", "b", "c", "d"])
 
 
+def test_language_tag_parsing():
+    """ Language tags should be normalized """
+
+    c = Chart(language="sv-Latn-AX")
+    assert(c.language == "sv_AX")
+
+
 def test_filled_values():
-    """ Check the filled_values method"""
+    """ When adding multiple series, missing values should be filled in """
 
     c = Chart(900, 600)
     c.data.append([("a", 5), ("b", 5.5), ("c", 6)])
