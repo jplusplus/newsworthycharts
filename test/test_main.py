@@ -24,7 +24,6 @@ def test_file_size():
     c.render("test", "png")
 
     im = Image.open(container["png"])
-    print(im.size)
     assert(im.size == (613, 409))
 
 
@@ -78,6 +77,7 @@ def test_annotation_with_missing_values_series():
     c.type = "line"
     c.highlight = "2018-04-01"
     c._add_data()
+
 
 def test_categorical_chart_with_missing_data():
     c = CategoricalChart(900, 600)
