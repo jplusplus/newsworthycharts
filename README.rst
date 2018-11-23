@@ -9,7 +9,7 @@ Installing
 
 .. code-block:: bash
 
-  pip install newsworthy-charts
+  pip install newsworthycharts
 
 
 Using
