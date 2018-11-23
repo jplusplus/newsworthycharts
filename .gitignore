@@ -15,4 +15,4 @@ test.*
 Pipfile
 Pipfile.lock
 .cache/
-.pytest_chache/
+.pytest_cache/
