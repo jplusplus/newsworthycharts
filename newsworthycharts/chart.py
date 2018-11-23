@@ -749,6 +749,9 @@ class CategoricalChart(Chart):
             # Add any annotations given inside the data
             # and also annotate highlighted value
             for i, d in enumerate(data):
+                if d[1] is None:
+                    # Dont annotate None values
+                    continue
                 # Get position for any highlighting to happen
                 if self.bar_orientation == "horizontal":
                     xy = (d[1], i)
