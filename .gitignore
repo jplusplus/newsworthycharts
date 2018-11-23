@@ -14,4 +14,4 @@ test.*
 /build/
 Pipfile
 Pipfile.lock
-.cache/
+.cache/.pytest_chache/
