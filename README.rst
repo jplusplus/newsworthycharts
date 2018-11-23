@@ -20,7 +20,7 @@ When using the Chart class, the generated chart will be saved as a local file:
 
 .. code-block:: python3
 
-  from newsworthycharts import SerialChart
+  from newsworthycharts import SerialChart as Chart
 
 
   c = Chart(600, 800)
