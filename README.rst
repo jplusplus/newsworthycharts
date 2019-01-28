@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.1.3
+
+  - Make annotation use default font size, as relative sizing didn't work here anyway
+
 - 1.1.2
 
   - Move class properties to method properties to make sure multiple Chart instances work as intended/documented. This will make tests run again.

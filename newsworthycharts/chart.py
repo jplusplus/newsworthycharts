@@ -158,7 +158,7 @@ class Chart(object):
         :param kwags: any params accepted by plt.annotate
         """
         opts = {
-            'fontsize': "small",
+            #  'fontsize': "small",
             "textcoords": "offset pixels",
         }
 
