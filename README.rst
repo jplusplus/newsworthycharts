@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.1.4
+
+  - Require Matplotlib < 3, because we are still relying on some features that are deprecated there. Also, internal changes to Matplot lib may cause some charts to look different depending on version.
+
 - 1.1.3
 
   - Make annotation use default font size, as relative sizing didn't work here anyway
