@@ -162,7 +162,7 @@ class Chart(object):
             "textcoords": "offset pixels",
         }
 
-        offset = 16  # px between point and text FIXME remove hardcoded value
+        offset = 6  # px between point and text FIXME remove hardcoded value
         if direction == "up":
             opts["verticalalignment"] = "bottom"
             opts["horizontalalignment"] = "center"
