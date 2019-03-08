@@ -85,6 +85,9 @@ To run tests:
 
 Changelog
 ---------
+- 1.1.5
+
+  - Small cosmetic update: Decrease offset of annotation.
 
 - 1.1.4
 
