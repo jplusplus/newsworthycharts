@@ -85,6 +85,11 @@ To run tests:
 
 Changelog
 ---------
+- 1.2.0
+
+  - Fix a bug where `decimals` setting was not used in all annotations. Potentially breaking in some implementations.
+  - Make the annotation offset 80% of the fontsize (used to be a hardcoded number of pixels)  
+
 - 1.1.5
 
   - Small cosmetic update: Decrease offset of annotation.
