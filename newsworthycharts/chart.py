@@ -115,6 +115,7 @@ class Chart(object):
 
     def _get_annotation_formatter(self):
             formatter = Formatter(self.language,
+                                  decimals=self.decimals,
                                   scale="celsius")
             if self.units == "percent":
                 return FuncFormatter(formatter.percent)
