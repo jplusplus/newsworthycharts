@@ -115,6 +115,7 @@ class Chart(object):
 
     def _get_annotation_formatter(self):
             formatter = Formatter(self.language,
+                                  decimals=self.decimals,
                                   scale="celsius")
             if self.units == "percent":
                 return FuncFormatter(formatter.percent)
@@ -162,7 +163,7 @@ class Chart(object):
             "textcoords": "offset pixels",
         }
 
-        offset = 6  # px between point and text FIXME remove hardcoded value
+        offset = round(self.style["font.size"] * 0.8)
         if direction == "up":
             opts["verticalalignment"] = "bottom"
             opts["horizontalalignment"] = "center"

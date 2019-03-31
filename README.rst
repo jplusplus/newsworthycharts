@@ -85,10 +85,14 @@ To run tests:
 
 Changelog
 ---------
-- 1.1.6
+- 1.2.1
 
   - Use strong color if there is nothing to highlight.
 
+- 1.2.0
+
+  - Fix a bug where `decimals` setting was not used in all annotations. Potentially breaking in some implementations.
+  - Make the annotation offset 80% of the fontsize (used to be a hardcoded number of pixels)
 
 - 1.1.5
 
