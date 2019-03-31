@@ -85,6 +85,11 @@ To run tests:
 
 Changelog
 ---------
+- 1.1.6
+
+  - Use strong color if there is nothing to highlight.
+
+
 - 1.1.5
 
   - Small cosmetic update: Decrease offset of annotation.
