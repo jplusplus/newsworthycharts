@@ -523,8 +523,8 @@ class SerialChart(Chart):
         }
         highlight_values = []
         for i, serie in enumerate(series):
-            # Use strong color for first series, if multiple
-            if i == 0 and len(series) > 1:
+            # Use strong color for first series
+            if i == 0:
                 color = self.style["strong_color"]
             else:
                 color = self.style["neutral_color"]
@@ -564,12 +564,16 @@ class SerialChart(Chart):
                                  zorder=2)
 
             elif self.type == "bars":
-                colors = []
-                for timepoint in dates:
-                    if highlight_value and timepoint == highlight_date:
-                        colors.append(self.style["strong_color"])
-                    else:
-                        colors.append(self.style["neutral_color"])
+                if self.highlight:
+                    colors = []
+                    for timepoint in dates:
+                        if highlight_value and timepoint == highlight_date:
+                            colors.append(self.style["strong_color"])
+                        else:
+                            colors.append(self.style["neutral_color"])
+                else:
+                    # use strong color if there is no highlight
+                    colors = [self.style["strong_color"]] * len(dates)
 
                 # Replace None values with 0's to be able to plot bars
                 values = [0 if v is None else v for v in values]
@@ -744,7 +748,11 @@ class CategoricalChart(Chart):
             color = self.style["neutral_color"]
             highlight_color = self.style["strong_color"]
 
-            colors = [color] * len(values)
+            if self.highlight is None:
+                # use strong color if there is nothing to highlight
+                colors = [highlight_color] * len(values)
+            else:
+                colors = [color] * len(values)
 
             # Add any annotations given inside the data
             # and also annotate highlighted value
@@ -777,7 +785,6 @@ class CategoricalChart(Chart):
 
             import numpy
             label_pos = numpy.arange(len(values))
-
             if self.bar_orientation == "horizontal":
                 self.ax.barh(label_pos, values, align='center',
                              color=colors, zorder=2)
@@ -794,3 +801,4 @@ class CategoricalChart(Chart):
                 self.ax.bar(label_pos, values, color=colors, zorder=2)
                 self.ax.set_xticks(label_pos)
                 self.ax.set_xticklabels(categories, fontsize='small')
+                self.ax.xaxis.set_ticks_position('none')
