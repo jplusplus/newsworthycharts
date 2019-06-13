@@ -3,7 +3,7 @@ Holds a class for storing lists of data (timeseries etc), and related methods.
 """
 from collections import MutableSequence
 from math import inf
-from .utils import to_float
+from .utils import to_float, to_date
 from numpy import array, isnan, interp, flatnonzero
 
 
@@ -47,6 +47,7 @@ class DataList(MutableSequence):
             self.min_val = min(self.min_val, min(values))
             self.max_val = max(self.max_val, max(values))
         self._x_points.update([x[0] for x in v])
+
         # Normalize to 3 digit syntax
         v = [x if len(x) > 2
              else (x[0], x[1], None)
@@ -89,6 +90,22 @@ class DataList(MutableSequence):
     @property
     def x_points(self):
         return sorted(list(self._x_points))
+    
+    @property
+    def inner_min_x(self):
+        return max(s[0][0] for s in self.list)
+
+    @property
+    def inner_max_x(self):
+        return min(s[-1][0] for s in self.list)
+
+    @property
+    def outer_min_x(self):
+        return min(s[0][0] for s in self.list)
+
+    @property
+    def outer_max_x(self):
+        return max(s[-1][0] for s in self.list)
 
     def __len__(self):
         return len(self.list)

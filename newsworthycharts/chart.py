@@ -640,9 +640,13 @@ class SerialChart(Chart):
         if len(series) == 2:
             # Fill any gaps in series
             filled_values = self.data.filled_values
+            min_x = self.data.inner_min_x
+            max_x = self.data.inner_max_x
             self.ax.fill_between([to_date(x) for x in self.data.x_points],
                                  filled_values[0],  # already a float1w
                                  filled_values[1],
+                                 where=[(x >= min_x and x <= max_x)
+                                            for x in self.data.x_points],
                                  facecolor=self.style["fill_between_color"],
                                  alpha=self.style["fill_between_alpha"])
 
