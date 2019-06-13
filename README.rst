@@ -85,6 +85,10 @@ To run tests:
 
 Changelog
 ---------
+- next
+
+  - Don't highlight diff outside either series extreme end
+  
 - 1.2.1
 
   - Use strong color if there is nothing to highlight.
