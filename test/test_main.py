@@ -113,6 +113,7 @@ def test_categorical_chart_with_missing_data():
     ])
     c._apply_changes_before_rendering()
 
+
 def test_checksum_png():
     container = {}
     ds = DictStorage(container)
