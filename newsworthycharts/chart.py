@@ -136,7 +136,7 @@ class Chart(object):
         t = obj.get_text()
         r = self.fig.canvas.renderer
         w, h, d = r.get_text_width_height_descent(t, obj._fontproperties,
-                                                  ismath=obj.is_math_text(t))
+                                                  ismath=False)
         num_lines = len(obj._get_wrapped_text().split("\n"))
         return (h * num_lines) / float(self.h)
 
