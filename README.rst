@@ -85,7 +85,7 @@ To run tests:
 
 Changelog
 ---------
-- next
+- 1.3.0
 
   - Allow (and recommend) using Matplotlib 3. This may affect how some charts are rendered.
   - Removed undocumented and incomplete Latex support from caption.
