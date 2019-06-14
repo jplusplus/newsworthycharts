@@ -1,7 +1,7 @@
 """
 Holds a class for storing lists of data (timeseries etc), and related methods.
 """
-from collections import MutableSequence
+from collections.abc import MutableSequence
 from math import inf
 from .utils import to_float, to_date
 from numpy import array, isnan, interp, flatnonzero
