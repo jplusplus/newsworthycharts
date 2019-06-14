@@ -87,7 +87,8 @@ Changelog
 ---------
 - next
 
-  - Don't highlight diff outside either series extreme end
+  - Allow (and recommend) using Matplotlib 3. This may affect how some charts are rendered.
+  - Don't highlight diff outside either series' extreme ends.
   
 - 1.2.1
 
