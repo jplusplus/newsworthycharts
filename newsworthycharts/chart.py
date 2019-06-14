@@ -562,17 +562,17 @@ class SerialChart(Chart):
                                  marker='.',
                                  zorder=2)
                 elif l > 1:
-                    for i, v in enumerate(values):
+                    for j, v in enumerate(values):
                         plot_me = False
                         if v is not None:
-                            if i == 0 and (values[i+1] is None):
+                            if j == 0 and (values[j+1] is None):
                                 plot_me = True
-                            elif i == l-1 and (values[i-1] is None):
+                            elif j == l-1 and (values[j-1] is None):
                                 plot_me = True
-                            elif (values[i-1] is None) and (values[i+1] is None):
+                            elif (values[j-1] is None) and (values[j+1] is None):
                                 plot_me = True
                         if plot_me:
-                            self.ax.plot(dates[i], v,
+                            self.ax.plot(dates[j], v,
                                          c=color,
                                          marker='.',
                                          zorder=2)

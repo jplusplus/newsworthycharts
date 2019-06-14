@@ -85,6 +85,11 @@ To run tests:
 
 Changelog
 ---------
+
+- 1.3.2
+
+  - Make labels work again, 1.3.1 broke those in some circumstances
+  
 - 1.3.1
 
   - Make inner_max/min_x work with leading / trailing None values
