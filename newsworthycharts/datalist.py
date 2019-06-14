@@ -93,19 +93,19 @@ class DataList(MutableSequence):
     
     @property
     def inner_min_x(self):
-        return max(s[0][0] for s in self.list)
+        return max(list(filter(lambda x: x[1] is not None, s))[0][0] for s in self.list)
 
     @property
     def inner_max_x(self):
-        return min(s[-1][0] for s in self.list)
+        return min(list(filter(lambda x: x[1] is not None, s))[-1][0] for s in self.list)
 
     @property
     def outer_min_x(self):
-        return min(s[0][0] for s in self.list)
+        return min(list(filter(lambda x: x[1] is not None, s))[0][0] for s in self.list)
 
     @property
     def outer_max_x(self):
-        return max(s[-1][0] for s in self.list)
+        return max(list(filter(lambda x: x[1] is not None, s))[-1][0] for s in self.list)
 
     def __len__(self):
         return len(self.list)

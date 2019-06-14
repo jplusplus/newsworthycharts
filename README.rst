@@ -85,6 +85,10 @@ To run tests:
 
 Changelog
 ---------
+- next
+
+  - Make inner_max/min_x work with leading / trailing None values
+
 - 1.3.0
 
   - Allow (and recommend) using Matplotlib 3. This may affect how some charts are rendered.
