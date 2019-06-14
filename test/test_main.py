@@ -52,6 +52,14 @@ def test_meta_data():
     assert(c.data.max_val == 6)
     assert(c.data.x_points == ["a", "b", "c", "d"])
 
+    d = Chart(900, 600)
+    d.data.append([("2018-01-01", 5), ("2018-02-01", 5.5), ("2018-03-01", 6)])
+    d.data.append([("2018-01-01", 2), ("2018-02-01", 3)])
+    assert(d.data.inner_min_x == "2018-01-01")
+    assert(d.data.inner_max_x == "2018-02-01")
+    assert(d.data.outer_min_x == "2018-01-01")
+    assert(d.data.outer_max_x == "2018-03-01")
+
 
 def test_language_tag_parsing():
     """ Language tags should be normalized """
