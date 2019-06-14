@@ -4,6 +4,7 @@ from newsworthycharts import Chart, SerialChart, CategoricalChart
 from newsworthycharts.storage import DictStorage
 from imghdr import what
 from PIL import Image
+from hashlib import md5
 
 
 def test_generating_png():
@@ -16,7 +17,7 @@ def test_generating_png():
     assert(what(container["png"]) == "png")
 
 
-def test_file_size():
+def test_image_size():
     container = {}
     ds = DictStorage(container)
     c = Chart(613, 409, storage=ds)
@@ -111,3 +112,29 @@ def test_categorical_chart_with_missing_data():
         ("2018-04-01", 5),
     ])
     c._apply_changes_before_rendering()
+
+def test_checksum_png():
+    container = {}
+    ds = DictStorage(container)
+    c = SerialChart(800, 600, storage=ds)
+    c.title = "Sex laxar i en laxask"
+    c.caption = "This chart was brought\n to you by Örkeljunga Åminne"
+    c.type = "line"
+    c.data.append([
+        ("2018-01-01", 5),
+        ("2018-02-01", 6),
+        ("2018-03-01", 1),
+        ("2018-04-01", 5),
+        ("2018-05-01", 5.6),
+    ])
+    c.data.append([
+        ("2018-01-01", 2),
+        ("2018-02-01", 0.5),
+        ("2018-03-01", 3),
+        ("2018-04-01", 1),
+    ])
+    c.render("test", "png")
+    m = md5()
+    m.update(container["png"].getvalue())
+
+    assert(m.hexdigest() == "209c5addae84a2471d78605f6278e29f")
