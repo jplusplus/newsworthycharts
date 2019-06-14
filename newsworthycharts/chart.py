@@ -553,6 +553,30 @@ class SerialChart(Chart):
                 line, = self.ax.plot(dates, values,
                                      color=color,
                                      zorder=zo)
+                # Add single, orphaned data points as markers
+                # None, 1, None, 1, 1, 1 =>  . ---
+                l = len(values)
+                if l == 1:
+                    self.ax.plot(dates[0], values[0],
+                                 c=color,
+                                 marker='.',
+                                 zorder=2)
+                elif l > 1:
+                    for i, v in enumerate(values):
+                        plot_me = False
+                        if v is not None:
+                            if i == 0 and (values[i+1] is None):
+                                plot_me = True
+                            elif i == l-1 and (values[i-1] is None):
+                                plot_me = True
+                            elif (values[i-1] is None) and (values[i+1] is None):
+                                plot_me = True
+                        if plot_me:
+                            self.ax.plot(dates[i], v,
+                                         c=color,
+                                         marker='.',
+                                         zorder=2)
+                            
 
                 if len(self.labels) > i:
                     line.set_label(self.labels[i])

@@ -85,9 +85,10 @@ To run tests:
 
 Changelog
 ---------
-- next
+- 1.3.1
 
   - Make inner_max/min_x work with leading / trailing None values
+  - Make sure single, orphaned values are visible (as points) in line charts
 
 - 1.3.0
 
