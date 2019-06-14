@@ -88,6 +88,7 @@ Changelog
 - next
 
   - Allow (and recommend) using Matplotlib 3. This may affect how some charts are rendered.
+  - Removed undocumented and incomplete Latex support from caption.
   - Don't highlight diff outside either series' extreme ends.
   
 - 1.2.1
