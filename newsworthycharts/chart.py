@@ -604,11 +604,18 @@ class SerialChart(Chart):
                 values = [0 if v is None else v for v in values]
 
                 # Set bar width, based on interval
-                bar_w = [self._days_in(self.interval, d) * self.bar_width
-                         for d in dates]
+                bar_lengths = [self._days_in(self.interval, d) for d in dates]
+                bar_widths = [l * self.bar_width for l in bar_lengths]
+
+                # If there are too many ticks per pixel,
+                # don't put whitespace betw bars. Make widths = 1
+                bbox = self.ax.get_window_extent()
+                if (sum(bar_widths) * 2 / len(dates)) > bbox.width:
+                    bar_widths = bar_lengths
+
                 bars = self.ax.bar(dates, values,
                                    color=colors,
-                                   width=bar_w,
+                                   width=bar_widths,
                                    zorder=2)
 
                 if len(self.labels) > i:

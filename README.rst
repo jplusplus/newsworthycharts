@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- next
+
+  - 
+
 - 1.3.2
 
   - Make labels work again, 1.3.1 broke those in some circumstances
