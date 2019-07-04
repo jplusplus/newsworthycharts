@@ -86,9 +86,9 @@ To run tests:
 Changelog
 ---------
 
-- next
+- 1.3.3
 
-  - 
+  - Make small bar charts with very many bars look better
 
 - 1.3.2
 
