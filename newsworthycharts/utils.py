@@ -41,7 +41,7 @@ def loadstyle(style_name):
         doc = f.readlines()
         rcParamsNewsworthy = "\n".join([d[2:]
                                        for d in doc if d.startswith("#!")])
-    rcParamsNewsworthy = yaml.load(rcParamsNewsworthy)
+    rcParamsNewsworthy = yaml.safe_load(rcParamsNewsworthy)
     style["title_font"] = [x.strip()
                            for x in rcParamsNewsworthy["title_font"]
                            .split(",")]
