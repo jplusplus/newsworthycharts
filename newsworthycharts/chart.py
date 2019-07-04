@@ -611,7 +611,7 @@ class SerialChart(Chart):
                 # don't put whitespace betw bars. Make widths = 1
                 bbox = self.ax.get_window_extent()
                 if (sum(bar_widths) * 2 / len(dates)) > bbox.width:
-                    bar_widths = bar_lengths
+                    bar_widths = [l * 1 for l in bar_lengths]
 
                 bars = self.ax.bar(dates, values,
                                    color=colors,
