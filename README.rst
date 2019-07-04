@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- next
+
+  - More secure YAML file parsing
+
 - 1.3.3
 
   - Make small bar charts with very many bars look better
