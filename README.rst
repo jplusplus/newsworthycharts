@@ -86,8 +86,10 @@ To run tests:
 Changelog
 ---------
 
-- next
+- 1.4.0
 
+  - Add new ScatterPlot chart class
+  - Improved text adjusting in serial charts
   - More secure YAML file parsing
 
 - 1.3.3
