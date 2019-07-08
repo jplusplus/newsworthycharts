@@ -163,7 +163,7 @@ class Chart(object):
             #  'fontsize': "small",
             "textcoords": "offset pixels",
         }
-
+        
         offset = round(self.style["font.size"] * 0.8)
         if direction == "up":
             opts["verticalalignment"] = "bottom"
@@ -742,8 +742,8 @@ class SerialChart(Chart):
 
             x = [a.xy[0] for a in self._annotations]
             y = [a.xy[1] for a in self._annotations]
-            adjust_text(self._annotations,
-                        x=x, y=y)
+            # adjust_text(self._annotations,
+            #             x=x, y=y)
 
 
 class CategoricalChart(Chart):
@@ -898,8 +898,7 @@ class ScatterPlot(Chart):
                                          "up",
                                          fontsize=fontsize,
                                          zorder=5)
-            x = [a.xy[0] for a in self._annotations]
-            y = [a.xy[1] for a in self._annotations]
+
             adjust_text(self._annotations, autoalign="y",
                         expand_points=(1.5, 1.5),
                         rrowprops=dict(arrowstyle=" - ", lw=1))

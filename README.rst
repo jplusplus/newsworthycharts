@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.4.1
+
+  - Revert text adjusting for categorical charts, as it had issues
+
 - 1.4.0
 
   - Add new ScatterPlot chart class
