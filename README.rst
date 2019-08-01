@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- next
+
+  - Increase line width in default style
+
 - 1.4.1
 
   - Revert text adjusting for categorical charts, as it had issues
