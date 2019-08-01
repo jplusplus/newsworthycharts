@@ -37,7 +37,7 @@ legend.fontsize   : smaller
 
 # Lines, markers
 lines.color       : 999999
-lines.linewidth   : 0.75
+lines.linewidth   : 2
 lines.markersize : 8
 
 # Some custom settings for Newsworthy
