@@ -1,20 +1,6 @@
 """Functions for deteriming colors accoriding to some rule.
 """
-def color_fn(func):
-    """Wrapper that validates respones
-    """
-    def validate_response(*args, **kwargs):
-        resp = func(*args, **kwargs)
-        named_colors = ["neutral", "strong", "positive", "negative"]
-        is_valid = False
-        if resp not in named_colors:
-            # TODO: Also allow valid HEX colors
-            raise Exception("{} is not a valid color name".format(resp))
-        return resp
 
-    return validate_response
-
-@color_fn
 def positive_negative(value):
     """Return positive/negative color based on a value being
     above/below 0.

@@ -406,7 +406,8 @@ class SerialChart(Chart):
         self.max_ticks = 5
         self._ymin = None
 
-        self.color_fn = kwargs.get("color_fn")
+        if "color_fn" in kwargs:
+            self.color_fn = kwargs.get("color_fn")
 
     @property
     def ymin(self):
@@ -416,6 +417,18 @@ class SerialChart(Chart):
     @ymin.setter
     def ymin(self, val):
         self._ymin = val
+        
+    @property
+    def color_fn(self):
+        return self.color_fn
+
+    @ymin.setter
+    def color_fn(self, val):
+        named_colors = ["neutral", "strong", "positive", "negative"]
+        if val not in named_colors:
+            # TODO: Also allow valid HEX colors
+            raise Exception("{} is not a valid color name".format(resp))
+        self.color_fn = val
 
     @property
     def type(self):
