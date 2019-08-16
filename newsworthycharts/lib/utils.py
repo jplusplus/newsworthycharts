@@ -48,7 +48,7 @@ def loadstyle(style_name):
                            for x in rc_params_newsworthy["title_font"]
                            .split(",")]
     color = rc_params_newsworthy.get("neutral_color",
-                                   rcParams["figure.edgecolor"])
+                                     rcParams["figure.edgecolor"])
     strong_color = rc_params_newsworthy.get("strong_color", color)
     positive_color = rc_params_newsworthy.get("positive_color", POSITIVE)
     negative_color = rc_params_newsworthy.get("negative_color", NEGATIVE)
