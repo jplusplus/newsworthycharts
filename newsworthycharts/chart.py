@@ -1,13 +1,13 @@
 """ Create charts and store them as images.
 For use with Newsworthy's robot writer and other similar projects.
 """
-from .storage import LocalStorage
-from .datalist import DataList
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
 from .lib.locator import get_best_locator, get_year_ticks
 from .lib.utils import loadstyle, to_float, to_date
 from .lib.formatter import Formatter
+from .lib.storage import LocalStorage
+from .lib.datalist import DataList
 
 from io import BytesIO
 from math import inf
