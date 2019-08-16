@@ -1,10 +1,11 @@
 """ Various utility methods """
+import os
+from datetime import datetime
+import yaml
 from matplotlib import rc_file, rcParams
 from matplotlib.colors import to_rgba
-from datetime import datetime
-from .colors import STRONG, NEUTRAL, POSITIVE, NEGATIVE, FILL_BETWEEN
-import os
-import yaml
+from .colors import POSITIVE, NEGATIVE, FILL_BETWEEN
+
 
 HERE = os.path.dirname(__file__)
 
@@ -65,24 +66,15 @@ def loadstyle(style_name):
     return style
 
 
-def rpad(list_, item, length):
-    """
-     Right pad a list to a certain length, using `item`
-    """
-    if list_ is None:
-        list_ = []
-    return list_ + [item for i in range(max(0, length-len(list_)))]
-
-
-def to_float(s):
+def to_float(val):
     """Convert string to float, but also handles None and 'null'."""
-    if s is None:
+    if val is None:
         return None
-    if str(s) == "null":
+    if str(val) == "null":
         return
-    return float(s)
+    return float(val)
 
 
-def to_date(s):
+def to_date(val):
     """Convert date string to datetime date."""
-    return datetime.strptime(s, "%Y-%m-%d")
+    return datetime.strptime(val, "%Y-%m-%d")
