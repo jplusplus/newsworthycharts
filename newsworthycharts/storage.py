@@ -5,7 +5,7 @@ image to e.g. a file or a database blob.
 from shutil import copyfileobj
 import boto3
 import os
-from .mimetypes import MIME_TYPES
+from .lib.mimetypes import MIME_TYPES
 
 
 class AmazonUploadError(Exception):

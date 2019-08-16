@@ -20,7 +20,7 @@ def loadstyle(style_name):
     """
 
     style = {}
-    style_file = os.path.join(HERE, 'rc', style_name)
+    style_file = os.path.join(HERE, '..', 'rc', style_name)
     try:
         # Check rc directory for built in styles first
         rc_file(style_file)

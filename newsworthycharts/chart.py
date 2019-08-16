@@ -6,8 +6,8 @@ from .lib.mimetypes import MIME_TYPES
 from .lib.locator import get_best_locator, get_year_ticks
 from .lib.utils import loadstyle, to_float, to_date
 from .lib.formatter import Formatter
-from .lib.storage import LocalStorage
 from .lib.datalist import DataList
+from .storage import LocalStorage
 
 from io import BytesIO
 from math import inf
