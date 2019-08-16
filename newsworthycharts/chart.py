@@ -159,7 +159,7 @@ class Chart(object):
             value = args[0]
             color_name = color_fn.positive_negative(value)
         else:
-            raise Exception("Unknown color rule: {}".format(rule))
+            raise ValueError("Unknown color rule: {}".format(rule))
 
         if color_name in ["strong", "neutral", "positive", "negative"]:
             c = self.style[color_name + "_color"]
@@ -427,10 +427,9 @@ class SerialChart(Chart):
 
     @ymin.setter
     def color_fn(self, val):
-        named_colors = [None, "neutral", "strong", "positive", "negative"]
-        if val not in named_colors:
-            # TODO: Also allow valid HEX colors
-            raise Exception("{} is not a valid color name".format(resp))
+        allowed_values = [None, "positive_negative"]
+        if val not in allowed_values:
+            raise ValueError("{} is not a color rule".format(resp))
         self.color_fn = val
 
     @property
