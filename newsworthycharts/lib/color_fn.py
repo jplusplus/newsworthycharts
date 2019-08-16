@@ -1,9 +1,12 @@
-"""Functions for deteriming colors accoriding to some rule.
+""" Functions for deteriming colors accoriding to some rule.
 """
+
 def color_fn(func):
-    """Wrapper that validates respones
+    """ Wrapper that validates respones
     """
     def validate_response(*args, **kwargs):
+        """ Check that returned value is valid
+        """
         resp = func(*args, **kwargs)
         named_colors = ["neutral", "strong", "positive", "negative"]
         if resp not in named_colors:
@@ -15,7 +18,7 @@ def color_fn(func):
 
 @color_fn
 def positive_negative(value):
-    """Return positive/negative color based on a value being
+    """ Return positive/negative color based on a value being
     above/below 0.
     """
     if value is None:
