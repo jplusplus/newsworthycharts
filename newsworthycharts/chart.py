@@ -10,6 +10,7 @@ from .storage import LocalStorage
 from .formatter import Formatter
 from .locator import get_best_locator, get_year_ticks
 from .datalist import DataList
+from .lib import color_fn
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
@@ -148,6 +149,24 @@ class Chart(object):
         bbox = obj.get_window_extent()
         return bbox.height / float(self.h)
 
+    def _color_by(self, *args, **kwargs):
+        """Color by some rule.
+        Role of args and and kwargs are determined by the color rule.
+        """
+        color_name = None
+        rule = self.color_fn
+        if rule == "positive_negative":
+            value = args[0]
+            color_name = color_fn.positive_negative(value)
+        else:
+            raise ValueError("Unknown color rule: {}".format(rule))
+
+        if color_name in ["strong", "neutral", "positive", "negative"]:
+            c = self.style[color_name + "_color"]
+        else:
+            c = color_name
+        return c
+
     def _annotate_point(self, text, xy,
                         direction,
                         **kwargs):
@@ -163,7 +182,7 @@ class Chart(object):
             #  'fontsize': "small",
             "textcoords": "offset pixels",
         }
-        
+
         offset = round(self.style["font.size"] * 0.8)
         if direction == "up":
             opts["verticalalignment"] = "bottom"
@@ -378,6 +397,8 @@ class SerialChart(Chart):
     iterables of (value, date string) tuples, eg:
     `[ [("2010-01-01", 2), ("2010-02-01", 2.3)] ]`
     """
+    
+    color_fn = None
 
     def __init__(self, *args, **kwargs):
         super(SerialChart, self).__init__(*args, **kwargs)
@@ -387,6 +408,9 @@ class SerialChart(Chart):
         # be around 310 or 311 days wide.
         self.max_ticks = 5
         self._ymin = None
+
+        if "color_fn" in kwargs:
+            self.color_fn = kwargs.get("color_fn")
 
     @property
     def ymin(self):
@@ -577,7 +601,7 @@ class SerialChart(Chart):
                                          c=color,
                                          marker='.',
                                          zorder=2)
-                            
+
 
                 if len(self.labels) > i:
                     line.set_label(self.labels[i])
@@ -590,7 +614,11 @@ class SerialChart(Chart):
                                  zorder=2)
 
             elif self.type == "bars":
-                if self.highlight:
+                # Pick color based on value of each bar
+                if self.color_fn:
+                    colors = [self._color_by(v) for v in values]
+
+                elif self.highlight:
                     colors = []
                     for timepoint in dates:
                         if highlight_value and timepoint == highlight_date:
@@ -688,7 +716,6 @@ class SerialChart(Chart):
             ymin = min(self.ymin, self.data.min_val - padding_bottom)
         else:
             ymin = self.data.min_val - padding_bottom
-
         self.ax.set_ylim(ymin=ymin,
                          ymax=self.data.max_val * 1.15)
 
