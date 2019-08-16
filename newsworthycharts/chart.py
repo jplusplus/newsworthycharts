@@ -149,11 +149,12 @@ class Chart(object):
         bbox = obj.get_window_extent()
         return bbox.height / float(self.h)
 
-    def _color_by(self, rule, *args, **kwargs):
+    def _color_by(self, *args, **kwargs):
         """Color by some rule.
         Role of args and and kwargs are determined by the color rule.
         """
         color_name = None
+        rule = self.color_fn
         if rule == "positive_negative":
             value = args[0]
             color_name = color_fn.positive_negative(value)
@@ -626,9 +627,8 @@ class SerialChart(Chart):
 
             elif self.type == "bars":
                 # Pick color based on value of each bar
-                if self.color_fn == "positive_negative":
-                    colors = [self._color_by("positive_negative", v)
-                              for v in values]
+                if self.color_fn:
+                    colors = [self._color_by(v) for v in values]
 
                 elif self.highlight:
                     colors = []
