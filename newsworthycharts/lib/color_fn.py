@@ -23,7 +23,7 @@ def positive_negative(value):
     elif value < 0:
         color_name = "negative"
     elif value > 0:
-         color_name = "positive"
+        color_name = "positive"
     else:
         color_name = "neutral"
 
