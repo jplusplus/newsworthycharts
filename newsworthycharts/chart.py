@@ -3,21 +3,17 @@ For use with Newsworthy's robot writer and other similar projects.
 """
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
-from .lib.locator import get_best_locator, get_year_ticks
-from .lib.utils import loadstyle, to_float, to_date
+from .lib.utils import loadstyle
 from .lib.formatter import Formatter
 from .lib.datalist import DataList
 from .storage import LocalStorage
 
 from io import BytesIO
-from math import inf
 from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
-from matplotlib.dates import DateFormatter
 from langcodes import standardize_tag
-from dateutil.relativedelta import relativedelta
 from PIL import Image
 from babel import Locale
 
@@ -29,7 +25,7 @@ class Chart(object):
     """
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
-                 style: str='newsworthy', language: str='en-GB'):
+                 style: str='newsworthy', language: str='en-GB', *args, **kwargs):
         """
         :param width: width in pixels
         :param height: height in pixels
