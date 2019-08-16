@@ -29,6 +29,26 @@ def test_dynamic_init():
     assert(what(container["png"]) == "png")
 
 
+def test_factory_function():
+    container = {}
+    ds = DictStorage(container)
+    c = Chart.init_from({
+        "width": 800,
+        "height": 600,
+        "language": "sv-SE"
+    }, storage=ds)
+    c.render("test", "png")
+
+    assert("png" in container)
+    assert(what(container["png"]) == "png")
+
+    # Make sure it works in a child class
+    c = SerialChart.init_from({
+        "width": 800,
+        "height": 600,
+    }, storage=ds)
+    assert("SerialChart" in c.__repr__())
+
 def test_image_size():
     container = {}
     ds = DictStorage(container)
