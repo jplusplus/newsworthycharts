@@ -1,6 +1,6 @@
 """ py.test tests for Newsworthycharts
 """
-from newsworthycharts import Chart, SerialChart, CategoricalChart
+from newsworthycharts import Chart, SerialChart, CategoricalChart, CHART_ENGINES
 from newsworthycharts.storage import DictStorage
 from imghdr import what
 from PIL import Image
@@ -12,6 +12,17 @@ def test_generating_png():
     container = {}
     ds = DictStorage(container)
     c = Chart(800, 600, storage=ds)
+    c.render("test", "png")
+
+    assert("png" in container)
+    assert(what(container["png"]) == "png")
+
+
+def test_dynamic_init():
+    engine = "SerialChart"
+    container = {}
+    ds = DictStorage(container)
+    c = CHART_ENGINES[engine](800, 600, storage=ds)
     c.render("test", "png")
 
     assert("png" in container)
