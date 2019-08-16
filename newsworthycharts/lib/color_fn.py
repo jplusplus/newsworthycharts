@@ -6,7 +6,6 @@ def color_fn(func):
     def validate_response(*args, **kwargs):
         resp = func(*args, **kwargs)
         named_colors = ["neutral", "strong", "positive", "negative"]
-        is_valid = False
         if resp not in named_colors:
             # TODO: Also allow valid HEX colors
             raise Exception("{} is not a valid color name".format(resp))
