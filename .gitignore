@@ -2,8 +2,6 @@
 /dist/
 /*.egg-info
 bin
-lib
-lib64
 pyenv.cfg
 share
 pyvenv.cfg
