@@ -396,6 +396,8 @@ class SerialChart(Chart):
     iterables of (value, date string) tuples, eg:
     `[ [("2010-01-01", 2), ("2010-02-01", 2.3)] ]`
     """
+    
+    color_fn = None
 
     def __init__(self, *args, **kwargs):
         super(SerialChart, self).__init__(*args, **kwargs)
@@ -424,7 +426,7 @@ class SerialChart(Chart):
 
     @ymin.setter
     def color_fn(self, val):
-        named_colors = ["neutral", "strong", "positive", "negative"]
+        named_colors = [None, "neutral", "strong", "positive", "negative"]
         if val not in named_colors:
             # TODO: Also allow valid HEX colors
             raise Exception("{} is not a valid color name".format(resp))
