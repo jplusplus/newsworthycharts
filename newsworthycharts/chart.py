@@ -319,6 +319,22 @@ class Chart(object):
             # Add caption without image
             self._add_caption(self.caption, hextent=caption_hextent)
 
+    @classmethod
+    def init_from(cls, args, storage=LocalStorage(), style="newsworthy"):
+        """
+         Factory method for creating a chart from a Python object.
+        """
+        if not ("width" in args and "height" in args):
+            raise Exception("The settings object must include an explicit width and height")
+        lang = "en-GB"
+        if "language" in args:
+            lang = args["language"]
+        chart = cls(args["width"], args["height"], storage=storage,
+                     style=style, language=lang)
+        for k, v in args.items():
+            setattr(chart, k, v)
+        return chart
+
     def render(self, key, img_format):
         """
          render file, and send to storage.
