@@ -43,7 +43,7 @@ class DataList(MutableSequence):
         # Update metadata with newly added data
         values = [to_float(x[1]) for x in v]
         values = [x for x in values if x is not None]
-        if len(values):
+        if values:
             self.min_val = min(self.min_val, min(values))
             self.max_val = max(self.max_val, max(values))
         self._x_points.update([x[0] for x in v])
