@@ -30,8 +30,8 @@ def loadstyle(style_name):
         style_file = style_name
         try:
             rc_file(style_file)
-        except FileNotFoundError as e:
-            raise StyleNotFoundError("No such style file found")
+        except FileNotFoundError as err:
+            raise StyleNotFoundError("No such style file found: {}".format(err))
     style = rcParams.copy()
 
     # The style files may also contain an extra section with typography
@@ -39,29 +39,29 @@ def loadstyle(style_name):
     # as of Matplotlib 2.2)
     # This is a hack, but it's nice to have all styling in one file
     # The extra styling is prefixed with `#!`
-    with open(style_file, 'r') as f:
-        doc = f.readlines()
-        rcParamsNewsworthy = "\n".join([d[2:]
+    with open(style_file, 'r') as file_:
+        doc = file_.readlines()
+        rc_params_newsworthy = "\n".join([d[2:]
                                        for d in doc if d.startswith("#!")])
-    rcParamsNewsworthy = yaml.safe_load(rcParamsNewsworthy)
+    rc_params_newsworthy = yaml.safe_load(rc_params_newsworthy)
     style["title_font"] = [x.strip()
-                           for x in rcParamsNewsworthy["title_font"]
+                           for x in rc_params_newsworthy["title_font"]
                            .split(",")]
-    color = rcParamsNewsworthy.get("neutral_color",
+    color = rc_params_newsworthy.get("neutral_color",
                                    rcParams["figure.edgecolor"])
-    strong_color = rcParamsNewsworthy.get("strong_color", color)
-    positive_color = rcParamsNewsworthy.get("positive_color", POSITIVE)
-    negative_color = rcParamsNewsworthy.get("negative_color", NEGATIVE)
-    fill_between_color = rcParamsNewsworthy.get("fill_between_color", FILL_BETWEEN)
-    fill_between_alpha = rcParamsNewsworthy.get("fill_between_alpha", 0.5)
+    strong_color = rc_params_newsworthy.get("strong_color", color)
+    positive_color = rc_params_newsworthy.get("positive_color", POSITIVE)
+    negative_color = rc_params_newsworthy.get("negative_color", NEGATIVE)
+    fill_between_color = rc_params_newsworthy.get("fill_between_color", FILL_BETWEEN)
+    fill_between_alpha = rc_params_newsworthy.get("fill_between_alpha", 0.5)
     style["neutral_color"] = to_rgba("#" + str(color), 1)
     style["strong_color"] = to_rgba("#" + str(strong_color), 1)
     style["positive_color"] = to_rgba("#" + positive_color, 1)
     style["negative_color"] = to_rgba("#" + negative_color, 1)
     style["fill_between_color"] = to_rgba("#" + str(fill_between_color), 1)
     style["fill_between_alpha"] = float(fill_between_alpha)
-    if "logo" in rcParamsNewsworthy:
-        style["logo"] = rcParamsNewsworthy["logo"]
+    if "logo" in rc_params_newsworthy:
+        style["logo"] = rc_params_newsworthy["logo"]
 
     return style
 
