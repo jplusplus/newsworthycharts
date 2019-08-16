@@ -10,7 +10,7 @@ from .storage import LocalStorage
 from .formatter import Formatter
 from .locator import get_best_locator, get_year_ticks
 from .datalist import DataList
-from . import color_fn
+from .lib import color_fn
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
