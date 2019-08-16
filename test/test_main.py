@@ -168,4 +168,4 @@ def test_checksum_png():
     m = md5()
     m.update(container["png"].getvalue())
 
-    assert(m.hexdigest() == "209c5addae84a2471d78605f6278e29f")
+    assert(m.hexdigest() == "bd692994b6078958f8fe43419b5943b6")
