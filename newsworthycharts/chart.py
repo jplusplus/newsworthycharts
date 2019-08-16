@@ -1,17 +1,17 @@
 """ Create charts and store them as images.
 For use with Newsworthy's robot writer and other similar projects.
 """
-from io import BytesIO
-from math import inf
-from matplotlib.font_manager import FontProperties
-from .utils import loadstyle, to_float, to_date
 from .storage import LocalStorage
 from .formatter import Formatter
 from .datalist import DataList
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
 from .lib.locator import get_best_locator, get_year_ticks
+from .lib.utils import loadstyle, to_float, to_date
 
+from io import BytesIO
+from math import inf
+from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
