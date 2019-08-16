@@ -83,14 +83,14 @@ class DataList(MutableSequence):
 
         x_points = self.x_points
         return [fill_na([to_float(d[x])
-                        if x in d else None
-                        for x in x_points])
+                         if x in d else None
+                         for x in x_points])
                 for d in self.as_dict]
 
     @property
     def x_points(self):
         return sorted(list(self._x_points))
-    
+
     @property
     def inner_min_x(self):
         return max(list(filter(lambda x: x[1] is not None, s))[0][0] for s in self.list)
