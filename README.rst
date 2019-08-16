@@ -88,6 +88,7 @@ Changelog
 
 - next
 
+  - Expose available chart engines in `CHART_ENGINES` constant for dynamic loading
   - Add `color_fn` property, for coloring bars based on value
   - Increase line width in default style
   - Upgrading Numpy could potentially affect how infinity is treated in serial charts.
