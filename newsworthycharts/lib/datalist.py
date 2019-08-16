@@ -3,8 +3,8 @@ Holds a class for storing lists of data (timeseries etc), and related methods.
 """
 from collections.abc import MutableSequence
 from math import inf
-from .utils import to_float, to_date
 from numpy import array, isnan, interp, flatnonzero
+from .utils import to_float
 
 
 def fill_na(arr):
