@@ -11,6 +11,7 @@ HERE = os.path.dirname(__file__)
 
 
 class StyleNotFoundError(FileNotFoundError):
+    """ No style file matching the given style name could be found or loaded """
     pass
 
 
@@ -25,7 +26,7 @@ def loadstyle(style_name):
     try:
         # Check rc directory for built in styles first
         rc_file(style_file)
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         # Check current working dir or path
         style_file = style_name
         try:
