@@ -420,17 +420,6 @@ class SerialChart(Chart):
     @ymin.setter
     def ymin(self, val):
         self._ymin = val
-        
-    @property
-    def color_fn(self):
-        return self.color_fn
-
-    @ymin.setter
-    def color_fn(self, val):
-        allowed_values = [None, "positive_negative"]
-        if val not in allowed_values:
-            raise ValueError("{} is not a color rule".format(resp))
-        self.color_fn = val
 
     @property
     def type(self):
