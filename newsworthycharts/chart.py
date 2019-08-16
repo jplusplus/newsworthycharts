@@ -7,10 +7,10 @@ from matplotlib.font_manager import FontProperties
 from .utils import loadstyle, to_float, to_date
 from .storage import LocalStorage
 from .formatter import Formatter
-from .locator import get_best_locator, get_year_ticks
 from .datalist import DataList
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
+from .lib.locator import get_best_locator, get_year_ticks
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
