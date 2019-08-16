@@ -49,6 +49,14 @@ def test_factory_function():
     }, storage=ds)
     assert("SerialChart" in c.__repr__())
 
+    # Should not crash on extra properties
+    c = SerialChart.init_from({
+        "width": 800,
+        "height": 600,
+        "qwerty": "dvorak"
+    }, storage=ds)
+    assert("SerialChart" in c.__repr__())
+
 def test_image_size():
     container = {}
     ds = DictStorage(container)
