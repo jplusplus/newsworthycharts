@@ -71,7 +71,7 @@ def to_float(val):
     if val is None:
         return None
     if str(val) == "null":
-        return
+        return None
     return float(val)
 
 
