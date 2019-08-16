@@ -86,7 +86,11 @@ To run tests:
 Changelog
 ---------
 
-- next
+- 1.5.1
+
+  - Fix packaging error in 1.5.0
+
+- 1.5.0
 
   - Expose available chart engines in `CHART_ENGINES` constant for dynamic loading
   - Add `color_fn` property, for coloring bars based on value
