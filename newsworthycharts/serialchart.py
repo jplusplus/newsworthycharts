@@ -7,8 +7,6 @@ class SerialChart(Chart):
     `[ [("2010-01-01", 2), ("2010-02-01", 2.3)] ]`
     """
     
-    color_fn = None
-
     def __init__(self, *args, **kwargs):
         super(SerialChart, self).__init__(*args, **kwargs)
         self._type = "bars"
@@ -17,9 +15,6 @@ class SerialChart(Chart):
         # be around 310 or 311 days wide.
         self.max_ticks = 5
         self._ymin = None
-
-        if "color_fn" in kwargs:
-            self.color_fn = kwargs.get("color_fn")
 
     @property
     def ymin(self):
