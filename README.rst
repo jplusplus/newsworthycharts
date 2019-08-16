@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.6.0
+
+  - Added a factory method to create charts from a JSON-like Python object, like so: `SerialChart.init_from(config, storage)`
+
 - 1.5.1
 
   - Fix packaging error in 1.5.0
