@@ -25,7 +25,7 @@ class Chart(object):
     """
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
-                 style: str='newsworthy', language: str='en-GB', *args, **kwargs):
+                 style: str='newsworthy', language: str='en-GB'):
         """
         :param width: width in pixels
         :param height: height in pixels
@@ -56,10 +56,7 @@ class Chart(object):
         self.logo = None
         # Path to image that will be embedded in the caption area
         # Can also be set though a style property
-        if "color_fn" in kwargs:
-            self.color_fn = kwargs.get("color_fn")
-        else:
-            self.color_fn = None
+        self.color_fn = None
         # Custom coloring function
 
         # Properties managed through getters/setters
