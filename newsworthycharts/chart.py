@@ -35,7 +35,7 @@ class Chart(object):
         :param language: a BCP 47 language tag (eg `en`, `sv-FI`)
         """
 
-        # Properties of this class member
+        # P U B L I C   P R O P E R T I E S
         # The user can alter these at any time
         self.data = DataList()  # A list of datasets
         self.annotate_trend = True  # Print out values at points on trendline?
@@ -59,15 +59,16 @@ class Chart(object):
         self.color_fn = None
         # Custom coloring function
 
+        # P R I V A T E   P R O P E R T I E S
         # Properties managed through getters/setters
         self._title = None
         self._units = "count"
 
         # Calculated properties
         self._annotations = []  # Automatically added annotations
-        self.storage = storage
-        self.w, self.h = int(width), int(height)
-        self.style = loadstyle(style)
+        self._storage = storage
+        self._w, self._h = int(width), int(height)
+        self._style = loadstyle(style)
         # Standardize and check if language tag is a valid BCP 47 tag
         self.language = standardize_tag(language)
         self.locale = Locale.parse(self.language.replace("-", "_"))
@@ -138,14 +139,14 @@ class Chart(object):
         w, h, d = r.get_text_width_height_descent(t, obj._fontproperties,
                                                   ismath=False)
         num_lines = len(obj._get_wrapped_text().split("\n"))
-        return (h * num_lines) / float(self.h)
+        return (h * num_lines) / float(self._h)
 
     def _rel_height(self, obj):
         """ Get the relative height of a chart object to the whole canvas.
         """
         self.fig.canvas.draw()  # We must draw the canvas to know all sizes
         bbox = obj.get_window_extent()
-        return bbox.height / float(self.h)
+        return bbox.height / float(self._h)
 
     def _color_by(self, *args, **kwargs):
         """Color by some rule.
@@ -217,16 +218,16 @@ class Chart(object):
         # Our workaround is to resize the figure, draw the text to find the
         # linebreaks, and then restore the original width!
         if hextent is None:
-            hextent = (0, self.w)
+            hextent = (0, self._w)
         self._set_size(hextent[1]-hextent[0])
-        x1 = hextent[0] / self.w
+        x1 = hextent[0] / self._w
         text = self.fig.text(x1 + 0.01, 0.01, caption,
                              color=self.style["neutral_color"], wrap=True,
                              fontsize="small")
         self.fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
         text.set_text(wrapped_text)
-        self._set_size(self.w)
+        self._set_size(self._w)
 
         # Increase the bottom padding by the height of the text bbox
         margin = self.style["figure.subplot.bottom"]
@@ -298,7 +299,7 @@ class Chart(object):
         if logo:
             im = Image.open(logo)
             # scale down image if needed to fit
-            new_width = min(self.w, im.size[0])
+            new_width = min(self._w, im.size[0])
             new_height = new_width * (im.size[1] / im.size[0])
             im.thumbnail((new_width, new_height), Image.ANTIALIAS)
 
@@ -306,9 +307,9 @@ class Chart(object):
             if self.locale.text_direction == "rtl":
                 logo_im = self.fig.figimage(im, 0, 0)
                 ext = logo_im.get_extent()
-                caption_hextent=(ext[1], self.w)
+                caption_hextent=(ext[1], self._w)
             else:
-                logo_im = self.fig.figimage(im, self.w - im.size[0], 0)
+                logo_im = self.fig.figimage(im, self._w - im.size[0], 0)
                 ext = logo_im.get_extent()
                 caption_hextent=(0, ext[0])
 
@@ -347,7 +348,7 @@ class Chart(object):
         buf = BytesIO()
         self.fig.savefig(buf, format=img_format)
         buf.seek(0)
-        self.storage.save(key, buf, img_format)
+        self._storage.save(key, buf, img_format)
 
     def render_all(self, key):
         """
@@ -361,7 +362,7 @@ class Chart(object):
             buf = BytesIO()
             self.fig.savefig(buf, format=file_format)
             buf.seek(0)
-            self.storage.save(key, buf, file_format)
+            self._storage.save(key, buf, file_format)
 
     @property
     def title(self):
@@ -407,4 +408,4 @@ class Chart(object):
         # Use type(self).__name__ to get the right class name for sub classes
         return "<{cls}: {name} ({h} x {w})>".format(cls=type(self).__name__,
                                                     name=str(self),
-                                                    w=self.w, h=self.h)
+                                                    w=self._w, h=self._h)
