@@ -320,17 +320,15 @@ class Chart(object):
             self._add_caption(self.caption, hextent=caption_hextent)
 
     @classmethod
-    def init_from(cls, args, storage=LocalStorage(), style="newsworthy"):
+    def init_from(cls, args, storage=LocalStorage(), style: str="newsworthy", language: str='en-GB'):
         """
          Factory method for creating a chart from a Python object.
         """
         if not ("width" in args and "height" in args):
             raise Exception("The settings object must include an explicit width and height")
         lang = "en-GB"
-        if "language" in args:
-            lang = args["language"]
         chart = cls(args["width"], args["height"], storage=storage,
-                     style=style, language=lang)
+                     style=style, language=language)
         for k, v in args.items():
             setattr(chart, k, v)
         if "data" in args:

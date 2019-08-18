@@ -35,8 +35,7 @@ def test_factory_function():
     c = Chart.init_from({
         "width": 800,
         "height": 600,
-        "language": "sv-SE"
-    }, storage=ds)
+    }, storage=ds, language="sv-SE")
     c.render("test", "png")
 
     assert("png" in container)
