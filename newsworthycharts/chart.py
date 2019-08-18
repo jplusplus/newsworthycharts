@@ -333,6 +333,12 @@ class Chart(object):
                      style=style, language=lang)
         for k, v in args.items():
             setattr(chart, k, v)
+        if "data" in args:
+            for data in args["data"].copy():
+                chart.data.append(data)
+        if "labels" in args:
+            for label in args["labels"].copy():
+                chart.labels.append(label)
         return chart
 
     def render(self, key, img_format):

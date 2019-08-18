@@ -57,6 +57,19 @@ def test_factory_function():
     }, storage=ds)
     assert("SerialChart" in c.__repr__())
 
+    # Should work with labels and data
+    c = SerialChart.init_from({
+        "width": 800,
+        "height": 600,
+        "labels": ["Serie A", "Serie B"],
+        "data": [
+            [("2012", 1), ("2013", 2)],
+            [("2012", 0.5), ("2013", 0.7)],
+        ],
+    }, storage=ds)
+    assert("SerialChart" in c.__repr__())
+
+
 def test_image_size():
     container = {}
     ds = DictStorage(container)
