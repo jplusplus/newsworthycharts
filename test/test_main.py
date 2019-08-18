@@ -232,4 +232,4 @@ def test_default_number_of_decimals():
     
     # Should default to 1 for units=count
     c.units = "count"
-    assert(c.decimals is 1)
+    assert(c.decimals == 0)
