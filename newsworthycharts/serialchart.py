@@ -163,9 +163,9 @@ class SerialChart(Chart):
         for i, serie in enumerate(series):
             # Use strong color for first series
             if i == 0:
-                color = self.style["strong_color"]
+                color = self._style["strong_color"]
             else:
-                color = self.style["neutral_color"]
+                color = self._style["neutral_color"]
 
             values = [to_float(x[1]) for x in serie]
             dates = [to_date(x[0]) for x in serie]
@@ -234,12 +234,12 @@ class SerialChart(Chart):
                     colors = []
                     for timepoint in dates:
                         if highlight_value and timepoint == highlight_date:
-                            colors.append(self.style["strong_color"])
+                            colors.append(self._style["strong_color"])
                         else:
-                            colors.append(self.style["neutral_color"])
+                            colors.append(self._style["neutral_color"])
                 else:
                     # use strong color if there is no highlight
-                    colors = [self.style["strong_color"]] * len(dates)
+                    colors = [self._style["strong_color"]] * len(dates)
 
                 # Replace None values with 0's to be able to plot bars
                 values = [0 if v is None else v for v in values]
@@ -301,7 +301,7 @@ class SerialChart(Chart):
            self.type == "line":
 
             self.ax.vlines(highlight_date, y0, y1,
-                           colors=self.style["neutral_color"],
+                           colors=self._style["neutral_color"],
                            linestyles='dashed')
             diff = a_formatter(abs(y0-y1))
             xy = (highlight_date, (y0 + y1) / 2)
@@ -319,8 +319,8 @@ class SerialChart(Chart):
                                  filled_values[1],
                                  where=[(x >= min_x and x <= max_x)
                                             for x in self.data.x_points],
-                                 facecolor=self.style["fill_between_color"],
-                                 alpha=self.style["fill_between_alpha"])
+                                 facecolor=self._style["fill_between_color"],
+                                 alpha=self._style["fill_between_alpha"])
 
         # Y axis formatting
         padding_bottom = abs(self.data.min_val * 0.15)
@@ -367,7 +367,7 @@ class SerialChart(Chart):
                 marker = 'o'
 
             self.ax.plot(dates, values,
-                         color=self.style["strong_color"], zorder=4,
+                         color=self._style["strong_color"], zorder=4,
                          marker=marker, linestyle='dashed')
 
             # Annotate points in trendline
@@ -376,7 +376,7 @@ class SerialChart(Chart):
                     xy = (date, values[i])
                     dir = self._get_annotation_direction(i, values)
                     self._annotate_point(a_formatter(values[i]), xy,
-                                         color=self.style["strong_color"],
+                                         color=self._style["strong_color"],
                                          direction=dir)
 
             x = [a.xy[0] for a in self._annotations]

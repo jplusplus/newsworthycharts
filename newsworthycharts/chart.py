@@ -75,9 +75,9 @@ class Chart(object):
 
         # Dynamic typography
         self.title_font = FontProperties()
-        self.title_font.set_family(self.style["title_font"])
-        self.title_font.set_size(self.style["figure.titlesize"])
-        self.title_font.set_weight(self.style["figure.titleweight"])
+        self.title_font.set_family(self._style["title_font"])
+        self.title_font.set_size(self._style["figure.titlesize"])
+        self.title_font.set_weight(self._style["figure.titleweight"])
 
         self.fig = Figure()
         FigureCanvas(self.fig)
@@ -157,7 +157,7 @@ class Chart(object):
             raise ValueError("Unknown color rule: {}".format(rule))
 
         if color_name in ["strong", "neutral", "positive", "negative"]:
-            c = self.style[color_name + "_color"]
+            c = self._style[color_name + "_color"]
         else:
             c = color_name
         return c
@@ -178,7 +178,7 @@ class Chart(object):
             "textcoords": "offset pixels",
         }
 
-        offset = round(self.style["font.size"] * 0.8)
+        offset = round(self._style["font.size"] * 0.8)
         if direction == "up":
             opts["verticalalignment"] = "bottom"
             opts["horizontalalignment"] = "center"
@@ -218,7 +218,7 @@ class Chart(object):
         self._set_size(hextent[1]-hextent[0])
         x1 = hextent[0] / self._w
         text = self.fig.text(x1 + 0.01, 0.01, caption,
-                             color=self.style["neutral_color"], wrap=True,
+                             color=self._style["neutral_color"], wrap=True,
                              fontsize="small")
         self.fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
@@ -226,7 +226,7 @@ class Chart(object):
         self._set_size(self._w)
 
         # Increase the bottom padding by the height of the text bbox
-        margin = self.style["figure.subplot.bottom"]
+        margin = self._style["figure.subplot.bottom"]
         margin += self._text_rel_height(text)
         self.fig.subplots_adjust(bottom=margin)
 
@@ -290,7 +290,7 @@ class Chart(object):
             self._add_xlabel(self.xlabel)
         if self.title is not None:
             self._add_title(self.title)
-        logo = self.style.get("logo", self.logo)
+        logo = self._style.get("logo", self.logo)
         caption_hextent = None  # set this if adding a logo
         if logo:
             im = Image.open(logo)

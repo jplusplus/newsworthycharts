@@ -26,11 +26,11 @@ class ScatterPlot(Chart):
                 value_labels = [None] * len(data)
 
             # Make markers semi-transparent
-            transparent_color = list(self.style["neutral_color"])
+            transparent_color = list(self._style["neutral_color"])
             transparent_color[3] = .3
             colors = [transparent_color] * len(data)
             # s refers to area here, so square the marker size
-            markersize = self.style["lines.markersize"]**2
+            markersize = self._style["lines.markersize"]**2
             self.ax.scatter(x, y, c=colors, zorder=1, marker='o', s=markersize)
 
             # Value labels and highlights are added as an additional layer above
@@ -40,13 +40,13 @@ class ScatterPlot(Chart):
                     # A point can be both highlighted and annotated
                     if (self.highlight is not None) and \
                         (value_label == self.highlight or value_label in self.highlight):
-                        color = self.style["strong_color"]
-                        size = self.style["lines.markersize"] * 1.5
+                        color = self._style["strong_color"]
+                        size = self._style["lines.markersize"] * 1.5
                         fontsize = "medium"
                     # ...or just annotated
                     else:
                         color = transparent_color
-                        size = self.style["lines.markersize"]
+                        size = self._style["lines.markersize"]
                         fontsize = "small"
 
                     # the dot

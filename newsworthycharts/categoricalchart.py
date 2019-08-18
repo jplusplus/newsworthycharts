@@ -38,8 +38,8 @@ class CategoricalChart(Chart):
             values = [0 if x[1] is None else float(x[1]) for x in data]
             categories = [x[0] for x in data]
 
-            color = self.style["neutral_color"]
-            highlight_color = self.style["strong_color"]
+            color = self._style["neutral_color"]
+            highlight_color = self._style["strong_color"]
 
             if self.highlight is None:
                 # use strong color if there is nothing to highlight
@@ -86,7 +86,7 @@ class CategoricalChart(Chart):
 
                 # Make sure labels are not cropped
                 yaxis_bbox = self.ax.yaxis.get_tightbbox(self.fig.canvas.renderer)
-                margin = self.style["figure.subplot.left"]
+                margin = self._style["figure.subplot.left"]
                 margin -= yaxis_bbox.min[0] / float(self._w)
                 self.fig.subplots_adjust(left=margin)
             else:
