@@ -79,10 +79,6 @@ class Chart(object):
         self.title_font.set_size(self.style["figure.titlesize"])
         self.title_font.set_weight(self.style["figure.titleweight"])
 
-        # By default no decimals if unit is “count”
-        if self.decimals is None and self._units == "count":
-            self.decimals = 0
-
         self.fig = Figure()
         FigureCanvas(self.fig)
         self.ax = self.fig.add_subplot(111)
@@ -394,6 +390,9 @@ class Chart(object):
         allowed_units = ["count", "percent", "degrees"]
         if val in allowed_units:
             self._units = val
+            # By default no decimals if unit is “count”
+            if self.decimals is None and self._units == "count":
+                self.decimals = 0
         else:
             raise ValueError("Supported units are: {}".format(allowed_units))
 
