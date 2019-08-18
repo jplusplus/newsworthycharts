@@ -70,8 +70,8 @@ class Chart(object):
         self._w, self._h = int(width), int(height)
         self._style = loadstyle(style)
         # Standardize and check if language tag is a valid BCP 47 tag
-        self.language = standardize_tag(language)
-        self.locale = Locale.parse(self.language.replace("-", "_"))
+        self._language = standardize_tag(language)
+        self.locale = Locale.parse(self._language.replace("-", "_"))
 
         # Dynamic typography
         self.title_font = FontProperties()
@@ -100,7 +100,7 @@ class Chart(object):
         self.fig.set_size_inches(real_width, real_height)
 
     def _get_value_axis_formatter(self):
-            formatter = Formatter(self.language,
+            formatter = Formatter(self._language,
                                   decimals=self.decimals,
                                   scale="celsius")
             if self.units == "percent":
@@ -111,7 +111,7 @@ class Chart(object):
                 return FuncFormatter(formatter.number)
 
     def _get_annotation_formatter(self):
-            formatter = Formatter(self.language,
+            formatter = Formatter(self._language,
                                   decimals=self.decimals,
                                   scale="celsius")
             if self.units == "percent":

@@ -343,7 +343,7 @@ class SerialChart(Chart):
             loc = get_best_locator(delta, len(dates))
             self.ax.xaxis.set_major_locator(loc)
             fmt = FuncFormatter(lambda x, pos:
-                                Formatter(self.language).short_month(pos+1))
+                                Formatter(self._language).short_month(pos+1))
             self.ax.xaxis.set_major_formatter(fmt)
 
         # Add labels
