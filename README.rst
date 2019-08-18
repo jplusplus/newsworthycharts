@@ -86,6 +86,11 @@ To run tests:
 Changelog
 ---------
 
+- next
+
+  - Protect private properties from being overwritten by `init_from`
+  - When `units` is count, `decimal` should default to 0 if not provided. This never worked, but is fixed now.
+
 - 1.6.2
 
   - Make `init_from` work as expected with a language argument

@@ -223,3 +223,13 @@ def test_checksum_png():
     # im.show()
     
     assert(m.hexdigest() == "ec37069e11f142e330c6025f753b795e")
+
+def test_default_number_of_decimals():
+    container = {}
+    ds = DictStorage(container)
+    c = SerialChart(800, 600, storage=ds)
+    assert(c.decimals is None)
+    
+    # Should default to 1 for units=count
+    c.units = "count"
+    assert(c.decimals is 1)
