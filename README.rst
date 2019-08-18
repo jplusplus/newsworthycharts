@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.6.2
+
+  - Make `init_from` work as expected with a language argument
+
 - 1.6.1
 
   - Make `init_from` work as expected with multiple data series
