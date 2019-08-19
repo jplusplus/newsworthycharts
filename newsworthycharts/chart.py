@@ -323,8 +323,9 @@ class Chart(object):
         lang = "en-GB"
         chart = cls(args["width"], args["height"], storage=storage,
                      style=style, language=language)
+        class_attrs = vars(cls)
         for k, v in args.items():
-            if not k.startswith("_"):
+            if not k.startswith("_") and (k in class_attrs):
                 setattr(chart, k, v)
         if "data" in args:
             for data in args["data"].copy():
