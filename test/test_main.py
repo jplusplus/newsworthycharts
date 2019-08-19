@@ -87,7 +87,7 @@ def test_setting_title():
     assert(c.title is None)
 
     # Set title by directly manipulating underlaying object
-    c.fig.suptitle(t1)
+    c._fig.suptitle(t1)
     assert(c.title == t1)
 
     # Set title using setter
@@ -118,16 +118,16 @@ def test_language_tag_parsing():
     """ Language tags should be normalized """
 
     c = Chart(10, 10, language="sv-Latn-AX")
-    assert(c.locale.language == "sv")
-    assert(c.locale.territory == "AX")
+    assert(c._locale.language == "sv")
+    assert(c._locale.territory == "AX")
 
     # underscore shuold work as separator
     c = Chart(10, 10, language="sv_AX")
-    assert(c.locale.language == "sv")
+    assert(c._locale.language == "sv")
 
     # a macro language tag should fallback to its default specific language
     c = Chart(10, 10, language="no")
-    assert(c.locale.language == "nb")
+    assert(c._locale.language == "nb")
 
 
 def test_filled_values():

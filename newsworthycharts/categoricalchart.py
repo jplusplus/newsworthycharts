@@ -85,10 +85,10 @@ class CategoricalChart(Chart):
                 self.ax.invert_yaxis()
 
                 # Make sure labels are not cropped
-                yaxis_bbox = self.ax.yaxis.get_tightbbox(self.fig.canvas.renderer)
+                yaxis_bbox = self.ax.yaxis.get_tightbbox(self._fig.canvas.renderer)
                 margin = self._style["figure.subplot.left"]
                 margin -= yaxis_bbox.min[0] / float(self._w)
-                self.fig.subplots_adjust(left=margin)
+                self._fig.subplots_adjust(left=margin)
             else:
                 self.ax.bar(label_pos, values, color=colors, zorder=2)
                 self.ax.set_xticks(label_pos)

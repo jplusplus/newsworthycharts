@@ -71,18 +71,18 @@ class Chart(object):
         self._style = loadstyle(style)
         # Standardize and check if language tag is a valid BCP 47 tag
         self._language = standardize_tag(language)
-        self.locale = Locale.parse(self._language.replace("-", "_"))
+        self._locale = Locale.parse(self._language.replace("-", "_"))
 
         # Dynamic typography
-        self.title_font = FontProperties()
-        self.title_font.set_family(self._style["title_font"])
-        self.title_font.set_size(self._style["figure.titlesize"])
-        self.title_font.set_weight(self._style["figure.titleweight"])
+        self._title_font = FontProperties()
+        self._title_font.set_family(self._style["title_font"])
+        self._title_font.set_size(self._style["figure.titlesize"])
+        self._title_font.set_weight(self._style["figure.titleweight"])
 
-        self.fig = Figure()
-        FigureCanvas(self.fig)
-        self.ax = self.fig.add_subplot(111)
-        # self.fig, self.ax = plt.subplots()
+        self._fig = Figure()
+        FigureCanvas(self._fig)
+        self.ax = self._fig.add_subplot(111)
+        # self._fig, self.ax = plt.subplots()
         self.value_axis = self.ax.yaxis
         self.category_axis = self.ax.xaxis
 
@@ -91,13 +91,13 @@ class Chart(object):
 
     def _set_size(self, w, h=None):
         """ Set figure size, in pixels """
-        dpi = self.fig.get_dpi()
+        dpi = self._fig.get_dpi()
         real_width = float(w)/dpi
         if h is None:
-            real_height = self.fig.get_figheight()
+            real_height = self._fig.get_figheight()
         else:
             real_height = float(h)/dpi
-        self.fig.set_size_inches(real_width, real_height)
+        self._fig.set_size_inches(real_width, real_height)
 
     def _get_value_axis_formatter(self):
             formatter = Formatter(self._language,
@@ -129,9 +129,9 @@ class Chart(object):
             # No autowrapping, use default bbox checking
             return self._rel_height(obj)
 
-        self.fig.canvas.draw()  # Draw text to find out how big it is
+        self._fig.canvas.draw()  # Draw text to find out how big it is
         t = obj.get_text()
-        r = self.fig.canvas.renderer
+        r = self._fig.canvas.renderer
         w, h, d = r.get_text_width_height_descent(t, obj._fontproperties,
                                                   ismath=False)
         num_lines = len(obj._get_wrapped_text().split("\n"))
@@ -140,7 +140,7 @@ class Chart(object):
     def _rel_height(self, obj):
         """ Get the relative height of a chart object to the whole canvas.
         """
-        self.fig.canvas.draw()  # We must draw the canvas to know all sizes
+        self._fig.canvas.draw()  # We must draw the canvas to know all sizes
         bbox = obj.get_window_extent()
         return bbox.height / float(self._h)
 
@@ -217,10 +217,10 @@ class Chart(object):
             hextent = (0, self._w)
         self._set_size(hextent[1]-hextent[0])
         x1 = hextent[0] / self._w
-        text = self.fig.text(x1 + 0.01, 0.01, caption,
-                             color=self._style["neutral_color"], wrap=True,
-                             fontsize="small")
-        self.fig.canvas.draw()
+        text = self._fig.text(x1 + 0.01, 0.01, caption,
+                              color=self._style["neutral_color"], wrap=True,
+                              fontsize="small")
+        self._fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
         text.set_text(wrapped_text)
         self._set_size(self._w)
@@ -228,21 +228,21 @@ class Chart(object):
         # Increase the bottom padding by the height of the text bbox
         margin = self._style["figure.subplot.bottom"]
         margin += self._text_rel_height(text)
-        self.fig.subplots_adjust(bottom=margin)
+        self._fig.subplots_adjust(bottom=margin)
 
     def _add_title(self, title_text):
         """ Adds a title """
         # Get the position for the yaxis, and align title with it
         title_text += "\n"  # Ugly but efficient way to add 1em padding
-        text = self.fig.suptitle(title_text, wrap=True, x=0,
-                                 horizontalalignment="left",
-                                 multialignment="left",
-                                 fontproperties=self.title_font)
+        text = self._fig.suptitle(title_text, wrap=True, x=0,
+                                  horizontalalignment="left",
+                                  multialignment="left",
+                                  fontproperties=self._title_font)
 
         # Increase the top padding by the height of the text bbox
         # Ignoring self.style["figure.subplot.top"]
         margin = 1 - self._text_rel_height(text)
-        self.fig.subplots_adjust(top=margin)
+        self._fig.subplots_adjust(top=margin)
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
@@ -264,7 +264,7 @@ class Chart(object):
          rendering file(s). This is where all properties are applied.
         """
         # Apply all changes, in the correct order for consistent rendering
-        self.fig.tight_layout()
+        self._fig.tight_layout()
         if len(self.data):
             self._add_data()
         if not self.show_ticks:
@@ -274,7 +274,7 @@ class Chart(object):
             # few decimals while having a lot of values in a small range)
             pass
             """
-            self.fig.canvas.draw()
+            self._fig.canvas.draw()
             tl = [x.get_text() for x in self.value_axis.get_ticklabels()]
             print(tl)
             tl = [x if tl[i-1] != x else "" for (i, x) in enumerate(tl)]
@@ -300,12 +300,12 @@ class Chart(object):
             im.thumbnail((new_width, new_height), Image.ANTIALIAS)
 
             # Position
-            if self.locale.text_direction == "rtl":
-                logo_im = self.fig.figimage(im, 0, 0)
+            if self._locale.text_direction == "rtl":
+                logo_im = self._fig.figimage(im, 0, 0)
                 ext = logo_im.get_extent()
                 caption_hextent=(ext[1], self._w)
             else:
-                logo_im = self.fig.figimage(im, self._w - im.size[0], 0)
+                logo_im = self._fig.figimage(im, self._w - im.size[0], 0)
                 ext = logo_im.get_extent()
                 caption_hextent=(0, ext[0])
 
@@ -343,7 +343,7 @@ class Chart(object):
 
         # Save plot in memory, to write it directly to storage
         buf = BytesIO()
-        self.fig.savefig(buf, format=img_format)
+        self._fig.savefig(buf, format=img_format)
         buf.seek(0)
         self._storage.save(key, buf, img_format)
 
@@ -357,7 +357,7 @@ class Chart(object):
         for file_format in image_formats:
             # Save plot in memory, to write it directly to storage
             buf = BytesIO()
-            self.fig.savefig(buf, format=file_format)
+            self._fig.savefig(buf, format=file_format)
             buf.seek(0)
             self._storage.save(key, buf, file_format)
 
@@ -368,8 +368,8 @@ class Chart(object):
         """
         if self._title is not None:
             return self._title
-        elif self.fig._suptitle:
-            return self.fig._suptitle.get_text()
+        elif self._fig._suptitle:
+            return self._fig._suptitle.get_text()
         else:
             return None
 
