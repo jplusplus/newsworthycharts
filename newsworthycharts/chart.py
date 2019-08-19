@@ -314,7 +314,7 @@ class Chart(object):
             self._add_caption(self.caption, hextent=caption_hextent)
 
     @classmethod
-    def init_from(cls, args, storage=LocalStorage(), style: str="newsworthy", language: str='en-GB'):
+    def init_from(cls, args: dict, storage=LocalStorage(), style: str="newsworthy", language: str='en-GB'):
         """
          Factory method for creating a chart from a Python object.
         """
@@ -334,7 +334,7 @@ class Chart(object):
                 chart.labels.append(label)
         return chart
 
-    def render(self, key, img_format):
+    def render(self, key: str, img_format: str):
         """
          render file, and send to storage.
         """
@@ -347,7 +347,7 @@ class Chart(object):
         buf.seek(0)
         self._storage.save(key, buf, img_format)
 
-    def render_all(self, key):
+    def render_all(self, key: str):
         """
         Render all available formats
         """
@@ -374,15 +374,15 @@ class Chart(object):
             return None
 
     @title.setter
-    def title(self, t):
-        self._title = t
+    def title(self, title: str):
+        self._title = title
 
     @property
     def units(self):
         return self._units
 
     @units.setter
-    def units(self, val):
+    def units(self, val: str):
         """ Units, used for number formatting. Note that 'degrees' is designed
         for temperature degrees.
         In some languages there are typographical differences between
