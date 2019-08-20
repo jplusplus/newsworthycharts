@@ -2,7 +2,6 @@
 For use with Newsworthy's robot writer and other similar projects.
 """
 from .lib import color_fn
-from .lib.mimetypes import MIME_TYPES
 from .lib.utils import loadstyle
 from .lib.formatter import Formatter
 from .lib.datalist import DataList
