@@ -2,6 +2,7 @@
 For use with Newsworthy's robot writer and other similar projects.
 """
 from .lib import color_fn
+from .lib.mimetypes import MIME_TYPES
 from .lib.utils import loadstyle
 from .lib.formatter import Formatter
 from .lib.datalist import DataList
@@ -21,11 +22,7 @@ class Chart(object):
     """ Convenience wrapper around a Matplotlib figure
     """
 
-    MIME_TYPES = {
-        'png': "image/png",
-        'svg': "image/svg+xml",
-        'eps': "application/postscript"
-    }
+    file_types = MIME_TYPES.keys()
 
     def __init__(self, width: int, height: int, storage=LocalStorage(),
                  style: str='newsworthy', language: str='en-GB'):
@@ -358,7 +355,7 @@ class Chart(object):
         # Apply all changes, in the correct order for consistent rendering
         self._apply_changes_before_rendering()
 
-        for file_format in self.MIME_TYPES.keys():
+        for file_format in self.file_types:
             # Save plot in memory, to write it directly to storage
             buf = BytesIO()
             self._fig.savefig(buf, format=file_format)
