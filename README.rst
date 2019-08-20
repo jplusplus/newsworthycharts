@@ -86,6 +86,10 @@ To run tests:
 Changelog
 ---------
 
+- next
+
+  - Make sure `init_from` does not overwrite class methods.
+
 - 1.6.3
 
   - Protect private properties from being overwritten by `init_from`

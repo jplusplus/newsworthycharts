@@ -325,7 +325,7 @@ class Chart(object):
                      style=style, language=language)
         class_attrs = vars(cls)
         for k, v in args.items():
-            if not k.startswith("_") and (k in class_attrs):
+            if not k.startswith("_") and (k in class_attrs) and callable(getattr(cls, k)):
                 setattr(chart, k, v)
         if "data" in args:
             for data in args["data"].copy():
