@@ -6,7 +6,7 @@ from .lib.mimetypes import MIME_TYPES
 from .lib.utils import loadstyle
 from .lib.formatter import Formatter
 from .lib.datalist import DataList
-from .storage import LocalStorage
+from .storage import Storage, LocalStorage
 
 from io import BytesIO
 from matplotlib.font_manager import FontProperties
@@ -24,7 +24,7 @@ class Chart(object):
 
     file_types = MIME_TYPES.keys()
 
-    def __init__(self, width: int, height: int, storage=LocalStorage(),
+    def __init__(self, width: int, height: int, storage: Storage=LocalStorage(),
                  style: str='newsworthy', language: str='en-GB'):
         """
         :param width: width in pixels
