@@ -4,3 +4,5 @@ ignore = E252
 filename = 
   ./test/*py
   ./newsworthycharts/*py
+per-file-ignores = 
+  ./newsworthycharts/__init__.py:F401,F403
