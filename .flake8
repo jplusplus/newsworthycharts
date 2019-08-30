@@ -4,3 +4,4 @@ ignore = E252
 filename = 
   ./test/*
   ./newsworthycharts/*
+exclude = ./newsworthycharts/rc/*
