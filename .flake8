@@ -2,6 +2,5 @@
 max-line-length = 90
 ignore = E252
 filename = 
-  ./test/*
-  ./newsworthycharts/*
-exclude = ./newsworthycharts/rc/*
+  ./test/*py
+  ./newsworthycharts/*py
