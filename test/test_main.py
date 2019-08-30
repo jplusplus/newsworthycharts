@@ -49,12 +49,12 @@ def test_factory_function():
     }, storage=ds)
     assert("SerialChart" in c.__repr__())
 
-    # Should not crash on extra properties
+    # Should not crash on extra properties, nor add invalid properties
     c = SerialChart.init_from({
         "width": 800,
         "height": 600,
-        "qwerty": "dvorak",
-        "render": "I am not allowed here!",
+        "qwerty": "I will not be added!",
+        "render": "Nor will I!",
     }, storage=ds)
     assert("SerialChart" in c.__repr__())
     with pytest.raises(Exception):
