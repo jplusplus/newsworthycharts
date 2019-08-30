@@ -60,12 +60,14 @@ def test_factory_function():
     c = SerialChart.init_from({
         "width": 800,
         "height": 600,
+        "xlabel": "Hello!",
         "labels": ["Serie A", "Serie B"],
         "data": [
             [("2012", 1), ("2013", 2)],
             [("2012", 0.5), ("2013", 0.7)],
         ],
     }, storage=ds)
+    assert(c.xlabel == "Hello!")
     assert("SerialChart" in c.__repr__())
 
 
