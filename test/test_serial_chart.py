@@ -5,18 +5,23 @@ from newsworthycharts.storage import DictStorage
 def test_color_function():
     container = {}
     ds = DictStorage(container)
-    c = SerialChart(800, 500, storage=ds)
-    data = [
-        ["2016-01-01", -4],
-        ["2017-01-01", 4],
-        ["2018-01-01", None],
-        ["2019-01-01", -1]
-    ]
-    c.color_fn = "positive_negative"
-    c.data.append(data)
-    c.type = "bars"
-    # highlighting a bar should not affect this color rule
-    c.highlight = "2019-01-01"
+
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "data": [
+            [
+              ["2016-01-01", -4],
+              ["2017-01-01", 4],
+              ["2018-01-01", None],
+              ["2019-01-01", -1]
+            ]
+        ],
+        "type": "bars",
+        "color_fn": "positive_negative",
+        "highlight": "2019-01-01",
+    }
+    c = SerialChart.init_from(chart_obj)
 
     c.render("test", "png")
 
