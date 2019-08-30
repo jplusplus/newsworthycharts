@@ -7,10 +7,10 @@ def test_color_function():
     ds = DictStorage(container)
     c = SerialChart(800, 500, storage=ds)
     data = [
-      ["2016-01-01", -4],
-      ["2017-01-01", 4],
-      ["2018-01-01", None],
-      ["2019-01-01", -1]
+        ["2016-01-01", -4],
+        ["2017-01-01", 4],
+        ["2018-01-01", None],
+        ["2019-01-01", -1]
     ]
     c.color_fn = "positive_negative"
     c.data.append(data)
