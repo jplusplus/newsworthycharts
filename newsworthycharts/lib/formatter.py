@@ -22,7 +22,7 @@ class Formatter(object):
         """
         :param decimals (int): force formatting to N number of decimals
         """
-        self.l = Locale.parse(lang.replace("-", "_"))
+        self.l = Locale.parse(lang.replace("-", "_"))  # NOQA
         self.language = self.l.language
         self.decimals = decimals
         self.scale = scale

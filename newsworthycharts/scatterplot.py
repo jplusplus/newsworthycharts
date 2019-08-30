@@ -39,7 +39,7 @@ class ScatterPlot(Chart):
                 if value_label is not None:
                     # A point can be both highlighted and annotated
                     if (self.highlight is not None) and \
-                        (value_label == self.highlight or value_label in self.highlight):
+                            (value_label == self.highlight or value_label in self.highlight):
                         color = self._style["strong_color"]
                         size = self._style["lines.markersize"] * 1.5
                         fontsize = "medium"

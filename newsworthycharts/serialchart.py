@@ -66,18 +66,15 @@ class SerialChart(Chart):
 
             if interval == "yearly":
                 return (
-                    (d + relativedelta(years=1)).replace(day=1, month=1)
-                    - d.replace(day=1, month=1)
+                    (d + relativedelta(years=1)).replace(day=1, month=1) - d.replace(day=1, month=1)
                 ).days
             elif interval == "quarterly":
                 return (
-                    (d + relativedelta(months=3)).replace(day=1)
-                    - d.replace(day=1)
+                    (d + relativedelta(months=3)).replace(day=1) - d.replace(day=1)
                 ).days
             elif interval == "monthly":
                 return (
-                    (d + relativedelta(months=1)).replace(day=1)
-                    - d.replace(day=1)
+                    (d + relativedelta(months=1)).replace(day=1) - d.replace(day=1)
                 ).days
             elif interval == "weekly":
                 # Assuming ISO 8601 here
@@ -128,9 +125,9 @@ class SerialChart(Chart):
             else:
                 return "down"
         val = values[index]
-        if val == max(values[index-1:index+2]):
+        if val == max(values[index - 1:index + 2]):
             return "up"
-        if val == min(values[index-1:index+2]):
+        if val == min(values[index - 1:index + 2]):
             return "down"
         return "up"
 
@@ -192,21 +189,21 @@ class SerialChart(Chart):
                                      zorder=zo)
                 # Add single, orphaned data points as markers
                 # None, 1, None, 1, 1, 1 =>  . ---
-                l = len(values)
-                if l == 1:
+                num_values = len(values)
+                if num_values == 1:
                     self.ax.plot(dates[0], values[0],
                                  c=color,
                                  marker='.',
                                  zorder=2)
-                elif l > 1:
+                elif num_values > 1:
                     for j, v in enumerate(values):
                         plot_me = False
                         if v is not None:
-                            if j == 0 and (values[j+1] is None):
+                            if j == 0 and (values[j + 1] is None):
                                 plot_me = True
-                            elif j == l-1 and (values[j-1] is None):
+                            elif j == num_values - 1 and (values[j - 1] is None):
                                 plot_me = True
-                            elif (values[j-1] is None) and (values[j+1] is None):
+                            elif (values[j - 1] is None) and (values[j + 1] is None):
                                 plot_me = True
                         if plot_me:
                             self.ax.plot(dates[j], v,
@@ -302,7 +299,7 @@ class SerialChart(Chart):
             self.ax.vlines(highlight_date, y0, y1,
                            colors=self._style["neutral_color"],
                            linestyles='dashed')
-            diff = a_formatter(abs(y0-y1))
+            diff = a_formatter(abs(y0 - y1))
             xy = (highlight_date, (y0 + y1) / 2)
             self._annotate_point(diff, xy, direction="right")
 
@@ -342,7 +339,7 @@ class SerialChart(Chart):
             loc = get_best_locator(delta, len(dates))
             self.ax.xaxis.set_major_locator(loc)
             fmt = FuncFormatter(lambda x, pos:
-                                Formatter(self._language).short_month(pos+1))
+                                Formatter(self._language).short_month(pos + 1))
             self.ax.xaxis.set_major_formatter(fmt)
 
         # Add labels

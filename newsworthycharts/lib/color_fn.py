@@ -34,6 +34,7 @@ def positive_negative(value):
 
     return color_name
 
+
 @color_fn
 def warm_cold(value):
     """ Return warm/cold color based on a value being
