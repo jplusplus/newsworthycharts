@@ -87,6 +87,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.6.5
+
+  - Really, really make `init_from` work, by allowingly allowing allowed attributes
+
 - 1.6.4
 
   - Fix bug where `init_from` would sometime duplicate data.
