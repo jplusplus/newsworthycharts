@@ -111,15 +111,15 @@ class Chart(object):
                 return FuncFormatter(formatter.number)
 
     def _get_annotation_formatter(self):
-            formatter = Formatter(self._language,
-                                  decimals=self.decimals,
-                                  scale="celsius")
-            if self.units == "percent":
-                return FuncFormatter(formatter.percent)
-            elif self.units == "degrees":
-                return FuncFormatter(formatter.temperature)
-            else:
-                return FuncFormatter(formatter.number)
+        formatter = Formatter(self._language,
+                              decimals=self.decimals,
+                              scale="celsius")
+        if self.units == "percent":
+            return FuncFormatter(formatter.percent)
+        elif self.units == "degrees":
+            return FuncFormatter(formatter.temperature)
+        else:
+            return FuncFormatter(formatter.number)
 
     def _text_rel_height(self, obj):
         """ Get the relative height of a text object to the whole canvas.
@@ -196,7 +196,7 @@ class Chart(object):
             opts["horizontalalignment"] = "left"
             opts["xytext"] = (offset, 0)
         else:
-            msg = "'{}' is an unknown direction for an annotation".format(direction)
+            msg = f"'{direction}' is an unknown direction for an annotation"
             raise Exception(msg)
 
         # Override default opts if passed to the function
@@ -303,11 +303,11 @@ class Chart(object):
             if self._locale.text_direction == "rtl":
                 logo_im = self._fig.figimage(im, 0, 0)
                 ext = logo_im.get_extent()
-                caption_hextent=(ext[1], self._w)
+                caption_hextent = (ext[1], self._w)
             else:
                 logo_im = self._fig.figimage(im, self._w - im.size[0], 0)
                 ext = logo_im.get_extent()
-                caption_hextent=(0, ext[0])
+                caption_hextent = (0, ext[0])
 
         if self.caption is not None:
             # Add caption without image
