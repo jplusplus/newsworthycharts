@@ -53,11 +53,13 @@ def test_factory_function():
     c = SerialChart.init_from({
         "width": 800,
         "height": 600,
-        "qwerty": "dvorak"
+        "qwerty": "dvorak",
+        "render": "I am not allowed here!",
     }, storage=ds)
+    assert("SerialChart" in c.__repr__())
     with pytest.raises(Exception):
         c.qwerty
-    assert("SerialChart" in c.__repr__())
+    c.render("test", "png")
 
     # Should work with labels and data
     c = SerialChart.init_from({
