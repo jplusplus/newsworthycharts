@@ -21,7 +21,7 @@ def test_color_function():
         "color_fn": "positive_negative",
         "highlight": "2019-01-01",
     }
-    c = SerialChart.init_from(chart_obj)
+    c = SerialChart.init_from(chart_obj, storage=ds)
 
     c.render("test", "png")
 
