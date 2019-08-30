@@ -320,12 +320,17 @@ class Chart(object):
         """
         if not ("width" in args and "height" in args):
             raise Exception("The settings object must include an explicit width and height")
-        lang = "en-GB"
         chart = cls(args["width"], args["height"], storage=storage,
-                     style=style, language=language)
+                    style=style, language=language)
+
+        # Get everything from args that is a public attribute in Chart,
+        # except data and labels.
         class_attrs = vars(cls)
         for k, v in args.items():
-            if not k.startswith("_") and (k in class_attrs) and callable(getattr(cls, k)):
+            if (not k.startswith("_")) and \
+               (k in class_attrs) and \
+               callable(getattr(cls, k)) and \
+               (k not in ["data", "labels"]):
                 setattr(chart, k, v)
         if "data" in args:
             for data in args["data"].copy():
