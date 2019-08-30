@@ -326,11 +326,10 @@ class Chart(object):
 
         # Get everything from args that is a public attribute in Chart,
         # except data and labels.
-        class_attrs = vars(cls)
+        class_attrs = vars(chart)
         for k, v in args.items():
             if (not k.startswith("_")) and \
                (k in class_attrs) and \
-               callable(getattr(cls, k)) and \
                (k not in ["data", "labels"]):
                 setattr(chart, k, v)
         if "data" in args:
