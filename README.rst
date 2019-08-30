@@ -86,8 +86,9 @@ To run tests:
 Changelog
 ---------
 
-- next
+- 1.6.4
 
+  - Fix bug where `init_from` would sometime duplicate data.
   - Make sure `init_from` does not overwrite class methods.
 
 - 1.6.3
