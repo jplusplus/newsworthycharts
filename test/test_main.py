@@ -1,5 +1,6 @@
 """ py.test tests for Newsworthycharts
 """
+import pytest
 from newsworthycharts import Chart, SerialChart, CategoricalChart, CHART_ENGINES
 from newsworthycharts.storage import DictStorage
 from imghdr import what
@@ -54,6 +55,8 @@ def test_factory_function():
         "height": 600,
         "qwerty": "dvorak"
     }, storage=ds)
+    with pytest.raises(Exception):
+        c.qwerty
     assert("SerialChart" in c.__repr__())
 
     # Should work with labels and data
