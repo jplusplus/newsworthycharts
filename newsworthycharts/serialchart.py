@@ -14,7 +14,7 @@ class SerialChart(Chart):
     iterables of (value, date string) tuples, eg:
     `[ [("2010-01-01", 2), ("2010-02-01", 2.3)] ]`
     """
-    
+
     def __init__(self, *args, **kwargs):
         super(SerialChart, self).__init__(*args, **kwargs)
         self._type = "bars"
@@ -214,7 +214,6 @@ class SerialChart(Chart):
                                          marker='.',
                                          zorder=2)
 
-
                 if len(self.labels) > i:
                     line.set_label(self.labels[i])
 
@@ -318,7 +317,7 @@ class SerialChart(Chart):
                                  filled_values[0],  # already a float1w
                                  filled_values[1],
                                  where=[(x >= min_x and x <= max_x)
-                                            for x in self.data.x_points],
+                                        for x in self.data.x_points],
                                  facecolor=self._style["fill_between_color"],
                                  alpha=self._style["fill_between_alpha"])
 
@@ -379,8 +378,7 @@ class SerialChart(Chart):
                                          color=self._style["strong_color"],
                                          direction=dir)
 
-            x = [a.xy[0] for a in self._annotations]
-            y = [a.xy[1] for a in self._annotations]
+            # x = [a.xy[0] for a in self._annotations]
+            # y = [a.xy[1] for a in self._annotations]
             # adjust_text(self._annotations,
             #             x=x, y=y)
-

@@ -94,4 +94,3 @@ class CategoricalChart(Chart):
                 self.ax.set_xticks(label_pos)
                 self.ax.set_xticklabels(categories, fontsize='small')
                 self.ax.xaxis.set_ticks_position('none')
-

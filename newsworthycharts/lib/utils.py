@@ -11,7 +11,7 @@ HERE = os.path.dirname(__file__)
 
 
 class StyleNotFoundError(FileNotFoundError):
-    """ No style file matching the given style name could be found or loaded """
+    """ No style file matching the given name could be found or loaded """
     pass
 
 
@@ -32,7 +32,7 @@ def loadstyle(style_name):
         try:
             rc_file(style_file)
         except FileNotFoundError as err:
-            raise StyleNotFoundError("No such style file found: {}".format(err))
+            raise StyleNotFoundError(f"No such style file found: {err}")
     style = rcParams.copy()
 
     # The style files may also contain an extra section with typography

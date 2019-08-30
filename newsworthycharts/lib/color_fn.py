@@ -1,6 +1,7 @@
 """ Functions for deteriming colors accoriding to some rule.
 """
 
+
 def color_fn(func):
     """ Wrapper that validates respones
     """
@@ -15,6 +16,7 @@ def color_fn(func):
         return resp
 
     return validate_response
+
 
 @color_fn
 def positive_negative(value):
