@@ -4,7 +4,7 @@ from datetime import datetime
 import yaml
 from matplotlib import rc_file, rcParams
 from matplotlib.colors import to_rgba
-from .colors import POSITIVE, NEGATIVE, FILL_BETWEEN
+from .colors import POSITIVE, NEGATIVE, FILL_BETWEEN, WARM, COLD
 
 
 HERE = os.path.dirname(__file__)
@@ -53,12 +53,16 @@ def loadstyle(style_name):
     strong_color = rc_params_newsworthy.get("strong_color", color)
     positive_color = rc_params_newsworthy.get("positive_color", POSITIVE)
     negative_color = rc_params_newsworthy.get("negative_color", NEGATIVE)
+    warm_color = rc_params_newsworthy.get("warm_color", WARM)
+    cold_color = rc_params_newsworthy.get("cold_color", COLD)
     fill_between_color = rc_params_newsworthy.get("fill_between_color", FILL_BETWEEN)
     fill_between_alpha = rc_params_newsworthy.get("fill_between_alpha", 0.5)
     style["neutral_color"] = to_rgba("#" + str(color), 1)
     style["strong_color"] = to_rgba("#" + str(strong_color), 1)
     style["positive_color"] = to_rgba("#" + positive_color, 1)
     style["negative_color"] = to_rgba("#" + negative_color, 1)
+    style["warm_color"] = to_rgba("#" + warm_color, 1)
+    style["cold_color"] = to_rgba("#" + cold_color, 1)
     style["fill_between_color"] = to_rgba("#" + str(fill_between_color), 1)
     style["fill_between_alpha"] = float(fill_between_alpha)
     if "logo" in rc_params_newsworthy:

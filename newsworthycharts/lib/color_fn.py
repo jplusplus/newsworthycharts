@@ -9,7 +9,7 @@ def color_fn(func):
         """ Check that returned value is valid
         """
         resp = func(*args, **kwargs)
-        named_colors = ["neutral", "strong", "positive", "negative"]
+        named_colors = ["neutral", "strong", "positive", "negative", "warm", "cold"]
         if resp not in named_colors:
             # TODO: Also allow valid HEX colors
             raise Exception("{} is not a valid color name".format(resp))
@@ -29,6 +29,22 @@ def positive_negative(value):
         color_name = "negative"
     elif value > 0:
         color_name = "positive"
+    else:
+        color_name = "neutral"
+
+    return color_name
+
+@color_fn
+def warm_cold(value):
+    """ Return warm/cold color based on a value being
+    above/below 0.
+    """
+    if value is None:
+        color_name = "neutral"
+    elif value < 0:
+        color_name = "cold"
+    elif value > 0:
+        color_name = "warm"
     else:
         color_name = "neutral"
 

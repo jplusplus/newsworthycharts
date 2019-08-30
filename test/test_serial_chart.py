@@ -22,7 +22,6 @@ def test_color_function():
         "highlight": "2019-01-01",
     }
     c = SerialChart.init_from(chart_obj, storage=ds)
-
     c.render("test", "png")
 
     neutral_color = c._style["neutral_color"]
@@ -33,3 +32,16 @@ def test_color_function():
     assert(bar_colors[1] == pos_color)
     assert(bar_colors[2] == neutral_color)
     assert(bar_colors[3] == neg_color)
+
+    chart_obj["color_fn"] = "warm_cold"
+    c = SerialChart.init_from(chart_obj, storage=ds)
+    c.render("test", "png")
+
+    warm_color = c._style["warm_color"]
+    cold_color = c._style["cold_color"]
+    bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
+
+    assert(bar_colors[0] == cold_color)
+    assert(bar_colors[1] == warm_color)
+    assert(bar_colors[2] == neutral_color)
+    assert(bar_colors[3] == cold_color)
