@@ -87,6 +87,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.6.6
+
+  - Add warm/cold color function 
+
 - 1.6.5
 
   - Really, really make `init_from` work, by allowingly allowing allowed attributes
@@ -141,7 +145,7 @@ Changelog
 - 1.3.2
 
   - Make labels work again, 1.3.1 broke those in some circumstances
-  
+
 - 1.3.1
 
   - Make inner_max/min_x work with leading / trailing None values
@@ -152,7 +156,7 @@ Changelog
   - Allow (and recommend) using Matplotlib 3. This may affect how some charts are rendered.
   - Removed undocumented and incomplete Latex support from caption.
   - Don't highlight diff outside either series' extreme ends.
-  
+
 - 1.2.1
 
   - Use strong color if there is nothing to highlight.
