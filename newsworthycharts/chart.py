@@ -92,23 +92,23 @@ class Chart(object):
     def _set_size(self, w, h=None):
         """ Set figure size, in pixels """
         dpi = self._fig.get_dpi()
-        real_width = float(w)/dpi
+        real_width = float(w) / dpi
         if h is None:
             real_height = self._fig.get_figheight()
         else:
-            real_height = float(h)/dpi
+            real_height = float(h) / dpi
         self._fig.set_size_inches(real_width, real_height)
 
     def _get_value_axis_formatter(self):
-            formatter = Formatter(self._language,
-                                  decimals=self.decimals,
-                                  scale="celsius")
-            if self.units == "percent":
-                return FuncFormatter(formatter.percent)
-            elif self.units == "degrees":
-                return FuncFormatter(formatter.temperature_short)
-            else:
-                return FuncFormatter(formatter.number)
+        formatter = Formatter(self._language,
+                              decimals=self.decimals,
+                              scale="celsius")
+        if self.units == "percent":
+            return FuncFormatter(formatter.percent)
+        elif self.units == "degrees":
+            return FuncFormatter(formatter.temperature_short)
+        else:
+            return FuncFormatter(formatter.number)
 
     def _get_annotation_formatter(self):
         formatter = Formatter(self._language,
@@ -215,7 +215,7 @@ class Chart(object):
         # linebreaks, and then restore the original width!
         if hextent is None:
             hextent = (0, self._w)
-        self._set_size(hextent[1]-hextent[0])
+        self._set_size(hextent[1] - hextent[0])
         x1 = hextent[0] / self._w
         text = self._fig.text(x1 + 0.01, 0.01, caption,
                               color=self._style["neutral_color"], wrap=True,
@@ -314,7 +314,8 @@ class Chart(object):
             self._add_caption(self.caption, hextent=caption_hextent)
 
     @classmethod
-    def init_from(cls, args: dict, storage=LocalStorage(), style: str="newsworthy", language: str='en-GB'):
+    def init_from(cls, args: dict, storage=LocalStorage(),
+                  style: str="newsworthy", language: str='en-GB'):
         """
          Factory method for creating a chart from a Python object.
         """
