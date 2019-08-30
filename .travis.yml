@@ -2,5 +2,6 @@ language: python
 install:
   - pip install -r requirements.txt
 script:
-  - flake8
-  - pytest
+  - python3 -m flake8
+  - python3 -m pytest test/*
+
