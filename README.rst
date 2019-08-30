@@ -81,7 +81,8 @@ To run tests:
 
 .. code-block:: python3
 
-  python3 -m pytest test/test_main.py
+  python3 -m flake8
+  python3 -m pytest
 
 Changelog
 ---------
