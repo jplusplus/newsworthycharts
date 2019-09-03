@@ -108,7 +108,7 @@ def test_setting_title():
         "title": "Hej världen"
     })
     c.render("test", "png")
-    assert(c.ax.get_title() == "Hej världen")
+    assert(c.title == "Hej världen")
 
 
 def test_meta_data():
@@ -248,6 +248,7 @@ def test_default_number_of_decimals():
     c.units = "count"
     assert(c.decimals == 0)
 
+
 def test_units():
     c = SerialChart.init_from({
         "width": 800,
@@ -260,7 +261,7 @@ def test_units():
                 ["2019-04-01", -0.23],
             ]
         ],
-        "units": "percent" # <= should render y-axis as percent
+        "units": "percent"  # <= should render y-axis as percent
     }, storage=DictStorage({}))
     c.render("test", "png")
     yticks = [tick.get_text() for tick in c.ax.get_yticklabels()]
