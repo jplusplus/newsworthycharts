@@ -87,6 +87,10 @@ To run tests:
 Changelog
 ---------
 
+- 1.6.7
+
+  - Make title and units work with `init_from` again
+
 - 1.6.6
 
   - Add warm/cold color function 
