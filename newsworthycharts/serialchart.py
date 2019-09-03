@@ -342,8 +342,9 @@ class SerialChart(Chart):
                                 Formatter(self._language).short_month(pos + 1))
             self.ax.xaxis.set_major_formatter(fmt)
 
-        # Add labels
-        if len(self.labels):
+        # Add labels in legend if there are multiple series, otherwise
+        # title is assumed to self-explanatory
+        if len(self.labels) > 1:
             self.ax.legend(loc='best')
 
         # Trend/change line
