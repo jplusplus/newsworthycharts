@@ -101,6 +101,14 @@ def test_setting_title():
     c.title = t2
     assert(c.title == t2)
 
+    # Set title from dict
+    c = Chart.init_from({
+        "width": 800,
+        "height": 600,
+        "title": "Hej världen"
+    })
+    assert(c.title == "Hej världen")
+
 
 def test_meta_data():
     """ Check that adding data also updates metadata"""
