@@ -285,7 +285,7 @@ class SerialChart(Chart):
 
         # Accentuate y=0
         if self.data.min_val < 0:
-            self.ax.axhline()
+            self.ax.axhline(linewidth=1)
 
         # Highlight diff
         y0, y1 = highlight_diff['y0'], highlight_diff['y1']
