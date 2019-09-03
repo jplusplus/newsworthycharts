@@ -84,12 +84,24 @@ To run tests:
   python3 -m flake8
   python3 -m pytest
 
+Deployment
+----------
+
+To deploy a new version to PyPi:
+
+1. Update Changelog below.
+2. Update `version.py`
+3. Build: `python3 setup.py sdist bdist_wheel`
+4. Upload: `python3 -m twine upload dist/newsworthycharts-X.Y.X*`
+
+...assuming you have Twine installed (`pip install twine`) and configured.
+
 Changelog
 ---------
 
 - 1.6.8
 
-  - Some cosmetic changes: no legend if only one series, color updates, thinner zero line. 
+  - Some cosmetic changes: no legend if only one series, color updates, thinner zero line.
 
 
 - 1.6.7
