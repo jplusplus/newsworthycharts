@@ -341,6 +341,11 @@ class Chart(object):
         if "labels" in args:
             for label in args["labels"].copy():
                 chart.labels.append(label)
+        # Special handling for setters
+        if "title" in args:
+            chart.title = args["title"]
+        if "units" in args:
+            chart.units = args["units"]
         return chart
 
     def render(self, key: str, img_format: str):
