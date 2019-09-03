@@ -87,13 +87,18 @@ To run tests:
 Changelog
 ---------
 
+- 1.6.8
+
+  - Some cosmetic changes: no legend if only one series, color updates, thinner zero line. 
+
+
 - 1.6.7
 
   - Make title and units work with `init_from` again
 
 - 1.6.6
 
-  - Add warm/cold color function 
+  - Add warm/cold color function
 
 - 1.6.5
 
