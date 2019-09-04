@@ -99,6 +99,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- next
+
+  - Change installation requirements to clarify for installers that all Python versions from 3.5 are supported.
+
 - 1.6.8
 
   - Some cosmetic changes: no legend if only one series, color updates, thinner zero line.
