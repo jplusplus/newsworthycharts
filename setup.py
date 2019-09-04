@@ -22,7 +22,7 @@ setup(
     license="MIT",
     packages=[name],
     zip_safe=False,
-    python_requires='>=3.5',
+    python_requires='~=3.5',
     install_requires=[
         "boto3>=1.6",
         "matplotlib>=2",
