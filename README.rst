@@ -99,9 +99,9 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
-- next
+- 1.6.9
 
-  - 
+  - Fix an ugly bug where type=line would not work with `init_from()`
 
 - 1.6.8
 
