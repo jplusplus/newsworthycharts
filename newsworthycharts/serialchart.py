@@ -46,9 +46,9 @@ class SerialChart(Chart):
             raise ValueError("Supported types are bars and line")
 
     def _days_in(self, interval, d=None):
-        """ Return number of days in a given period.
-        If only interval is given, use a typical number of days.
+        """Return number of days in a given period.
 
+        If only interval is given, use a typical number of days.
         >>>> _days_in(monthly)
         30
         >>>> _days_in(monthly, datetime(2004, 02, 05))
@@ -84,8 +84,7 @@ class SerialChart(Chart):
                 return 1
 
     def _guess_interval(self):
-        """ Return a probable interval, e.g. "montly", given current data
-        """
+        """Return a probable interval, e.g. "montly", given current data."""
         interval = "yearly"
         for serie in self.data:
             dates = [to_date(x[0]) for x in serie]
