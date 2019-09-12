@@ -10,14 +10,15 @@ from dateutil.relativedelta import relativedelta
 
 
 class SerialChart(Chart):
-    """ Plot a timeseries, as a line or bar plot. Data should be a list of
-    iterables of (value, date string) tuples, eg:
+    """Plot a timeseries, as a line or bar plot.
+
+    Data should be a list of iterables of (value, date string) tuples, eg:
     `[ [("2010-01-01", 2), ("2010-02-01", 2.3)] ]`
     """
 
     def __init__(self, *args, **kwargs):
         super(SerialChart, self).__init__(*args, **kwargs)
-        self._type = "bars"
+        self.type = "bars"
         self.bar_width = 0.9
         # Percent of period. 0.85 means a bar in a chart with yearly data will
         # be around 310 or 311 days wide.
