@@ -45,3 +45,35 @@ def test_color_function():
     assert(bar_colors[1] == warm_color)
     assert(bar_colors[2] == neutral_color)
     assert(bar_colors[3] == cold_color)
+
+def test_type_property():
+    container = {}
+    ds = DictStorage(container)
+
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "data": [
+            [
+                ["2016-01-01", -4],
+                ["2017-01-01", 4],
+                ["2018-01-01", 1],
+                ["2019-01-01", -1]
+            ]
+        ],
+        "type": "bars",
+    }
+    # when type="bars"...
+    c = SerialChart.init_from(chart_obj, storage=ds)
+    c.render("test", "png")
+    bars = c.ax.patches
+    # ...4 bars should be rendered
+    assert(len(bars) == 4)
+
+    # while a type=line...
+    chart_obj["type"] = "line"
+    c = SerialChart.init_from(chart_obj, storage=ds)
+    c.render("test", "png")
+    lines = c.ax.patches
+    # ... should only render one element
+    assert(len(lines) == 1)
