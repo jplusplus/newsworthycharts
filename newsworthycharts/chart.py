@@ -168,7 +168,7 @@ class Chart(object):
     def _annotate_point(self, text, xy,
                         direction,
                         **kwargs):
-        """Adds a label to a given point.
+        """Add a label to a given point.
 
         :param text: text content of label
         :param xy: coordinates to annotate
@@ -210,8 +210,9 @@ class Chart(object):
         self._annotations.append(ann)
 
     def _add_caption(self, caption, hextent=None):
-        """ Adds a caption. Supports multiline input.
-            hextent is the left/right extent,  e.g. to avoid overlapping a logo
+        """Add a caption. Supports multiline input.
+
+        Hextent is the left/right extent,  e.g. to avoid overlapping a logo
         """
         # Wrap=true is hardcoded to use the extent of the whole figure
         # Our workaround is to resize the figure, draw the text to find the
@@ -234,7 +235,7 @@ class Chart(object):
         self._fig.subplots_adjust(bottom=margin)
 
     def _add_title(self, title_text):
-        """ Adds a title """
+        """Add a title."""
         # Get the position for the yaxis, and align title with it
         title_text += "\n"  # Ugly but efficient way to add 1em padding
         text = self._fig.suptitle(title_text, wrap=True, x=0,
@@ -319,9 +320,7 @@ class Chart(object):
     @classmethod
     def init_from(cls, args: dict, storage=LocalStorage(),
                   style: str="newsworthy", language: str='en-GB'):
-        """
-         Factory method for creating a chart from a Python object.
-        """
+        """Create a chart from a Python object."""
         if not ("width" in args and "height" in args):
             raise Exception("The settings object must include an explicit width and height")
         chart = cls(args["width"], args["height"], storage=storage,
@@ -333,7 +332,7 @@ class Chart(object):
         for k, v in args.items():
             if (not k.startswith("_")) and \
                (k in class_attrs) and \
-               (k not in ["data", "labels"]):
+               (k not in ["data", "labels", "type", "ymin", "title", "units"]):
                 setattr(chart, k, v)
         if "data" in args:
             for data in args["data"].copy():
@@ -346,12 +345,14 @@ class Chart(object):
             chart.title = args["title"]
         if "units" in args:
             chart.units = args["units"]
+        if "type" in args:
+            chart.type = args["type"]
+        if "ymin" in args:
+            chart.ymin = args["ymin"]
         return chart
 
     def render(self, key: str, img_format: str):
-        """
-         render file, and send to storage.
-        """
+        """Render file, and send to storage."""
         # Apply all changes, in the correct order for consistent rendering
         self._apply_changes_before_rendering()
 
