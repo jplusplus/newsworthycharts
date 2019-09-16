@@ -99,6 +99,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.6.10
+
+  - Fixes bar_orientation bug with `init_from()`
+
 - 1.6.9
 
   - Fix an ugly bug where type=line would not work with `init_from()`
