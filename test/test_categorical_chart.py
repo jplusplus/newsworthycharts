@@ -1,8 +1,8 @@
 import pytest
 from newsworthycharts import CategoricalChart
-from newsworthycharts.storage import DictStorage, LocalStorage
+from newsworthycharts.storage import LocalStorage
 
-# store test charts to this folder for visual verfication 
+# store test charts to this folder for visual verfication
 OUTPUT_DIR = "test/rendered_charts"
 local_storage = LocalStorage(OUTPUT_DIR)
 

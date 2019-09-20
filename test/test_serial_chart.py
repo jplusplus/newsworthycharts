@@ -79,7 +79,7 @@ def test_type_property():
     chart_obj["type"] = "line"
     c = SerialChart.init_from(chart_obj, storage=ds)
     c.render("test", "png")
-    lines = c.ax.patches
+    #lines = c.ax.patches
     # ... should only render one element
     # assert(len(lines) == 1)
 

@@ -136,9 +136,6 @@ class SerialChart(Chart):
 
         series = self.data
 
-        if not all([len(s)==len(series[0]) for s in series]):
-            raise ValueError("All series must be same length")
-
         # parse values
         serie_values = []
         for serie in series:
