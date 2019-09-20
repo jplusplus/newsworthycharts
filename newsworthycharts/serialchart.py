@@ -286,7 +286,7 @@ class SerialChart(Chart):
                     zorder=2
                 )
                 if i > 0:
-                    # set bottom
+                    # To make stacked bars we need to set bottom value
                     bar_kwargs["bottom"] = cum_values[i-1]
                 bars = self.ax.bar(dates, values, **bar_kwargs)
 
