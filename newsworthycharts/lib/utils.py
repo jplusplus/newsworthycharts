@@ -4,7 +4,7 @@ from datetime import datetime
 import yaml
 from matplotlib import rc_file, rcParams
 from matplotlib.colors import to_rgba
-from .colors import POSITIVE, NEGATIVE, FILL_BETWEEN, WARM, COLD
+from .colors import POSITIVE, NEGATIVE, FILL_BETWEEN, WARM, COLD, QUALITATIVE
 
 
 HERE = os.path.dirname(__file__)
@@ -65,6 +65,8 @@ def loadstyle(style_name):
     style["cold_color"] = to_rgba("#" + cold_color, 1)
     style["fill_between_color"] = to_rgba("#" + str(fill_between_color), 1)
     style["fill_between_alpha"] = float(fill_between_alpha)
+    # TODO: Make it possible to define in in style file
+    style["qualitative_colors"] = [to_rgba("#" + c, 1) for c in QUALITATIVE]
     if "logo" in rc_params_newsworthy:
         style["logo"] = rc_params_newsworthy["logo"]
 

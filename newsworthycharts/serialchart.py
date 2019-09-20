@@ -3,6 +3,7 @@ from .lib.locator import get_best_locator, get_year_ticks
 from .lib.utils import to_float, to_date
 from .lib.formatter import Formatter
 
+import numpy as np
 from math import inf
 from matplotlib.ticker import FuncFormatter
 from matplotlib.dates import DateFormatter
@@ -134,9 +135,29 @@ class SerialChart(Chart):
     def _add_data(self):
 
         series = self.data
+
+        if not all([len(s)==len(series[0]) for s in series]):
+            raise ValueError("All series must be same length")
+
+        # parse values
+        serie_values = []
+        for serie in series:
+            _values = [to_float(x[1]) for x in serie]
+            if self.type == "bars":
+                # Replace None values with 0's to be able to plot bars
+                _values = [0 if v is None else v for v in _values]
+            serie_values.append(_values)
+
+        # aggregate values for stacked bar chart
+        cum_values = np.cumsum(serie_values, axis=0).tolist()
+
         # Select a date to highlight
         if self.highlight is not None:
-            highlight_date = to_date(self.highlight)
+            try:
+                highlight_date = to_date(self.highlight)
+            except ValueError:
+                # in case we are highlighting something else (like a whole serie)
+                highlight_date = None
 
         # Make an educated guess about the interval of the data
         if self.interval is None:
@@ -164,7 +185,7 @@ class SerialChart(Chart):
             else:
                 color = self._style["neutral_color"]
 
-            values = [to_float(x[1]) for x in serie]
+            values = serie_values[i]
             dates = [to_date(x[0]) for x in serie]
 
             highlight_value = None
@@ -222,23 +243,32 @@ class SerialChart(Chart):
                                  zorder=2)
 
             elif self.type == "bars":
-                # Pick color based on value of each bar
-                if self.color_fn:
-                    colors = [self._color_by(v) for v in values]
-
-                elif self.highlight:
-                    colors = []
-                    for timepoint in dates:
-                        if highlight_value and timepoint == highlight_date:
-                            colors.append(self._style["strong_color"])
+                is_stacked = len(series) > 1
+                if is_stacked:
+                    if self.highlight:
+                        if self.highlight == self.labels[i]:
+                            color = self._style["strong_color"]
                         else:
-                            colors.append(self._style["neutral_color"])
-                else:
-                    # use strong color if there is no highlight
-                    colors = [self._style["strong_color"]] * len(dates)
+                            color = self._style["neutral_color"]
+                    else:
+                        color = self._style["qualitative_colors"][i]
+                    colors = [color] * len(values)
 
-                # Replace None values with 0's to be able to plot bars
-                values = [0 if v is None else v for v in values]
+                else: # only one series
+                    # Pick color based on value of each bar
+                    if self.color_fn:
+                        colors = [self._color_by(v) for v in values]
+
+                    elif self.highlight:
+                        colors = []
+                        for timepoint in dates:
+                            if highlight_value and timepoint == highlight_date:
+                                colors.append(self._style["strong_color"])
+                            else:
+                                colors.append(self._style["neutral_color"])
+                    else:
+                        # use strong color if there is no highlight
+                        colors = [self._style["strong_color"]] * len(dates)
 
                 # Set bar width, based on interval
                 bar_lengths = [self._days_in(self.interval, d) for d in dates]
@@ -250,10 +280,15 @@ class SerialChart(Chart):
                 if (sum(bar_widths) * 2 / len(dates)) > bbox.width:
                     bar_widths = [l * 1 for l in bar_lengths]
 
-                bars = self.ax.bar(dates, values,
-                                   color=colors,
-                                   width=bar_widths,
-                                   zorder=2)
+                bar_kwargs = dict(
+                    color=colors,
+                    width=bar_widths,
+                    zorder=2
+                )
+                if i > 0:
+                    # set bottom
+                    bar_kwargs["bottom"] = cum_values[i-1]
+                bars = self.ax.bar(dates, values, **bar_kwargs)
 
                 if len(self.labels) > i:
                     bars.set_label(self.labels[i])
