@@ -99,6 +99,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.6.11
+
+  - Introduces stacked bars to SerialChart.
+
 - 1.6.10
 
   - Fixes bar_orientation bug with `init_from()`
