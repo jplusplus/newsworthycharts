@@ -4,6 +4,7 @@ Holds a class for storing lists of data (timeseries etc), and related methods.
 from collections.abc import MutableSequence
 from math import inf
 from numpy import array, isnan, interp, flatnonzero
+import numpy as np
 from .utils import to_float
 
 
@@ -64,6 +65,17 @@ class DataList(MutableSequence):
         return [[to_float(x[1]) for x in s] for s in self.list]
 
     @property
+    def stacked_values(self):
+        """Returns the sum of all y values in each x """
+        # converts None to np.na for np.sum()
+        values = array(self.values, dtype=float)
+        return np.nansum(values, axis=0).tolist()
+
+    @property
+    def stacked_max_val(self):
+        return max(self.stacked_values)
+
+    @property
     def as_dict(self):
         """ Return data points as dictionaries """
         return [{x[0]: x[1] for x in s} for s in self.list]
@@ -106,6 +118,7 @@ class DataList(MutableSequence):
     @property
     def outer_max_x(self):
         return max(list(filter(lambda x: x[1] is not None, s))[-1][0] for s in self.list)
+
 
     def __len__(self):
         return len(self.list)

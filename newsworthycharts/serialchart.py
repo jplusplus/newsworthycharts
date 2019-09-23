@@ -135,6 +135,7 @@ class SerialChart(Chart):
     def _add_data(self):
 
         series = self.data
+        is_stacked = (len(series) > 1) and (self.type == "bars")
 
         # parse values
         serie_values = []
@@ -146,6 +147,7 @@ class SerialChart(Chart):
             serie_values.append(_values)
 
         # aggregate values for stacked bar chart
+        # TODO: Consider moving this logic to `lib.datalist.DataList`
         cum_values = np.cumsum(serie_values, axis=0).tolist()
 
         # Select a date to highlight
@@ -240,7 +242,6 @@ class SerialChart(Chart):
                                  zorder=2)
 
             elif self.type == "bars":
-                is_stacked = len(series) > 1
                 if is_stacked:
                     if self.highlight:
                         if self.highlight == self.labels[i]:
@@ -356,8 +357,14 @@ class SerialChart(Chart):
             ymin = min(self.ymin, self.data.min_val - padding_bottom)
         else:
             ymin = self.data.min_val - padding_bottom
+
+        if is_stacked:
+            y_max = self.data.stacked_max_val
+        else:
+            y_max = self.data.max_val
+
         self.ax.set_ylim(ymin=ymin,
-                         ymax=self.data.max_val * 1.15)
+                         ymax=y_max * 1.15)
 
         self.ax.yaxis.set_major_formatter(y_formatter)
         self.ax.yaxis.grid(True)
