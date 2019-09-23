@@ -99,6 +99,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.6.12
+
+  - Bug fix: Set y max to stacked max in stacked bar chart. 
+
 - 1.6.11
 
   - Introduces stacked bars to SerialChart.
