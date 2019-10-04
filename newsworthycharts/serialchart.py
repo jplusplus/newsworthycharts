@@ -196,7 +196,7 @@ class SerialChart(Chart):
                     # If this date is not in series, silently ignore
                     pass
 
-            if self.highlight and highlight_value:
+            if self.highlight and (highlight_value is not None):
                 highlight_diff['y0'] = min(highlight_diff['y0'],
                                            highlight_value)
                 highlight_diff['y1'] = max(highlight_diff['y1'],
