@@ -1,27 +1,23 @@
-"""
- Module for doing (very) simple i18n work.
-"""
+"""Module for doing (very) simple i18n work."""
 from babel.numbers import format_decimal, format_percent, Locale
 from babel.units import format_unit
 from decimal import Decimal
 
 
 class Formatter(object):
-    """
-     A formatter for a specific language and locale.
-     Contains some methods for number and text formatting.
+    """A formatter for a specific language and locale.
 
-     Heavier i18n work should be before involving newsworthycharts.
-     Usage:
+    Contains some methods for number and text formatting.
+    Heavier i18n work should be before involving newsworthycharts.
+    Usage:
 
-      >>> fmt = Formatter("sv-SE")
-      >>> fmt.percent(0.14)
-      "14 %"
+     >>> fmt = Formatter("sv-SE")
+     >>> fmt.percent(0.14)
+     "14 %"
     """
-    def __init__(self, lang, decimals=None, scale="celcius"):
-        """
-        :param decimals (int): force formatting to N number of decimals
-        """
+
+    def __init__(self, lang, decimals: int=None, scale: str="celcius"):
+        """Create formatter for specific locale."""
         self.l = Locale.parse(lang.replace("-", "_"))  # NOQA
         self.language = self.l.language
         self.decimals = decimals
