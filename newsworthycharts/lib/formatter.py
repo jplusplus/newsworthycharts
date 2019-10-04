@@ -47,8 +47,7 @@ class Formatter(object):
         return format_percent(x, locale=self.l, decimal_quantization=False)
 
     def temperature_short(self, x, *args, **kwargs):
-        """ Format a temperature in deegrees, without scale letter """
-
+        """Format a temperature in deegrees, without scale letter."""
         decimals = self.decimals
         if decimals is None:
             decimals = 1
@@ -58,8 +57,7 @@ class Formatter(object):
         return str
 
     def temperature(self, x, *args, **kwargs):
-        """ Format a temperature in deegrees, with scale letter """
-
+        """Format a temperature in deegrees, with scale letter."""
         decimals = self.decimals
         if decimals is None:
             decimals = 1
@@ -87,7 +85,19 @@ class Formatter(object):
         return format_decimal(x, locale=self.l)
 
     def short_month(self, x, *args, **kwargs):
+        """Get a short month string, e.g. 'Jan', from a number.
+
+        Numbers above 12 will wrap
+        """
+        if x > 12:
+            x = x % 12 + 1
         return self.l.months['format']['abbreviated'][x]
 
     def month(self, x, *args, **kwargs):
+        """Get a month string from a number.
+
+        Numbers above 12 will wrap
+        """
+        if x > 12:
+            x = x % 12 + 1
         return self.l.months['format']['wide'][x]
