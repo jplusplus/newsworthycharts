@@ -9,20 +9,14 @@ class CategoricalChart(Chart):
 
     def __init__(self, *args, **kwargs):
         super(CategoricalChart, self).__init__(*args, **kwargs)
-        self._bar_orientation = "horizontal"  # [horizontal|vertical]
+        self.bar_orientation = "horizontal"  # [horizontal|vertical]
 
-    @property
-    def bar_orientation(self):
-        return self._bar_orientation
-
-    @bar_orientation.setter
-    def bar_orientation(self, val):
-        if val in ["horizontal", "vertical"]:
-            self._bar_orientation = val
-        else:
-            raise ValueError("Valid oriantations: horizontal | vertical")
 
     def _add_data(self):
+        allowed_orientations = ["horizontal", "vertical"]
+        if self.bar_orientation not in allowed_orientations:
+            raise ValueError(f"Valid oriantations: {allowed_orientations}")
+
         if self.bar_orientation == "horizontal":
             self.value_axis = self.ax.xaxis
             self.category_axis = self.ax.yaxis

@@ -103,6 +103,18 @@ Changelog
 
   - Fix a crash in some special cases with serial charts shorter than a year.
 
+- 1.6.12
+
+  - Bug fix: Set y max to stacked max in stacked bar chart. 
+
+- 1.6.11
+
+  - Introduces stacked bars to SerialChart.
+
+- 1.6.10
+
+  - Fixes bar_orientation bug with `init_from()`
+
 - 1.6.9
 
   - Fix an ugly bug where type=line would not work with `init_from()`
