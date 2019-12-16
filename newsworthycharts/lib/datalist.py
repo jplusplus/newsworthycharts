@@ -5,6 +5,8 @@ from collections.abc import MutableSequence
 from math import inf
 from numpy import array, isnan, interp, flatnonzero
 import numpy as np
+from io import StringIO
+import csv
 from .utils import to_float
 
 
@@ -81,9 +83,32 @@ class DataList(MutableSequence):
         return [{x[0]: x[1] for x in s} for s in self.list]
 
     @property
+    def as_csv(self):
+        """Render as csv string.
+        """
+        # transform data as list of lists
+        ll = [self.x_points] + self.as_list_of_lists
+        # transpose
+        ll = [x for x in map(list, zip(*ll))]
+        csv_str = StringIO()
+        writer = csv.writer(csv_str)
+        writer.writerows(ll)
+        return csv_str.getvalue()
+
+    @property
+    def as_list_of_lists(self):
+        """Return values with all gaps filled, so that each series has the
+        same number of points as a list of list.
+        """
+        return [[d[x] if x in d else None
+                 for x in self.x_points]
+                for d in self.as_dict]
+
+    @property
     def filled_values(self):
         """ Return values with all gaps filled, so that each series has the
-        same number of points.
+        same number of points. Estimates missing values as the mean between
+        the previous and next value.
 
         >>>> dl = DataList([
                     [("a", 5), ("b", 6), ("c", 7)],
@@ -118,6 +143,7 @@ class DataList(MutableSequence):
     @property
     def outer_max_x(self):
         return max(list(filter(lambda x: x[1] is not None, s))[-1][0] for s in self.list)
+
 
 
     def __len__(self):

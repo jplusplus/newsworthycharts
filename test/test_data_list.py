@@ -1,5 +1,22 @@
 from newsworthycharts.lib.datalist import DataList
 
+def test_csv():
+    s1 = [
+        ("2018", 1),
+        ("2019", 2),
+    ]
+    s2 = [
+        ("2017", 3),
+        ("2019", 4),
+    ]
+    dl = DataList()
+    dl.append(s1)
+    dl.append(s2)
+    rows = dl.as_csv.split("\r\n")
+    assert rows[0] == "2017,,3"
+    assert rows[1] == "2018,1,"
+    assert rows[2] == "2019,2,4"
+
 
 def test_stacked_values():
     s1 = [
