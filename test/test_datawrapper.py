@@ -11,8 +11,9 @@ def test_type_property():
     container = {}
 
     chart_obj = {
-        "width": 800,
-        "height": 600,
+        "width": 500,
+        "height": 500,
+        "title": "Here is a title from chart obj",
         "data": [
             [
                 ["2016-01-01", -2],
@@ -28,20 +29,21 @@ def test_type_property():
             ]
         ],
         "labels": [
-            "Luleå",
-            "Happaranda",
+            u"Lule",
+            u"Happaranda",
         ],
+        "caption": "Ministry of stats",
+        "highlight": "Happaranda",
         "dw_data": {
             "type": "d3-lines",
-            "title": "My test chart",
             "metadata": {
                 "describe": {
-                    "source-name": "Newsworthy",
-                    "source-url": "http://www.newsworthy.se",
+                    "byline": "Newsworthy"
                 }
             }
         },
     }
     # when type="bars"...
-    c = DatawrapperChart.init_from(chart_obj, storage=local_storage)
+    c = DatawrapperChart.init_from(chart_obj, storage=local_storage,
+                                   language="sv-SE")
     c.render("basic_dw_chart", "png")

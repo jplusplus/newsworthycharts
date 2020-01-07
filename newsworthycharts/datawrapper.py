@@ -67,10 +67,16 @@ class DatawrapperChart(Chart):
         url = "https://api.datawrapper.de/v3/charts"
 
         # 1. create chart with metadata
-        r = requests.post(url, headers=auth_header, json=self.dw_data)
+        dw_data = self._prepare_dw_data(self.dw_data)
+        print(dw_data)
+        r = requests.post(url, headers=auth_header, json=dw_data)
         r.raise_for_status()
 
         chart_id = r.json()["id"]
+
+        url = f"https://api.datawrapper.de/v3/charts/{chart_id}"
+        r = requests.get(url, headers=auth_header)
+        print(r.json())
 
         # 2. add data
         print("Add data")
@@ -90,6 +96,7 @@ class DatawrapperChart(Chart):
         r = requests.put(url, headers=headers, data=csv_data)
         r.raise_for_status()
 
+
         # 3. render (and store) chart
 
         print("Store chart")
@@ -98,11 +105,13 @@ class DatawrapperChart(Chart):
         querystring = {
             "unit": "px",
             "mode": "rgb",
-            "width": str(self._w),
-            "plain": "false",
-            "scale": "1",
+            "width": self._w,
+            "plain": False,
+            "scale": 1,
         }
-
+        if self._h != 0:
+            querystring["height"] = self._h
+        print(querystring)
         headers = deepcopy(auth_header)
         headers['accept'] = f'image/{img_format}'
 
@@ -120,6 +129,43 @@ class DatawrapperChart(Chart):
 
         for file_format in self.file_types:
             self.render(key, file_format)
+
+    def _prepare_dw_data(self, dw_data):
+        # 1. Common config
+        dw_data["utf8"] = True
+        dw_data["language"] = self._language
+
+        if self._title is not None:
+            dw_data["title"] = self._title
+
+        if self.caption is not None:
+            dw_data["metadata"]["describe"]["source-name"] = self.caption
+
+        if self.highlight:
+            dw_data = self._apply_highlight(dw_data)
+
+        return dw_data
+
+    def _apply_highlight(self, dw_data):
+        chart_type = dw_data["type"]
+        if chart_type == "d3-lines":
+            colors = {}
+            for label in self.labels:
+                if label == self.highlight:
+                    colors[label] = "#ff0000" # self._style["strong_color"]
+                else:
+                    colors[label] = "#333333"#self._style["neutral_color"]
+                    # TODO: defaultdict solution would be prettier
+                    try:
+                        dw_data["metadata"]["visualize"]["custom-colors"] = colors
+                    except KeyError:
+                        dw_data["metadata"]["visualize"] = {
+                            "custom-colors": colors
+                        }
+        else:
+            raise NotImplementedError(f"Unable to add highligt to {chart_type}")
+
+        return dw_data
 
 def _to_csv_str(ll):
     """Make csv string from list of lists.
