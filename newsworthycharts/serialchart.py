@@ -146,9 +146,6 @@ class SerialChart(Chart):
                 _values = [0 if v is None else v for v in _values]
             serie_values.append(_values)
 
-        # aggregate values for stacked bar chart
-        # TODO: Consider moving this logic to `lib.datalist.DataList`
-        cum_values = np.cumsum(serie_values, axis=0).tolist()
 
         # Select a date to highlight
         if self.highlight is not None:
@@ -242,6 +239,10 @@ class SerialChart(Chart):
                                  zorder=2)
 
             elif self.type == "bars":
+                # aggregate values for stacked bar chart
+                # TODO: Consider moving this logic to `lib.datalist.DataList`
+                cum_values = np.cumsum(serie_values, axis=0).tolist()
+
                 if is_stacked:
                     if self.highlight:
                         if self.highlight == self.labels[i]:
