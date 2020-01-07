@@ -25,6 +25,7 @@ class SerialChart(Chart):
         # be around 310 or 311 days wide.
         self.max_ticks = 5
         self._ymin = None
+        self._ymax = None
 
     @property
     def ymin(self):
@@ -34,6 +35,14 @@ class SerialChart(Chart):
     @ymin.setter
     def ymin(self, val):
         self._ymin = val
+
+    @property
+    def ymax(self):
+        return self._ymax
+
+    @ymax.setter
+    def ymax(self, val):
+        self._ymax = val
 
     @property
     def type(self):
@@ -359,10 +368,14 @@ class SerialChart(Chart):
         else:
             ymin = self.data.min_val - padding_bottom
 
-        if is_stacked:
-            y_max = self.data.stacked_max_val
+        if self.ymax is not None:
+            y_max = max(self.ymax, self.data.max_val)
+
         else:
-            y_max = self.data.max_val
+            if is_stacked:
+                y_max = self.data.stacked_max_val
+            else:
+                y_max = self.data.max_val
 
         self.ax.set_ylim(ymin=ymin,
                          ymax=y_max * 1.15)

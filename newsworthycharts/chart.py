@@ -332,7 +332,8 @@ class Chart(object):
         for k, v in args.items():
             if (not k.startswith("_")) and \
                (k in class_attrs) and \
-               (k not in ["data", "labels", "type", "ymin", "title", "units"]):
+               (k not in ["data", "labels", "type", "ymin", "ymax", "title",
+                          "units"]):
                 setattr(chart, k, v)
         if "data" in args:
             for data in args["data"].copy():
@@ -349,6 +350,8 @@ class Chart(object):
             chart.type = args["type"]
         if "ymin" in args:
             chart.ymin = args["ymin"]
+        if "ymax" in args:
+            chart.ymax = args["ymax"]
         return chart
 
     def render(self, key: str, img_format: str):
