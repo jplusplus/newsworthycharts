@@ -5,6 +5,7 @@ import requests
 from copy import deepcopy
 from io import BytesIO, StringIO
 import csv
+from matplotlib.colors import rgb2hex
 
 from .storage import Storage, LocalStorage
 from .chart import Chart
@@ -38,6 +39,7 @@ class DatawrapperChart(Chart):
         self.annotations = []  # Manually added annotations
         self.caption = None
         self.highlight = None
+        self.decimals = None
 
         self.dw_data = {}
 
@@ -67,7 +69,7 @@ class DatawrapperChart(Chart):
         url = "https://api.datawrapper.de/v3/charts"
 
         # 1. create chart with metadata
-        dw_data = self._prepare_dw_data(self.dw_data)
+        dw_data = self._prepare_dw_metadata(self.dw_data)
         print(dw_data)
         r = requests.post(url, headers=auth_header, json=dw_data)
         r.raise_for_status()
@@ -76,20 +78,12 @@ class DatawrapperChart(Chart):
 
         url = f"https://api.datawrapper.de/v3/charts/{chart_id}"
         r = requests.get(url, headers=auth_header)
-        print(r.json())
+        #print(r.json())
 
         # 2. add data
         print("Add data")
         url = f"https://api.datawrapper.de/v3/charts/{chart_id}/data"
-        data = []
-        if self.labels:
-            data.append([""] + self.labels)
-        cols = [self.data.x_points] + self.data.as_list_of_lists
-        # transpose
-        rows = [x for x in map(list, zip(*cols))]
-        data += rows
-
-        csv_data = _to_csv_str(data)
+        csv_data = self._prepare_dw_chart_data()
 
         headers = deepcopy(auth_header)
         headers['content-type'] = 'text/csv'
@@ -98,24 +92,23 @@ class DatawrapperChart(Chart):
 
 
         # 3. render (and store) chart
-
         print("Store chart")
         url = f"https://api.datawrapper.de/v3/charts/{chart_id}/export/{img_format}"
 
-        querystring = {
+        params = {
             "unit": "px",
             "mode": "rgb",
             "width": self._w,
             "plain": False,
-            "scale": 1,
+            "zoom": 1,
         }
         if self._h != 0:
-            querystring["height"] = self._h
-        print(querystring)
+            params["height"] = self._h
+        print(params)
         headers = deepcopy(auth_header)
         headers['accept'] = f'image/{img_format}'
 
-        r = requests.get(url, params=querystring, headers=headers, stream=True)
+        r = requests.post(url, json=params, headers=headers, stream=True)
         r.raise_for_status()
         buf = BytesIO(r.content)
         buf.seek(0)
@@ -130,10 +123,17 @@ class DatawrapperChart(Chart):
         for file_format in self.file_types:
             self.render(key, file_format)
 
-    def _prepare_dw_data(self, dw_data):
+        buf = StringIO("foo")
+        #self._storage.save(key, buf, "txt")
+        # TODO: Also store datawrapper chart id
+
+    def _prepare_dw_metadata(self, dw_data):
         # 1. Common config
         dw_data["utf8"] = True
         dw_data["language"] = self._language
+
+        if not "visualize" in dw_data["metadata"]:
+            dw_data["metadata"]["visualize"] = {}
 
         if self._title is not None:
             dw_data["title"] = self._title
@@ -144,7 +144,52 @@ class DatawrapperChart(Chart):
         if self.highlight:
             dw_data = self._apply_highlight(dw_data)
 
+        # set number format
+        if self.decimals is None:
+            num_fmt = "0"
+        else:
+            num_fmt = "0.[{}]".format("0" * self.decimals)
+
+        if self.units == "percent":
+            # Values will also have to be multipled by 100 later
+            num_fmt += "%"
+
+        if 'y-grid-format' not in dw_data["metadata"]["visualize"]:
+            dw_data["metadata"]["visualize"]['y-grid-format'] = num_fmt
+
+        if "tooltip-number-format" not in dw_data["metadata"]["visualize"]:
+            dw_data["metadata"]["visualize"]["tooltip-number-format"] = num_fmt
+
+        # 2. Line chart specific opts
+        if dw_data["type"] == "d3-lines":
+            if "labeling" not in dw_data["metadata"]["visualize"]:
+                dw_data["metadata"]["visualize"]["labeling"] = "right"
+
         return dw_data
+
+    def _prepare_dw_chart_data(self):
+        """Transform chart data series to tabular shape and
+        format as csv string for Datawrapper API.
+        """
+        data = []
+        if self.labels:
+            data.append([""] + self.labels)
+        values = self.data.as_list_of_lists
+
+        if self.units == "percent":
+            # values have to be manually multipled by 100 for correct pct formatting
+            values = [[v * 100 if v else None for v in series] 
+                      for series in values]
+
+        cols = [self.data.x_points] + values
+        # transpose
+        rows = [x for x in map(list, zip(*cols))]
+        data += rows
+
+        csv_data = _to_csv_str(data)
+
+        return csv_data
+
 
     def _apply_highlight(self, dw_data):
         chart_type = dw_data["type"]
@@ -152,16 +197,19 @@ class DatawrapperChart(Chart):
             colors = {}
             for label in self.labels:
                 if label == self.highlight:
-                    colors[label] = "#ff0000" # self._style["strong_color"]
+                    colors[label] = rgb2hex(self._style["strong_color"])
+                    dw_data["metadata"]["visualize"]['highlighted-series'] = [label]
                 else:
-                    colors[label] = "#333333"#self._style["neutral_color"]
-                    # TODO: defaultdict solution would be prettier
-                    try:
-                        dw_data["metadata"]["visualize"]["custom-colors"] = colors
-                    except KeyError:
-                        dw_data["metadata"]["visualize"] = {
-                            "custom-colors": colors
-                        }
+                    colors[label] = rgb2hex(self._style["neutral_color"])
+
+            dw_data["metadata"]["visualize"]["custom-colors"] = colors
+
+
+            if len(self.labels) == 2 and self.highlight:
+                dw_data["metadata"]["visualize"].update({
+                    "fill-between": True,
+                    'area-fill-color-between': '#cccccc',
+                })
         else:
             raise NotImplementedError(f"Unable to add highligt to {chart_type}")
 
