@@ -99,9 +99,19 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- next
+
+  - Fix a crash in some special cases with serial charts shorter than a year.
+  - Fix a bug where diff between series was not highlighted if one value was close to zero.
+
+- 1.7.0
+
+  - Adds ymax argument (to SerialChart)
+  - Bug fix: Handle missing values in SerialChart with line.
+
 - 1.6.12
 
-  - Bug fix: Set y max to stacked max in stacked bar chart. 
+  - Bug fix: Set y max to stacked max in stacked bar chart.
 
 - 1.6.11
 

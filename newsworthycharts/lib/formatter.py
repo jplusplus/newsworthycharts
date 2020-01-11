@@ -1,27 +1,23 @@
-"""
- Module for doing (very) simple i18n work.
-"""
+"""Module for doing (very) simple i18n work."""
 from babel.numbers import format_decimal, format_percent, Locale
 from babel.units import format_unit
 from decimal import Decimal
 
 
 class Formatter(object):
-    """
-     A formatter for a specific language and locale.
-     Contains some methods for number and text formatting.
+    """A formatter for a specific language and locale.
 
-     Heavier i18n work should be before involving newsworthycharts.
-     Usage:
+    Contains some methods for number and text formatting.
+    Heavier i18n work should be before involving newsworthycharts.
+    Usage:
 
-      >>> fmt = Formatter("sv-SE")
-      >>> fmt.percent(0.14)
-      "14 %"
+     >>> fmt = Formatter("sv-SE")
+     >>> fmt.percent(0.14)
+     "14 %"
     """
-    def __init__(self, lang, decimals=None, scale="celcius"):
-        """
-        :param decimals (int): force formatting to N number of decimals
-        """
+
+    def __init__(self, lang, decimals: int=None, scale: str="celcius"):
+        """Create formatter for specific locale."""
         self.l = Locale.parse(lang.replace("-", "_"))  # NOQA
         self.language = self.l.language
         self.decimals = decimals
@@ -47,8 +43,7 @@ class Formatter(object):
         return format_percent(x, locale=self.l, decimal_quantization=False)
 
     def temperature_short(self, x, *args, **kwargs):
-        """ Format a temperature in deegrees, without scale letter """
-
+        """Format a temperature in deegrees, without scale letter."""
         decimals = self.decimals
         if decimals is None:
             decimals = 1
@@ -58,8 +53,7 @@ class Formatter(object):
         return str
 
     def temperature(self, x, *args, **kwargs):
-        """ Format a temperature in deegrees, with scale letter """
-
+        """Format a temperature in deegrees, with scale letter."""
         decimals = self.decimals
         if decimals is None:
             decimals = 1
@@ -87,7 +81,19 @@ class Formatter(object):
         return format_decimal(x, locale=self.l)
 
     def short_month(self, x, *args, **kwargs):
+        """Get a short month string, e.g. 'Jan', from a number.
+
+        Numbers above 12 will wrap
+        """
+        if x > 12:
+            x = x % 12 + 1
         return self.l.months['format']['abbreviated'][x]
 
     def month(self, x, *args, **kwargs):
+        """Get a month string from a number.
+
+        Numbers above 12 will wrap
+        """
+        if x > 12:
+            x = x % 12 + 1
         return self.l.months['format']['wide'][x]

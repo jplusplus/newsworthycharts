@@ -25,6 +25,7 @@ class SerialChart(Chart):
         # be around 310 or 311 days wide.
         self.max_ticks = 5
         self._ymin = None
+        self._ymax = None
 
     @property
     def ymin(self):
@@ -34,6 +35,14 @@ class SerialChart(Chart):
     @ymin.setter
     def ymin(self, val):
         self._ymin = val
+
+    @property
+    def ymax(self):
+        return self._ymax
+
+    @ymax.setter
+    def ymax(self, val):
+        self._ymax = val
 
     @property
     def type(self):
@@ -146,9 +155,6 @@ class SerialChart(Chart):
                 _values = [0 if v is None else v for v in _values]
             serie_values.append(_values)
 
-        # aggregate values for stacked bar chart
-        # TODO: Consider moving this logic to `lib.datalist.DataList`
-        cum_values = np.cumsum(serie_values, axis=0).tolist()
 
         # Select a date to highlight
         if self.highlight is not None:
@@ -196,7 +202,7 @@ class SerialChart(Chart):
                     # If this date is not in series, silently ignore
                     pass
 
-            if self.highlight and highlight_value:
+            if self.highlight and (highlight_value is not None):
                 highlight_diff['y0'] = min(highlight_diff['y0'],
                                            highlight_value)
                 highlight_diff['y1'] = max(highlight_diff['y1'],
@@ -242,6 +248,10 @@ class SerialChart(Chart):
                                  zorder=2)
 
             elif self.type == "bars":
+                # aggregate values for stacked bar chart
+                # TODO: Consider moving this logic to `lib.datalist.DataList`
+                cum_values = np.cumsum(serie_values, axis=0).tolist()
+
                 if is_stacked:
                     if self.highlight:
                         if self.highlight == self.labels[i]:
@@ -358,10 +368,14 @@ class SerialChart(Chart):
         else:
             ymin = self.data.min_val - padding_bottom
 
-        if is_stacked:
-            y_max = self.data.stacked_max_val
+        if self.ymax is not None:
+            y_max = max(self.ymax, self.data.max_val)
+
         else:
-            y_max = self.data.max_val
+            if is_stacked:
+                y_max = self.data.stacked_max_val
+            else:
+                y_max = self.data.max_val
 
         self.ax.set_ylim(ymin=ymin,
                          ymax=y_max * 1.15)

@@ -123,3 +123,47 @@ def test_stacked_bar_chart():
     bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
     assert(bar_colors[0] == c._style["strong_color"])
     assert(bar_colors[-1] == c._style["neutral_color"])
+
+
+def test_bar_chart_with_ymax():
+    container = {}
+    ds = DictStorage(container)
+
+    # all negative values with fixed ymax to 0
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "data": [
+            [
+                ["2016-01-01", -4],
+                ["2017-01-01", -6],
+                ["2018-01-01", -3],
+                ["2019-01-01", -2]
+            ]
+        ],
+        "ymax": 0,
+        "type": "bars",
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    c.render("bar_chart_with_ymax1", "png")
+    assert c.ax.get_ylim()[1] == 0
+
+    # when ymax < actual max value in data
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "data": [
+            [
+                ["2016-01-01", 4],
+                ["2017-01-01", 6],
+                ["2018-01-01", 3],
+                ["2019-01-01", 2]
+            ]
+        ],
+        "ymax": 3,
+        "type": "bars",
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    c.render("bar_chart_with_ymax2", "png")
+    max_value = max([x[1] for x in chart_obj["data"][0]])
+    assert c.ax.get_ylim()[1] > max_value
