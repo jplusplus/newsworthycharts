@@ -102,6 +102,7 @@ class DatawrapperChart(Chart):
             "plain": False,
             "zoom": 1,
         }
+        # Datawrapper charts get auto height
         if self._h != 0:
             params["height"] = self._h
         print(params)
@@ -178,7 +179,7 @@ class DatawrapperChart(Chart):
 
         if self.units == "percent":
             # values have to be manually multipled by 100 for correct pct formatting
-            values = [[v * 100 if v else None for v in series] 
+            values = [[v * 100 if v else None for v in series]
                       for series in values]
 
         cols = [self.data.x_points] + values
@@ -193,23 +194,38 @@ class DatawrapperChart(Chart):
 
     def _apply_highlight(self, dw_data):
         chart_type = dw_data["type"]
-        if chart_type == "d3-lines":
+        strong_color = rgb2hex(self._style["strong_color"])
+        neutral_color = rgb2hex(self._style["neutral_color"])
+
+        if chart_type in ["d3-lines"]:
             colors = {}
             for label in self.labels:
                 if label == self.highlight:
-                    colors[label] = rgb2hex(self._style["strong_color"])
+                    colors[label] = strong_color
                     dw_data["metadata"]["visualize"]['highlighted-series'] = [label]
                 else:
-                    colors[label] = rgb2hex(self._style["neutral_color"])
+                    colors[label] = neutral_color
 
             dw_data["metadata"]["visualize"]["custom-colors"] = colors
 
-
             if len(self.labels) == 2 and self.highlight:
                 dw_data["metadata"]["visualize"].update({
-                    "fill-between": True,
-                    'area-fill-color-between': '#cccccc',
+                "fill-between": True,
+                'area-fill-color-between': '#cccccc',
                 })
+
+        elif chart_type in ["column-chart", "d3-bars"]:
+            colors = {}
+
+            for series in self.data:
+                for ix, value, _ in series:
+                    if ix == self.highlight:
+                        colors[ix] = strong_color
+                    else:
+                        colors[ix] = neutral_color
+
+            dw_data["metadata"]["visualize"]["custom-colors"] = colors
+
         else:
             raise NotImplementedError(f"Unable to add highligt to {chart_type}")
 
