@@ -10,7 +10,12 @@ from copy import deepcopy
 # store test charts to this folder for visual verfication
 OUTPUT_DIR = "test/rendered_charts"
 local_storage = LocalStorage(OUTPUT_DIR)
-os.environ["DATAWRAPPER_API_KEY"] = "b303a2e8584e4dfe1bb2a36fdb25818ff2dbe88c0ef7cfbb10da9ec2288ac3e0"
+
+try:
+    DATAWRAPPER_API_KEY = os.environ["DATAWRAPPER_API_KEY"]
+except KeyError:
+    raise Exception("A 'DATAWRAPPER_API_KEY' must be set to run these test. "
+                    "Get it here: https://app.datawrapper.de/account/api-tokens")
 
 TEST_LINE_CHART = {
         "width": 800,
@@ -31,7 +36,7 @@ TEST_LINE_CHART = {
             ]
         ],
         "labels": [
-            u"Lule",
+            u"Luleå",
             u"Happaranda",
         ],
         "caption": "Ministry of stats",
@@ -95,7 +100,7 @@ def test_vertical_bar_chart_with_highlight():
                 ["2019-01-01", 2]
             ],
         ]
-    chart_obj["labels"] = ["Lule"]
+    chart_obj["labels"] = ["Luleå"]
     chart_obj["highlight"] = "2019-01-01"
     chart_obj["dw_data"]["type"] = "column-chart"
     c = DatawrapperChart.init_from(chart_obj, storage=local_storage,

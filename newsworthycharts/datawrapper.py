@@ -14,6 +14,8 @@ from .lib.formatter import Formatter
 from .lib.datalist import DataList
 
 class DatawrapperChart(Chart):
+    # TODO: Make file_types dynami. Available file types depend on the
+    # account level. png is available at all levels.
     file_types = ["png"]
 
     def __init__(self, width: int, height: int, storage: Storage=LocalStorage(),
@@ -42,6 +44,7 @@ class DatawrapperChart(Chart):
         self.decimals = None
 
         self.dw_data = {}
+        self._dw_id = None # Datawrapper chart id
 
 
         # P R I V A T E   P R O P E R T I E S
@@ -70,29 +73,29 @@ class DatawrapperChart(Chart):
 
         # 1. create chart with metadata
         dw_data = self._prepare_dw_metadata(self.dw_data)
-        print(dw_data)
+        #print(dw_data)
         r = requests.post(url, headers=auth_header, json=dw_data)
         r.raise_for_status()
 
-        chart_id = r.json()["id"]
+        self._dw_id = r.json()["id"]
+        chart_id = self._dw_id
 
         url = f"https://api.datawrapper.de/v3/charts/{chart_id}"
         r = requests.get(url, headers=auth_header)
-        #print(r.json())
 
         # 2. add data
-        print("Add data")
+        #print("Add data")
         url = f"https://api.datawrapper.de/v3/charts/{chart_id}/data"
         csv_data = self._prepare_dw_chart_data()
 
         headers = deepcopy(auth_header)
-        headers['content-type'] = 'text/csv'
+        headers['content-type'] = 'text/csv; charset=UTF-8'
         r = requests.put(url, headers=headers, data=csv_data)
         r.raise_for_status()
 
 
         # 3. render (and store) chart
-        print("Store chart")
+        #print("Store chart")
         url = f"https://api.datawrapper.de/v3/charts/{chart_id}/export/{img_format}"
 
         params = {
@@ -105,7 +108,7 @@ class DatawrapperChart(Chart):
         # Datawrapper charts get auto height
         if self._h != 0:
             params["height"] = self._h
-        print(params)
+        #print(params)
         headers = deepcopy(auth_header)
         headers['accept'] = f'image/{img_format}'
 
@@ -124,9 +127,13 @@ class DatawrapperChart(Chart):
         for file_format in self.file_types:
             self.render(key, file_format)
 
-        buf = StringIO("foo")
-        #self._storage.save(key, buf, "txt")
-        # TODO: Also store datawrapper chart id
+        # In addition to regular format we store the Datawrapper chart
+        # id in a basic text file to be able to to embeds.
+        if self._dw_id is None:
+            raise Exception("No Datawrapper id has been set. Has the chart been"
+                            " created?")
+
+        self._storage.save(key, self._dw_id, "dw")
 
     def _prepare_dw_metadata(self, dw_data):
         # 1. Common config
@@ -187,12 +194,14 @@ class DatawrapperChart(Chart):
         rows = [x for x in map(list, zip(*cols))]
         data += rows
 
-        csv_data = _to_csv_str(data)
+        csv_str = _to_csv_str(data)
 
-        return csv_data
+        return csv_str.encode("utf-8")
 
 
     def _apply_highlight(self, dw_data):
+        """
+        """
         chart_type = dw_data["type"]
         strong_color = rgb2hex(self._style["strong_color"])
         neutral_color = rgb2hex(self._style["neutral_color"])

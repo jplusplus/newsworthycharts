@@ -4,5 +4,6 @@
 MIME_TYPES = {
     'png': "image/png",
     'svg': "image/svg+xml",
-    'eps': "application/postscript"
+    'eps': "application/postscript",
+    'dw': "text/plain",
 }

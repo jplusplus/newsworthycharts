@@ -6,6 +6,7 @@ from shutil import copyfileobj
 import boto3
 import os
 from .lib.mimetypes import MIME_TYPES
+from io import BytesIO, StringIO
 
 
 class AmazonUploadError(Exception):
@@ -69,13 +70,24 @@ class LocalStorage(Storage):
     def save(self, key, stream, filetype):
         """
         :param key (str): Used for creating filename. Files may be overwritten.
-        :param stream (BytesIO): A stream containing the file data
+        :param stream (BytesIO|str): A stream containing the file data or a
+            string.
         :param filetype (str): File extension
         """
-        stream.seek(0)
         filename = os.path.join(self.path, key + "." + filetype)
-        with open(filename, "wb") as f:
-            copyfileobj(stream, f, length=131072)
+
+        if isinstance(stream, BytesIO):
+            stream.seek(0)
+
+            with open(filename, "wb") as f:
+                copyfileobj(stream, f, length=131072)
+
+        elif isinstance(stream, str):
+            with open(filename, "w") as f:
+                f.write(stream)
+
+        else:
+            raise NotImplementedError(f"Unable to save {stream}")
 
 
 class S3Storage(Storage):
