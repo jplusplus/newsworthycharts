@@ -1,6 +1,6 @@
 """Tests chart generation with Datawrapper.
-Note that these tests are primarily "visual". Check tmp/ folder that the
-generated charts look as expected.
+Note that these tests are primarily "visual". Check test/rendered_charts folder
+that the generated charts look as expected.
 """
 from newsworthycharts import DatawrapperChart
 from newsworthycharts.storage import LocalStorage, DictStorage
