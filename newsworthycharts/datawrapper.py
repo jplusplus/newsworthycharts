@@ -140,7 +140,10 @@ class DatawrapperChart(Chart):
         dw_data["utf8"] = True
         dw_data["language"] = self._language
 
-        if not "visualize" in dw_data["metadata"]:
+        if "metadata" not in dw_data:
+            dw_data["metadata"] = {}
+
+        if "visualize" not in dw_data["metadata"]:
             dw_data["metadata"]["visualize"] = {}
 
         if self._title is not None:
