@@ -33,6 +33,7 @@ setup(
         "numPy",
         "python-dateutil>=2",
         "pillow>=1.3.3",
+        "requests>=2.22",
     ],
     include_package_data=True,
     download_url="{}/archive/{}.tar.gz".format(repo, version),
