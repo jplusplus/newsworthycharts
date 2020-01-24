@@ -60,7 +60,7 @@ def test_basic_chart():
 
 def test_chart_with_highlight():
     chart_obj = deepcopy(TEST_LINE_CHART)
-    chart_obj["highlight"] = "Happaranda"
+    chart_obj["highlight"] = "Luleå"
 
     c = DatawrapperChart.init_from(chart_obj, storage=local_storage,
                                    language="sv-SE")
