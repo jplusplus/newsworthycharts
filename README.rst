@@ -104,6 +104,10 @@ Changelog
   - Fix a crash in some special cases with serial charts shorter than a year.
   - Fix a bug where diff between series was not highlighted if one value was close to zero.
 
+- 1.8.1
+
+  - Bug fixes.
+
 - 1.8.0
 
   - Introduces Datawrapper Chart type.
