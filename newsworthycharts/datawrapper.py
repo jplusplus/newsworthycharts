@@ -36,14 +36,14 @@ class DatawrapperChart(Chart):
 
         # P U B L I C   P R O P E R T I E S
         # The user can alter these at any time
-        self.data = DataList()  # A list of datasets
+        self.data = DataList()
         self.labels = []  # Optionally one label for each dataset
         self.annotations = []  # Manually added annotations
         self.caption = None
         self.highlight = None
         self.decimals = None
 
-        self.dw_data = {}
+        self.dw_data = {}  # The DW data structure that defines the chart
         self._dw_id = None # Datawrapper chart id
 
 
@@ -140,6 +140,14 @@ class DatawrapperChart(Chart):
         dw_data["utf8"] = True
         dw_data["language"] = self._language
 
+        # Follow DW convetions for language codes
+        lang_code_translations = {
+            "sv": "sv-SE",
+            "en": "en-GB",
+        }
+        if dw_data["language"] in lang_code_translations:
+            dw_data["language"] = lang_code_translations[dw_data["language"]]
+
         if "metadata" not in dw_data:
             dw_data["metadata"] = {}
 
@@ -183,6 +191,7 @@ class DatawrapperChart(Chart):
         format as csv string for Datawrapper API.
         """
         data = []
+
         if self.labels:
             data.append([""] + self.labels)
         values = self.data.as_list_of_lists
