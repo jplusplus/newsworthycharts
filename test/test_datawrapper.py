@@ -117,6 +117,7 @@ def test_horizontal_bar_chart_with_highlight():
                 ["Sundbyberg", .212],
             ],
         ]
+    chart_obj["units"] = "percent"
     chart_obj["labels"] = ["Förändring (%)"]
     chart_obj["highlight"] = "Stockholm"
     chart_obj["dw_data"]["type"] = "d3-bars"
@@ -125,3 +126,30 @@ def test_horizontal_bar_chart_with_highlight():
                                    language="sv-SE")
 
     c.render_all("dw_horizontal_bar_chart_with_highlight")
+
+def test_table():
+    chart_obj = {
+        "width": 600,
+        "height": 0,
+        "title": "Några svenska städer jag gillar",
+        "labels": ["Kommun", "Värde", "Kategori"],
+        "data": [
+            {
+                "region": "Göteborg",
+                "value": 1.1,
+                "category": "Västkust",
+            },
+            {
+                "region": "Stockholm",
+                "value": 2.1,
+                "category": "Östkust",
+            },
+        ],
+        "dw_data": {
+            "type": "tables",
+        }
+    }
+    c = DatawrapperChart.init_from(chart_obj, storage=local_storage,
+                                   language="sv-SE")
+
+    c.render_all("dw_table")
