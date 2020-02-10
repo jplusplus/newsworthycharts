@@ -36,7 +36,13 @@ class DatawrapperChart(Chart):
 
         # P U B L I C   P R O P E R T I E S
         # The user can alter these at any time
-        self.data = DataList()
+
+        # Unlike regular Chart objects Datawrapper does not use the DataList
+        # class for storing data, as DataList does not handle non-numerical
+        # data. DatawrapperCharts will understand the same list-of-list-of-list
+        # structure as DataList builds upon, but prefer consuming list of
+        # dictionaries
+        self.data = []
         self.labels = []  # Optionally one label for each dataset
         self.annotations = []  # Manually added annotations
         self.caption = None
@@ -158,6 +164,9 @@ class DatawrapperChart(Chart):
             dw_data["title"] = self._title
 
         if self.caption is not None:
+            if "describe" not in dw_data["metadata"]:
+                dw_data["metadata"]["describe"] = {}
+
             dw_data["metadata"]["describe"]["source-name"] = self.caption
 
         if self.highlight:
@@ -190,23 +199,35 @@ class DatawrapperChart(Chart):
         """Transform chart data series to tabular shape and
         format as csv string for Datawrapper API.
         """
-        data = []
+        if len(self.data) == 0:
+            csv_str = ""
 
-        if self.labels:
-            data.append([""] + self.labels)
-        values = self.data.as_list_of_lists
+        # Data may be a list of dicts
+        elif isinstance(self.data[0], dict):
+            csv_str = _csv_str_from_list_of_dicts(self.data)
 
-        if self.units == "percent":
-            # values have to be manually multipled by 100 for correct pct formatting
-            values = [[v * 100 if v else None for v in series]
-                      for series in values]
+        # Or a structure that DataList can understand
+        else:
+            datalist = DataList()
+            for series in self.data:
+                datalist.append(series)
 
-        cols = [self.data.x_points] + values
-        # transpose
-        rows = [x for x in map(list, zip(*cols))]
-        data += rows
+            rows = []
+            if self.labels:
+                rows.append([""] + self.labels)
+            values = datalist.as_list_of_lists
 
-        csv_str = _to_csv_str(data)
+            if self.units == "percent":
+                # values have to be manually multipled by 100 for correct pct formatting
+                values = [[v * 100 if v else None for v in series]
+                          for series in values]
+
+            cols = [datalist.x_points] + values
+            # transpose
+            value_rows = [x for x in map(list, zip(*cols))]
+            rows += value_rows
+
+            csv_str = _csv_str_from_list_of_rows(rows)
 
         return csv_str.encode("utf-8")
 
@@ -239,7 +260,13 @@ class DatawrapperChart(Chart):
             colors = {}
 
             for series in self.data:
-                for ix, value, _ in series:
+                for d in series:
+                    if isinstance(d, dict):
+                        raise NotImplementedError("highlighting not implemented"
+                                                  " for list of dicts")
+
+                    ix = d[0]
+                    value = d[1]
                     if ix == self.highlight:
                         colors[ix] = strong_color
                     else:
@@ -252,7 +279,7 @@ class DatawrapperChart(Chart):
 
         return dw_data
 
-def _to_csv_str(ll):
+def _csv_str_from_list_of_rows(ll):
     """Make csv string from list of lists.
 
     :param data: list of lists (representing rows and cells)
@@ -260,4 +287,13 @@ def _to_csv_str(ll):
     csv_str = StringIO()
     writer = csv.writer(csv_str)
     writer.writerows(ll)
+    return csv_str.getvalue()
+
+
+def _csv_str_from_list_of_dicts(list_of_dicts):
+    csv_str = StringIO()
+    cols = set().union(*(d.keys() for d in list_of_dicts))
+    writer = csv.DictWriter(csv_str, fieldnames=cols)
+    writer.writeheader()
+    writer.writerows(list_of_dicts)
     return csv_str.getvalue()
