@@ -104,9 +104,13 @@ Changelog
   - Fix a crash in some special cases with serial charts shorter than a year.
   - Fix a bug where diff between series was not highlighted if one value was close to zero.
 
+- 1.9.1
+
+    - Translates region to Datawrapper standard when making maps. 
+
 - 1.9.0
 
-    - Allows list of dicts to be passed to DatawrapperChart to be make tables, categorical maps etc. 
+    - Allows list of dicts to be passed to DatawrapperChart to be make tables, categorical maps etc.
 
 - 1.8.2
 
