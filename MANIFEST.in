@@ -1,2 +1,3 @@
 include newsworthycharts/rc/*
 include newsworthycharts/lib/*
+include newsworthycharts/translations/*

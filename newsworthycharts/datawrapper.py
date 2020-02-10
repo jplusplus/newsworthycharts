@@ -13,6 +13,8 @@ from .lib.utils import loadstyle
 from .lib.formatter import Formatter
 from .lib.datalist import DataList
 
+HERE = os.path.dirname(__file__)
+
 class DatawrapperChart(Chart):
     # TODO: Make file_types dynami. Available file types depend on the
     # account level. png is available at all levels.
@@ -293,7 +295,7 @@ class DatawrapperChart(Chart):
         """
         if self._translations is None:
             _translations = {}
-            file_path = "newsworthycharts/translations/datawrapper_regions.csv"
+            file_path = os.path.join(HERE, 'translations', "datawrapper_regions.csv")
             with open(file_path) as f:
                 for row in csv.DictReader(f, skipinitialspace=True):
                     _translations[row["newsworthy_id"]] = row["datawrapper_id"]
