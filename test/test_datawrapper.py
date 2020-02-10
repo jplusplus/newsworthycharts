@@ -162,17 +162,21 @@ def test_choropleth_map():
         "title": "Här är en karta",
         "data": [
             {
-                "region": "Västra Götaland",
+                "region": "Västra Götalands län",
                 "value": 1.1,
             },
             {
-                "region": "Stockholm",
+                "region": "Stockholms län",
                 "value": 2.1,
             },
             {
-                "region": "Skåne",
+                "region": "Skåne län",
                 "value": 3.1,
             },
+            {
+                "region": "Örebro län",
+                "value": 6.2,
+            }
         ],
         "dw_data": {
             "type": "d3-maps-choropleth",

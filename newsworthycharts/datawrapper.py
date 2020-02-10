@@ -66,6 +66,9 @@ class DatawrapperChart(Chart):
         self._language = standardize_tag(language)
         self._locale = Locale.parse(self._language.replace("-", "_"))
 
+        # For renaming regions to DW conventions
+        self._translations = None
+
 
 
     def render(self, key: str, img_format: str):
@@ -188,7 +191,7 @@ class DatawrapperChart(Chart):
         if "tooltip-number-format" not in dw_data["metadata"]["visualize"]:
             dw_data["metadata"]["visualize"]["tooltip-number-format"] = num_fmt
 
-        # 2. Line chart specific opts
+        # Line chart specific opts
         if dw_data["type"] == "d3-lines":
             if "labeling" not in dw_data["metadata"]["visualize"]:
                 dw_data["metadata"]["visualize"]["labeling"] = "right"
@@ -204,6 +207,10 @@ class DatawrapperChart(Chart):
 
         # Data may be a list of dicts
         elif isinstance(self.data[0], dict):
+            if self.dw_data["type"] == "d3-maps-choropleth":
+                key_col = self.dw_data["metadata"]["axes"]["keys"]
+                for row in self.data:
+                    row[key_col] = self._translate_region(row[key_col])
             csv_str = _csv_str_from_list_of_dicts(self.data)
 
         # Or a structure that DataList can understand
@@ -278,6 +285,25 @@ class DatawrapperChart(Chart):
             raise NotImplementedError(f"Unable to add highligt to {chart_type}")
 
         return dw_data
+
+    def _translate_region(self, region):
+        """Tries to translate a region name to DW convention.
+
+        Lookup tables are defined in csv file.
+        """
+        if self._translations is None:
+            _translations = {}
+            file_path = "newsworthycharts/translations/datawrapper_regions.csv"
+            with open(file_path) as f:
+                for row in csv.DictReader(f, skipinitialspace=True):
+                    _translations[row["newsworthy_id"]] = row["datawrapper_id"]
+            self._translations = _translations
+
+        try:
+            return self._translations[region]
+        except KeyError:
+            return region
+
 
 def _csv_str_from_list_of_rows(ll):
     """Make csv string from list of lists.
