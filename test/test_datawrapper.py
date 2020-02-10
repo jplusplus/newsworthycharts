@@ -153,3 +153,41 @@ def test_table():
                                    language="sv-SE")
 
     c.render_all("dw_table")
+
+
+def test_choropleth_map():
+    chart_obj = {
+        "width": 400,
+        "height": 0,
+        "title": "Här är en karta",
+        "data": [
+            {
+                "region": "Västra Götaland",
+                "value": 1.1,
+            },
+            {
+                "region": "Stockholm",
+                "value": 2.1,
+            },
+            {
+                "region": "Skåne",
+                "value": 3.1,
+            },
+        ],
+        "dw_data": {
+            "type": "d3-maps-choropleth",
+            "metadata": {
+                "axes": {
+                    "keys": "region",
+                    "values": "value"
+                },
+                "visualize": {
+                    "basemap": "sweden-counties"
+                }
+            }
+        }
+    }
+    c = DatawrapperChart.init_from(chart_obj, storage=local_storage,
+                                   language="sv-SE")
+
+    c.render_all("dw_map_choropleth")
