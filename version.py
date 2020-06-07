@@ -1,9 +1,8 @@
-# encoding: utf-8
 from datetime import date
 
 name = "newsworthycharts"
 
-short_version = "1.9.2"
+short_version = "1.10.0"
 long_version = short_version
 
 short_desc = """\
