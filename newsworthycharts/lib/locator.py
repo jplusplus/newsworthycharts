@@ -1,8 +1,9 @@
 """ Custom locators and related methods
 """
-from matplotlib.dates import YearLocator, MonthLocator, DayLocator
+from matplotlib.dates import (YearLocator, MonthLocator, DayLocator,
+                              WeekdayLocator)
 from datetime import datetime
-
+from dateutil.rrule import MO
 
 def get_year_ticks(start_date, end_date, max_ticks=5):
     """ Get `max_ticks` or less evenly distributed yearly ticks, including
@@ -34,7 +35,7 @@ def get_year_ticks(start_date, end_date, max_ticks=5):
     return selected_dates
 
 
-def get_best_locator(delta, points):
+def get_best_locator(delta, points, interval=None):
     """ Get the optimal locator given a time delta and number of points.
     This methods will be much more conservative than Matplotlib's AutoLocator,
     trying to keep the x axis as clean as possible, while still including
@@ -53,8 +54,28 @@ def get_best_locator(delta, points):
             return YearLocator(2)
         else:
             return YearLocator()
-    elif delta.days > 30:
-        # FIXME dont print every month
-        return MonthLocator()
     else:
-        return DayLocator()
+        # Less than a year:
+        if interval == "monthly":
+            return MonthLocator()
+
+        elif interval == "weekly":
+            # NB The threshold are not tested thoroughly. Consider adjusting.
+            if delta.days <= 10 * 7:
+                return WeekdayLocator(MO, interval=1)
+
+            elif delta.days <= 20 * 7:
+                return WeekdayLocator(MO, interval=2)
+
+            elif delta.days <= 30 * 7:
+                return WeekdayLocator(MO, interval=3)
+
+            else:
+                return WeekdayLocator(MO, interval=4)
+
+        elif interval == "daily" or interval is None:
+            if delta.days > 30:
+                # FIXME dont print every month
+                return MonthLocator()
+            else:
+                return DayLocator()

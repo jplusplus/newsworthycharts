@@ -6,7 +6,8 @@ from .lib.formatter import Formatter
 import numpy as np
 from math import inf
 from matplotlib.ticker import FuncFormatter
-from matplotlib.dates import DateFormatter
+from matplotlib.dates import (DateFormatter, YearLocator, MonthLocator,
+                              DayLocator, WeekdayLocator)
 from dateutil.relativedelta import relativedelta
 
 
@@ -389,10 +390,19 @@ class SerialChart(Chart):
             self.ax.set_xticks(ticks)
             self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
         else:
-            loc = get_best_locator(delta, len(dates))
+            loc = get_best_locator(delta, len(dates), self.interval)
             self.ax.xaxis.set_major_locator(loc)
-            fmt = FuncFormatter(lambda x, pos:
-                                Formatter(self._language).short_month(pos + 1))
+
+            if isinstance(loc, WeekdayLocator):
+                # We consider dates to be more informative than week numbers
+                fmt = DateFormatter('%-d %b')
+            elif isinstance(loc, MonthLocator):
+                fmt = DateFormatter('%b')
+            elif isinstance(loc, DayLocator):
+                fmt = DateFormatter('%-d %b')
+            else:
+                NotImplementedError("Unable to determine tick formatter")
+
             self.ax.xaxis.set_major_formatter(fmt)
 
         # Add labels in legend if there are multiple series, otherwise

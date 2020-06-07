@@ -167,3 +167,29 @@ def test_bar_chart_with_ymax():
     c.render("bar_chart_with_ymax2", "png")
     max_value = max([x[1] for x in chart_obj["data"][0]])
     assert c.ax.get_ylim()[1] > max_value
+
+
+def test_weekly_chart():
+    container = {}
+    ds = DictStorage(container)
+
+    # all negative values with fixed ymax to 0
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "data": [
+            [
+                [ "2020-06-22", 0.391 ],
+                [ "2020-06-29", 0.346 ],
+                [ "2020-07-06", 0.297 ],
+                [ "2020-07-13", 0.317 ],
+                [ "2020-07-20", 0.197 ],
+                [ "2020-07-27", 0.417 ],
+            ]
+        ],
+        "type": "bars",
+        "units": "percent",
+        "interval": "weekly",
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    c.render("serial_chart_weekly", "png")
