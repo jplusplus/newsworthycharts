@@ -99,6 +99,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.10.1
+
+  - Fixes bad X ticks in weekly SerialChart (and charts that don't start in January).
+
 - 1.10.0
 
   - Add annotation_rotation option to categorical charts
