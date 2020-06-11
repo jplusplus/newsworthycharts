@@ -373,6 +373,9 @@ class Chart(object):
         self._apply_changes_before_rendering()
 
         for file_format in self.file_types:
+            if file_format == "dw":
+                continue
+
             # Save plot in memory, to write it directly to storage
             buf = BytesIO()
             self._fig.savefig(buf, format=file_format)
