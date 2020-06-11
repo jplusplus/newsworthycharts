@@ -128,22 +128,23 @@ class CategoricalChartWithReference(CategoricalChart):
             else:
                 color = self._style["neutral_color"]
 
-            label_pos = [x + i * bar_width / 2
+            bar_pos = [x + i * bar_width / 2
                          for x in numpy.arange(len(values))]
+            tick_pos = [x - bar_width / 4 for x in bar_pos]
 
-            zorder = 2 + len(self.data) - i
+            zorder = len(self.data) - i
             if self.bar_orientation == "horizontal":
-                self.ax.barh(label_pos, values, height=bar_width, align='center',
+                self.ax.barh(bar_pos, values, height=bar_width, align='center',
                              color=color, zorder=zorder)
-                self.ax.set_yticks(label_pos)
+                self.ax.set_yticks(tick_pos)
                 self.ax.set_yticklabels(categories, fontsize='small')
                 #self.ax.invert_yaxis()
 
 
             elif self.bar_orientation == "vertical":
-                self.ax.bar(label_pos, values, width=bar_width, color=color,
+                self.ax.bar(bar_pos, values, width=bar_width, color=color,
                             zorder=zorder)
-                self.ax.set_xticks(label_pos)
+                self.ax.set_xticks(tick_pos)
                 self.ax.set_xticklabels(categories, fontsize='small')
                 self.ax.xaxis.set_ticks_position('none')
 
