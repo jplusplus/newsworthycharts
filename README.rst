@@ -98,6 +98,11 @@ To deploy a new version to PyPi:
 
 Changelog
 ---------
+
+- 1.11.1
+
+  - Corrects zorder and centers tick on CategoricalChartWithReference
+
 - 1.11.0
 
   - Introduces new chart: CategoricalChartWithReference
