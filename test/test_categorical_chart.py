@@ -1,5 +1,5 @@
 import pytest
-from newsworthycharts import CategoricalChart
+from newsworthycharts import CategoricalChart, CategoricalChartWithReference
 from newsworthycharts.storage import LocalStorage
 
 # store test charts to this folder for visual verfication
@@ -38,3 +38,33 @@ def test_bar_orientation():
         chart_obj["bar_orientation"] = "foo" #
         c = CategoricalChart.init_from(chart_obj, storage=local_storage)
         c.render("bad_chart", "png")
+
+
+def test_categorical_chart_with_two_series():
+    chart_obj = {
+        "data": [
+            [
+                ["Stockholm", 321],
+                ["Täby", 121],
+                ["Solna", None],
+            ],
+            [
+                ["Stockholm", 331],
+                ["Täby", 151],
+                ["Solna", 20],
+            ],
+        ],
+        "labels": ["I år", "I fjol"],
+        "width": 800,
+        "height": 600,
+        "bar_orientation": "vertical",
+        "title": "Några kommuner i Stockholm"
+    }
+
+    c = CategoricalChartWithReference.init_from(chart_obj, storage=local_storage)
+    c.render("categorical_chart_with_two_series", "png")
+
+    # 2. Make a horizontal chart
+    chart_obj["bar_orientation"] = "horizontal"
+    c = CategoricalChartWithReference.init_from(chart_obj, storage=local_storage)
+    c.render("categorical_chart_with_two_series_horizontal", "png")
