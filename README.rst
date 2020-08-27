@@ -99,6 +99,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.12.0
+
+  - Introduces stacked categoricl bar charts 
+
 - 1.11.2
 
   - Bug fix: Remove failing attemt to store chart in dw format
