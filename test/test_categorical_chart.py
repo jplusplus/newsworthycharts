@@ -39,8 +39,38 @@ def test_bar_orientation():
         c = CategoricalChart.init_from(chart_obj, storage=local_storage)
         c.render("bad_chart", "png")
 
+def test_stacked_categorical_chart():
+    chart_obj = {
+        "data": [
+            [
+                ["Stockholm", 321],
+                ["Täby", 121],
+                ["Solna", None],
+            ],
+            [
+                ["Stockholm", 131],
+                ["Täby", 151],
+                ["Solna", 120],
+            ],
+        ],
+        "labels": ["Snabba", "Långsamma"],
+        "width": 800,
+        "height": 600,
+        "stacked": True,
+        "highlight": "Långsamma",
+        "bar_orientation": "vertical",
+        "title": "Några kommuner i Stockholm"
+    }
+    # 1. Make a vertical stacked chart
+    c = CategoricalChart.init_from(chart_obj, storage=local_storage)
+    c.render("categorical_chart_stacked", "png")
 
-def test_categorical_chart_with_two_series():
+    # 2.Make a horizontal stacked chart
+    chart_obj["bar_orientation"] = "horizontal"
+    c = CategoricalChart.init_from(chart_obj, storage=local_storage)
+    c.render("categorical_chart_stacked_horizontal", "png")
+
+def test_categorical_chart_with_reference_series():
     chart_obj = {
         "data": [
             [
