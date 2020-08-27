@@ -158,7 +158,7 @@ def test_table():
 def test_choropleth_map():
     chart_obj = {
         "width": 400,
-        "height": 0,
+        "height": 500,
         "title": "Här är en karta",
         "data": [
             {
