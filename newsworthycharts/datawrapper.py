@@ -86,7 +86,11 @@ class DatawrapperChart(Chart):
         dw_data = self._prepare_dw_metadata(self.dw_data)
         #print(dw_data)
         r = requests.post(url, headers=auth_header, json=dw_data)
-        r.raise_for_status()
+        try:
+            r.raise_for_status()
+        except:
+            msg = r.json()["message"]
+            raise Exception(msg)
 
         self._dw_id = r.json()["id"]
         chart_id = self._dw_id
