@@ -89,6 +89,9 @@ class Chart(object):
         # Calculate size in inches
         self._set_size(width, height)
 
+        # Chart elements. Made available for fitting.
+        self._caption_elem = None
+
     def _set_size(self, w, h=None):
         """ Set figure size, in pixels """
         dpi = self._fig.get_dpi()
@@ -229,10 +232,7 @@ class Chart(object):
         text.set_text(wrapped_text)
         self._set_size(self._w)
 
-        # Increase the bottom padding by the height of the text bbox
-        margin = self._style["figure.subplot.bottom"]
-        margin += self._text_rel_height(text)
-        self._fig.subplots_adjust(bottom=margin)
+        self._caption_elem = text
 
     def _add_title(self, title_text):
         """Add a title."""
@@ -247,6 +247,7 @@ class Chart(object):
         # Ignoring self.style["figure.subplot.top"]
         margin = 1 - self._text_rel_height(text)
         self._fig.subplots_adjust(top=margin)
+
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
@@ -294,6 +295,7 @@ class Chart(object):
             self._add_xlabel(self.xlabel)
         if self.title is not None:
             self._add_title(self.title)
+
         logo = self._style.get("logo", self.logo)
         caption_hextent = None  # set this if adding a logo
         if logo:
@@ -312,10 +314,27 @@ class Chart(object):
                 logo_im = self._fig.figimage(im, self._w - im.size[0], 0)
                 ext = logo_im.get_extent()
                 caption_hextent = (0, ext[0])
+            logo_height = new_height
 
         if self.caption is not None:
             # Add caption without image
             self._add_caption(self.caption, hextent=caption_hextent)
+
+        # Fit footer height by the taller of caption and logo
+        footer_elem_heights = [0]
+        if logo:
+            footer_elem_heights.append(logo_height / self._h)
+
+        if self._caption_elem:
+            # Increase the bottom padding by the height of the text bbox
+            caption_height = self._text_rel_height(self._caption_elem)
+            footer_elem_heights.append(caption_height)
+
+        footer_padding_top = 0.01 # between axis and footer
+        footer_height = (self._style["figure.subplot.bottom"] +
+                         footer_padding_top +
+                         max(footer_elem_heights))
+        self._fig.subplots_adjust(bottom=footer_height)
 
     @classmethod
     def init_from(cls, args: dict, storage=LocalStorage(),

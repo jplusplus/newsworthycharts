@@ -2,12 +2,15 @@
 """
 import pytest
 from newsworthycharts import Chart, SerialChart, CategoricalChart, CHART_ENGINES
-from newsworthycharts.storage import DictStorage
+from newsworthycharts.storage import DictStorage, LocalStorage
 from imghdr import what
 from PIL import Image
 from hashlib import md5
 import numpy as np
 
+# store test charts to this folder for visual verfication
+OUTPUT_DIR = "test/rendered_charts"
+local_storage = LocalStorage(OUTPUT_DIR)
 
 def test_generating_png():
     container = {}
@@ -109,6 +112,20 @@ def test_setting_title():
     })
     c.render("test", "png")
     assert(c.title == "Hej världen")
+
+def test_chart_with_logo():
+    c = CategoricalChart.init_from({
+        "width": 600,
+        "height": 300,
+        "title": "Hej kolla loggan!",
+        "caption": "Statistikmyndigheten",
+        "logo": "test/images/logo.png"
+    }, storage=local_storage)
+    c.data.append([("a", 5),
+                   ("b", 5.5),
+                   ("c", 6)])
+    # Make sure the logo renders without overlap
+    c.render("chart_with_logo", "png")
 
 
 def test_meta_data():
