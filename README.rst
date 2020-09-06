@@ -99,9 +99,13 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.12.1
+
+  - Fit footer by logo height. Fixes bug that caused axis overlag when logo was large.
+
 - 1.12.0
 
-  - Introduces stacked categoricl bar charts 
+  - Introduces stacked categorical bar charts
 
 - 1.11.2
 
