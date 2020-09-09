@@ -46,6 +46,7 @@ class Chart(object):
         # We will try to guess interval based on the data,
         # but explicitly providing a value is safer. Used for finetuning.
         self.show_ticks = True  # toggle category names, dates, etc
+        self.subtitle = None
         self.xlabel = None
         self.ylabel = None
         self.caption = None
@@ -90,6 +91,8 @@ class Chart(object):
         self._set_size(width, height)
 
         # Chart elements. Made available for fitting.
+        self._title_elem = None
+        self._subtitle_elem = None
         self._caption_elem = None
 
     def _set_size(self, w, h=None):
@@ -237,16 +240,24 @@ class Chart(object):
     def _add_title(self, title_text):
         """Add a title."""
         # Get the position for the yaxis, and align title with it
-        title_text += "\n"  # Ugly but efficient way to add 1em padding
+        #title_text += "\n"  # Ugly but efficient way to add 1em padding
         text = self._fig.suptitle(title_text, wrap=True, x=0,
                                   horizontalalignment="left",
                                   multialignment="left",
                                   fontproperties=self._title_font)
 
-        # Increase the top padding by the height of the text bbox
-        # Ignoring self.style["figure.subplot.top"]
-        margin = 1 - self._text_rel_height(text)
-        self._fig.subplots_adjust(top=margin)
+        self._title_elem = text
+
+
+    def _add_subtitle(self, subtitle_text):
+        y_pos = 0.9 - self._title_rel_height
+        text = self._fig.text(0, y_pos, subtitle_text, wrap=True,
+                              fontsize="medium")
+        self._fig.canvas.draw()
+        wrapped_text = text._get_wrapped_text()
+        text.set_text(wrapped_text)
+        self._set_size(self._w)
+        self._subtitle_elem = text
 
 
     def _add_xlabel(self, label):
@@ -295,6 +306,9 @@ class Chart(object):
             self._add_xlabel(self.xlabel)
         if self.title is not None:
             self._add_title(self.title)
+        if self.subtitle is not None:
+            self._add_subtitle(self.subtitle)
+
 
         logo = self._style.get("logo", self.logo)
         caption_hextent = None  # set this if adding a logo
@@ -319,6 +333,16 @@ class Chart(object):
         if self.caption is not None:
             # Add caption without image
             self._add_caption(self.caption, hextent=caption_hextent)
+
+        # Fit header
+        header_height = 0
+        if self._title_elem:
+            header_height += self._title_rel_height
+        if self._subtitle_elem:
+            header_height += self._subtitle_rel_height
+
+        self._fig.subplots_adjust(top=1 - header_height)
+
 
         # Fit footer height by the taller of caption and logo
         footer_elem_heights = [0]
@@ -417,6 +441,7 @@ class Chart(object):
     def title(self, title: str):
         self._title = title
 
+
     @property
     def units(self):
         return self._units
@@ -436,6 +461,24 @@ class Chart(object):
                 self.decimals = 0
         else:
             raise ValueError("Supported units are: {}".format(allowed_units))
+
+    @property
+    def _title_rel_height(self):
+        rel_height = 0
+        if self._title_elem:
+            rel_height += self._text_rel_height(self._title_elem)
+            # Adds a fixes margin below
+            rel_height += 30 / self._h
+        return rel_height
+
+    @property
+    def _subtitle_rel_height(self):
+        rel_height = 0
+        if self._subtitle_elem:
+            rel_height += self._text_rel_height(self._subtitle_elem)
+            # Adds a fixes margin below
+            rel_height += 10 / self._h
+        return rel_height
 
     def __str__(self):
         # Return main title or id
