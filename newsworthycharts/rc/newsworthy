@@ -22,21 +22,25 @@ xtick.minor.bottom: False
 figure.facecolor  : FFFFFF
 axes.facecolor    : FFFFFF
 grid.color        : DEDEDE
+axes.edgecolor    : 333333
+xtick.color       : 333333
+ytick.color       : 333333
 
 # Type
 font.family       : sans-serif
 font.sans-serif   : Open Sans, Helvetica, Arial
 font.size         : 10
 font.monospace    : Ubuntu Mono
-figure.titlesize  : xx-large
+figure.titlesize  : 18
 figure.titleweight : 700
 axes.labelweight  : 300
 xtick.labelsize   : smaller
 ytick.labelsize   : smaller
 legend.fontsize   : smaller
+text.color        : 222222
 
 # Lines, markers
-lines.color       : 999999
+lines.color       : CDCDCD
 lines.linewidth   : 2
 lines.markersize : 8
 
@@ -44,7 +48,11 @@ lines.markersize : 8
 # Prefix each line with #!
 
 #! title_font         : Open Sans Condensed, Ubuntu Condensed
-#! neutral_color      : 999999
+#! subtitle.fontsize  : 13
+#! note.fontsize      : 8
+#! caption.fontsize   : 8
+
+#! neutral_color      : CDCDCD
 #! strong_color       : 5aa69d
 
 # Fill between lines
