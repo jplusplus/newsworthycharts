@@ -101,6 +101,12 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.13.0
+
+  - Introduces subtitle and note.
+  - Updates default styles to align with Newsworthy style guide.
+
+
 - 1.12.1
 
   - Fit footer by logo height. Fixes bug that caused axis overlag when logo was large.

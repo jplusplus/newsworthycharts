@@ -2,7 +2,7 @@ from datetime import date
 
 name = "newsworthycharts"
 
-short_version = "1.12.1"
+short_version = "1.13.0"
 long_version = short_version
 
 short_desc = """\
