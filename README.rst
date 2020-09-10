@@ -44,8 +44,10 @@ a specific location or cloud service:
   s3 = S3Storage("my_bucket")
   c = Chart(600, 800, storage=s3)
   c.title = "Number of smiles per second"
+  c.subtitle = "This chart tells you something very important."
   c.xlabel = "Time"
   c.ylabel = "Smiles"
+  c.note = "There are some missing smiles in data"
   c.caption = "Source: Ministry of smiles."
   c.render("test", "png")
 
