@@ -253,8 +253,9 @@ class Chart(object):
 
 
     def _add_subtitle(self, subtitle_text):
-        y_pos = 0.9 - self._title_rel_height
+        y_pos = 1 - self._title_rel_height
         text = self._fig.text(0, y_pos, subtitle_text, wrap=True,
+                              verticalalignment="top",
                               fontsize=self._style["subtitle.fontsize"])
         self._fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()

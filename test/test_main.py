@@ -114,17 +114,23 @@ def test_setting_title():
     assert(c.title == "Hej världen")
 
 def test_setting_subtitle():
-    c = CategoricalChart.init_from({
+    chart_obj = {
         "width": 800,
         "height": 600,
         "title": "Hej kolla underrubriken!",
-        "subtitle": "Som är lite längre och som kan gå över flera rader.",
-    }, storage=local_storage)
-    c.data.append([("a", 5),
-                   ("b", 5.5),
-                   ("c", 6)])
-    # Make sure the logo renders without overlap
+        "subtitle": "...som ger grafen en helt ny kontext",
+        "data": [
+            [("a", 5),
+           ("b", 5.5),
+           ("c", 6)]
+        ]
+    }
+    c = CategoricalChart.init_from(chart_obj, storage=local_storage)
     c.render("chart_with_subtitle", "png")
+
+    chart_obj["subtitle"] = "Som är lite längre och som kan gå över flera rader. Kolla bara hur den fortsätter, fortsätter och fortsätter."
+    c = CategoricalChart.init_from(chart_obj, storage=local_storage)
+    c.render("chart_with_long_subtitle", "png")
 
 
 def test_setting_note():
