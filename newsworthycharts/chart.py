@@ -47,6 +47,7 @@ class Chart(object):
         # but explicitly providing a value is safer. Used for finetuning.
         self.show_ticks = True  # toggle category names, dates, etc
         self.subtitle = None
+        self.note = None
         self.xlabel = None
         self.ylabel = None
         self.caption = None
@@ -93,7 +94,9 @@ class Chart(object):
         # Chart elements. Made available for fitting.
         self._title_elem = None
         self._subtitle_elem = None
+        self._note_elem = None
         self._caption_elem = None
+        self._logo_elem = None
 
     def _set_size(self, w, h=None):
         """ Set figure size, in pixels """
@@ -229,7 +232,7 @@ class Chart(object):
         x1 = hextent[0] / self._w
         text = self._fig.text(x1 + 0.01, 0.01, caption,
                               color=self._style["neutral_color"], wrap=True,
-                              fontsize="small")
+                              fontsize=self._style["caption.fontsize"])
         self._fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
         text.set_text(wrapped_text)
@@ -252,12 +255,22 @@ class Chart(object):
     def _add_subtitle(self, subtitle_text):
         y_pos = 0.9 - self._title_rel_height
         text = self._fig.text(0, y_pos, subtitle_text, wrap=True,
-                              fontsize="medium")
+                              fontsize=self._style["subtitle.fontsize"])
         self._fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
         text.set_text(wrapped_text)
         self._set_size(self._w)
         self._subtitle_elem = text
+
+    def _add_note(self, note_text):
+        y_pos = self._footer_rel_height
+        text = self._fig.text(0, y_pos, note_text, wrap=True,
+                              fontsize=self._style["note.fontsize"])
+        self._fig.canvas.draw()
+        wrapped_text = text._get_wrapped_text()
+        text.set_text(wrapped_text)
+        self._set_size(self._w)
+        self._note_elem = text
 
 
     def _add_xlabel(self, label):
@@ -328,11 +341,14 @@ class Chart(object):
                 logo_im = self._fig.figimage(im, self._w - im.size[0], 0)
                 ext = logo_im.get_extent()
                 caption_hextent = (0, ext[0])
-            logo_height = new_height
+            self._logo_elem = logo_im
 
         if self.caption is not None:
             # Add caption without image
             self._add_caption(self.caption, hextent=caption_hextent)
+
+        if self.note is not None:
+            self._add_note(self.note)
 
         # Fit header
         header_height = 0
@@ -343,22 +359,15 @@ class Chart(object):
 
         self._fig.subplots_adjust(top=1 - header_height)
 
-
+        # Below chart canvas we fit:
+        # a) notes on one line
+        # b) caption + logo on one line
+        # All of these elements are optional
         # Fit footer height by the taller of caption and logo
-        footer_elem_heights = [0]
-        if logo:
-            footer_elem_heights.append(logo_height / self._h)
-
-        if self._caption_elem:
-            # Increase the bottom padding by the height of the text bbox
-            caption_height = self._text_rel_height(self._caption_elem)
-            footer_elem_heights.append(caption_height)
-
-        footer_padding_top = 0.01 # between axis and footer
-        footer_height = (self._style["figure.subplot.bottom"] +
-                         footer_padding_top +
-                         max(footer_elem_heights))
-        self._fig.subplots_adjust(bottom=footer_height)
+        sub_canvas_height = (self._style["figure.subplot.bottom"] +
+                             self._note_rel_height +
+                             self._footer_rel_height)
+        self._fig.subplots_adjust(bottom=sub_canvas_height)
 
     @classmethod
     def init_from(cls, args: dict, storage=LocalStorage(),
@@ -479,6 +488,35 @@ class Chart(object):
             # Adds a fixes margin below
             rel_height += 10 / self._h
         return rel_height
+
+    @property
+    def _note_rel_height(self):
+        rel_height = 0
+        if self._note_elem:
+            rel_height += self._text_rel_height(self._note_elem)
+            # Adds a fixes margin below
+            rel_height += 10 / self._h
+        return rel_height
+
+    @property
+    def _footer_rel_height(self):
+        footer_elem_heights = [0]
+        if self._logo_elem:
+            # Assuming the logo is place at fixed bottom
+            logo_height = self._logo_elem.get_extent()[3]
+            footer_elem_heights.append(logo_height / self._h)
+
+        if self._caption_elem:
+            # Increase the bottom padding by the height of the text bbox
+            caption_height = self._text_rel_height(self._caption_elem)
+            footer_elem_heights.append(caption_height)
+
+        footer_height = max(footer_elem_heights)
+        if footer_height != 0:
+            footer_height += 15 / self._h
+
+        return footer_height
+
 
     def __str__(self):
         # Return main title or id

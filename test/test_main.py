@@ -115,8 +115,8 @@ def test_setting_title():
 
 def test_setting_subtitle():
     c = CategoricalChart.init_from({
-        "width": 400,
-        "height": 300,
+        "width": 800,
+        "height": 600,
         "title": "Hej kolla underrubriken!",
         "subtitle": "Som är lite längre och som kan gå över flera rader.",
     }, storage=local_storage)
@@ -127,10 +127,25 @@ def test_setting_subtitle():
     c.render("chart_with_subtitle", "png")
 
 
+def test_setting_note():
+    c = CategoricalChart.init_from({
+        "width": 800,
+        "height": 600,
+        "title": "Hej kolla den här fotnoten!",
+        "note": "Observera att statistiken ska tolkas med försiktighet",
+        "caption": "Statistikmyndigheten",
+    }, storage=local_storage)
+    c.data.append([("a", 5),
+                   ("b", 5.5),
+                   ("c", 6)])
+    # Make sure the logo renders without overlap
+    c.render("chart_with_notes", "png")
+
+
 def test_chart_with_logo():
     c = CategoricalChart.init_from({
-        "width": 600,
-        "height": 300,
+        "width": 800,
+        "height": 400,
         "title": "Hej kolla loggan!",
         "caption": "Statistikmyndigheten",
         "logo": "test/images/logo.png"

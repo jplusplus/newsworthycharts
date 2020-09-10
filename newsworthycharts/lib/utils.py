@@ -45,9 +45,22 @@ def loadstyle(style_name):
         rc_params_newsworthy = "\n".join([d[2:]
                                           for d in doc if d.startswith("#!")])
     rc_params_newsworthy = yaml.safe_load(rc_params_newsworthy)
+    ###
+    # Typography
+    ###
     style["title_font"] = [x.strip()
                            for x in rc_params_newsworthy["title_font"]
                            .split(",")]
+
+    # define as pt or reltive ("smaller")
+    style["subtitle.fontsize"] = rc_params_newsworthy.get("subtitle.fontsize",
+                                                          None)
+    style["note.fontsize"] = rc_params_newsworthy.get("note.fontsize",
+                                                       "smaller")
+    style["caption.fontsize"] = rc_params_newsworthy.get("caption.fontsize",
+                                                         "smaller")
+
+
     color = rc_params_newsworthy.get("neutral_color",
                                      rcParams["figure.edgecolor"])
     strong_color = rc_params_newsworthy.get("strong_color", color)
