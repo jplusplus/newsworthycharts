@@ -287,7 +287,7 @@ def test_checksum_png():
     # im = Image.open(container["png"])
     # im.show()
 
-    assert(m.hexdigest() == "ec37069e11f142e330c6025f753b795e")
+    assert(m.hexdigest() == "752173fac1059e995617db53fce40679")
 
 
 def test_default_number_of_decimals():
