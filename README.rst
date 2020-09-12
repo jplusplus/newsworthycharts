@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.13.1
+
+  Bug fix: Subtitle placement
+
 - 1.13.0
 
   - Introduces subtitle and note.
