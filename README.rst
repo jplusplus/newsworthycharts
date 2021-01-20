@@ -101,9 +101,13 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.13.2
+
+  - Set annotation fontsize to same as ticks by default. 
+
 - 1.13.1
 
-  Bug fix: Subtitle placement
+  - Bug fix: Subtitle placement
 
 - 1.13.0
 
