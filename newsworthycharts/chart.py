@@ -186,11 +186,13 @@ class Chart(object):
         :param kwags: any params accepted by plt.annotate
         """
         opts = {
-            #  'fontsize': "small",
+            "fontsize": self._style["annotation.fontsize"],
             "textcoords": "offset pixels",
         }
 
-        offset = round(self._style["font.size"] * 0.8)
+        # TODO: Offset should maybe rather be a function of the font size,
+        # but then we'd need to handle reltive fontsizes (ie "smaller") as well. 
+        offset = 10 
         if direction == "up":
             opts["verticalalignment"] = "bottom"
             opts["horizontalalignment"] = "center"

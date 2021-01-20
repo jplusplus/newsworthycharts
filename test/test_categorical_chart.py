@@ -39,6 +39,25 @@ def test_bar_orientation():
         c = CategoricalChart.init_from(chart_obj, storage=local_storage)
         c.render("bad_chart", "png")
 
+
+def test_bar_highlight():
+    chart_obj = {
+        "data": [
+            [
+                ["Stockholm", 321],
+                ["Täby", 121],
+                ["Solna", None],
+            ]
+        ],
+        "width": 800,
+        "height": 600,
+        "highlight": "Stockholm",
+        "bar_orientation": "vertical",
+        "title": "Några kommuner i Stockholm"
+    }
+    c = CategoricalChart.init_from(chart_obj, storage=local_storage)
+    c.render("categorical_chart_with_highlight", "png")
+
 def test_stacked_categorical_chart():
     chart_obj = {
         "data": [

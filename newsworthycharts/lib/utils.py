@@ -55,6 +55,11 @@ def loadstyle(style_name):
     # define as pt or reltive ("smaller")
     style["subtitle.fontsize"] = rc_params_newsworthy.get("subtitle.fontsize",
                                                           None)
+
+    # make annotation same font size as ticks by default
+    tick_font_size = style.get('xtick.labelsize', "smaller")
+    style["annotation.fontsize"] = rc_params_newsworthy.get("annotation.fontsize",
+                                                            tick_font_size)
     style["note.fontsize"] = rc_params_newsworthy.get("note.fontsize",
                                                        "smaller")
     style["caption.fontsize"] = rc_params_newsworthy.get("caption.fontsize",
