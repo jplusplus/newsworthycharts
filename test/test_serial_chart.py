@@ -168,6 +168,25 @@ def test_bar_chart_with_ymax():
     max_value = max([x[1] for x in chart_obj["data"][0]])
     assert c.ax.get_ylim()[1] > max_value
 
+def test_chart_with_long_y_ticks():
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "data": [
+            [
+                ["2016-01-01", 4e6],
+                ["2017-01-01", 6e6],
+                ["2018-01-01", 3e6],
+                ["2019-01-01", 2e6]
+            ]
+        ],
+        "title": "Look how large numbers!",
+        "type": "bars",
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    # visually make sure tick labels are visible
+    c.render("serial_bar_chart_with_long_y_ticks", "png")
+
 
 def test_weekly_chart():
     container = {}

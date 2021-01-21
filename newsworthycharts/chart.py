@@ -299,6 +299,8 @@ class Chart(object):
         self._fig.tight_layout()
         if len(self.data):
             self._add_data()
+        # fit ticks etc.
+        self._fig.tight_layout()
         if not self.show_ticks:
             self.category_axis.set_visible(False)
         else:
