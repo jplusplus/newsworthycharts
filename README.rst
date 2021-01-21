@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.13.3
+
+  - Fit long ticks on y axis.
+
 - 1.13.2
 
   - Set annotation fontsize to same as ticks by default. 
