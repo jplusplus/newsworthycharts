@@ -1,4 +1,4 @@
-from newsworthycharts.custom.climate_cars import LinesTo2030Target
+from newsworthycharts.custom.climate_cars import ClimateCarsYearlyEmissionsTo2030
 from newsworthycharts.storage import LocalStorage
 
 
@@ -64,19 +64,21 @@ def test_lines_to_2030_target():
         ],
         "labels": [
             "Historiska",
-            "Antar 65 %\nladdbara år 2030",
+            "Antar att 65 %\n av nya bilar är\nladdbara år 2030",
             "Antar 90 %\nladdbara år 2030",
         ],
         "width": 1024,
-        "height": 700,
+        "height": 760,
         "type": "line",
         "ymin": 0,
         "title": "Laddbara fordon tar oss inte till klimatmålet",
-        "subtitle": "Årliga koldioxidutsläpp från personssektorn till och med år 2030 i två olika scenarier för elbilsförsäljning år 2030.",
+        "subtitle": "Årliga koldioxidutsläpp från personssektorn i två olika scenarier för elbilsförsäljning år 2030.",
+        "note": "Scenarierna antar ökat trafikarbete med en procent per år. Biobränslen beaktas däremot inte.",
+        "caption": "Källa: Natuvårdsverket / Newsworthy",
         "target": 3.56,
         "target_label": "Klimatmålet 2030"
     }
-    c = LinesTo2030Target.init_from(chart_obj, storage=local_storage)
+    c = ClimateCarsYearlyEmissionsTo2030.init_from(chart_obj, storage=local_storage)
 
     c.render("custom_climate_cars_lines_to_2030", "png")
 
