@@ -4,7 +4,7 @@ from datetime import datetime
 import yaml
 from matplotlib import rc_file, rcParams
 from matplotlib.colors import to_rgba
-from .colors import POSITIVE, NEGATIVE, FILL_BETWEEN, WARM, COLD, QUALITATIVE
+from .colors import BLACK, DARK_GRAY, LIGHT_GRAY, POSITIVE, NEGATIVE, FILL_BETWEEN, WARM, COLD, QUALITATIVE
 
 
 HERE = os.path.dirname(__file__)
@@ -68,6 +68,9 @@ def loadstyle(style_name):
 
     color = rc_params_newsworthy.get("neutral_color",
                                      rcParams["figure.edgecolor"])
+    black_color = rc_params_newsworthy.get("black_color", BLACK)
+    dark_gray_color = rc_params_newsworthy.get("dark_gray_color", DARK_GRAY)
+    light_gray_color = rc_params_newsworthy.get("light_gray_color", LIGHT_GRAY)
     strong_color = rc_params_newsworthy.get("strong_color", color)
     positive_color = rc_params_newsworthy.get("positive_color", POSITIVE)
     negative_color = rc_params_newsworthy.get("negative_color", NEGATIVE)
@@ -75,6 +78,9 @@ def loadstyle(style_name):
     cold_color = rc_params_newsworthy.get("cold_color", COLD)
     fill_between_color = rc_params_newsworthy.get("fill_between_color", FILL_BETWEEN)
     fill_between_alpha = rc_params_newsworthy.get("fill_between_alpha", 0.5)
+    style["black_color"] = to_rgba("#" + str(black_color), 1)
+    style["dark_gray_color"] = to_rgba("#" + str(dark_gray_color), 1)
+    style["light_gray_color"] = to_rgba("#" + str(light_gray_color), 1)
     style["neutral_color"] = to_rgba("#" + str(color), 1)
     style["strong_color"] = to_rgba("#" + str(strong_color), 1)
     style["positive_color"] = to_rgba("#" + positive_color, 1)
