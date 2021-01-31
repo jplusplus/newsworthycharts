@@ -8,6 +8,8 @@ figure.dpi        : 150
 # Margins
 savefig.pad_inches  : 0.2
 legend.borderaxespad : 0.7      # the margin between legend box and axes
+legend.edgecolor     : 1
+legend.fontsize:     : small
 
 # Axes and ticks
 axes.grid         : False
@@ -34,10 +36,10 @@ font.monospace    : Ubuntu Mono
 figure.titlesize  : 18
 figure.titleweight : 700
 axes.labelweight  : 300
-xtick.labelsize   : smaller
-ytick.labelsize   : smaller
-legend.fontsize   : smaller
-text.color        : 222222
+xtick.labelsize   : 10
+ytick.labelsize   : 10
+legend.fontsize   : 10
+text.color        : 0F1108
 
 # Lines, markers
 lines.color       : CDCDCD
@@ -52,8 +54,12 @@ lines.markersize : 8
 #! note.fontsize      : 8
 #! caption.fontsize   : 8
 
-#! neutral_color      : CDCDCD
+#! neutral_color      : C8C7D1
 #! strong_color       : 5aa69d
+
+#! dark_gray_color    : 42404F
+#! ligth_gray_color   : C8C7D1
+
 
 # Fill between lines
 #! fill_between_color : F7F4F4

@@ -7,6 +7,9 @@ FILL_BETWEEN = "F7F4F4"
 WARM = "ff808f"
 COLD = "4062bb"
 
+BLACK = "0F1108"
+DARK_GRAY = "42404F"
+LIGHT_GRAY = "C8C7D1"
 
 # For categorical coloring
 # picked from color brewer, but without too much thought...
