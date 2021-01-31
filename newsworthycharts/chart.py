@@ -1,6 +1,7 @@
 """ Create charts and store them as images.
 For use with Newsworthy's robot writer and other similar projects.
 """
+from pdb import Pdb
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
 from .lib.utils import loadstyle
@@ -482,7 +483,7 @@ class Chart(object):
         if self._title_elem:
             rel_height += self._text_rel_height(self._title_elem)
             # Adds a fixes margin below
-            rel_height += 30 / self._h
+            rel_height += 45 / self._h
         return rel_height
 
     @property
@@ -491,7 +492,7 @@ class Chart(object):
         if self._subtitle_elem:
             rel_height += self._text_rel_height(self._subtitle_elem)
             # Adds a fixes margin below
-            rel_height += 10 / self._h
+            rel_height += 30 / self._h
         return rel_height
 
     @property
