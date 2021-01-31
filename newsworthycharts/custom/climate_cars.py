@@ -4,7 +4,7 @@
 from newsworthycharts import SerialChart
 import numpy as np
 
-class LinesTo2030Target(SerialChart):
+class ClimateCarsYearlyEmissionsTo2030(SerialChart):
     # 2030 emission level target
     def __init__(self, *args, **kwargs):
         self.target = None
@@ -12,7 +12,7 @@ class LinesTo2030Target(SerialChart):
         super().__init__(*args, **kwargs)
 
     def _add_data(self):
-        super(LinesTo2030Target, self)._add_data()
+        super(ClimateCarsYearlyEmissionsTo2030, self)._add_data()
         color_observed = self._style["neutral_color"]
         color_scen = self._style["strong_color"]
         color_target = self._style["qualitative_colors"][1]
@@ -38,6 +38,9 @@ class LinesTo2030Target(SerialChart):
         # Annotations
         ###
         # Target
+        import matplotlib.patheffects as pe
+        white_outline = [pe.withStroke(linewidth=3, foreground="white")]
+
         self.ax.axhline(self.target, lw=1.5, 
                         ls="dashed",
                         color=color_target)
@@ -49,6 +52,7 @@ class LinesTo2030Target(SerialChart):
                          ha="right", va="center",
                          fontweight="normal",
                          color=self._style["dark_gray_color"],
+                         path_effects=white_outline,
                          arrowprops=dict(
                              color=self._style["dark_gray_color"],
                              arrowstyle="->",
@@ -59,7 +63,8 @@ class LinesTo2030Target(SerialChart):
         self.ax.annotate(self.labels[1], 
                          color=self._style["dark_gray_color"], 
                          va="center", ha="right",
-                         xytext=(-40, 120), textcoords='offset pixels',
+                         path_effects=white_outline,
+                         xytext=(-40, 100), textcoords='offset pixels',
                          xy=(line_scen1.get_xdata()[-1], 
                              line_scen1.get_ydata()[-1]),
                         arrowprops=dict(
@@ -71,6 +76,7 @@ class LinesTo2030Target(SerialChart):
         # Scenario 2
         self.ax.annotate(self.labels[2], 
                          color=self._style["dark_gray_color"], 
+                         path_effects=white_outline,
                          va="center", ha="right",
                          xytext=(-40, -40), textcoords='offset pixels',
                          xy=(line_scen2.get_xdata()[-1], 
