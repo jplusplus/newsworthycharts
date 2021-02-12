@@ -16,3 +16,4 @@ Pipfile.lock
 .pytest_cache/
 env
 *.csv#
+.env
