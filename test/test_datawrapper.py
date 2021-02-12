@@ -6,6 +6,8 @@ from newsworthycharts import DatawrapperChart
 from newsworthycharts.storage import LocalStorage
 import os
 from copy import deepcopy
+from dotenv import load_dotenv
+load_dotenv()
 
 # store test charts to this folder for visual verfication
 OUTPUT_DIR = "test/rendered_charts"
