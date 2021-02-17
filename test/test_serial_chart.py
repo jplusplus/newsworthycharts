@@ -212,3 +212,38 @@ def test_weekly_chart():
     }
     c = SerialChart.init_from(chart_obj, storage=local_storage)
     c.render("serial_chart_weekly", "png")
+
+def test_multi_color_lines():
+    colors =  ["red", "green", "blue"]
+
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "data": [
+            [
+                ["2017-01-01", -6],
+                ["2018-01-01", -3],
+                ["2019-01-01", -2]
+            ],
+            [
+                ["2017-01-01", -3],
+                ["2018-01-01", -1],
+                ["2019-01-01", 4]
+            ], 
+            [
+                ["2017-01-01", 2],
+                ["2018-01-01", 5],
+                ["2019-01-01", -3]
+            ]
+
+        ],
+        "labels": colors, 
+        "colors": colors,
+        "ymax": 0,
+        "type": "line",
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    c.render("serial_chart_multi_color", "png")
+    for i, color in enumerate(colors):
+        assert c.ax.get_lines()[i].get_color() == color
+    

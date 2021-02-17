@@ -28,6 +28,9 @@ class SerialChart(Chart):
         self._ymin = None
         self._ymax = None
 
+        # Optional: specify a list of colors (for mulitline charts)
+        self.colors = None
+
     @property
     def ymin(self):
         # WIP
@@ -186,7 +189,9 @@ class SerialChart(Chart):
         highlight_values = []
         for i, serie in enumerate(series):
             # Use strong color for first series
-            if i == 0:
+            if self.colors is not None:
+                color = self.colors[i]
+            elif i == 0:
                 color = self._style["strong_color"]
             else:
                 color = self._style["neutral_color"]
