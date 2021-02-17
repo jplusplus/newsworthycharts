@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.14.0
+
+  - Introduces range plots and enables custom coloring in serial charts.
+
 - 1.13.3
 
   - Fit long ticks on y axis.
