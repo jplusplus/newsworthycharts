@@ -3,7 +3,9 @@ import os
 from datetime import datetime
 import yaml
 from matplotlib import rc_file, rcParams
-from matplotlib.colors import to_rgba
+from matplotlib.colors import to_rgba, cnames, to_rgb
+import colorsys
+
 from .colors import BLACK, DARK_GRAY, LIGHT_GRAY, POSITIVE, NEGATIVE, FILL_BETWEEN, WARM, COLD, QUALITATIVE
 
 
@@ -109,3 +111,14 @@ def to_float(val):
 def to_date(val):
     """Convert date string to datetime date."""
     return datetime.strptime(val, "%Y-%m-%d")
+
+
+def adjust_lightness(color, amount=0.5):
+    """Lighten/darken color.
+    """
+    try:
+        c = cnames[color]
+    except:
+        c = color
+    c = colorsys.rgb_to_hls(*to_rgb(c))
+    return colorsys.hls_to_rgb(c[0], max(0, min(1, amount * c[1])), c[2])
