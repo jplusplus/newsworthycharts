@@ -1,6 +1,6 @@
 from .chart import Chart
 from .serialchart import SerialChart
-from .categoricalchart import CategoricalChart, CategoricalChartWithReference
+from .categoricalchart import CategoricalChart, CategoricalChartWithReference, ProgressChart
 from .scatterplot import ScatterPlot
 from .datawrapper import DatawrapperChart
 from .rangeplot import RangePlot
@@ -12,6 +12,7 @@ CHART_ENGINES = {
     "SerialChart": SerialChart,
     "CategoricalChart": CategoricalChart,
     "CategoricalChartWithReference": CategoricalChartWithReference,
+    "ProgressChart": ProgressChart,
     "RangePlot": RangePlot,
     "ScatterPlot": ScatterPlot,
     "DatawrapperChart": DatawrapperChart,

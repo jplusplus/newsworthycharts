@@ -1,5 +1,5 @@
 import pytest
-from newsworthycharts import CategoricalChart, CategoricalChartWithReference
+from newsworthycharts import CategoricalChart, CategoricalChartWithReference, ProgressChart
 from newsworthycharts.storage import LocalStorage
 
 # store test charts to this folder for visual verfication
@@ -117,3 +117,46 @@ def test_categorical_chart_with_reference_series():
     chart_obj["bar_orientation"] = "horizontal"
     c = CategoricalChartWithReference.init_from(chart_obj, storage=local_storage)
     c.render("categorical_chart_with_two_series_horizontal", "png")
+
+
+def test_progress_chart():
+
+    chart_obj = {
+        "data": [
+            [
+                ("Stockholms län"	, .9404),
+                ("Gotlands län"	, .8868),
+                ("Västra Götalands län"	, .8260),
+                ("Hallands län"	, .8193),
+                ("Västerbottens län"	, .7974),
+                ("Skåne län"	, .7746),
+                ("Östergötlands län"	, .7639),
+                ("Jönköpings län"	, .7617),
+                ("Värmlands län"	, .7612),
+                ("Västmanlands län"	, .7578),
+                ("Södermanlands län"	, .7536),
+                ("Gävleborgs län"	, .7468),
+                ("Kronobergs län"	, .7306),
+                ("Uppsala län"	, .7204),
+                ("Örebro län"	, .7176),
+                ("Blekinge län"	, .6918),
+                ("Norrbottens län"	, .6830),
+                ("Dalarnas län"	, .6719),
+                ("Hallands län"	, .6650),
+                ("Västernorrlands län"	, .6546),
+                ("Kalmar län"	, .6332),
+            ],
+        ],
+        "target": .95,
+        "target_label": "Mål: 95 %",
+        "labels": ["Täckning i dag", "Kvar till målet"],
+        "value_labels": "progress",
+        "width": 600,
+        "height": 900,
+        "units": "percent",
+        "bar_orientation": "horizontal",
+        "title": "Inga regioner klarar målet"
+    }
+    c = ProgressChart.init_from(chart_obj, storage=local_storage)
+
+    c.render("progress_chart", "png")
