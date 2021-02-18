@@ -48,9 +48,10 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
         xmid = line_observed.get_xdata()[int(len(line_observed.get_xdata())/2)]
         self.ax.annotate(self.target_label, 
                          xy=(xmid, self.target),
-                         xytext=(-50,-40), textcoords='offset pixels',
+                         xytext=(-40,-30), textcoords='offset pixels',
                          ha="right", va="center",
                          fontweight="normal",
+                         fontsize=self._style["annotation.fontsize"],
                          color=self._style["dark_gray_color"],
                          path_effects=white_outline,
                          arrowprops=dict(
@@ -64,7 +65,8 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
                          color=self._style["dark_gray_color"], 
                          va="center", ha="right",
                          path_effects=white_outline,
-                         xytext=(-40, 100), textcoords='offset pixels',
+                         fontsize=self._style["annotation.fontsize"],
+                         xytext=(-40, 120), textcoords='offset pixels',
                          xy=(line_scen1.get_xdata()[-1], 
                              line_scen1.get_ydata()[-1]),
                         arrowprops=dict(
@@ -81,6 +83,7 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
                          xytext=(-40, -40), textcoords='offset pixels',
                          xy=(line_scen2.get_xdata()[-1], 
                              line_scen2.get_ydata()[-1]),
+                        fontsize=self._style["annotation.fontsize"],
                         arrowprops=dict(
                              color=self._style["dark_gray_color"],
                              arrowstyle="->",
