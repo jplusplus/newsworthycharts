@@ -25,11 +25,11 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
         line_observed.set_color(color_observed)
         
         line_scen1 = self.ax.get_lines()[1]
-        #line_scen1.set_linestyle("dashed")
+        line_scen1.set_linestyle("dashed")
         line_scen1.set_color(color_scen)
 
         line_scen2 = self.ax.get_lines()[2]
-        #line_scen2.set_linestyle("dashed")
+        line_scen2.set_linestyle("dashed")
         line_scen2.set_color(color_scen)
         line_scen2.set_label(None)
 
@@ -42,7 +42,7 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
         white_outline = [pe.withStroke(linewidth=3, foreground="white")]
 
         self.ax.axhline(self.target, lw=1.5, 
-                        ls="dashed",
+                        #ls="dashed",
                         color=color_target)
         
         xmid = line_observed.get_xdata()[int(len(line_observed.get_xdata())/2)]
