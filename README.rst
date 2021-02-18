@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.15.0
+
+  - Introduces progress charts and removes hard coded font sizes.
+
 - 1.14.0
 
   - Introduces range plots and enables custom coloring in serial charts.
