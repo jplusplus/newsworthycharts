@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.15.2
+
+  - ClimateCar chart tweeks.
+
 - 1.15.1
 
   - Bug fix: Adds newsworthycharts.custom to build.
