@@ -9,7 +9,6 @@ figure.dpi        : 150
 savefig.pad_inches  : 0.2
 legend.borderaxespad : 0.7      # the margin between legend box and axes
 legend.edgecolor     : 1
-legend.fontsize:     : small
 
 # Axes and ticks
 axes.grid         : False
