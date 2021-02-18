@@ -36,9 +36,9 @@ font.monospace    : Ubuntu Mono
 figure.titlesize  : 18
 figure.titleweight : 700
 axes.labelweight  : 300
-xtick.labelsize   : 10
-ytick.labelsize   : 10
-legend.fontsize   : 10
+xtick.labelsize   : 9
+ytick.labelsize   : 9
+legend.fontsize   : 9
 text.color        : 0F1108
 
 # Lines, markers

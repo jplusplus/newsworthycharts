@@ -279,11 +279,11 @@ class Chart(object):
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
-        self.ax.set_xlabel(label, fontsize="small")
+        self.ax.set_xlabel(label)
 
     def _add_ylabel(self, label):
         """Adds a label to the y axis."""
-        self.ax.set_ylabel(label, fontsize="small")
+        self.ax.set_ylabel(label)
 
     def _add_data(self):
         """ Plot data to the chart.
