@@ -104,7 +104,7 @@ class SerialChart(Chart):
             dates = [to_date(x[0]) for x in serie]
             years = [x.year for x in dates]
             months = [x.month for x in dates]
-            yearmonths = [x[0][:7] for x in serie]
+            yearmonths = [x.strftime("%Y-%m") for x in dates]
             weeks = [str(x.year) + str(x.isocalendar()[1]) for x in dates]
             if len(years) > len(set(years)):
                 # there are years with more than one point

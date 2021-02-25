@@ -109,8 +109,17 @@ def to_float(val):
 
 
 def to_date(val):
-    """Convert date string to datetime date."""
-    return datetime.strptime(val, "%Y-%m-%d")
+    """Convert date string to datetime date.
+
+    Integers are interpreted as years.
+    """
+    if isinstance(val, int) and val < 3000:
+        return datetime(val, 1, 1)
+    try:
+        return datetime.strptime(val, "%Y-%m-%d")
+
+    except TypeError:
+        return datetime.strptime(val, "%Y")
 
 
 def adjust_lightness(color, amount=0.5):

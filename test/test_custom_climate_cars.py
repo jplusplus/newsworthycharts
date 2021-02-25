@@ -1,4 +1,4 @@
-from newsworthycharts.custom.climate_cars import ClimateCarsYearlyEmissionsTo2030
+from newsworthycharts.custom.climate_cars import ClimateCarsYearlyEmissionsTo2030, ClimateCarsCO2BugdetChart
 from newsworthycharts.storage import LocalStorage
 
 
@@ -82,4 +82,145 @@ def test_lines_to_2030_target():
 
     c.render("custom_climate_cars_lines_to_2030", "png")
 
-    
+
+def test_co2_budget_chart():
+    chart_obj = {
+        "line_annotations": [
+            [
+                "2024-09-12",
+                93.63013100013671,
+                "Med nuvarande utsläpp\növerskrider vi budget år 2024"
+            ],
+            [
+                "2027-07-07",
+                93.63013100013671,
+                "Trots att vi klarar\nklimatmålet\nspräcker vi budget"
+            ]
+        ],
+        "budget": 93.63013100013671,
+        "budget_label": "Budgettak",
+        "chart_engine": "ClimateCarsCO2budget",
+        "data": [
+            [
+                [
+                    2019,
+                    0.0
+                ],
+                [
+                    2020,
+                    16.428
+                ],
+                [
+                    2021,
+                    32.856
+                ],
+                [
+                    2022,
+                    49.284000000000006
+                ],
+                [
+                    2023,
+                    65.712
+                ],
+                [
+                    2024,
+                    82.14
+                ],
+                [
+                    2025,
+                    98.568
+                ],
+                [
+                    2026,
+                    114.996
+                ],
+                [
+                    2027,
+                    131.424
+                ],
+                [
+                    2028,
+                    147.852
+                ],
+                [
+                    2029,
+                    164.28
+                ],
+                [
+                    2030,
+                    180.708
+                ]
+            ],
+            [
+                [
+                    2019,
+                    0.0
+                ],
+                [
+                    2020,
+                    15.026916597154901
+                ],
+                [
+                    2021,
+                    28.772243016551627
+                ],
+                [
+                    2022,
+                    41.34528134775107
+                ],
+                [
+                    2023,
+                    52.84601170907111
+                ],
+                [
+                    2024,
+                    63.365887284060356
+                ],
+                [
+                    2025,
+                    72.98856155224945
+                ],
+                [
+                    2026,
+                    81.79055349707937
+                ],
+                [
+                    2027,
+                    89.84185608070419
+                ],
+                [
+                    2028,
+                    97.20649282422671
+                ],
+                [
+                    2029,
+                    103.94302691926296
+                ],
+                [
+                    2030,
+                    110.10502691926297
+                ]
+            ]
+        ],
+        "height": 760,
+        "labels": [
+            "Utsläppen\nfortsätter\nsom i dag",
+            "Reduktion\ni linje med\nklimatmålet",
+        ],
+        "measures": [],
+        "note": 'Klimatmålet innebär att transporternas utsläppens ska reduceras med 70 procent till år 2030 i förhållande till 2010. Scenario 1 är baserat på utsläppsdata för 2019, scenario 2 på en jämn utsläppsminskning till och med år 2030.',
+        "periodicity": "yearly",
+        "series": [],
+        "source": "scb",
+        "subtitle": "Ackumulerade koldioxidutsl\u00e4pp fr\u00e5n transportsektorn i två olika scenarier",
+        "title": "Klimatm\u00e5let inte tillr\u00e4ckligt f\u00f6r att h\u00e5lla koldioxidbudget",
+        "caption": "Källa: Klimatsekretariatet (CO2-bugdet), Naturvårdsverket (historiska utsläpp), Newsworthy (scenarier)",
+        "type": "line",
+        "units": "count",
+        "width": 1024
+    }
+    c = ClimateCarsCO2BugdetChart.init_from(chart_obj, storage=local_storage)
+
+    c.render("custom_climate_cars_co2_budget", "png")
+
+ 

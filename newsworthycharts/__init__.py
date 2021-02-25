@@ -4,7 +4,7 @@ from .categoricalchart import CategoricalChart, CategoricalChartWithReference, P
 from .scatterplot import ScatterPlot
 from .datawrapper import DatawrapperChart
 from .rangeplot import RangePlot
-from .custom.climate_cars import ClimateCarsYearlyEmissionsTo2030
+from .custom.climate_cars import *
 from .storage import *
 
 CHART_ENGINES = {
@@ -16,5 +16,8 @@ CHART_ENGINES = {
     "RangePlot": RangePlot,
     "ScatterPlot": ScatterPlot,
     "DatawrapperChart": DatawrapperChart,
+
+    # custom
     "ClimateCarsYearlyEmissionsTo2030": ClimateCarsYearlyEmissionsTo2030,
+    "ClimateCarsCO2BugdetChart": ClimateCarsCO2BugdetChart,
 }
