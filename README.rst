@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.16.0
+
+  - Adds CO2 budget chart
+
 - 1.15.2
 
   - ClimateCar chart tweeks.
