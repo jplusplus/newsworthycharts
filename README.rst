@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.16.1
+
+  - Small changes in range plot. 
+
 - 1.16.0
 
   - Adds CO2 budget chart
