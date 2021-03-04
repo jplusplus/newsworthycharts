@@ -14,6 +14,10 @@ class RangePlot(Chart):
     def __init__(self, *args, **kwargs):
         super(RangePlot, self).__init__(*args, **kwargs)
 
+        self.value_axis = self.ax.xaxis
+        self.category_axis = self.ax.yaxis
+
+
         # Custom colors for start and end points
         self.colors = None # ["red", "green"]
 
@@ -56,6 +60,7 @@ class RangePlot(Chart):
             props = dict(xytext=(0, offset), 
                         textcoords='offset pixels',
                         va="bottom",
+                        fontsize=self._style["annotation.fontsize"],
                         #color=self._style["dark_gray_color"],
                         arrowprops={
                             "arrowstyle": "-",
@@ -122,6 +127,7 @@ class RangePlot(Chart):
                                  xytext=(offset if is_larger else -offset, 0),
                                  textcoords='offset pixels',
                                  va="center", 
+                                 fontsize=self._style["annotation.fontsize"],
                                  color=val_label_color,
                                  ha="left" if is_larger else "right")
 
@@ -139,8 +145,10 @@ class RangePlot(Chart):
             tick_label.set_fontweight("bold")
 
         # Setup axes and grids
+        va_formatter = self._get_value_axis_formatter()
+        self.value_axis.set_major_formatter(va_formatter)
         self.ax.grid(True)
-        self.ax.margins(0.15, 0.3) # adds vertical padding
+        self.ax.margins(0.15) # adds vertical padding
         self.ax.tick_params(axis=u'both', which=u'both',length=0) # hide ticks
         self.ax.spines['bottom'].set_visible(False) # hide line
 
