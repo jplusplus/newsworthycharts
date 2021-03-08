@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.16.2
+
+  - Fixes highlight bug in progress chart. 
+
 - 1.16.1
 
   - Small changes in range plot. 
