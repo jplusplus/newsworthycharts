@@ -154,6 +154,7 @@ def test_progress_chart():
         "width": 600,
         "height": 900,
         "units": "percent",
+        "highlight": "Kalmar län",
         "bar_orientation": "horizontal",
         "title": "Inga regioner klarar målet"
     }

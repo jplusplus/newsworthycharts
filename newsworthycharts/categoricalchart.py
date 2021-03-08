@@ -87,11 +87,12 @@ class CategoricalChart(Chart):
                     else:
                         dir = "down"
 
-                if d[2] is not None:
-                    self._annotate_point(d[2], xy, direction=dir, rotation=self.annotation_rotation)
-                elif self.highlight is not None and self.highlight == d[0]:
-                    # Only add highlight value if not already annotated
-                    self._annotate_point(a_formatter(d[1]), xy, direction=dir, rotation=self.annotation_rotation)
+                if not isinstance(self, ProgressChart):
+                    if d[2] is not None:
+                        self._annotate_point(d[2], xy, direction=dir, rotation=self.annotation_rotation)
+                    elif self.highlight is not None and self.highlight == d[0]:
+                        # Only add highlight value if not already annotated
+                        self._annotate_point(a_formatter(d[1]), xy, direction=dir, rotation=self.annotation_rotation)
 
                 if self.highlight is not None and self.highlight == d[0]:
                     colors[j] = highlight_color
