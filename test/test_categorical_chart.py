@@ -161,3 +161,25 @@ def test_progress_chart():
     c = ProgressChart.init_from(chart_obj, storage=local_storage)
 
     c.render("progress_chart", "png")
+
+def test_progress_chart_with_multiple_targets():
+
+    chart_obj = {
+        "data": [
+            [
+                ("30 Mbit/s", .9404),
+                ("100 Mbit/s", .8868),
+                ("1 Gbit/s", .8260),
+            ],
+        ],
+        "target": [ 1, .99, .95],
+        "value_labels": "progress",
+        "width": 700,
+        "height": 400,
+        "units": "percent",
+        "bar_orientation": "horizontal",
+        "title": "Inga mål uppnås"
+    }
+    c = ProgressChart.init_from(chart_obj, storage=local_storage)
+
+    c.render("progress_chart_with_multiple_targets", "png")

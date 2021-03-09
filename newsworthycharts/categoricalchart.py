@@ -231,8 +231,20 @@ class ProgressChart(CategoricalChart):
         if len(self.data) > 1:
             raise ValueError("ProgressChart takes one data series only.")
         
+        has_multiple_targets = isinstance(self.target, list)
+
         s_progress = self.data[0]
-        s_remaining = [(x[0], max(0, self.target - x[1])) for x in s_progress]
+
+        if has_multiple_targets:
+            if len(self.target) != len(s_progress):
+                raise ValueError("'target' must have same length as data series"
+                                 f" Got {len(self.target)}, expected {len(s_progress)}.")
+            targets = self.target
+        else:
+            targets = [self.target] * len(s_progress)
+
+        s_remaining = [(x[0], max(0, targets[i] - x[1])) for i, x in enumerate(s_progress)]
+        
         categories = [x[0] for x in s_progress]
 
         self.data.append(s_remaining)
@@ -257,7 +269,8 @@ class ProgressChart(CategoricalChart):
         if self.target_label:
             offset = 25
 
-            target_label_x = self.target
+            target_label_x = targets[0]
+
             target_label_y = self.ax.patches[0].xy[1]
 
             self.ax.annotate(self.target_label,
@@ -278,8 +291,8 @@ class ProgressChart(CategoricalChart):
             fmt = self._get_value_axis_formatter()
             if self.value_labels == "progress":
                 val_labels = [fmt(x[1]) for x in s_progress]
-                val_label_orient = ["inside" if (x[1] / self.target) > .1 else "outside" 
-                                    for x in s_progress]
+                val_label_orient = ["inside" if (x[1] / target) > .1 else "outside" 
+                                    for x, target in zip(s_progress, targets)]
                 val_label_xpos = [x[1] for x in s_progress]
                 # TODO: Dynamic coloring based on background
                 val_label_color = ["white"] * n_bars
@@ -289,7 +302,7 @@ class ProgressChart(CategoricalChart):
                 val_labels = [fmt(-x[1]) for x in s_remaining]
                 # We might want to reconsider placement
                 val_label_orient = ["inside"] * n_bars
-                val_label_xpos = [self.target for x in s_remaining]
+                val_label_xpos = targets
                 val_label_color = [self._style["text.color"]] * n_bars
 
             else:
