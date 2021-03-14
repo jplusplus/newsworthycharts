@@ -91,7 +91,12 @@ class CategoricalChart(Chart):
                     self._annotate_point(d[2], xy, direction=dir, rotation=self.annotation_rotation)
                 elif self.highlight is not None and self.highlight == d[0]:
                     # Only add highlight value if not already annotated
-                    self._annotate_point(a_formatter(d[1]), xy, direction=dir, rotation=self.annotation_rotation)
+                    self._annotate_point(
+                        a_formatter(d[1]),
+                        xy,
+                        direction=dir,
+                        rotation=self.annotation_rotation
+                    )
 
                 if self.highlight is not None and self.highlight == d[0]:
                     colors[j] = highlight_color
@@ -100,33 +105,34 @@ class CategoricalChart(Chart):
                 bar_pos = np.arange(len(values))
             else:
                 bar_pos = [x + i * bar_width
-                             for x in np.arange(len(values))]
-
+                           for x in np.arange(len(values))]
 
             if self.bar_orientation == "horizontal":
                 kwargs = dict(align='center', height=bar_width,
                               color=colors, zorder=2)
                 if self.stacked and i > 0:
                     # To make stacked bars we need to set bottom value
-                    kwargs["left"] = cum_values[i-1]
+                    kwargs["left"] = cum_values[i - 1]
 
                 self.ax.barh(bar_pos, values, **kwargs)
 
             elif self.bar_orientation == "vertical":
-                kwargs = dict(width=bar_width, color=colors,
-                            zorder=2)
+                kwargs = dict(
+                    width=bar_width,
+                    color=colors,
+                    zorder=2
+                )
                 if self.stacked and i > 0:
                     # To make stacked bars we need to set bottom value
-                    kwargs["bottom"] = cum_values[i-1]
+                    kwargs["bottom"] = cum_values[i - 1]
                 self.ax.bar(bar_pos, values, **kwargs)
 
-        margin = 0.02 # above and below first/last bar on horizontal 
+        margin = 0.02  # above and below first/last bar on horizontal
         if self.bar_orientation == "horizontal":
             self.ax.set_yticks(bar_pos)
             self.ax.set_yticklabels(categories)
             self.ax.invert_yaxis()
-            self.ax.margins(0,margin)
-
+            self.ax.margins(0, margin)
 
             # Make sure labels are not cropped
             yaxis_bbox = self.ax.yaxis.get_tightbbox(self._fig.canvas.renderer)
@@ -135,11 +141,10 @@ class CategoricalChart(Chart):
             self._fig.subplots_adjust(left=margin)
 
         elif self.bar_orientation == "vertical":
-            self.ax.margins(margin,0)
+            self.ax.margins(margin, 0)
             self.ax.set_xticks(bar_pos)
             self.ax.set_xticklabels(categories)
             self.ax.xaxis.set_ticks_position('none')
-
 
         if len(self.data) > 1:
             self.ax.legend(self.labels, loc='best')
@@ -180,7 +185,7 @@ class CategoricalChartWithReference(CategoricalChart):
                 color = self._style["neutral_color"]
 
             bar_pos = [x + i * bar_width / 2
-                         for x in np.arange(len(values))]
+                       for x in np.arange(len(values))]
             tick_pos = [x - bar_width / 4 for x in bar_pos]
 
             zorder = len(self.data) - i
@@ -189,8 +194,7 @@ class CategoricalChartWithReference(CategoricalChart):
                              color=color, zorder=zorder)
                 self.ax.set_yticks(tick_pos)
                 self.ax.set_yticklabels(categories)
-                #self.ax.invert_yaxis()
-
+                # self.ax.invert_yaxis()
 
             elif self.bar_orientation == "vertical":
                 self.ax.bar(bar_pos, values, width=bar_width, color=color,
@@ -199,13 +203,11 @@ class CategoricalChartWithReference(CategoricalChart):
                 self.ax.set_xticklabels(categories)
                 self.ax.xaxis.set_ticks_position('none')
 
-
         # Make sure labels are not cropped
         yaxis_bbox = self.ax.yaxis.get_tightbbox(self._fig.canvas.renderer)
         margin = self._style["figure.subplot.left"]
         margin -= yaxis_bbox.min[0] / float(self._w)
         self._fig.subplots_adjust(left=margin)
-
 
         if self.labels:
             self.ax.legend(self.labels, loc='best')
@@ -216,9 +218,8 @@ class ProgressChart(CategoricalChart):
         self.target = None
         self.target_label = None
 
-        # should value labels be rendered? 
-        self.value_labels = None # "progress"|"remaining"
-
+        # should value labels be rendered?
+        self.value_labels = None  # "progress"|"remaining"
 
         super().__init__(*args, **kwargs)
         self.stacked = True
@@ -226,10 +227,10 @@ class ProgressChart(CategoricalChart):
     def _add_data(self):
         if self.target is None:
             raise ValueError("A target must be defined to make a ProgressChart")
-        
+
         if len(self.data) > 1:
             raise ValueError("ProgressChart takes one data series only.")
-        
+
         s_progress = self.data[0]
         s_remaining = [(x[0], max(0, self.target - x[1])) for x in s_progress]
         categories = [x[0] for x in s_progress]
@@ -243,14 +244,13 @@ class ProgressChart(CategoricalChart):
 
         # BAR STYLING
         for rect in self.ax.patches[n_bars:]:
-            #rect.set_alpha(.5)
-            #color = rect.get_facecolor()
+            # rect.set_alpha(.5)
+            # color = rect.get_facecolor()
             rect.set_facecolor(color_remaining)
             rect.set_alpha(.5)
 
-            #rect.set_linewidth(1)
-            #rect.set_edgecolor(color_progress)
-
+            # rect.set_linewidth(1)
+            # rect.set_edgecolor(color_progress)
 
         # LABELING: Target
         if self.target_label:
@@ -259,30 +259,31 @@ class ProgressChart(CategoricalChart):
             target_label_x = self.target
             target_label_y = self.ax.patches[0].xy[1]
 
-            self.ax.annotate(self.target_label,
-                        (target_label_x, target_label_y),
-                        xytext=(-offset, offset), 
-                        textcoords='offset pixels',
-                        ha="right", va="bottom",
-                        fontsize=self._style["annotation.fontsize"],
-                        arrowprops={
-                            "arrowstyle": "-",
-                            #"shrinkA": 0, "shrinkB": dot_size / 2 + 2,
-                            "connectionstyle": "angle,angleA=0,angleB=90,rad=0",
-                            "color": self._style["neutral_color"],
-                        })
-        
+            self.ax.annotate(
+                self.target_label,
+                (target_label_x, target_label_y),
+                xytext=(-offset, offset),
+                textcoords='offset pixels',
+                ha="right", va="bottom",
+                fontsize=self._style["annotation.fontsize"],
+                arrowprops={
+                    "arrowstyle": "-",
+                    # "shrinkA": 0, "shrinkB": dot_size / 2 + 2,
+                    "connectionstyle": "angle,angleA=0,angleB=90,rad=0",
+                    "color": self._style["neutral_color"],
+                }
+            )
+
         # LABELING: Value labels
         if self.value_labels:
             fmt = self._get_value_axis_formatter()
             if self.value_labels == "progress":
                 val_labels = [fmt(x[1]) for x in s_progress]
-                val_label_orient = ["inside" if (x[1] / self.target) > .1 else "outside" 
+                val_label_orient = ["inside" if (x[1] / self.target) > .1 else "outside"
                                     for x in s_progress]
                 val_label_xpos = [x[1] for x in s_progress]
                 # TODO: Dynamic coloring based on background
                 val_label_color = ["white"] * n_bars
-                
 
             elif self.value_labels == "remaining":
                 val_labels = [fmt(-x[1]) for x in s_remaining]
@@ -293,20 +294,22 @@ class ProgressChart(CategoricalChart):
 
             else:
                 raise ValueError(f"Invalid value_labels value: {self.values_labels}")
-            
+
             for i, label in enumerate(val_labels):
                 xpos = val_label_xpos[i]
-                ypos = self.ax.patches[i].xy[1]  + self.bar_width / 2
+                ypos = self.ax.patches[i].xy[1] + self.bar_width / 2
                 orient = val_label_orient[i]
                 color = val_label_color[i]
                 offset = 10
-                self.ax.annotate(label, (xpos, ypos),
-                                 xytext=(-offset if orient == "inside" else offset, 0),
-                                 textcoords='offset pixels',
-                                 va="center", 
-                                 ha="right" if orient == "inside" else "left",
-                                 fontsize=self._style["annotation.fontsize"],
-                                 color=color,
-                                 )
-        
-        self.ax.get_legend().remove()
+                self.ax.annotate(
+                    label,
+                    (xpos, ypos),
+                    xytext=(-offset if orient == "inside" else offset, 0),
+                    textcoords='offset pixels',
+                    va="center",
+                    ha="right" if orient == "inside" else "left",
+                    fontsize=self._style["annotation.fontsize"],
+                    color=color,
+                )
+
+        self.ax.get_legend().remove(
