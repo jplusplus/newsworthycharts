@@ -1,7 +1,6 @@
 """ Create charts and store them as images.
 For use with Newsworthy's robot writer and other similar projects.
 """
-from pdb import Pdb
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
 from .lib.utils import loadstyle
