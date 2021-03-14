@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- next
+  - Added `ticks` option to SerialChart, to set custom x-axis ticks
+  - Fixed bug with highlight in line charts where some line was outside the highlighted date.
+
 - 1.15.0
 
   - Introduces progress charts and removes hard coded font sizes.
