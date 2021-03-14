@@ -1,12 +1,10 @@
 from .chart import Chart
 from .lib.locator import get_best_locator, get_year_ticks
 from .lib.utils import to_float, to_date
-from .lib.formatter import Formatter
 
 import numpy as np
 from math import inf
-from matplotlib.ticker import FuncFormatter
-from matplotlib.dates import (DateFormatter, YearLocator, MonthLocator,
+from matplotlib.dates import (DateFormatter, MonthLocator,
                               DayLocator, WeekdayLocator)
 from dateutil.relativedelta import relativedelta
 
