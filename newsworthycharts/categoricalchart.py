@@ -14,6 +14,9 @@ class CategoricalChart(Chart):
         self.annotation_rotation = 0
         self.stacked = False
 
+        # Optional: specify a list of colors (for mulitple datasets)
+        self.colors = None
+
     def _add_data(self):
         allowed_orientations = ["horizontal", "vertical"]
         if self.bar_orientation not in allowed_orientations:
@@ -54,8 +57,12 @@ class CategoricalChart(Chart):
             except IndexError:
                 serie_label = None
 
-            color = self._style["neutral_color"]
-            highlight_color = self._style["strong_color"]
+            if self.colors is not None:
+                highlight_color = self.colors[i]
+                color = self._style["neutral_color"]
+            else:
+                color = self._style["neutral_color"]
+                highlight_color = self._style["strong_color"]
 
             if self.highlight is None:
                 # use strong color if there is nothing to highlight
@@ -312,4 +319,4 @@ class ProgressChart(CategoricalChart):
                     color=color,
                 )
 
-        self.ax.get_legend().remove(
+        self.ax.get_legend().remove()
