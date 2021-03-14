@@ -102,6 +102,7 @@ Changelog
 ---------
 
 - next
+
   - Added `ticks` option to SerialChart, to set custom x-axis ticks
   - Fixed bug with highlight in line charts where some line was outside the highlighted date.
 
