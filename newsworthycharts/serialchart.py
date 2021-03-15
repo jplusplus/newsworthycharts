@@ -1,12 +1,10 @@
 from .chart import Chart
 from .lib.locator import get_best_locator, get_year_ticks
 from .lib.utils import to_float, to_date
-from .lib.formatter import Formatter
 
 import numpy as np
 from math import inf
-from matplotlib.ticker import FuncFormatter
-from matplotlib.dates import (DateFormatter, YearLocator, MonthLocator,
+from matplotlib.dates import (DateFormatter, MonthLocator,
                               DayLocator, WeekdayLocator)
 from dateutil.relativedelta import relativedelta
 
@@ -25,6 +23,10 @@ class SerialChart(Chart):
         # Percent of period. 0.85 means a bar in a chart with yearly data will
         # be around 310 or 311 days wide.
         self.max_ticks = 5
+
+        # Manually set tick locations and labels? Provide a list of tuples:
+        # [(2013-01-01, "-13"), (2014-01-01, "-14"), (2015-01-01, "-15")]
+        self.ticks = None
         self._ymin = None
         self._ymax = None
 
@@ -328,8 +330,14 @@ class SerialChart(Chart):
                         dir = "left"  # To the right we have diff annotation
                 else:
                     # Otherwise, use what works best with the line shape
-                    i = dates.index(highlight_date)
-                    dir = self._get_annotation_direction(i, values)
+                    if highlight_date in dates:
+                        i = dates.index(highlight_date)
+                        dir = self._get_annotation_direction(i, values)
+                    else:
+                        # This highlight is probably out of range for this dataset
+                        # Could happen if we have two or more lines,
+                        # with different start and end points.
+                        continue
             self._annotate_point(value_label, xy, direction=dir)
 
         # Accentuate y=0
@@ -390,7 +398,10 @@ class SerialChart(Chart):
         self.ax.yaxis.grid(True)
 
         # X ticks and formatter
-        if delta.days > 365:
+        if self.ticks:
+            self.ax.set_xticks([x[0] for x in self.ticks])
+            self.ax.set_xticklabels([x[1] for x in self.ticks])
+        elif delta.days > 365:
             ticks = get_year_ticks(xmin, xmax, max_ticks=self.max_ticks)
             self.ax.set_xticks(ticks)
             self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))

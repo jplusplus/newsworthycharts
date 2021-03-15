@@ -101,6 +101,13 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- next
+
+  - Added `ticks` option to SerialChart, to set custom x-axis ticks
+  - Added color option to CategoricalChart, to work exactly as in SerialChart
+  - Fixed bug with highlight in line charts where some line was outside the highlighted date.
+
+
 - 1.17.0
 
   - Enable multiple targets in progress chart.

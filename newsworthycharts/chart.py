@@ -1,7 +1,6 @@
 """ Create charts and store them as images.
 For use with Newsworthy's robot writer and other similar projects.
 """
-from pdb import Pdb
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
 from .lib.utils import loadstyle
@@ -246,14 +245,13 @@ class Chart(object):
     def _add_title(self, title_text):
         """Add a title."""
         # Get the position for the yaxis, and align title with it
-        #title_text += "\n"  # Ugly but efficient way to add 1em padding
+        # title_text += "\n"  # Ugly but efficient way to add 1em padding
         text = self._fig.suptitle(title_text, wrap=True, x=0,
                                   horizontalalignment="left",
                                   multialignment="left",
                                   fontproperties=self._title_font)
 
         self._title_elem = text
-
 
     def _add_subtitle(self, subtitle_text):
         y_pos = 1 - self._title_rel_height
@@ -275,7 +273,6 @@ class Chart(object):
         text.set_text(wrapped_text)
         self._set_size(self._w)
         self._note_elem = text
-
 
     def _add_xlabel(self, label):
         """Adds a label to the x axis."""
@@ -327,7 +324,6 @@ class Chart(object):
             self._add_title(self.title)
         if self.subtitle is not None:
             self._add_subtitle(self.subtitle)
-
 
         logo = self._style.get("logo", self.logo)
         caption_hextent = None  # set this if adding a logo
@@ -456,7 +452,6 @@ class Chart(object):
     def title(self, title: str):
         self._title = title
 
-
     @property
     def units(self):
         return self._units
@@ -522,7 +517,6 @@ class Chart(object):
             footer_height += 15 / self._h
 
         return footer_height
-
 
     def __str__(self):
         # Return main title or id
