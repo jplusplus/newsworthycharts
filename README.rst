@@ -101,7 +101,7 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
-- next
+- 1.18.0
 
   - Added `ticks` option to SerialChart, to set custom x-axis ticks
   - Added color option to CategoricalChart, to work exactly as in SerialChart
