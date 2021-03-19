@@ -101,6 +101,11 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.18.1
+
+  - Fixed coloring on highlighted progress charts.
+  - Adds ability to highlight both ends on range plot.
+
 - 1.18.0
 
   - Added `ticks` option to SerialChart, to set custom x-axis ticks
