@@ -72,3 +72,31 @@ def test_basic_rangeplot():
 
     c = RangePlot.init_from(chart_obj, storage=local_storage)
     c.render("rangeplot_percent", "png")
+
+def test_rangeplot_with_double_labeling():
+    chart_obj = {
+        "width": 800,
+        "height": 450,
+        "bar_orientation": "vertical",
+        "title": "Någraer i Stockholm",
+        "subtitle": "Antal grejer som finns kvar efter en stor händelse.",
+        "data": [
+            [
+                ("Stockholm", 10), 
+                ("Göteborg", 8), 
+                ("Malmö", 4),
+            ],
+            [
+                ("Stockholm", 7), 
+                ("Göteborg", 11), 
+                ("Malmö", -3),
+            ],
+        ],
+        "labels": ["Före", "Efter"],
+        "values_labels": "both",
+        "highlight": "Göteborg",
+        "caption": "Källa: SCB" 
+    }
+    # basic
+    c = RangePlot.init_from(chart_obj, storage=local_storage)
+    c.render("rangeplot_with_double_labeling", "png")
