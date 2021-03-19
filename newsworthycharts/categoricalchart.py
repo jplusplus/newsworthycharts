@@ -70,6 +70,10 @@ class CategoricalChart(Chart):
             elif self.stacked and serie_label == self.highlight:
                 # hihglight by serie label when bars are stacked
                 colors = [highlight_color] * len(values)
+            elif self.stacked and self.highlight in categories:
+                # highlight by category in stacked bar chart, if available
+                colors = [highlight_color if x == self.highlight else color
+                          for x in categories]
             else:
                 # TODO: More coloring options for stacked bars
                 colors = [color] * len(values)
@@ -225,6 +229,7 @@ class ProgressChart(CategoricalChart):
     def __init__(self, *args, **kwargs):
         self.target = None
         self.target_label = None
+
 
         # should value labels be rendered?
         self.value_labels = None  # "progress"|"remaining"
