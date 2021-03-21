@@ -26,7 +26,7 @@ def test_basic_rangeplot():
             ],
         ],
         "labels": ["Före", "Efter"],
-        "values_labels": "percent_change",
+        "value_labels": "percent_change",
         "highlight": "Göteborg",
         "caption": "Källa: SCB" 
     }
@@ -68,7 +68,7 @@ def test_basic_rangeplot():
     'units': 'percent',
     'labels': ['2018', '2019'],
     'highlight': 'Söderköping',
-    'values_labels': 'difference'}
+    'value_labels': 'difference'}
 
     c = RangePlot.init_from(chart_obj, storage=local_storage)
     c.render("rangeplot_percent", "png")
@@ -93,7 +93,7 @@ def test_rangeplot_with_double_labeling():
             ],
         ],
         "labels": ["Före", "Efter"],
-        "values_labels": "both",
+        "value_labels": "both",
         "highlight": "Göteborg",
         "caption": "Källa: SCB" 
     }

@@ -22,7 +22,7 @@ class RangePlot(Chart):
         self.colors = None # ["red", "green"]
 
         # should value labels be rendered? 
-        self.values_labels = None # "start"|"end"|"difference"|"percent_change"
+        self.value_labels = None # "start"|"end"|"difference"|"percent_change"
 
 
     def _add_data(self):
@@ -46,7 +46,7 @@ class RangePlot(Chart):
 
         # COLORING: 
         if self.colors is None:
-            if self.values_labels == "both":
+            if self.value_labels == "both":
                 # use categorical coloring by default if both ends are to labelsed
                 start_color, end_color = self._style["qualitative_colors"][1], self._style["qualitative_colors"][0] 
 
@@ -91,37 +91,37 @@ class RangePlot(Chart):
             # end of labeling
 
         # VALUE LABELS
-        if self.values_labels:
+        if self.value_labels:
             fmt = self._get_value_axis_formatter()
             pct_fmt = Formatter(self._language,
                                 decimals=self.decimals).percent
             n_bars = len(start_values)
 
-            if self.values_labels == "start":
+            if self.value_labels == "start":
                 val_labels = [fmt(v) for v in start_values]
                 val_label_end = "start"
             
-            elif self.values_labels == "end":
+            elif self.value_labels == "end":
                 val_labels = [fmt(v) for v in end_values]
                 val_label_end = "end"
 
-            elif self.values_labels == "both":
+            elif self.value_labels == "both":
                 val_labels = ([fmt(v) for v in start_values] +
                               [fmt(v) for v in end_values])
                 val_label_end = "both"
 
-            elif self.values_labels == "difference":
+            elif self.value_labels == "difference":
                 val_labels = [change_fmt(v - start_values[i], fmt) 
                               for i, v in enumerate(end_values)]
                 val_label_end = "end"
 
-            elif self.values_labels == "percent_change":
+            elif self.value_labels == "percent_change":
                 val_labels = [change_fmt(v / start_values[i] - 1, pct_fmt) 
                               for i, v in enumerate(end_values)]
                 val_label_end = "end"
 
             else:
-                raise ValueError(f"Invalid value for 'self.value_labels': {self.values_labels}")
+                raise ValueError(f"Invalid value for 'self.value_labels': {self.value_labels}")
             
             # determine x positions and color of value labels
             if val_label_end == "start":
