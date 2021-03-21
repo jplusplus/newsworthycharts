@@ -101,6 +101,11 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.19.1
+
+  - RangePlot: Rename argument values_labels => value_labels.
+
+
 - 1.19.0
 
   - Pick up qualitative colors from style file.
