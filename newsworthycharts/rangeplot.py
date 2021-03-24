@@ -44,15 +44,21 @@ class RangePlot(Chart):
         lines = self.ax.hlines(y=categories, xmin=start_values, xmax=end_values,
                                lw=dot_size*.6, zorder=1)
 
-        # COLORING: highlight the end point by default
+        # COLORING: 
         if self.colors is None:
-            start_color, end_color = self._style["neutral_color"], self._style["strong_color"]
+            if self.values_labels == "both":
+                # use categorical coloring by default if both ends are to labelsed
+                start_color, end_color = self._style["qualitative_colors"][1], self._style["qualitative_colors"][0] 
+
+            else:
+                # highlight the end point by default
+                start_color, end_color = self._style["neutral_color"], self._style["strong_color"]
         else:
             start_color, end_color = self.colors
 
         start_dots.set_color(start_color)
         end_dots.set_color(end_color)
-        lines.set_color(adjust_lightness(end_color, 1.65))
+        lines.set_color(adjust_lightness(end_color, 1.4))
 
         # LABELS: start/end label
         if self.labels:
@@ -89,6 +95,7 @@ class RangePlot(Chart):
             fmt = self._get_value_axis_formatter()
             pct_fmt = Formatter(self._language,
                                 decimals=self.decimals).percent
+            n_bars = len(start_values)
 
             if self.values_labels == "start":
                 val_labels = [fmt(v) for v in start_values]
@@ -97,6 +104,11 @@ class RangePlot(Chart):
             elif self.values_labels == "end":
                 val_labels = [fmt(v) for v in end_values]
                 val_label_end = "end"
+
+            elif self.values_labels == "both":
+                val_labels = ([fmt(v) for v in start_values] +
+                              [fmt(v) for v in end_values])
+                val_label_end = "both"
 
             elif self.values_labels == "difference":
                 val_labels = [change_fmt(v - start_values[i], fmt) 
@@ -114,14 +126,19 @@ class RangePlot(Chart):
             # determine x positions and color of value labels
             if val_label_end == "start":
                 val_label_xpos = [(v, v > end_values[i]) for i, v in enumerate(start_values)]
-                val_label_color = start_color
+                val_label_colors = [start_color] * n_bars
 
             elif val_label_end == "end":
                 val_label_xpos = [(v, v > start_values[i]) for i, v in enumerate(end_values)]
-                val_label_color = end_color
+                val_label_colors = [end_color] * n_bars
 
-            
-            for label, (xpos, is_larger), ypos in zip(val_labels, val_label_xpos, categories):
+            elif val_label_end == "both":
+                val_label_xpos = ([(v, v > end_values[i]) for i, v in enumerate(start_values)] +
+                                  [(v, v > start_values[i]) for i, v in enumerate(end_values)])
+                val_label_colors = [start_color] * n_bars + [end_color] * n_bars
+                categories = categories + categories
+
+            for label, (xpos, is_larger), val_label_color, ypos in zip(val_labels, val_label_xpos, val_label_colors, categories):
                 offset = dot_size * 2
                 self.ax.annotate(label, (xpos, ypos),
                                  xytext=(offset if is_larger else -offset, 0),

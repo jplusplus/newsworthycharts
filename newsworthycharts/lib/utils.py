@@ -91,8 +91,12 @@ def loadstyle(style_name):
     style["cold_color"] = to_rgba("#" + cold_color, 1)
     style["fill_between_color"] = to_rgba("#" + str(fill_between_color), 1)
     style["fill_between_alpha"] = float(fill_between_alpha)
-    # TODO: Make it possible to define in in style file
-    style["qualitative_colors"] = [to_rgba("#" + c, 1) for c in QUALITATIVE]
+
+    if "qualitative_colors" in rc_params_newsworthy:
+        style["qualitative_colors"] = [to_rgba("#" + c.strip(), 1) for c in rc_params_newsworthy["qualitative_colors"].split(",")]
+
+    else:
+        style["qualitative_colors"] = [to_rgba("#" + c, 1) for c in QUALITATIVE]
     if "logo" in rc_params_newsworthy:
         style["logo"] = rc_params_newsworthy["logo"]
 
