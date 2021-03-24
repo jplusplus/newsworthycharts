@@ -191,8 +191,8 @@ class Chart(object):
         }
 
         # TODO: Offset should maybe rather be a function of the font size,
-        # but then we'd need to handle reltive fontsizes (ie "smaller") as well. 
-        offset = 10 
+        # but then we'd need to handle reltive fontsizes (ie "smaller") as well.
+        offset = 10
         if direction == "up":
             opts["verticalalignment"] = "bottom"
             opts["horizontalalignment"] = "center"
@@ -366,9 +366,9 @@ class Chart(object):
         # b) caption + logo on one line
         # All of these elements are optional
         # Fit footer height by the taller of caption and logo
-        sub_canvas_height = (self._style["figure.subplot.bottom"] +
-                             self._note_rel_height +
-                             self._footer_rel_height)
+        sub_canvas_height = (
+            self._style["figure.subplot.bottom"] + self._note_rel_height + self._footer_rel_height
+        )
         self._fig.subplots_adjust(bottom=sub_canvas_height)
 
     @classmethod

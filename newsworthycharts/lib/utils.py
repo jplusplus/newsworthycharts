@@ -63,10 +63,9 @@ def loadstyle(style_name):
     style["annotation.fontsize"] = rc_params_newsworthy.get("annotation.fontsize",
                                                             tick_font_size)
     style["note.fontsize"] = rc_params_newsworthy.get("note.fontsize",
-                                                       "smaller")
+                                                      "smaller")
     style["caption.fontsize"] = rc_params_newsworthy.get("caption.fontsize",
                                                          "smaller")
-
 
     color = rc_params_newsworthy.get("neutral_color",
                                      rcParams["figure.edgecolor"])
@@ -93,7 +92,10 @@ def loadstyle(style_name):
     style["fill_between_alpha"] = float(fill_between_alpha)
 
     if "qualitative_colors" in rc_params_newsworthy:
-        style["qualitative_colors"] = [to_rgba("#" + c.strip(), 1) for c in rc_params_newsworthy["qualitative_colors"].split(",")]
+        style["qualitative_colors"] = [
+            to_rgba("#" + c.strip(), 1)
+            for c in rc_params_newsworthy["qualitative_colors"].split(",")
+        ]
 
     else:
         style["qualitative_colors"] = [to_rgba("#" + c, 1) for c in QUALITATIVE]
@@ -131,7 +133,7 @@ def adjust_lightness(color, amount=0.5):
     """
     try:
         c = cnames[color]
-    except:
+    except Exception:
         c = color
     c = colorsys.rgb_to_hls(*to_rgb(c))
     return colorsys.hls_to_rgb(c[0], max(0, min(1, amount * c[1])), c[2])
