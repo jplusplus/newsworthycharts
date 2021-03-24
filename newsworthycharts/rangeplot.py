@@ -67,6 +67,7 @@ class RangePlot(Chart):
                         textcoords='offset pixels',
                         va="bottom",
                         fontsize=self._style["annotation.fontsize"],
+                        fontweight="bold",
                         #color=self._style["dark_gray_color"],
                         arrowprops={
                             "arrowstyle": "-",
@@ -75,14 +76,14 @@ class RangePlot(Chart):
                             "color":self._style["neutral_color"],
                         })
             start_value, end_value = start_values[-1], end_values[-1]
-            self.ax.annotate(self.labels[1],
+            end_label = self.ax.annotate(self.labels[1],
                         (end_value, categories[-1]),
                          color=end_color,
                          ha="right" if start_value > end_value else "left",
                         **props)
 
             if start_value != end_value:
-                self.ax.annotate(self.labels[0],
+                start_label = self.ax.annotate(self.labels[0],
                         (start_value, categories[-1]),
                         color=start_color, 
                         ha="right" if start_value < end_value else "left",
@@ -165,7 +166,12 @@ class RangePlot(Chart):
         va_formatter = self._get_value_axis_formatter()
         self.value_axis.set_major_formatter(va_formatter)
         self.ax.grid(True)
-        self.ax.margins(0.15) # adds vertical padding
+        
+        if self.labels:
+            # adds vertical padding
+            label_height = self._text_rel_height(end_label)
+            self.ax.margins(label_height * 2) 
+        
         self.ax.tick_params(axis=u'both', which=u'both',length=0) # hide ticks
         self.ax.spines['bottom'].set_visible(False) # hide line
 
