@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.19.2
+
+  - RangePlot: Better label margins and bold labels.
+
 - 1.19.1
 
   - RangePlot: Rename argument values_labels => value_labels.
