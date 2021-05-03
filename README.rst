@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.20.2
+
+  - ClimateCars: Tweeks on 2030 chart.
+
 - 1.20.1
 
   - Handle np.int as years.

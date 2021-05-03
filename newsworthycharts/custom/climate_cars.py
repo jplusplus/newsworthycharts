@@ -39,12 +39,12 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
         ###
         # Target
         import matplotlib.patheffects as pe
-        white_outline = [pe.withStroke(linewidth=3, foreground="white")]
+        bg_color = self._style.get("figure.facecolor", "white")
+        white_outline = [pe.withStroke(linewidth=3, foreground=bg_color)]
 
         self.ax.axhline(self.target, lw=1.5, 
-                        #ls="dashed",
                         color=color_target)
-        
+
         xmid = line_observed.get_xdata()[int(len(line_observed.get_xdata())/2)]
         self.ax.annotate(self.target_label, 
                          xy=(xmid, self.target),
@@ -61,18 +61,20 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
             )
 
         # Scenario 1
+        i_2030 = line_scen1.get_xdata().tolist().index(datetime(2030,1,1))
+
         self.ax.annotate(self.labels[1], 
                          color=self._style["dark_gray_color"], 
-                         va="center", ha="right",
+                         va="center", ha="left",
                          path_effects=white_outline,
                          fontsize=self._style["annotation.fontsize"],
-                         xytext=(-40, 120), textcoords='offset pixels',
-                         xy=(line_scen1.get_xdata()[-1], 
-                             line_scen1.get_ydata()[-1]),
+                         xytext=(40, 80), textcoords='offset pixels',
+                         xy=(line_scen1.get_xdata()[i_2030], 
+                             line_scen1.get_ydata()[i_2030]),
                         arrowprops=dict(
                              color=self._style["dark_gray_color"],
                              arrowstyle="->",
-                            connectionstyle="angle3,angleA=0,angleB=-60")
+                            connectionstyle="angle3,angleA=0,angleB=60")
                              )
 
         # Scenario 2
@@ -81,8 +83,8 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
                          path_effects=white_outline,
                          va="center", ha="right",
                          xytext=(-40, -40), textcoords='offset pixels',
-                         xy=(line_scen2.get_xdata()[-1], 
-                             line_scen2.get_ydata()[-1]),
+                         xy=(line_scen2.get_xdata()[i_2030], 
+                             line_scen2.get_ydata()[i_2030]),
                         fontsize=self._style["annotation.fontsize"],
                         arrowprops=dict(
                              color=self._style["dark_gray_color"],
@@ -101,7 +103,8 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
         lines = self.ax.get_lines()[:2]
         labels = ['Historiska utsläpp', 'Utsläppsscenarier']
         self.ax.legend(lines, labels)
-
+        tick_years = [line_observed.get_xdata()[0].year, 2010, 2020, 2030, 2045]
+        self.ax.set_xticks([datetime(x,1,1) for x in tick_years])
 
 
 
