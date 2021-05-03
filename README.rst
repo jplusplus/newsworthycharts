@@ -101,6 +101,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.20.1
+
+  - Handle np.int as years.
+
 - 1.20.0
 
   - CategoricalChart: Highlight multiple values with list
