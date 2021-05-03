@@ -1,6 +1,7 @@
 """ Various utility methods """
 import os
 from datetime import datetime
+import numpy as np
 import yaml
 from matplotlib import rc_file, rcParams
 from matplotlib.colors import to_rgba, cnames, to_rgb
@@ -119,13 +120,16 @@ def to_date(val):
 
     Integers are interpreted as years.
     """
-    if isinstance(val, int) and val < 3000:
+    if np.issubdtype(type(val), np.integer) and val < 3000:
         return datetime(val, 1, 1)
     try:
         return datetime.strptime(val, "%Y-%m-%d")
 
-    except TypeError:
+    except ValueError:
         return datetime.strptime(val, "%Y")
+    
+    except:
+        raise ValueError(f"Unable to parse date from {val}")
 
 
 def adjust_lightness(color, amount=0.5):
