@@ -101,6 +101,12 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.20.0
+
+  - CategoricalChart: Highlight multiple values with list
+  - Bug fix: ylabel placed outside canvas
+  - Style: Align caption with note
+
 - 1.19.2
 
   - RangePlot: Better label margins and bold labels.
