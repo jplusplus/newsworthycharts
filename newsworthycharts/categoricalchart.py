@@ -110,8 +110,11 @@ class CategoricalChart(Chart):
                             rotation=self.annotation_rotation
                         )
 
-                    if self.highlight is not None and self.highlight == d[0]:
-                        colors[j] = highlight_color
+                    if self.highlight is not None:
+                        if (self.highlight == d[0] or 
+                            (isinstance(self.highlight, list) and d[0] in self.highlight)):
+
+                            colors[j] = highlight_color
 
             if self.stacked:
                 bar_pos = np.arange(len(values))
