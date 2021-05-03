@@ -168,6 +168,29 @@ def test_bar_chart_with_ymax():
     max_value = max([x[1] for x in chart_obj["data"][0]])
     assert c.ax.get_ylim()[1] > max_value
 
+def test_serial_chart_with_axis_labels():
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "data": [
+            [
+                ["2016-01-01", 12],
+                ["2017-01-01", 14],
+                ["2018-01-01", 8],
+                ["2019-01-01", 2]
+            ]
+        ],
+        "title": "Make sure the ylabel fits",
+        "xlabel": "Point in time",
+        "ylabel": "Number of cats",
+        "note": "Read this also",
+        "caption": "Source: Truth",
+        "type": "line",
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    # visually make sure y and x labels are visible
+    c.render("serial_chart_with_axis_labels", "png")
+
 def test_chart_with_long_y_ticks():
     chart_obj = {
         "width": 800,

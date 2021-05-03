@@ -232,7 +232,7 @@ class Chart(object):
             hextent = (0, self._w)
         self._set_size(hextent[1] - hextent[0])
         x1 = hextent[0] / self._w
-        text = self._fig.text(x1 + 0.01, 0.01, caption,
+        text = self._fig.text(x1, 0.01, caption,
                               color=self._style["neutral_color"], wrap=True,
                               fontsize=self._style["caption.fontsize"])
         self._fig.canvas.draw()
@@ -297,8 +297,6 @@ class Chart(object):
         self._fig.tight_layout()
         if len(self.data):
             self._add_data()
-        # fit ticks etc.
-        self._fig.tight_layout()
         if not self.show_ticks:
             self.category_axis.set_visible(False)
         else:
@@ -324,6 +322,10 @@ class Chart(object):
             self._add_title(self.title)
         if self.subtitle is not None:
             self._add_subtitle(self.subtitle)
+
+        # fit ticks etc.
+        self._fig.tight_layout()
+
 
         logo = self._style.get("logo", self.logo)
         caption_hextent = None  # set this if adding a logo
