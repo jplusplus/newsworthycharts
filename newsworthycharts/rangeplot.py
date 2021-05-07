@@ -170,13 +170,20 @@ class RangePlot(Chart):
         if self.labels:
             # adds vertical padding
             label_height = self._text_rel_height(end_label)
-            self.ax.margins(label_height * 2) 
+            self.ax.margins(label_height * 2)
+
+            # hack: labels end up outside canvas when there is no title/subtitle
+            # by adding an empty subtitle some extra padding will be
+            # added later on
+            if self.title is None and self.subtitle is None:
+                self.subtitle = ""
         
         self.ax.tick_params(axis=u'both', which=u'both',length=0) # hide ticks
         self.ax.spines['bottom'].set_visible(False) # hide line
 
         if self.data.min_val < 0:
             self.ax.axvline(0, lw=1.5, zorder=0)
+
 
 def change_fmt(val, fmt):
     """

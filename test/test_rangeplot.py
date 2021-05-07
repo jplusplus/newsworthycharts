@@ -78,8 +78,6 @@ def test_rangeplot_with_double_labeling():
         "width": 800,
         "height": 450,
         "bar_orientation": "vertical",
-        "title": "Någraer i Stockholm",
-        "subtitle": "Antal grejer som finns kvar efter en stor händelse.",
         "data": [
             [
                 ("Stockholm", 10), 
