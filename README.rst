@@ -33,6 +33,27 @@ When using the Chart class, the generated chart will be saved as a local file:
   c.highlight = "2010-01-01"
   c.render("test", "png")
 
+You can use one of the predefine chart classes to make common chart types. Or you can use Newsworthycharts together with Matplotlib. This is useful is you just want to add text elements such as subtitle, notes or apply a predefine theme.
+
+Here is how you would make a pie chart:
+
+.. code-block:: python3
+
+  # data 
+  labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
+  sizes = [15, 30, 45, 10]
+
+  # setup chart
+  chart = Chart(width=800, height=600, storage=local_storage)
+  chart.title = "My pie chart"
+  chart.subtitle = "Look at all those colors"
+
+  # NB: Render the chart to `chart.ax`
+  chart.ax.pie(sizes, labels=labels, autopct='%1.1f%%')
+
+  # Save the chart
+  chart.render("tailored_chart", "png")
+
 You can use a _storage_ object to save file to
 a specific location or cloud service:
 
@@ -100,6 +121,11 @@ To deploy a new version to PyPi:
 
 Changelog
 ---------
+
+- 1.21.0
+
+  - New feature: Use base `Chart` class to make custom charts.
+  - Bug fix: Labels outside canvas in RangePlot
 
 - 1.20.2
 

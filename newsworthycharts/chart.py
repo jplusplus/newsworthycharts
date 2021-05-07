@@ -286,7 +286,8 @@ class Chart(object):
         """ Plot data to the chart.
         Typically defined by a more specific subclass
         """
-        raise NotImplementedError("This method should be overridden")
+        pass
+        #raise NotImplementedError("This method should be overridden")
 
     def _apply_changes_before_rendering(self):
         """

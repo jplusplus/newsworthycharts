@@ -318,3 +318,16 @@ def test_units():
     c.render("test", "png")
     yticks = [tick.get_text() for tick in c.ax.get_yticklabels()]
     assert("10%" in yticks)
+
+
+def test_tailored_chart():
+    """Create a chart without a chart class.
+    """
+    chart = Chart(width=800, height=600, storage=local_storage)
+    labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
+    sizes = [15, 30, 45, 10]
+    chart.title = "My pie chart"
+    chart.subtitle = "Look at all those colors"
+    chart.ax.pie(sizes, labels=labels, autopct='%1.1f%%')
+    chart.ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    chart.render("tailored_chart", "png")
