@@ -122,9 +122,11 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+
 - 1.21.1
 
   - Bug fix: Small change in Datawrapper API.
+  - Make ticks option work with SerialChart.init_from
 
 - 1.21.0
 
