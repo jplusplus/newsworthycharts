@@ -287,7 +287,7 @@ class Chart(object):
         Typically defined by a more specific subclass
         """
         pass
-        #raise NotImplementedError("This method should be overridden")
+        # raise NotImplementedError("This method should be overridden")
 
     def _apply_changes_before_rendering(self):
         """
@@ -326,7 +326,6 @@ class Chart(object):
 
         # fit ticks etc.
         self._fig.tight_layout()
-
 
         logo = self._style.get("logo", self.logo)
         caption_hextent = None  # set this if adding a logo
@@ -409,6 +408,8 @@ class Chart(object):
             chart.ymin = args["ymin"]
         if "ymax" in args:
             chart.ymax = args["ymax"]
+        if "ticks" in args:
+            chart.ticks = args["ticks"]
         return chart
 
     def render(self, key: str, img_format: str):
