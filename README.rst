@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- next
+
+  - Make ticks option work with SerialChart.init_from
+
 - 1.21.0
 
   - New feature: Use base `Chart` class to make custom charts.
