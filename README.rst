@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.21.1
+
+  - Bug fix: Small change in Datawrapper API.
+
 - 1.21.0
 
   - New feature: Use base `Chart` class to make custom charts.

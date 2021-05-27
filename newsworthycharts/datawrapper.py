@@ -152,7 +152,6 @@ class DatawrapperChart(Chart):
 
     def _prepare_dw_metadata(self, dw_data):
         # 1. Common config
-        dw_data["utf8"] = True
         dw_data["language"] = self._language
 
         # Follow DW convetions for language codes
