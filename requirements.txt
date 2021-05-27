@@ -1,13 +1,13 @@
-boto3==1.17.6
+boto3==1.17.83
 matplotlib==3.3.4
 langcodes==1.4.1
-Babel==2.9.0
+Babel==2.9.1
 PyYAML==5.4.1
 adjustText==0.7.3
 numpy>=1.19.1,<2
 python-dateutil==2.8.1
 pillow==7.2.0
 pytest==5.1.0
-flake8==3.8.4
+flake8==3.9.2
 requests==2.25.1
 python-dotenv>=0.15.0,<1
