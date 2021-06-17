@@ -92,6 +92,7 @@ class RangePlot(Chart):
             # end of labeling
 
         # VALUE LABELS
+        val_label_elems = []
         if self.value_labels:
             fmt = self._get_value_axis_formatter()
             pct_fmt = Formatter(self._language,
@@ -141,13 +142,14 @@ class RangePlot(Chart):
 
             for label, (xpos, is_larger), val_label_color, ypos in zip(val_labels, val_label_xpos, val_label_colors, categories):
                 offset = dot_size * 2
-                self.ax.annotate(label, (xpos, ypos),
+                val_label_elem = self.ax.annotate(label, (xpos, ypos),
                                  xytext=(offset if is_larger else -offset, 0),
                                  textcoords='offset pixels',
                                  va="center", 
                                  fontsize=self._style["annotation.fontsize"],
                                  color=val_label_color,
                                  ha="left" if is_larger else "right")
+                val_label_elems.append(val_label_elem)
 
         if self.highlight:
             if not isinstance(self.highlight, list):
@@ -167,17 +169,28 @@ class RangePlot(Chart):
         self.value_axis.set_major_formatter(va_formatter)
         self.ax.grid(True)
         
+        # Setup chart area margins
+        # Hack: the horizontal margins are now hard-coded to – typically – fit
+        # percent values if value labels are render.
+        # A proper solution would be to adjust the margin by the actual text width(s),
+        # which is probably not impossible, but also not very simple.
+        # The vertical padding (y_margin) is, on the other hand, dynamic.
+        x_margin = 0.15 if self.value_labels else 0.05
+        y_margin = 0
+
         if self.labels:
             # adds vertical padding
             label_height = self._text_rel_height(end_label)
-            self.ax.margins(label_height * 2)
+            y_margin = label_height * 2
 
             # hack: labels end up outside canvas when there is no title/subtitle
             # by adding an empty subtitle some extra padding will be
             # added later on
             if self.title is None and self.subtitle is None:
                 self.subtitle = ""
-        
+
+        self.ax.margins(x_margin, y_margin)
+
         self.ax.tick_params(axis=u'both', which=u'both',length=0) # hide ticks
         self.ax.spines['bottom'].set_visible(False) # hide line
 

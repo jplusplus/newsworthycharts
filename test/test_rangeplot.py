@@ -1,4 +1,4 @@
-import pytest
+import json
 from newsworthycharts import RangePlot
 from newsworthycharts.storage import LocalStorage
 
@@ -98,3 +98,13 @@ def test_rangeplot_with_double_labeling():
     # basic
     c = RangePlot.init_from(chart_obj, storage=local_storage)
     c.render("rangeplot_with_double_labeling", "png")
+
+
+def test_rangeplot_with_long_labels():
+    """make sure labels fit and dont overlap y ticks
+    """
+    with open("test/data/range_plot_with_long_labels.json", "r") as f:
+        chart_obj = json.load(f)
+
+    c = RangePlot.init_from(chart_obj, storage=local_storage)
+    c.render("rangeplot_with_long_labels", "png")
