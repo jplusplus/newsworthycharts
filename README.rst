@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.21.3
+
+  - Enable colors property in stacked bar SerialChart.
+
 - 1.21.2
 
   - Adjusts x margin in RangePlot to fit value labels better.
