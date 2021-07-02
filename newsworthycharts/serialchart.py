@@ -267,7 +267,10 @@ class SerialChart(Chart):
                         else:
                             color = self._style["neutral_color"]
                     else:
-                        color = self._style["qualitative_colors"][i]
+                        if self.colors is not None:
+                            color = self.colors[i]
+                        else:
+                            color = self._style["qualitative_colors"][i]
                     colors = [color] * len(values)
 
                 else: # only one series

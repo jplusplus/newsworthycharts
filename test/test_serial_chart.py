@@ -124,6 +124,13 @@ def test_stacked_bar_chart():
     assert(bar_colors[0] == c._style["strong_color"])
     assert(bar_colors[-1] == c._style["neutral_color"])
 
+    # specify colors
+    chart_obj["colors"] = ["red", "green"]
+    chart_obj["highlight"] = None
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    c.render("stacked_bar_chart_spec_colors", "png")
+    bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
+    assert(bar_colors[0] == (1.0, 0.0, 0.0, 1.0)) # red
 
 def test_bar_chart_with_ymax():
     container = {}
