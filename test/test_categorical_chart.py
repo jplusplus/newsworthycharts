@@ -39,6 +39,70 @@ def test_bar_orientation():
         c = CategoricalChart.init_from(chart_obj, storage=local_storage)
         c.render("bad_chart", "png")
 
+def test_tall_chart():
+    chart_obj = {
+        "data": [
+            [
+            ('Strömstad', -0.084),
+            ('Lysekil', -0.023),
+            ('Bengtsfors', -0.021),
+            ('Sotenäs', -0.019),
+            ('Dals-Ed', -0.018),
+            ('Mellerud', -0.014),
+            ('Trollhättan', -0.013),
+            ('Gullspång', -0.013),
+            ('Götene', -0.013),
+            ('Vänersborg', -0.013),
+            ('Grästorp', -0.013),
+            ('Färgelanda', -0.012),
+            ('Partille', -0.012),
+            ('Tjörn', -0.011),
+            ('Töreboda', -0.01),
+            ('Svenljunga', -0.009),
+            ('Öckerö', -0.008),
+            ('Tanum', -0.008),
+            ('Göteborg', -0.007),
+            ('Falköping', -0.007),
+            ('Skara', -0.007),
+            ('Tidaholm', -0.007),
+            ('Uddevalla', -0.006),
+            ('Herrljunga', -0.006),
+            ('Hjo', -0.005),
+            ('Mark', -0.005),
+            ('Bollebygd', -0.005),
+            ('Härryda', -0.004),
+            ('Vara', -0.004),
+            ('Essunga', -0.003),
+            ('Mölndal', -0.004),
+            ('Karlsborg', -0.002),
+            ('Orust', -0.002),
+            ('Skövde', -0.002),
+            ('Tranemo', -0.001),
+            ('Alingsås', -0.0),
+            ('Borås', -0.0),
+            ('Tibro', 0.001),
+            ('Stenungsund', 0.001),
+            ('Lidköping', 0.001),
+            ('Åmål', 0.002),
+            ('Ale', 0.002),
+            ('Lerum', 0.003),
+            ('Lilla Edet', 0.003),
+            ('Ulricehamn', 0.004),
+            ('Vårgårda', 0.004),
+            ('Mariestad', 0.006),
+            ('Kungälv', 0.007),
+            ('Munkedal', 0.007)
+        ]
+        ],
+        "width": 600,
+        "height": 1900,
+        "bar_orientation": "horizontal",
+        "title": "Oj vad det finns många kommuner i Västra Götland",
+        "subtitle": "Se till så att de får plats.",
+        "note": "Här kommer en anteckning. Och verifiera att den här faktiskt kan gå över två rader utan att det blir nåt problem.",    
+    }
+    c = CategoricalChart.init_from(chart_obj, storage=local_storage)
+    c.render("categorical_chart_tall", "png")    
 
 def test_bar_highlight():
     chart_obj = {

@@ -244,9 +244,8 @@ class Chart(object):
 
     def _add_title(self, title_text):
         """Add a title."""
-        # Get the position for the yaxis, and align title with it
-        # title_text += "\n"  # Ugly but efficient way to add 1em padding
-        text = self._fig.suptitle(title_text, wrap=True, x=0,
+        # y=1 wraps title heavily, hence .9999
+        text = self._fig.suptitle(title_text, wrap=True, x=0, y=.99999,
                                   horizontalalignment="left",
                                   multialignment="left",
                                   fontproperties=self._title_font)
@@ -362,14 +361,19 @@ class Chart(object):
             header_height += self._subtitle_rel_height
 
         self._fig.subplots_adjust(top=1 - header_height)
-
-        # Below chart canvas we fit:
-        # a) notes on one line
-        # b) caption + logo on one line
-        # All of these elements are optional
-        # Fit footer height by the taller of caption and logo
+        
+        # Fit area below chart
+        tick_label_height = max([self._text_rel_height(lbl) 
+                                 for lbl in self.ax.get_xticklabels()])
         sub_canvas_height = (
-            self._style["figure.subplot.bottom"] + self._note_rel_height + self._footer_rel_height
+            # ticks labels
+            tick_label_height+
+            # some padding
+            30 / self._h + 
+            #  chart notes (if any)
+            self._note_rel_height + 
+            #  chart caption and logo (if any)
+            self._footer_rel_height
         )
         self._fig.subplots_adjust(bottom=sub_canvas_height)
 
@@ -482,7 +486,7 @@ class Chart(object):
         if self._title_elem:
             rel_height += self._text_rel_height(self._title_elem)
             # Adds a fixes margin below
-            rel_height += 45 / self._h
+            rel_height += 30 / self._h
         return rel_height
 
     @property
@@ -517,8 +521,7 @@ class Chart(object):
             footer_elem_heights.append(caption_height)
 
         footer_height = max(footer_elem_heights)
-        if footer_height != 0:
-            footer_height += 15 / self._h
+        footer_height += 15 / self._h
 
         return footer_height
 
