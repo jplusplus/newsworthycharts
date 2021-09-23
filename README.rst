@@ -122,6 +122,11 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.21.4
+
+  - Beter height handling in header and footer.
+  - Make Noto Sans default font.
+
 - 1.21.3
 
   - Enable colors property in stacked bar SerialChart.
