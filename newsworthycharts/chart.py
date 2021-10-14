@@ -363,8 +363,13 @@ class Chart(object):
         self._fig.subplots_adjust(top=1 - header_height)
         
         # Fit area below chart
-        tick_label_height = max([self._text_rel_height(lbl) 
-                                 for lbl in self.ax.get_xticklabels()])
+        try:
+            tick_label_height = max([self._text_rel_height(lbl) 
+                                    for lbl in self.ax.get_xticklabels()])
+        except ValueError:
+            # handle charts without ticks 
+            tick_label_height = 0
+
         sub_canvas_height = (
             # ticks labels
             tick_label_height+
