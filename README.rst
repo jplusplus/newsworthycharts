@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.21.5
+
+  - Bug fix: Handle charts without ticks to be able to render pie charts again
+
 - 1.21.4
 
   - Beter height handling in header and footer.
