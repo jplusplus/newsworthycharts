@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.22.0
+
+  - SerialChart: Introduces labeling on lines (rather than just legends)
+
 - 1.21.5
 
   - Bug fix: Handle charts without ticks to be able to render pie charts again

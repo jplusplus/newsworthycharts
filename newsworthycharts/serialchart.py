@@ -7,7 +7,7 @@ from math import inf
 from matplotlib.dates import (DateFormatter, MonthLocator,
                               DayLocator, WeekdayLocator)
 from dateutil.relativedelta import relativedelta
-
+from adjustText import adjust_text
 
 class SerialChart(Chart):
     """Plot a timeseries, as a line or bar plot.
@@ -32,6 +32,10 @@ class SerialChart(Chart):
 
         # Optional: specify a list of colors (for mulitline charts)
         self.colors = None
+
+        # Optional: where to place series label
+        self.label_placement = "legend" # "legend"|"line"
+        assert self.label_placement in ["legend", "line"]
 
     @property
     def ymin(self):
@@ -189,6 +193,8 @@ class SerialChart(Chart):
             'y1': -inf
         }
         highlight_values = []
+
+        line_labels = []
         for i, serie in enumerate(series):
             # Use strong color for first series
             if self.colors is not None:
@@ -247,6 +253,15 @@ class SerialChart(Chart):
 
                 if len(self.labels) > i:
                     line.set_label(self.labels[i])
+                
+                if self.label_placement == "line":
+                    # TODO: Offset should be dynamic
+                    lbl = self._annotate_point(self.labels[i],
+                                        (dates[-1], values[-1]), 
+                                        "right", offset=20,
+                                        color=color)
+                    # store labels to check for overlap later
+                    line_labels.append(lbl)
 
                 # add highlight marker
                 if highlight_value:
@@ -348,20 +363,20 @@ class SerialChart(Chart):
             self.ax.axhline(linewidth=1)
 
         # Highlight diff
-        y0, y1 = highlight_diff['y0'], highlight_diff['y1']
+        #y0, y1 = highlight_diff['y0'], highlight_diff['y1']
         # Only if more than one series has a value at this point, and they
         # actually look different
-        if self.highlight and\
-           (len(highlight_values) > 1) and\
-           (a_formatter(y0) != a_formatter(y1)) and\
-           self.type == "line":
+        #if self.highlight and\
+        #   (len(highlight_values) > 1) and\
+        #   (a_formatter(y0) != a_formatter(y1)) and\
+        #   self.type == "line":
 
-            self.ax.vlines(highlight_date, y0, y1,
-                           colors=self._style["neutral_color"],
-                           linestyles='dashed')
-            diff = a_formatter(abs(y0 - y1))
-            xy = (highlight_date, (y0 + y1) / 2)
-            self._annotate_point(diff, xy, direction="right")
+        #    self.ax.vlines(highlight_date, y0, y1,
+        #                   colors=self._style["neutral_color"],
+        #                   linestyles='dashed')
+        #    diff = a_formatter(abs(y0 - y1))
+        #    xy = (highlight_date, (y0 + y1) / 2)
+        #    self._annotate_point(diff, xy, direction="right")
 
         # Shade area between lines if there are exactly 2 series
         # For more series, the chart will get messy with shading
@@ -426,7 +441,7 @@ class SerialChart(Chart):
 
         # Add labels in legend if there are multiple series, otherwise
         # title is assumed to self-explanatory
-        if len(self.labels) > 1:
+        if len(self.labels) > 1 and self.label_placement == "legend":
             self.ax.legend(loc='best')
 
         # Trend/change line
@@ -462,3 +477,6 @@ class SerialChart(Chart):
             # y = [a.xy[1] for a in self._annotations]
             # adjust_text(self._annotations,
             #             x=x, y=y)
+
+        if len(line_labels) > 1:
+            adjust_text(line_labels, autoalign="y", ha="left")

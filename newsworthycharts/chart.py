@@ -175,7 +175,7 @@ class Chart(object):
         return c
 
     def _annotate_point(self, text, xy,
-                        direction,
+                        direction, offset=13,
                         **kwargs):
         """Add a label to a given point.
 
@@ -185,14 +185,13 @@ class Chart(object):
             ("up", "down", "left", "right")
         :param kwags: any params accepted by plt.annotate
         """
+        # TODO: Offset should maybe rather be a function of the font size,
+        # but then we'd need to handle reltive fontsizes (ie "smaller") as well.
+
         opts = {
             "fontsize": self._style["annotation.fontsize"],
             "textcoords": "offset pixels",
         }
-
-        # TODO: Offset should maybe rather be a function of the font size,
-        # but then we'd need to handle reltive fontsizes (ie "smaller") as well.
-        offset = 10
         if direction == "up":
             opts["verticalalignment"] = "bottom"
             opts["horizontalalignment"] = "center"
@@ -219,6 +218,8 @@ class Chart(object):
         ann = self.ax.annotate(text, xy=xy, **opts)
         # ann = self.ax.text(text, xy[0], xy[1])
         self._annotations.append(ann)
+
+        return ann
 
     def _add_caption(self, caption, hextent=None):
         """Add a caption. Supports multiline input.

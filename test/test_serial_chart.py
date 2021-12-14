@@ -277,3 +277,30 @@ def test_multi_color_lines():
     for i, color in enumerate(colors):
         assert c.ax.get_lines()[i].get_color() == color
     
+
+def test_line_labeling():
+    chart_obj = {
+        "width": 600,
+        "height": 300,
+        "data": [
+            [
+                ["2017-01-01", -6],
+                ["2018-01-01", -3],
+                ["2019-01-01", 3.2]
+            ],
+            [
+                ["2017-01-01", -3],
+                ["2018-01-01", -1],
+                ["2019-01-01", 4]
+            ], 
+        ],
+        "labels": ["Region A", "Region B"], 
+        "label_placement": "line",
+        "decimals": 1,
+        "ymax": 0,
+        "type": "line",
+        "highlight": "2019-01-01",
+        "title": "Look at those labels",
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    c.render("serial_chart_line_labeling", "png")
