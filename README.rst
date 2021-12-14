@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.22.1
+
+  - Tweeks on line labeling
+
 - 1.22.0
 
   - SerialChart: Introduces labeling on lines (rather than just legends)
