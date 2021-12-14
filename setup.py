@@ -34,6 +34,7 @@ setup(
         "python-dateutil>=2",
         "pillow>=1.3.3",
         "requests>=2.22",
+        "matplotlib-label-lines==0.4.3",
     ],
     include_package_data=True,
     download_url="{}/archive/{}.tar.gz".format(repo, version),
