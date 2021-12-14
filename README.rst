@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.23.1
+  
+  - Adds missing dependency.
+
 - 1.23.0
 
   - SerialChart: Introduces inline labeling on lines
