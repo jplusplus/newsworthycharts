@@ -3,7 +3,7 @@ For use with Newsworthy's robot writer and other similar projects.
 """
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
-from .lib.utils import loadstyle
+from .lib.utils import loadstyle, outline
 from .lib.formatter import Formatter
 from .lib.datalist import DataList
 from .storage import Storage, LocalStorage
@@ -191,6 +191,7 @@ class Chart(object):
         opts = {
             "fontsize": self._style["annotation.fontsize"],
             "textcoords": "offset pixels",
+            "path_effects": outline("white"),
         }
         if direction == "up":
             opts["verticalalignment"] = "bottom"
@@ -214,7 +215,7 @@ class Chart(object):
 
         # Override default opts if passed to the function
         opts.update(kwargs)
-
+        
         ann = self.ax.annotate(text, xy=xy, **opts)
         # ann = self.ax.text(text, xy[0], xy[1])
         self._annotations.append(ann)

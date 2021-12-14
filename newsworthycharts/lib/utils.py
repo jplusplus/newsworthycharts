@@ -5,6 +5,7 @@ import numpy as np
 import yaml
 from matplotlib import rc_file, rcParams
 from matplotlib.colors import to_rgba, cnames, to_rgb
+import matplotlib.patheffects as pe
 import colorsys
 
 from .colors import BLACK, DARK_GRAY, LIGHT_GRAY, POSITIVE, NEGATIVE, FILL_BETWEEN, WARM, COLD, QUALITATIVE
@@ -141,3 +142,8 @@ def adjust_lightness(color, amount=0.5):
         c = color
     c = colorsys.rgb_to_hls(*to_rgb(c))
     return colorsys.hls_to_rgb(c[0], max(0, min(1, amount * c[1])), c[2])
+
+def outline(color="white", linewidth=3, **kwargs):
+    """Short-cut for generering an outline with `path_effects`
+    """
+    return [pe.withStroke(linewidth=linewidth, foreground=color, **kwargs)]

@@ -8,6 +8,7 @@ from matplotlib.dates import (DateFormatter, MonthLocator,
                               DayLocator, WeekdayLocator)
 from dateutil.relativedelta import relativedelta
 from adjustText import adjust_text
+from labellines import labelLines
 
 class SerialChart(Chart):
     """Plot a timeseries, as a line or bar plot.
@@ -34,8 +35,7 @@ class SerialChart(Chart):
         self.colors = None
 
         # Optional: where to place series label
-        self.label_placement = "legend" # "legend"|"line"
-        assert self.label_placement in ["legend", "line"]
+        self.label_placement = "legend" # "legend"|"line|inline"
 
     @property
     def ymin(self):
@@ -268,7 +268,8 @@ class SerialChart(Chart):
                     self.ax.plot(highlight_date, highlight_value,
                                  c=color,
                                  marker='o',
-                                 zorder=2)
+                                 markersize=5,
+                                 zorder=zo)
 
             elif self.type == "bars":
                 # aggregate values for stacked bar chart
@@ -443,7 +444,9 @@ class SerialChart(Chart):
         # title is assumed to self-explanatory
         if len(self.labels) > 1 and self.label_placement == "legend":
             self.ax.legend(loc='best')
-
+        elif self.label_placement == "inline":
+            labelLines(self.ax.get_lines(), align=False, zorder=3, outline_width=4, fontweight="bold")
+        
         # Trend/change line
         # Will use first serie
         if self.trendline:
