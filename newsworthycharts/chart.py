@@ -175,7 +175,7 @@ class Chart(object):
         return c
 
     def _annotate_point(self, text, xy,
-                        direction, offset=13,
+                        direction, offset=12,
                         **kwargs):
         """Add a label to a given point.
 

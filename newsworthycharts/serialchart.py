@@ -258,8 +258,8 @@ class SerialChart(Chart):
                     # TODO: Offset should be dynamic
                     lbl = self._annotate_point(self.labels[i],
                                         (dates[-1], values[-1]), 
-                                        "right", offset=20,
-                                        color=color)
+                                        "right", offset=15,
+                                        color=color, va="center")
                     # store labels to check for overlap later
                     line_labels.append(lbl)
 
@@ -479,4 +479,24 @@ class SerialChart(Chart):
             #             x=x, y=y)
 
         if len(line_labels) > 1:
-            adjust_text(line_labels, autoalign="y", ha="left")
+            if len(line_labels) == 2:
+                # Hack: check for overlap and adjust labels only
+                # if such overlag exist. 
+                # `adjust_text` tended offset labels unnecessarily
+                # but it might just be that I haven't worked out how to use it properly
+                from adjustText import get_bboxes
+                bb1, bb2 = get_bboxes(line_labels, self._fig.canvas.renderer, (1.0, 1.0), self.ax)
+                if (
+                    # first label is above
+                    (bb1.y0 < bb2.y0) and (bb1.y1 > bb2.y0) or
+                    # first label is below
+                    (bb1.y0 > bb2.y0) and (bb1.y0 < bb2.y1)
+                    ):
+                    adjust_text(line_labels, autoalign="y",
+                                ha="left")
+
+            else:
+                adjust_text(line_labels, autoalign="y",
+                            ha="left")
+
+
