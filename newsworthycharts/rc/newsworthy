@@ -8,7 +8,6 @@ figure.dpi        : 150
 # Margins
 savefig.pad_inches  : 0.2
 legend.borderaxespad : 0.7      # the margin between legend box and axes
-legend.edgecolor     : 1
 
 # Axes and ticks
 axes.grid         : False
@@ -26,10 +25,11 @@ grid.color        : DEDEDE
 axes.edgecolor    : 333333
 xtick.color       : 333333
 ytick.color       : 333333
+legend.edgecolor  : 1
 
 # Type
 font.family       : sans-serif
-font.sans-serif   : Noto Sans SC, Helvetica, Arial
+font.sans-serif   : Noto Sans
 font.size         : 10
 font.monospace    : Ubuntu Mono
 figure.titlesize  : 18
@@ -48,19 +48,21 @@ lines.markersize : 8
 # Some custom settings for Newsworthy
 # Prefix each line with #!
 
-#! title_font         : Noto Sans SC
-#! subtitle.fontsize  : 13
+#! title_font         : Noto Sans
+#! subtitle.fontsize  : 11
 #! note.fontsize      : 8
 #! caption.fontsize   : 8
 
-#! neutral_color      : C8C7D1
-#! strong_color       : 5aa69d
-#! qualitative_colors : 5aa69d, fc8d62, 8da0cb, e78ac3, a6d854, ffd92f, e5c494, b3b3b3
+#! neutral_color      : 6f6e75
+#! strong_color       : 00a39a
+#! qualitative_colors : 00a39a, DBAD58, A6426A
+#! positive_color     : 00a39a
+#! negative_color     : 93003a
 
 #! dark_gray_color    : 42404F
 #! ligth_gray_color   : C8C7D1
 
-
 # Fill between lines
 #! fill_between_color : F7F4F4
 #! fill_between_alpha : 0.5
+
