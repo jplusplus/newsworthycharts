@@ -195,6 +195,31 @@ def test_categorical_chart_with_reference_series():
     c = CategoricalChartWithReference.init_from(chart_obj, storage=local_storage)
     c.render("categorical_chart_with_two_series_horizontal", "png")
 
+def test_categorical_chart_with_reference_and_highlight():
+    chart_obj = {
+        "data": [
+            [
+                ["Stockholm", 321],
+                ["Täby", 121],
+                ["Solna", None],
+            ],
+            [
+                ["Stockholm", 331],
+                ["Täby", 151],
+                ["Solna", 20],
+            ],
+        ],
+        "labels": ["I år", "I fjol"],
+        "width": 800,
+        "height": 600,
+        "highlight": ["Täby"],
+        "bar_orientation": "vertical",
+        "title": "Kolla på Täby här"
+    }
+
+    c = CategoricalChartWithReference.init_from(chart_obj, storage=local_storage)
+    c.render("categorical_chart_with_reference_and_highlight", "png")
+
 
 def test_progress_chart():
 

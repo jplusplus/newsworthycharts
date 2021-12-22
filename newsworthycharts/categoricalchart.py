@@ -195,9 +195,19 @@ class CategoricalChartWithReference(CategoricalChart):
             categories = [x[0] for x in data]
 
             if i == 0:
-                color = self._style["strong_color"]
+                #color = self._style["strong_color"]
+                color = ["red", "green", "blue"]
+                if self.highlight is None:
+                    color = self._style["strong_color"]
+                else:
+                    is_highlighted = [x == self.highlight or x in self.highlight 
+                                      for x in categories]
+                    color_highlight = self._style["strong_color"]
+                    color_non_highlight = self._style["neutral_color"]
+                    color = [color_highlight if x else color_non_highlight for x in is_highlighted]
+
             else:
-                color = self._style["neutral_color"]
+                color = self._style["light_gray_color"]
 
             bar_pos = [x + i * bar_width / 2
                        for x in np.arange(len(values))]
