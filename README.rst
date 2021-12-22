@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.24.0
+
+  - CategoricalChartWithReference: Adds highlight option
+
 - 1.23.1
   
   - Adds missing dependency.
