@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.24.1
+
+  - Bug fix: Inline labeling on charts with missing data.
+
 - 1.24.0
 
   - CategoricalChartWithReference: Adds highlight option
