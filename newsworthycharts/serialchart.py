@@ -204,7 +204,7 @@ class SerialChart(Chart):
             else:
                 color = self._style["neutral_color"]
 
-            values = serie_values[i]
+            values = np.array(serie_values[i], dtype=float)
             dates = [to_date(x[0]) for x in serie]
 
             highlight_value = None
