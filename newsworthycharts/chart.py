@@ -183,11 +183,11 @@ class Chart(object):
         """
         # TODO: Offset should maybe rather be a function of the font size,
         # but then we'd need to handle reltive fontsizes (ie "smaller") as well.
-
+        bg_color = self._style.get("figure.facecolor", "white")
         opts = {
             "fontsize": self._style["annotation.fontsize"],
             "textcoords": "offset pixels",
-            "path_effects": outline("white"),
+            "path_effects": outline(bg_color),
         }
         if direction == "up":
             opts["verticalalignment"] = "bottom"

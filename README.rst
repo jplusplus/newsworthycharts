@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.25.1
+
+  - Color annoation outline by background color.
+
 - 1.25.0
 
   - Improved ScatterPlot.
