@@ -109,26 +109,22 @@ class Chart(object):
         self._fig.set_size_inches(real_width, real_height)
 
     def _get_value_axis_formatter(self):
+        return self._get_formatter(self.units)
+    
+    def _get_formatter(self, units):
         formatter = Formatter(self._language,
                               decimals=self.decimals,
                               scale="celsius")
-        if self.units == "percent":
+        if units == "percent":
             return FuncFormatter(formatter.percent)
-        elif self.units == "degrees":
+        elif units == "degrees":
             return FuncFormatter(formatter.temperature_short)
         else:
             return FuncFormatter(formatter.number)
 
+
     def _get_annotation_formatter(self):
-        formatter = Formatter(self._language,
-                              decimals=self.decimals,
-                              scale="celsius")
-        if self.units == "percent":
-            return FuncFormatter(formatter.percent)
-        elif self.units == "degrees":
-            return FuncFormatter(formatter.temperature)
-        else:
-            return FuncFormatter(formatter.number)
+        return self._get_formatter(self.units)
 
     def _text_rel_height(self, obj):
         """ Get the relative height of a text object to the whole canvas.
