@@ -38,6 +38,7 @@ def test_large_scatterplot():
         "units_y": "percent",
         "xlabel": "Disp. inkomst",
         "ylabel": "Andel laddbara\nbilar",
+        "ymin": 0,
         "highlight": ["Stockholms kommun"],
         "labels": ['Danderyd', 'Lidingö', 'Lomma', 'Mölndal', 'Nacka', 
                    'Solna', 'Stockholms kommun', 'Södertälje',],

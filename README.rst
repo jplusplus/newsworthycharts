@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.25.2
+
+  - ScatterPlot: Enable ymin and xmin in scatterplot.
+
 - 1.25.1
 
   - Color annoation outline by background color.

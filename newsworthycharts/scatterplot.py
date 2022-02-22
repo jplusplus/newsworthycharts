@@ -26,6 +26,9 @@ class ScatterPlot(Chart):
         # list items to label
         self.labels = []
 
+        self.ymin = None
+        self.xmin = None
+
 
 
     def _add_data(self):
@@ -47,6 +50,7 @@ class ScatterPlot(Chart):
         max_ticks = 5
         self.ax.yaxis.set_major_locator(MaxNLocator(nbins=max_ticks))
         self.ax.xaxis.set_major_locator(MaxNLocator(nbins=max_ticks))
+
 
         for data in self.data:
             x = [float(d[0]) for d in data]
@@ -106,6 +110,11 @@ class ScatterPlot(Chart):
             adjust_text(self._annotations, ax=self.ax, autoalign="y",
                         expand_points=(1, 1),)
 
+        if self.ymin is not None:
+            self.ax.set_ylim(self.ymin)
+
+        if self.xmin is not None:
+            self.ax.set_xlim(self.xmin)
 
 
     # scatterplot has custom axis labels
