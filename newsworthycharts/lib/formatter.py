@@ -16,12 +16,13 @@ class Formatter(object):
      "14 %"
     """
 
-    def __init__(self, lang, decimals: int=None, scale: str="celcius"):
+    def __init__(self, lang, decimals: int=None, scale: str="celcius", na_str: str="-"):
         """Create formatter for specific locale."""
         self.l = Locale.parse(lang.replace("-", "_"))  # NOQA
         self.language = self.l.language
         self.decimals = decimals
         self.scale = scale
+        self.na_str = na_str
 
     def __repr__(self):
         return "Formatter: " + repr(self.l)
@@ -30,6 +31,8 @@ class Formatter(object):
         return self.l.get_display_name()
 
     def percent(self, x, *args, **kwargs):
+        if x is None:
+            return self.na_str
 
         if self.decimals is None:
             # Show one decimal by default if values is < 1%
@@ -68,6 +71,9 @@ class Formatter(object):
 
         :param decimals (int): number of decimals.
         """
+        if x is None:
+            return self.na_str
+
         decimals = self.decimals
         if decimals is None:
             # Default roundings
