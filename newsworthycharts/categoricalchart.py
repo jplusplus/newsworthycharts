@@ -269,7 +269,9 @@ class ProgressChart(CategoricalChart):
         else:
             targets = [self.target] * len(s_progress)
 
-        s_remaining = [(x[0], max(0, targets[i] - x[1])) for i, x in enumerate(s_progress)]
+        # Replace missing values
+        s_progress_na_filled = [(x[0], 0 if x[1] is None else x[1]) for x in s_progress]
+        s_remaining = [(x[0], max(0, targets[i] - x[1])) for i, x in enumerate(s_progress_na_filled)]
         
         categories = [x[0] for x in s_progress]
 
@@ -319,8 +321,8 @@ class ProgressChart(CategoricalChart):
             if self.value_labels == "progress":
                 val_labels = [fmt(x[1]) for x in s_progress]
                 val_label_orient = ["inside" if (x[1] / target) > .1 else "outside" 
-                                    for x, target in zip(s_progress, targets)]
-                val_label_xpos = [x[1] for x in s_progress]
+                                    for x, target in zip(s_progress_na_filled, targets)]
+                val_label_xpos = [x[1] for x in s_progress_na_filled]
                 # TODO: Dynamic coloring based on background
                 val_label_color = ["white"] * n_bars
 
