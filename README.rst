@@ -122,6 +122,11 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.25.3
+
+  - ProgressChart: Handle missing values
+  - `lib.formatter.Formatter`: Handle null values
+
 - 1.25.2
 
   - ScatterPlot: Enable ymin and xmin in scatterplot.
