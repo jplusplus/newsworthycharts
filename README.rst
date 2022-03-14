@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.26.0
+
+  - Add `SeasonalChart`, a.k.a the Olsson chart
+
 - 1.25.3
 
   - ProgressChart: Handle missing values
