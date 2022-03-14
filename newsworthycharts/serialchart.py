@@ -10,6 +10,7 @@ from dateutil.relativedelta import relativedelta
 from adjustText import adjust_text
 from labellines import labelLines
 
+
 class SerialChart(Chart):
     """Plot a timeseries, as a line or bar plot.
 
@@ -32,10 +33,13 @@ class SerialChart(Chart):
         self._ymax = None
 
         # Optional: specify a list of colors (for mulitline charts)
-        self.colors = None
+        if not self.colors:
+            # The subclass SeasonalChart has a colors property,
+            # so don't try to overwrite that
+            self.colors = None
 
         # Optional: where to place series label
-        self.label_placement = "legend" # "legend"|"line|inline"
+        self.label_placement = "legend"  # "legend"|"line|inline"
 
     @property
     def ymin(self):
@@ -165,8 +169,7 @@ class SerialChart(Chart):
                 _values = [0 if v is None else v for v in _values]
             serie_values.append(_values)
 
-
-        # Select a date to highlight
+        #  Select a date to highlight
         if self.highlight is not None:
             try:
                 highlight_date = to_date(self.highlight)
@@ -253,13 +256,17 @@ class SerialChart(Chart):
 
                 if len(self.labels) > i:
                     line.set_label(self.labels[i])
-                
+
                 if self.label_placement == "line":
                     # TODO: Offset should be dynamic
-                    lbl = self._annotate_point(self.labels[i],
-                                        (dates[-1], values[-1]), 
-                                        "right", offset=15,
-                                        color=color, va="center")
+                    lbl = self._annotate_point(
+                        self.labels[i],
+                        (dates[-1], values[-1]),
+                        "right",
+                        offset=15,
+                        color=color,
+                        va="center"
+                    )
                     # store labels to check for overlap later
                     line_labels.append(lbl)
 
@@ -289,7 +296,7 @@ class SerialChart(Chart):
                             color = self._style["qualitative_colors"][i]
                     colors = [color] * len(values)
 
-                else: # only one series
+                else:  # only one series
                     # Pick color based on value of each bar
                     if self.color_fn:
                         colors = [self._color_by(v) for v in values]
@@ -307,13 +314,13 @@ class SerialChart(Chart):
 
                 # Set bar width, based on interval
                 bar_lengths = [self._days_in(self.interval, d) for d in dates]
-                bar_widths = [l * self.bar_width for l in bar_lengths]
+                bar_widths = [bar_length * self.bar_width for bar_length in bar_lengths]
 
                 # If there are too many ticks per pixel,
                 # don't put whitespace betw bars. Make widths = 1
                 bbox = self.ax.get_window_extent()
                 if (sum(bar_widths) * 2 / len(dates)) > bbox.width:
-                    bar_widths = [l * 1 for l in bar_lengths]
+                    bar_widths = [bar_length * 1 for bar_length in bar_lengths]
 
                 bar_kwargs = dict(
                     color=colors,
@@ -322,7 +329,7 @@ class SerialChart(Chart):
                 )
                 if i > 0:
                     # To make stacked bars we need to set bottom value
-                    bar_kwargs["bottom"] = cum_values[i-1]
+                    bar_kwargs["bottom"] = cum_values[i - 1]
                 bars = self.ax.bar(dates, values, **bar_kwargs)
 
                 if len(self.labels) > i:
@@ -364,10 +371,10 @@ class SerialChart(Chart):
             self.ax.axhline(linewidth=1)
 
         # Highlight diff
-        #y0, y1 = highlight_diff['y0'], highlight_diff['y1']
+        # y0, y1 = highlight_diff['y0'], highlight_diff['y1']
         # Only if more than one series has a value at this point, and they
         # actually look different
-        #if self.highlight and\
+        # if self.highlight and\
         #   (len(highlight_values) > 1) and\
         #   (a_formatter(y0) != a_formatter(y1)) and\
         #   self.type == "line":
@@ -446,7 +453,7 @@ class SerialChart(Chart):
             self.ax.legend(loc='best')
         elif self.label_placement == "inline":
             labelLines(self.ax.get_lines(), align=False, zorder=3, outline_width=4, fontweight="bold")
-        
+
         # Trend/change line
         # Will use first serie
         if self.trendline:
@@ -484,22 +491,20 @@ class SerialChart(Chart):
         if len(line_labels) > 1:
             if len(line_labels) == 2:
                 # Hack: check for overlap and adjust labels only
-                # if such overlag exist. 
+                # if such overlag exist.
                 # `adjust_text` tended offset labels unnecessarily
                 # but it might just be that I haven't worked out how to use it properly
                 from adjustText import get_bboxes
                 bb1, bb2 = get_bboxes(line_labels, self._fig.canvas.renderer, (1.0, 1.0), self.ax)
                 if (
                     # first label is above
-                    (bb1.y0 < bb2.y0) and (bb1.y1 > bb2.y0) or
+                    (bb1.y0 < bb2.y0) and (bb1.y1 > bb2.y0)
                     # first label is below
-                    (bb1.y0 > bb2.y0) and (bb1.y0 < bb2.y1)
-                    ):
+                    or (bb1.y0 > bb2.y0) and (bb1.y0 < bb2.y1)
+                ):
                     adjust_text(line_labels, autoalign="y",
                                 ha="left")
 
             else:
                 adjust_text(line_labels, autoalign="y",
                             ha="left")
-
-
