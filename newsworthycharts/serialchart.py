@@ -32,11 +32,8 @@ class SerialChart(Chart):
         self._ymin = None
         self._ymax = None
 
-        # Optional: specify a list of colors (for mulitline charts)
-        if not self.colors:
-            # The subclass SeasonalChart has a colors property,
-            # so don't try to overwrite that
-            self.colors = None
+        # Optional: specify a list of colors (one color for each dataset)
+        self.colors = None
 
         # Optional: where to place series label
         self.label_placement = "legend"  # "legend"|"line|inline"
@@ -155,6 +152,26 @@ class SerialChart(Chart):
             return "down"
         return "up"
 
+    def _get_bar_colors(self, i, values, dates, highlight_value, highlight_date):
+        """
+        Return a list of color values for each value in a series (i)
+        """
+        if self.color_fn:
+            # Pick color based on value of each bar
+            colors = [self._color_by(v) for v in values]
+        elif self.highlight:
+            colors = []
+            for timepoint in dates:
+                if highlight_value and timepoint == highlight_date:
+                    colors.append(self._style["strong_color"])
+                else:
+                    colors.append(self._style["neutral_color"])
+        else:
+            # use strong color if there is no highlight
+            colors = [self._style["strong_color"]] * len(dates)
+
+        return colors
+
     def _add_data(self):
 
         series = self.data
@@ -170,6 +187,7 @@ class SerialChart(Chart):
             serie_values.append(_values)
 
         #  Select a date to highlight
+        highlight_date = None
         if self.highlight is not None:
             try:
                 highlight_date = to_date(self.highlight)
@@ -199,13 +217,6 @@ class SerialChart(Chart):
 
         line_labels = []
         for i, serie in enumerate(series):
-            # Use strong color for first series
-            if self.colors is not None:
-                color = self.colors[i]
-            elif i == 0:
-                color = self._style["strong_color"]
-            else:
-                color = self._style["neutral_color"]
 
             values = np.array(serie_values[i], dtype=float)
             dates = [to_date(x[0]) for x in serie]
@@ -227,6 +238,15 @@ class SerialChart(Chart):
             if self.type == "line":
                 # Put first series on top
                 zo = 2 + (i == 0)
+
+                # Use strong color for first series
+                if self.colors is not None:
+                    color = self.colors[i]
+                elif i == 0:
+                    color = self._style["strong_color"]
+                else:
+                    color = self._style["neutral_color"]
+
                 line, = self.ax.plot(dates, values,
                                      color=color,
                                      zorder=zo)
@@ -283,6 +303,7 @@ class SerialChart(Chart):
                 # TODO: Consider moving this logic to `lib.datalist.DataList`
                 cum_values = np.cumsum(serie_values, axis=0).tolist()
 
+                # Create colors
                 if is_stacked:
                     if self.highlight:
                         if self.highlight == self.labels[i]:
@@ -296,21 +317,8 @@ class SerialChart(Chart):
                             color = self._style["qualitative_colors"][i]
                     colors = [color] * len(values)
 
-                else:  # only one series
-                    # Pick color based on value of each bar
-                    if self.color_fn:
-                        colors = [self._color_by(v) for v in values]
-
-                    elif self.highlight:
-                        colors = []
-                        for timepoint in dates:
-                            if highlight_value and timepoint == highlight_date:
-                                colors.append(self._style["strong_color"])
-                            else:
-                                colors.append(self._style["neutral_color"])
-                    else:
-                        # use strong color if there is no highlight
-                        colors = [self._style["strong_color"]] * len(dates)
+                else:
+                    colors = self._get_bar_colors(i, values, dates, highlight_value, highlight_date)
 
                 # Set bar width, based on interval
                 bar_lengths = [self._days_in(self.interval, d) for d in dates]
