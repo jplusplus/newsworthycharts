@@ -6,7 +6,7 @@ PyYAML==5.4.1
 adjustText==0.7.3
 numpy>=1.19.1,<2
 python-dateutil==2.8.1
-pillow==7.2.0
+pillow==9.0.1
 pytest==5.1.0
 flake8==3.9.2
 requests==2.27.1
