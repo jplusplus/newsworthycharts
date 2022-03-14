@@ -10,10 +10,10 @@ from matplotlib.colors import rgb2hex
 from .storage import Storage, LocalStorage
 from .chart import Chart
 from .lib.utils import loadstyle
-from .lib.formatter import Formatter
 from .lib.datalist import DataList
 
 HERE = os.path.dirname(__file__)
+
 
 class DatawrapperChart(Chart):
     # TODO: Make file_types dynami. Available file types depend on the
@@ -35,7 +35,6 @@ class DatawrapperChart(Chart):
         except KeyError:
             raise Exception("DATAWRAPPER_API_KEY must be set in environment")
 
-
         # P U B L I C   P R O P E R T I E S
         # The user can alter these at any time
 
@@ -52,7 +51,7 @@ class DatawrapperChart(Chart):
         self.decimals = None
 
         self.dw_data = {}  # The DW data structure that defines the chart
-        self._dw_id = None # Datawrapper chart id
+        self._dw_id = None  # Datawrapper chart id
 
 
         # P R I V A T E   P R O P E R T I E S
@@ -72,7 +71,6 @@ class DatawrapperChart(Chart):
         self._translations = None
 
 
-
     def render(self, key: str, img_format: str):
         """Render file, and send to storage."""
 
@@ -84,7 +82,7 @@ class DatawrapperChart(Chart):
 
         # 1. create chart with metadata
         dw_data = self._prepare_dw_metadata(self.dw_data)
-        #print(dw_data)
+        # print(dw_data)
         r = requests.post(url, headers=auth_header, json=dw_data)
         try:
             r.raise_for_status()
@@ -123,7 +121,7 @@ class DatawrapperChart(Chart):
         # Datawrapper charts get auto height
         if self._h != 0:
             params["height"] = self._h
-        #print(params)
+        # print(params)
         headers = deepcopy(auth_header)
         headers['accept'] = f'image/{img_format}'
 
@@ -278,7 +276,7 @@ class DatawrapperChart(Chart):
                                                   " for list of dicts")
 
                     ix = d[0]
-                    value = d[1]
+                    # value = d[1]
                     if ix == self.highlight:
                         colors[ix] = strong_color
                     else:
