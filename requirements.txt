@@ -1,4 +1,4 @@
-boto3==1.17.82
+boto3==1.21.18
 matplotlib==3.3.4
 langcodes==1.4.1
 Babel==2.9.1
@@ -11,4 +11,4 @@ pytest==5.1.0
 flake8==3.9.2
 requests==2.25.1
 python-dotenv>=0.15.0,<1
-matplotlib-label-lines==0.4.3
+matplotlib-label-lines==0.5.1
