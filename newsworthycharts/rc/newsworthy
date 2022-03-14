@@ -60,7 +60,7 @@ lines.markersize : 8
 #! negative_color     : 93003a
 
 #! dark_gray_color    : 42404F
-#! ligth_gray_color   : C8C7D1
+#! light_gray_color   : C8C7D1
 
 # Fill between lines
 #! fill_between_color : F7F4F4
