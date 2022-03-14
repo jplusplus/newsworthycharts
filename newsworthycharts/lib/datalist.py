@@ -144,8 +144,6 @@ class DataList(MutableSequence):
     def outer_max_x(self):
         return max(list(filter(lambda x: x[1] is not None, s))[-1][0] for s in self.list)
 
-
-
     def __len__(self):
         return len(self.list)
 

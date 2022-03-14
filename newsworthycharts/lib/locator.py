@@ -5,6 +5,7 @@ from matplotlib.dates import (YearLocator, MonthLocator, DayLocator,
 from datetime import datetime
 from dateutil.rrule import MO
 
+
 def get_year_ticks(start_date, end_date, max_ticks=5):
     """ Get `max_ticks` or less evenly distributed yearly ticks, including
     start and end years. All ticks fall on January 1.
