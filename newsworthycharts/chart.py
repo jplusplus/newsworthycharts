@@ -110,7 +110,7 @@ class Chart(object):
 
     def _get_value_axis_formatter(self):
         return self._get_formatter(self.units)
-    
+
     def _get_formatter(self, units):
         formatter = Formatter(self._language,
                               decimals=self.decimals,
@@ -121,7 +121,6 @@ class Chart(object):
             return FuncFormatter(formatter.temperature_short)
         else:
             return FuncFormatter(formatter.number)
-
 
     def _get_annotation_formatter(self):
         return self._get_formatter(self.units)
@@ -211,7 +210,7 @@ class Chart(object):
 
         # Override default opts if passed to the function
         opts.update(kwargs)
-        
+
         ann = self.ax.annotate(text, xy=xy, **opts)
         # ann = self.ax.text(text, xy[0], xy[1])
         self._annotations.append(ann)
@@ -359,24 +358,24 @@ class Chart(object):
             header_height += self._subtitle_rel_height
 
         self._fig.subplots_adjust(top=1 - header_height)
-        
+
         # Fit area below chart
         try:
-            tick_label_height = max([self._text_rel_height(lbl) 
+            tick_label_height = max([self._text_rel_height(lbl)
                                     for lbl in self.ax.get_xticklabels()])
         except ValueError:
-            # handle charts without ticks 
+            # handle charts without ticks
             tick_label_height = 0
 
         sub_canvas_height = (
             # ticks labels
-            tick_label_height+
+            tick_label_height
             # some padding
-            30 / self._h + 
+            + 30 / self._h
             #  chart notes (if any)
-            self._note_rel_height + 
+            + self._note_rel_height
             #  chart caption and logo (if any)
-            self._footer_rel_height
+            + self._footer_rel_height
         )
         self._fig.subplots_adjust(bottom=sub_canvas_height)
 
