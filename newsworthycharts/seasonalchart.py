@@ -28,15 +28,24 @@ class SeasonalChart(SerialChart):
         else:
             raise NotImplementedError("Seasonal chart currently only supports monthly data")
 
-        if i == 0:
-            # First bar series will use vivid colors
-            color_s = self._style["strong_color"]
-            color_n = self._style["neutral_color"]
-            colors = [color_s if x[0].endswith(date_suffix) else color_n
-                      for x in self.data[0]]
+        color_s = self._style["dark_gray_color"]
+        color_n = self._style["light_gray_color"]
+        colors = [color_s if x[0].endswith(date_suffix) else color_n
+                  for x in self.data[i]]
+
+        # Highlight latest by default
+        if self.highlight:
+            for i, d in enumerate(self.data[i]):
+                if d[0] == self.highlight:
+                    colors[i] = self._style["strong_color"]
         else:
-            color_s = self._style["dark_gray_color"]
-            color_n = self._style["light_gray_color"]
-            colors = [color_s if x[1].endswith(date_suffix) else color_n
-                      for x in self.data[0]]
+            colors[-1] = self._style["strong_color"]
+
+        # If we want to suppport multiple series
+        # if i > 0:
+        #    color_s = self._style["dark_gray_color"]
+        #    color_n = self._style["light_gray_color"]
+        #    colors = [color_s if x[1].endswith(date_suffix) else color_n
+        #              for x in self.data[0]]
+        
         return colors
