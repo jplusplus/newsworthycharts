@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.26.1
+
+  - Highlight only current value in SeasonalChart; use different shades of grey for the rest
+
 - 1.26.0
 
   - Add `SeasonalChart`, a.k.a the Olsson chart
