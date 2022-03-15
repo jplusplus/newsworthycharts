@@ -299,10 +299,6 @@ class SerialChart(Chart):
                                  zorder=zo)
 
             elif self.type == "bars":
-                # aggregate values for stacked bar chart
-                # TODO: Consider moving this logic to `lib.datalist.DataList`
-                cum_values = np.cumsum(serie_values, axis=0).tolist()
-
                 # Create colors
                 if is_stacked:
                     if self.highlight:
@@ -321,14 +317,19 @@ class SerialChart(Chart):
                     colors = self._get_bar_colors(i, values, dates, highlight_value, highlight_date)
 
                 # Set bar width, based on interval
-                bar_lengths = [self._days_in(self.interval, d) for d in dates]
-                bar_widths = [bar_length * self.bar_width for bar_length in bar_lengths]
+                if self.interval == "monthly":
+                    # Keep all months the same width, to make it look cleaner
+                    bar_widths_ = [self._days_in(self.interval) for d in dates]
+                else:
+                    bar_widths_ = [self._days_in(self.interval, d) for d in dates]
+                bar_widths_ = [self._days_in(self.interval, d) for d in dates]
 
                 # If there are too many ticks per pixel,
                 # don't put whitespace betw bars. Make widths = 1
                 bbox = self.ax.get_window_extent()
+                bar_widths = [round(w * 0.85) for w in bar_widths_]
                 if (sum(bar_widths) * 2 / len(dates)) > bbox.width:
-                    bar_widths = [bar_length * 1 for bar_length in bar_lengths]
+                    bar_widths = bar_widths_
 
                 bar_kwargs = dict(
                     color=colors,
@@ -337,7 +338,11 @@ class SerialChart(Chart):
                 )
                 if i > 0:
                     # To make stacked bars we need to set bottom value
+                    # aggregate values for stacked bar chart
+                    # TODO: Consider moving this logic to `lib.datalist.DataList`
+                    cum_values = np.cumsum(serie_values, axis=0).tolist()
                     bar_kwargs["bottom"] = cum_values[i - 1]
+
                 bars = self.ax.bar(dates, values, **bar_kwargs)
 
                 if len(self.labels) > i:
@@ -499,8 +504,8 @@ class SerialChart(Chart):
         if len(line_labels) > 1:
             if len(line_labels) == 2:
                 # Hack: check for overlap and adjust labels only
-                # if such overlag exist.
-                # `adjust_text` tended offset labels unnecessarily
+                # if such overlap exist.
+                # `adjust_text` tended to offset labels unnecessarily
                 # but it might just be that I haven't worked out how to use it properly
                 from adjustText import get_bboxes
                 bb1, bb2 = get_bboxes(line_labels, self._fig.canvas.renderer, (1.0, 1.0), self.ax)
