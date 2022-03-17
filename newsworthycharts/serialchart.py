@@ -38,6 +38,9 @@ class SerialChart(Chart):
         # Optional: where to place series label
         self.label_placement = "legend"  # "legend"|"line|inline"
 
+        # Optional: 
+        self.value_labels = False
+
     @property
     def ymin(self):
         # WIP
@@ -215,7 +218,10 @@ class SerialChart(Chart):
         }
         highlight_values = []
 
-        line_labels = []
+        # For storing elements for later position adjustment
+        line_label_elems = []
+        value_label_elems = []
+
         for i, serie in enumerate(series):
 
             values = np.array(serie_values[i], dtype=float)
@@ -240,8 +246,12 @@ class SerialChart(Chart):
                 zo = 2 + (i == 0)
 
                 # Use strong color for first series
-                if self.colors is not None:
+                if self.colors == "qualitative_colors":
+                    color = self._style["qualitative_colors"][i]
+
+                elif self.colors is not None:
                     color = self.colors[i]
+                
                 elif i == 0:
                     color = self._style["strong_color"]
                 else:
@@ -288,7 +298,7 @@ class SerialChart(Chart):
                         va="center"
                     )
                     # store labels to check for overlap later
-                    line_labels.append(lbl)
+                    line_label_elems.append(lbl)
 
                 # add highlight marker
                 if highlight_value:
@@ -348,6 +358,14 @@ class SerialChart(Chart):
                 if len(self.labels) > i:
                     bars.set_label(self.labels[i])
 
+            if self.value_labels:
+                for date, value in zip(dates, values):
+                    dir = "up"
+                    value_label = a_formatter(value)
+                    xy = (date, value)
+                    elem = self._annotate_point(value_label, xy, direction=dir, color=color)
+                    value_label_elems.append(elem)
+        
         # Annotate highlighted points/bars
         for hv in highlight_values:
             value_label = a_formatter(hv)
@@ -381,7 +399,7 @@ class SerialChart(Chart):
 
         # Accentuate y=0
         if self.data.min_val < 0:
-            self.ax.axhline(linewidth=1)
+            self.ax.axhline(linewidth=1, zorder=0)
 
         # Highlight diff
         # y0, y1 = highlight_diff['y0'], highlight_diff['y1']
@@ -501,23 +519,28 @@ class SerialChart(Chart):
             # adjust_text(self._annotations,
             #             x=x, y=y)
 
-        if len(line_labels) > 1:
-            if len(line_labels) == 2:
-                # Hack: check for overlap and adjust labels only
-                # if such overlap exist.
-                # `adjust_text` tended to offset labels unnecessarily
-                # but it might just be that I haven't worked out how to use it properly
-                from adjustText import get_bboxes
-                bb1, bb2 = get_bboxes(line_labels, self._fig.canvas.renderer, (1.0, 1.0), self.ax)
-                if (
-                    # first label is above
-                    (bb1.y0 < bb2.y0) and (bb1.y1 > bb2.y0)
-                    # first label is below
-                    or (bb1.y0 > bb2.y0) and (bb1.y0 < bb2.y1)
-                ):
-                    adjust_text(line_labels, autoalign="y",
-                                ha="left")
+        if len(line_label_elems) > 1:
+            self._adust_texts_vertically(line_label_elems)
+        
+        if len(value_label_elems) > 1:
+            self._adust_texts_vertically(value_label_elems, ha="center")
 
-            else:
-                adjust_text(line_labels, autoalign="y",
-                            ha="left")
+    def _adust_texts_vertically(self, elements, ha="left"):
+        if len(elements) == 2:
+            # Hack: check for overlap and adjust labels only
+            # if such overlap exist.
+            # `adjust_text` tended to offset labels unnecessarily
+            # but it might just be that I haven't worked out how to use it properly
+            from adjustText import get_bboxes
+            bb1, bb2 = get_bboxes(elements, self._fig.canvas.renderer, (1.0, 1.0), self.ax)
+            print(bb1.y0, bb2.y0)
+            if (
+                # first label is above
+                (bb1.y0 < bb2.y0) and (bb1.y1 > bb2.y0)
+                # first label is below
+                or (bb1.y0 > bb2.y0) and (bb1.y0 < bb2.y1)
+            ):
+                adjust_text(elements, autoalign="y", ha=ha)
+
+        else:
+            adjust_text(elements, autoalign="y", ha=ha)

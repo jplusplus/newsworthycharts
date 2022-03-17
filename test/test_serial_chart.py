@@ -276,7 +276,38 @@ def test_multi_color_lines():
     c.render("serial_chart_multi_color", "png")
     for i, color in enumerate(colors):
         assert c.ax.get_lines()[i].get_color() == color
-    
+
+def test_value_labeling():
+    chart_obj = {
+        "width": 600,
+        "height": 300,
+        "data": [
+            [
+                ["2017-01-01", -.6],
+                ["2018-01-01", .1],
+                ["2019-01-01", .32]
+            ],
+            [
+                ["2017-01-01", -.6],
+                ["2018-01-01", -.1],
+                ["2019-01-01", .4]
+            ],
+        ],
+        "colors": "qualitative_colors",
+        "labels": ["Region A", "Region B"], 
+        "label_placement": "line",
+        "value_labels": True,
+        "decimals": 1,
+        "units": "percent",
+        "ymax": 0,
+        "type": "line",
+        #"highlight": "2019-01-01",
+        "title": "Look at those value labels",
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    c.render("serial_chart_value_labeling", "png")
+
+
 
 def test_line_labeling():
     chart_obj = {
