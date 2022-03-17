@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.27.0
+
+  - `SeriealChart`: Enable value labeling of each point on line.
+
 - 1.26.1
 
   - Highlight only current value in SeasonalChart; use different shades of grey for the rest

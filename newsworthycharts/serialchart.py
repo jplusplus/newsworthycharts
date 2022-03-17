@@ -38,7 +38,7 @@ class SerialChart(Chart):
         # Optional: where to place series label
         self.label_placement = "legend"  # "legend"|"line|inline"
 
-        # Optional: 
+        # Optional: annotate each point with a value label 
         self.value_labels = False
 
     @property
