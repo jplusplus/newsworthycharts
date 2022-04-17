@@ -1,8 +1,11 @@
 """Custom charts for climate report on cars
 """
 
+from math import atan2,degrees
+import numpy as np
 from newsworthycharts import SerialChart
 from datetime import datetime
+
 
 class ClimateCarsYearlyEmissionsTo2030(SerialChart):
     # 2030 emission level target
@@ -23,7 +26,7 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
         ###
         line_observed = self.ax.get_lines()[0]
         line_observed.set_color(color_observed)
-        
+
         line_scen1 = self.ax.get_lines()[1]
         line_scen1.set_linestyle("dashed")
         line_scen1.set_color(color_scen)
@@ -33,7 +36,6 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
         line_scen2.set_color(color_scen)
         line_scen2.set_label(None)
 
-
         ###
         # Annotations
         ###
@@ -42,48 +44,51 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
         bg_color = self._style.get("figure.facecolor", "white")
         white_outline = [pe.withStroke(linewidth=3, foreground=bg_color)]
 
-        self.ax.axhline(self.target, lw=1.5, 
+        self.ax.axhline(self.target, lw=1.5,
                         color=color_target)
 
-        xmid = line_observed.get_xdata()[int(len(line_observed.get_xdata())/2)]
-        self.ax.annotate(self.target_label, 
-                         xy=(xmid, self.target),
-                         xytext=(-40,-30), textcoords='offset pixels',
-                         ha="right", va="center",
-                         fontweight="normal",
-                         fontsize=self._style["annotation.fontsize"],
-                         color=self._style["dark_gray_color"],
-                         path_effects=white_outline,
-                         arrowprops=dict(
-                             color=self._style["dark_gray_color"],
-                             arrowstyle="->",
-                            connectionstyle="angle3,angleA=-10,angleB=60"),
-            )
+        xmid = line_observed.get_xdata()[int(len(line_observed.get_xdata()) / 2)]
+        self.ax.annotate(
+            self.target_label,
+            xy=(xmid, self.target),
+            xytext=(-40, -30), textcoords='offset pixels',
+            ha="right", va="center",
+            fontweight="normal",
+            fontsize=self._style["annotation.fontsize"],
+            color=self._style["dark_gray_color"],
+            path_effects=white_outline,
+            arrowprops=dict(
+                color=self._style["dark_gray_color"],
+                arrowstyle="->",
+                connectionstyle="angle3,angleA=-10,angleB=60",
+            ),
+        )
 
         # Scenario 1
-        i_2030 = line_scen1.get_xdata().tolist().index(datetime(2030,1,1))
+        i_2030 = line_scen1.get_xdata().tolist().index(datetime(2030, 1, 1))
 
-        self.ax.annotate(self.labels[1], 
-                         color=self._style["dark_gray_color"], 
-                         va="center", ha="left",
-                         path_effects=white_outline,
-                         fontsize=self._style["annotation.fontsize"],
-                         xytext=(40, 80), textcoords='offset pixels',
-                         xy=(line_scen1.get_xdata()[i_2030], 
-                             line_scen1.get_ydata()[i_2030]),
-                        arrowprops=dict(
-                             color=self._style["dark_gray_color"],
-                             arrowstyle="->",
-                            connectionstyle="angle3,angleA=0,angleB=60")
-                             )
+        self.ax.annotate(
+            self.labels[1],
+            color=self._style["dark_gray_color"],
+            va="center", ha="left",
+            path_effects=white_outline,
+            fontsize=self._style["annotation.fontsize"],
+            xytext=(40, 80), textcoords='offset pixels',
+            xy=(line_scen1.get_xdata()[i_2030], line_scen1.get_ydata()[i_2030]),
+            arrowprops=dict(
+                color=self._style["dark_gray_color"],
+                arrowstyle="->",
+                connectionstyle="angle3,angleA=0,angleB=60",
+            )
+        )
 
         # Scenario 2
-        self.ax.annotate(self.labels[2], 
-                         color=self._style["dark_gray_color"], 
+        self.ax.annotate(self.labels[2],
+                         color=self._style["dark_gray_color"],
                          path_effects=white_outline,
                          va="center", ha="right",
                          xytext=(-40, -40), textcoords='offset pixels',
-                         xy=(line_scen2.get_xdata()[i_2030], 
+                         xy=(line_scen2.get_xdata()[i_2030],
                              line_scen2.get_ydata()[i_2030]),
                         fontsize=self._style["annotation.fontsize"],
                         arrowprops=dict(
@@ -107,9 +112,9 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
         self.ax.set_xticks([datetime(x,1,1) for x in tick_years])
 
 
-
 class ClimateCarsCO2BugdetChart(SerialChart):
     pass
+
     def __init__(self, *args, **kwargs):
         self.budget = None
         self.budget_label = None
@@ -118,7 +123,7 @@ class ClimateCarsCO2BugdetChart(SerialChart):
 
     def _add_data(self):
         super(ClimateCarsCO2BugdetChart, self)._add_data()
-        color_observed = self._style["neutral_color"]
+        # color_observed = self._style["neutral_color"]
         color_scen = self._style["strong_color"]
         color_budget = self._style["qualitative_colors"][1]
 
@@ -126,9 +131,9 @@ class ClimateCarsCO2BugdetChart(SerialChart):
         ###
         # Lines
         ###
-        #line_observed = self.ax.get_lines()[0]
-        #line_observed.set_color(color_observed)
-        
+        # line_observed = self.ax.get_lines()[0]
+        # line_observed.set_color(color_observed)
+
         line_scen1 = self.ax.get_lines()[0]
         line_scen1.set_linestyle("dashed")
         line_scen1.set_color(color_scen)
@@ -138,11 +143,11 @@ class ClimateCarsCO2BugdetChart(SerialChart):
         line_scen2.set_color(color_scen)
         line_scen2.set_label(None)
 
-
         ###
         # Annotations
         ###
         import matplotlib.patheffects as pe
+
         def outline(color):
             return [pe.withStroke(linewidth=3, foreground=color)]
 
@@ -155,73 +160,76 @@ class ClimateCarsCO2BugdetChart(SerialChart):
 
         # budgettak
         self.ax.axhline(self.budget, lw=1.5, color=color_budget)
-        self.ax.axhspan(self.budget, self.ax.get_ylim()[1], facecolor=color_budget, 
+        self.ax.axhspan(self.budget, self.ax.get_ylim()[1], facecolor=color_budget,
                         edgecolor=None, alpha=.3)
 
-        self.ax.annotate(self.budget_label, 
-                         xy=(xmin, self.budget),
-                         xytext=(0,5), textcoords='offset pixels',
-                         ha="left", va="bottom",
-                         fontweight="bold",
-                         fontsize=self._style["annotation.fontsize"],
-                         color=color_budget,
-                         #path_effects=white_outline,
+        self.ax.annotate(
+            self.budget_label,
+            xy=(xmin, self.budget),
+            xytext=(0, 5), textcoords="offset pixels",
+            ha="left", va="bottom",
+            fontweight="bold",
+            fontsize=self._style["annotation.fontsize"],
+            color=color_budget,
+            # path_effects=white_outline,
         )
 
         # scen 1: nuvarande utsläpp
         a = self.line_annotations[0]
-        self.ax.annotate(a[2], 
-                    color=self._style["dark_gray_color"], 
-                    va="center", ha="right",
-                    #path_effects=outline(color_budget),
-                    fontsize=self._style["annotation.fontsize"],
-                    xytext=(-40, 120), textcoords='offset pixels',
-                    xy=(datetime.strptime(a[0], "%Y-%m-%d"), a[1]),
-                arrowprops=dict(
-                        color=self._style["dark_gray_color"],
-                        arrowstyle="->",
-                    connectionstyle="angle3,angleA=0,angleB=-60")
-                        )
-        
-        self.ax.annotate(self.labels[0],
-                         xy=(xmax, s1_ymax),
-                         xytext=(-30, 0), textcoords='offset pixels',
-                         color=color_scen, 
-                         va="bottom", ha="right",
-                         fontsize=self._style["annotation.fontsize"],
-                        )
+        self.ax.annotate(
+            a[2],
+            color=self._style["dark_gray_color"],
+            va="center", ha="right",
+            # path_effects=outline(color_budget),
+            fontsize=self._style["annotation.fontsize"],
+            xytext=(-40, 120), textcoords='offset pixels',
+            xy=(datetime.strptime(a[0], "%Y-%m-%d"), a[1]),
+            arrowprops=dict(
+                color=self._style["dark_gray_color"],
+                arrowstyle="->",
+                connectionstyle="angle3,angleA=0,angleB=-60",
+            ),
+        )
 
-
+        self.ax.annotate(
+            self.labels[0],
+            xy=(xmax, s1_ymax),
+            xytext=(-30, 0), textcoords='offset pixels',
+            color=color_scen,
+            va="bottom", ha="right",
+            fontsize=self._style["annotation.fontsize"],
+        )
 
         # scen 2: nuvarande utsläpp
         a = self.line_annotations[1]
-        self.ax.annotate(a[2], 
-                    color=self._style["dark_gray_color"], 
-                         va="center", ha="left",
-                         xytext=(20, -80), textcoords='offset pixels',
-                        xy=(datetime.strptime(a[0], "%Y-%m-%d"), a[1]),
-                        fontsize=self._style["annotation.fontsize"],
-                        arrowprops=dict(
-                             color=self._style["dark_gray_color"],
-                             arrowstyle="->",
-                            connectionstyle="angle3,angleA=0,angleB=-60")
-                            )
+        self.ax.annotate(
+            a[2],
+            color=self._style["dark_gray_color"],
+            va="center", ha="left",
+            xytext=(20, -80), textcoords='offset pixels',
+            xy=(datetime.strptime(a[0], "%Y-%m-%d"), a[1]),
+            fontsize=self._style["annotation.fontsize"],
+            arrowprops=dict(
+                color=self._style["dark_gray_color"],
+                arrowstyle="->",
+                connectionstyle="angle3,angleA=0,angleB=-60"
+            )
+        )
 
-        self.ax.annotate(self.labels[1],
-                         xy=(xmax, s2_ymax),
-                         xytext=(-30, 0), textcoords='offset pixels',
-                         color=color_scen, 
-                         va="bottom", ha="right",
-                         fontsize=self._style["annotation.fontsize"],
-                        )
+        self.ax.annotate(
+            self.labels[1],
+            xy=(xmax, s2_ymax),
+            xytext=(-30, 0), textcoords='offset pixels',
+            color=color_scen,
+            va="bottom", ha="right",
+            fontsize=self._style["annotation.fontsize"],
+        )
 
-        leg = self.ax.get_legend().remove()
+        self.ax.get_legend().remove()
 
-from math import atan2,degrees
-import numpy as np
 
-#Label line with line2D label data
-def label_line(line,x,label=None,align=True,**kwargs):
+# Label line with line2D label data
+def label_line(line, x, label=None, align=True, **kwargs):
 
     ax = line.axes
     xdata = line.get_xdata()
@@ -231,33 +239,33 @@ def label_line(line,x,label=None,align=True,**kwargs):
         print('x label location is outside data range!')
         return
 
-    #Find corresponding y co-ordinate and angle of the line
+    # Find corresponding y co-ordinate and angle of the line
     ip = 1
     for i in range(len(xdata)):
         if x < xdata[i]:
             ip = i
             break
 
-    y = ydata[ip-1] + (ydata[ip]-ydata[ip-1])*(x-xdata[ip-1])/(xdata[ip]-xdata[ip-1])
+    y = ydata[ip - 1] + (ydata[ip] - ydata[ip - 1]) * (x - xdata[ip - 1]) / (xdata[ip] - xdata[ip - 1])
 
     if not label:
         label = line.get_label()
 
     if align:
-        #Compute the slope
-        dx = (xdata[ip] - xdata[ip-1])
-        dy = ydata[ip] - ydata[ip-1]
-        ang = degrees(atan2(dy,dx))
+        # Compute the slope
+        dx = (xdata[ip] - xdata[ip - 1])
+        dy = ydata[ip] - ydata[ip - 1]
+        ang = degrees(atan2(dy, dx))
 
-        #Transform to screen co-ordinates
-        pt = np.array([x,y]).reshape((1,2))
-        ang=45
-        trans_angle = ax.transData.transform_angles(np.array((ang,)),pt)[0]
+        # Transform to screen co-ordinates
+        pt = np.array([x, y]).reshape((1, 2))
+        ang = 45
+        trans_angle = ax.transData.transform_angles(np.array((ang,)), pt)[0]
 
     else:
         trans_angle = 0
 
-    #Set a bunch of keyword arguments
+    # Set a bunch of keyword arguments
     if 'color' not in kwargs:
         kwargs['color'] = line.get_color()
 
@@ -276,4 +284,4 @@ def label_line(line,x,label=None,align=True,**kwargs):
     if 'zorder' not in kwargs:
         kwargs['zorder'] = 2.5
 
-    ax.text(x,y,label,rotation=trans_angle,**kwargs)
+    ax.text(x, y, label, rotation=trans_angle, **kwargs)
