@@ -39,7 +39,7 @@ Here is how you would make a pie chart:
 
 .. code-block:: python3
 
-  # data 
+  # data
   labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
   sizes = [15, 30, 45, 10]
 
@@ -122,9 +122,14 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- Next
+
+  - Matplotlib updated from 3.3.x to 3.5.x
+  - Matplotlib and related modules are now pinned to a specific version
+
 - 1.27.0
 
-  - `SeriealChart`: Enable value labeling of each point on line.
+  - `SerialChart`: Enable value labeling of each point on line.
 
 - 1.26.1
 
@@ -160,7 +165,7 @@ Changelog
   - CategoricalChartWithReference: Adds highlight option
 
 - 1.23.1
-  
+
   - Adds missing dependency.
 
 - 1.23.0
@@ -248,11 +253,11 @@ Changelog
 
 - 1.16.2
 
-  - Fixes highlight bug in progress chart. 
+  - Fixes highlight bug in progress chart.
 
 - 1.16.1
 
-  - Small changes in range plot. 
+  - Small changes in range plot.
 
 - 1.16.0
 
@@ -280,7 +285,7 @@ Changelog
 
 - 1.13.2
 
-  - Set annotation fontsize to same as ticks by default. 
+  - Set annotation fontsize to same as ticks by default.
 
 - 1.13.1
 
