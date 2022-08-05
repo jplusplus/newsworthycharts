@@ -433,23 +433,26 @@ class SerialChart(Chart):
                                  alpha=self._style["fill_between_alpha"])
 
         # Y axis formatting
-        padding_bottom = abs(self.data.min_val * 0.15)
         if self.ymin is not None:
-            ymin = min(self.ymin, self.data.min_val - padding_bottom)
+            ymin = self.ymin
+            padding_bottom = 0
         else:
-            ymin = self.data.min_val - padding_bottom
-
+            ymin = self.data.min_val
+            padding_bottom = abs(self.data.min_val * 0.15)
+        
         if self.ymax is not None:
-            y_max = max(self.ymax, self.data.max_val)
-
+            ymax = self.ymax
+            padding_top = 0
         else:
             if is_stacked:
-                y_max = self.data.stacked_max_val
+                ymax = self.data.stacked_max_val
             else:
-                y_max = self.data.max_val
+                ymax = self.data.max_val
 
-        self.ax.set_ylim(ymin=ymin,
-                         ymax=y_max * 1.15)
+            padding_top = ymax * 0.15
+
+        self.ax.set_ylim(ymin=ymin - padding_bottom,
+                         ymax=ymax + padding_top)
 
         self.ax.yaxis.set_major_formatter(y_formatter)
         self.ax.yaxis.grid(True)
