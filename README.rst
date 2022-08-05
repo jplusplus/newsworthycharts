@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.27.1
+
+  - `SeriealChart`: Force y axis range to to given values when `ymax` and `ymin` is defined.
+
 - 1.27.0
 
   - `SeriealChart`: Enable value labeling of each point on line.
