@@ -122,13 +122,17 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.28.0
+
+  - `Chart` / `SerialChart`: New feature: Mark broken y axis with symbol.
+
 - 1.27.1
 
-  - `SeriealChart`: Force y axis range to to given values when `ymax` and `ymin` is defined.
+  - `SerialChart`: Force y axis range to to given values when `ymax` and `ymin` is defined.
 
 - 1.27.0
 
-  - `SeriealChart`: Enable value labeling of each point on line.
+  - `SerialChart`: Enable value labeling of each point on line.
 
 - 1.26.1
 
