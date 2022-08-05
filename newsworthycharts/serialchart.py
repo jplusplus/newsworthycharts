@@ -1,3 +1,4 @@
+from typing import no_type_check_decorator
 from .chart import Chart
 from .lib.locator import get_best_locator, get_year_ticks
 from .lib.utils import to_float, to_date
@@ -456,6 +457,9 @@ class SerialChart(Chart):
 
         self.ax.yaxis.set_major_formatter(y_formatter)
         self.ax.yaxis.grid(True)
+
+        if ymin > 0:
+            self._mark_broken_axis()
 
         # X ticks and formatter
         if self.ticks:

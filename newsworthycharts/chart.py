@@ -285,6 +285,42 @@ class Chart(object):
         pass
         # raise NotImplementedError("This method should be overridden")
 
+    def _mark_broken_axis(self, axis="y"):
+        """Adds a symbol to mark that an axis is broken
+        """
+        if axis != "y":
+            raise NotImplementedError("Not able to mark broken x axis yet")
+        from matplotlib.path import Path
+        # create a custom marker path
+        # Set the relative size of each move 
+        x_step = 0.5
+        y_step = 0.3
+        verts = [
+            (0, 0),
+            (0, y_step),
+            (-x_step, y_step * 1.5),
+            (x_step, y_step * 2.5),
+            (-x_step, y_step * 3.5),
+            (x_step, y_step * 4.5),
+            (0, y_step * 5),
+            (0, y_step * 6),
+        ]
+        codes = [ Path.MOVETO ] + (len(verts) - 1) * [ Path.LINETO]
+        path = Path(verts,codes)
+
+        kwargs = dict(
+            marker=path,
+            # TODO: Make size a function of the size of the chart
+            markersize=25, 
+            linestyle='none',
+            mec=self._style["ytick.color"],
+            mew=0.75,
+            color='none',
+            clip_on=False
+        )
+        self.ax.plot([0], transform=self.ax.transAxes, **kwargs)
+
+
     def _apply_changes_before_rendering(self):
         """
          To ensure consistent rendering, we call this method just before
