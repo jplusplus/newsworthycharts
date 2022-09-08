@@ -195,9 +195,9 @@ class CategoricalChartWithReference(CategoricalChart):
             categories = [x[0] for x in data]
 
             if i == 0:
-                #color = self._style["strong_color"]
-                color = ["red", "green", "blue"]
-                if self.highlight is None:
+                if isinstance(self.colors, list):
+                    color = self.colors
+                elif self.highlight is None:
                     color = self._style["strong_color"]
                 else:
                     is_highlighted = [x == self.highlight or x in self.highlight 
