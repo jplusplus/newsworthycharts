@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.29.0
+
+  - `CategoricalChart`: Make it possible to hide legend. 
+
 - 1.28.1
 
   - `CategoricalChartWithReference`: Handle multi color bars. 
