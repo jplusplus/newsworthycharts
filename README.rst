@@ -122,6 +122,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.28.1
+
+  - `CategoricalChartWithReference`: Handle multi color bars. 
+
 - 1.28.0
 
   - `Chart` / `SerialChart`: New feature: Mark broken y axis with symbol.
