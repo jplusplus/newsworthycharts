@@ -195,6 +195,53 @@ def test_categorical_chart_with_reference_series():
     c = CategoricalChartWithReference.init_from(chart_obj, storage=local_storage)
     c.render("categorical_chart_with_two_series_horizontal", "png")
 
+
+def test_colored_categorical_chart_with_reference_series():
+    chart_obj = {
+        "data": [
+            [
+                ('M', 0.1985116137263444),
+                ('S', 0.2839164376430766),
+                ('L', 0.0542573269504105),
+                ('C', 0.0870201872782123),
+                ('V', 0.0771319115248597),
+                ('MP', 0.0431621625601214),
+                ('KD', 0.0634608272219474),
+                ('SD', 0.1778209311248905),
+            ],
+            [
+                ('M', 0.233),
+                ('S', 0.31),
+                ('L', 0.054000000000000006),
+                ('C', 0.061),
+                ('V', 0.057),
+                ('MP', 0.069),
+                ('KD', 0.046),
+                ('SD', 0.129),
+            ],
+        ],
+        "colors": [
+            '#6295c3',
+            '#da373d',
+            '#446793',
+            '#285f35',
+            '#973933',
+            '#669e51',
+            '#323e72',
+            '#ddb647'
+        ],
+        "legend": False,
+        "labels": ["2018", "2014"],
+        "width": 800,
+        "height": 600,
+        "units": "percent",
+        "bar_orientation": "vertical",
+        "title": "Partiernas valresultat 2018"
+    }
+
+    c = CategoricalChartWithReference.init_from(chart_obj, storage=local_storage)
+    c.render("categorical_chart_with_reference_colored", "png")
+
 def test_categorical_chart_with_reference_and_highlight():
     chart_obj = {
         "data": [
