@@ -124,8 +124,12 @@ Changelog
 
 - next
 
-  - Matplotlib updated from 3.3.x to 3.5.x
+  - Matplotlib updated from 3.3.x to 3.6.x, includeing among other things:
+    - support for .webp
+    - a lot of additions and improvements to rcParams
+    - new backends
   - Matplotlib and related modules are now pinned to a specific version
+  - Added support for generating webp images!
 
 - 1.29.0
 

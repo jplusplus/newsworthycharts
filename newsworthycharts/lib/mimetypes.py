@@ -2,6 +2,7 @@
 """
 
 MIME_TYPES = {
+    'webp': "image/webp",
     'png': "image/png",
     'svg': "image/svg+xml",
     'eps': "application/postscript",

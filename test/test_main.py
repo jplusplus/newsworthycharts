@@ -21,6 +21,16 @@ def test_generating_png():
     assert("png" in container)
     assert(what(container["png"]) == "png")
 
+def test_generating_webp():
+    container = {}
+    ds = DictStorage(container)
+    c = Chart(800, 600, storage=ds)
+    c.render("test", "webp")
+
+    assert("webp" in container)
+    assert(what(container["webp"]) == "webp")
+    im = Image.open(container["webp"])
+    assert(im.size == (800, 600))
 
 def test_dynamic_init():
     engine = "SerialChart"
