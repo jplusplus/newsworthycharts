@@ -13,6 +13,7 @@ class CategoricalChart(Chart):
         self.bar_orientation = "horizontal"  # [horizontal|vertical]
         self.annotation_rotation = 0
         self.stacked = False
+        self.legend = True
 
         # Optional: specify a list of colors (for mulitple datasets)
         self.colors = None
@@ -164,6 +165,12 @@ class CategoricalChart(Chart):
         if len(self.data) > 1:
             self.ax.legend(self.labels, loc='best')
 
+        self._setup_legend()
+
+    def _setup_legend(self):
+        if self.legend is False:
+            # hide legend
+            self.ax.get_legend().remove()
 
 class CategoricalChartWithReference(CategoricalChart):
     """ A two categorical chart with two series where the latter is treated
@@ -195,9 +202,9 @@ class CategoricalChartWithReference(CategoricalChart):
             categories = [x[0] for x in data]
 
             if i == 0:
-                #color = self._style["strong_color"]
-                color = ["red", "green", "blue"]
-                if self.highlight is None:
+                if isinstance(self.colors, list):
+                    color = self.colors
+                elif self.highlight is None:
                     color = self._style["strong_color"]
                 else:
                     is_highlighted = [x == self.highlight or x in self.highlight 
@@ -237,12 +244,14 @@ class CategoricalChartWithReference(CategoricalChart):
         if self.labels:
             self.ax.legend(self.labels, loc='best')
 
+        self._setup_legend()
+
 
 class ProgressChart(CategoricalChart):
     def __init__(self, *args, **kwargs):
         self.target = None
         self.target_label = None
-
+        self.legend = False
 
         # should value labels be rendered?
         self.value_labels = None  # "progress"|"remaining"
@@ -353,4 +362,4 @@ class ProgressChart(CategoricalChart):
                     color=color,
                 )
 
-        self.ax.get_legend().remove()
+        self._setup_legend()

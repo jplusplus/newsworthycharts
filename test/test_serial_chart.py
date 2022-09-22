@@ -148,6 +148,7 @@ def test_bar_chart_with_ymax():
                 ["2019-01-01", -2]
             ]
         ],
+        "title": "Stating at zero",
         "ymax": 0,
         "type": "bars",
     }
@@ -161,19 +162,21 @@ def test_bar_chart_with_ymax():
         "height": 600,
         "data": [
             [
-                ["2016-01-01", 4],
-                ["2017-01-01", 6],
-                ["2018-01-01", 3],
-                ["2019-01-01", 2]
+                ["2016-01-01", .94],
+                ["2017-01-01", .96],
+                ["2018-01-01", .93],
+                ["2019-01-01", .99],
             ]
         ],
-        "ymax": 3,
-        "type": "bars",
+        "title": "Max sure I start at 100 %",
+        "ymax": 1,
+        "type": "line",
+        "units": "percent",
     }
     c = SerialChart.init_from(chart_obj, storage=local_storage)
-    c.render("bar_chart_with_ymax2", "png")
-    max_value = max([x[1] for x in chart_obj["data"][0]])
-    assert c.ax.get_ylim()[1] > max_value
+    c.render("serial_chart_with_ymax", "png")
+    #max_value = max([x[1] for x in chart_obj["data"][0]])
+    assert c.ax.get_ylim()[1] == 1.0
 
 def test_serial_chart_with_axis_labels():
     chart_obj = {
@@ -299,7 +302,6 @@ def test_value_labeling():
         "value_labels": True,
         "decimals": 1,
         "units": "percent",
-        "ymax": 0,
         "type": "line",
         #"highlight": "2019-01-01",
         "title": "Look at those value labels",
@@ -328,7 +330,7 @@ def test_line_labeling():
         "labels": ["Region A", "Region B"], 
         "label_placement": "line",
         "decimals": 1,
-        "ymax": 0,
+        "ymin": 0,
         "type": "line",
         "highlight": "2019-01-01",
         "title": "Look at those labels",
@@ -346,6 +348,7 @@ def test_line_labeling():
         'units': 'percent',
         'width': 900,
         'height': 474,
+        'ymin': 0,
         'periodicity': 'monthly',
         'label_placement': 'line', 'highlight': '2021-11-01', 
         'title': 'Lägre arbetslöshet i Ängelholm än i Skåne', 
@@ -376,3 +379,5 @@ def test_inline_labeling():
     }
     c = SerialChart.init_from(chart_obj, storage=local_storage)
     c.render("serial_chart_inline_labeling", "png")
+
+

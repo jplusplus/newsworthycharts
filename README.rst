@@ -122,10 +122,26 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
-- Next
+- next
 
   - Matplotlib updated from 3.3.x to 3.5.x
   - Matplotlib and related modules are now pinned to a specific version
+
+- 1.29.0
+
+  - `CategoricalChart`: Make it possible to hide legend. 
+
+- 1.28.1
+
+  - `CategoricalChartWithReference`: Handle multi color bars. 
+
+- 1.28.0
+
+  - `Chart` / `SerialChart`: New feature: Mark broken y axis with symbol.
+
+- 1.27.1
+
+  - `SerialChart`: Force y axis range to to given values when `ymax` and `ymin` is defined.
 
 - 1.27.0
 
