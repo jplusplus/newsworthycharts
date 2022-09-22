@@ -61,7 +61,7 @@ class ScatterPlot(Chart):
                 point_names = [None] * len(data)
 
             # Make markers semi-transparent
-            transparent_color = list(self._style["neutral_color"])
+            transparent_color = list(self._nwc_style["neutral_color"])
             transparent_color[3] = .4
 
             # s refers to area here, so square the marker size
@@ -79,7 +79,7 @@ class ScatterPlot(Chart):
                     
                     # A point can be both highlighted and annotated
                     if is_highlighted:
-                        color = self._style["strong_color"]
+                        color = self._nwc_style["strong_color"]
                         size = markersize * 1.5
                         fontsize = "medium"
                     # ...or just annotated

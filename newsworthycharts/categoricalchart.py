@@ -60,10 +60,10 @@ class CategoricalChart(Chart):
 
             if self.colors is not None:
                 highlight_color = self.colors[i]
-                color = self._style["neutral_color"]
+                color = self._nwc_style["neutral_color"]
             else:
-                color = self._style["neutral_color"]
-                highlight_color = self._style["strong_color"]
+                color = self._nwc_style["neutral_color"]
+                highlight_color = self._nwc_style["strong_color"]
 
             if self.highlight is None:
                 # use strong color if there is nothing to highlight
@@ -205,16 +205,16 @@ class CategoricalChartWithReference(CategoricalChart):
                 if isinstance(self.colors, list):
                     color = self.colors
                 elif self.highlight is None:
-                    color = self._style["strong_color"]
+                    color = self._nwc_style["strong_color"]
                 else:
                     is_highlighted = [x == self.highlight or x in self.highlight 
                                       for x in categories]
-                    color_highlight = self._style["strong_color"]
-                    color_non_highlight = self._style["neutral_color"]
+                    color_highlight = self._nwc_style["strong_color"]
+                    color_non_highlight = self._nwc_style["neutral_color"]
                     color = [color_highlight if x else color_non_highlight for x in is_highlighted]
 
             else:
-                color = self._style["light_gray_color"]
+                color = self._nwc_style["light_gray_color"]
 
             bar_pos = [x + i * bar_width / 2
                        for x in np.arange(len(values))]
@@ -288,8 +288,8 @@ class ProgressChart(CategoricalChart):
 
         super(ProgressChart, self)._add_data()
         n_bars = len(self.data[0])
-        color_progress = self._style["strong_color"]
-        color_remaining = self._style["light_gray_color"]
+        color_progress = self._nwc_style["strong_color"]
+        color_remaining = self._nwc_style["light_gray_color"]
 
         # BAR STYLING
         for rect in self.ax.patches[n_bars:]:
@@ -315,12 +315,12 @@ class ProgressChart(CategoricalChart):
                 xytext=(-offset, offset),
                 textcoords='offset pixels',
                 ha="right", va="bottom",
-                fontsize=self._style["annotation.fontsize"],
+                fontsize=self._nwc_style["annotation.fontsize"],
                 arrowprops={
                     "arrowstyle": "-",
                     # "shrinkA": 0, "shrinkB": dot_size / 2 + 2,
                     "connectionstyle": "angle,angleA=0,angleB=90,rad=0",
-                    "color": self._style["neutral_color"],
+                    "color": self._nwc_style["neutral_color"],
                 }
             )
 
@@ -358,7 +358,7 @@ class ProgressChart(CategoricalChart):
                     textcoords='offset pixels',
                     va="center",
                     ha="right" if orient == "inside" else "left",
-                    fontsize=self._style["annotation.fontsize"],
+                    fontsize=self._nwc_style["annotation.fontsize"],
                     color=color,
                 )
 

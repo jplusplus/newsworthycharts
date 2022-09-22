@@ -123,16 +123,16 @@ def test_bar_highlight():
     c.render("categorical_chart_with_highlight", "png")
     bar_sthlm, bar_täby, bar_solna = c.ax.patches
 
-    assert(bar_sthlm.get_fc() == c._style["strong_color"])
-    assert(bar_täby.get_fc() == c._style["neutral_color"])
+    assert(bar_sthlm.get_fc() == c._nwc_style["strong_color"])
+    assert(bar_täby.get_fc() == c._nwc_style["neutral_color"])
 
     # Render multiple
     chart_obj["highlight"] = ["Täby", "Stockholm"]
     c = CategoricalChart.init_from(chart_obj, storage=local_storage)
     c.render("categorical_chart_with_mulitple_highlights", "png")
     bar_sthlm, bar_täby, bar_solna = c.ax.patches
-    assert(bar_sthlm.get_fc() == c._style["strong_color"])
-    assert(bar_täby.get_fc() == c._style["strong_color"])
+    assert(bar_sthlm.get_fc() == c._nwc_style["strong_color"])
+    assert(bar_täby.get_fc() == c._nwc_style["strong_color"])
 
 
 def test_stacked_categorical_chart():

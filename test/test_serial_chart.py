@@ -28,9 +28,9 @@ def test_color_function():
     c = SerialChart.init_from(chart_obj, storage=ds)
     c.render("test", "png")
 
-    neutral_color = c._style["neutral_color"]
-    pos_color = c._style["positive_color"]
-    neg_color = c._style["negative_color"]
+    neutral_color = c._nwc_style["neutral_color"]
+    pos_color = c._nwc_style["positive_color"]
+    neg_color = c._nwc_style["negative_color"]
     bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
     assert(bar_colors[0] == neg_color)
     assert(bar_colors[1] == pos_color)
@@ -41,8 +41,8 @@ def test_color_function():
     c = SerialChart.init_from(chart_obj, storage=ds)
     c.render("test", "png")
 
-    warm_color = c._style["warm_color"]
-    cold_color = c._style["cold_color"]
+    warm_color = c._nwc_style["warm_color"]
+    cold_color = c._nwc_style["cold_color"]
     bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
 
     assert(bar_colors[0] == cold_color)
@@ -111,7 +111,7 @@ def test_stacked_bar_chart():
     assert(len(bars) == 8)
 
     # Should color with qualitative colors by default
-    qualitative_colors = c._style["qualitative_colors"]
+    qualitative_colors = c._nwc_style["qualitative_colors"]
     bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
     assert(bar_colors[0] == qualitative_colors[0])
     assert(bar_colors[-1] == qualitative_colors[1])
@@ -121,8 +121,8 @@ def test_stacked_bar_chart():
     c = SerialChart.init_from(chart_obj, storage=local_storage)
     c.render("stacked_bar_chart_highlighted", "png")
     bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
-    assert(bar_colors[0] == c._style["strong_color"])
-    assert(bar_colors[-1] == c._style["neutral_color"])
+    assert(bar_colors[0] == c._nwc_style["strong_color"])
+    assert(bar_colors[-1] == c._nwc_style["neutral_color"])
 
     # specify colors
     chart_obj["colors"] = ["red", "green"]

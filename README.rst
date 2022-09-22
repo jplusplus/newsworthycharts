@@ -128,8 +128,10 @@ Changelog
     - support for .webp
     - a lot of additions and improvements to rcParams
     - new backends
+  - Custom NWCharts parameters to the rc style file is being deprecated, and should eventually be removed.
   - Matplotlib and related modules are now pinned to a specific version
   - Added support for generating webp images!
+  - Upgraded pytest to support Python 3.10+
 
 - 1.29.0
 

@@ -62,7 +62,7 @@ class DatawrapperChart(Chart):
         # Calculated properties
         self._storage = storage
         self._w, self._h = int(width), int(height)
-        self._style = loadstyle(style)
+        self._style, self._nwc_style = loadstyle(style)
         # Standardize and check if language tag is a valid BCP 47 tag
         self._language = standardize_tag(language)
         self._locale = Locale.parse(self._language.replace("-", "_"))
@@ -246,8 +246,8 @@ class DatawrapperChart(Chart):
         """
         """
         chart_type = dw_data["type"]
-        strong_color = rgb2hex(self._style["strong_color"])
-        neutral_color = rgb2hex(self._style["neutral_color"])
+        strong_color = rgb2hex(self._nwc_style["strong_color"])
+        neutral_color = rgb2hex(self._nwc_style["neutral_color"])
 
         if chart_type in ["d3-lines"]:
             colors = {}

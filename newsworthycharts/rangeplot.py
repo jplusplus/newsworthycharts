@@ -48,11 +48,11 @@ class RangePlot(Chart):
         if self.colors is None:
             if self.value_labels == "both":
                 # use categorical coloring by default if both ends are to labelsed
-                start_color, end_color = self._style["qualitative_colors"][1], self._style["qualitative_colors"][0] 
+                start_color, end_color = self._nwc_style["qualitative_colors"][1], self._nwc_style["qualitative_colors"][0] 
 
             else:
                 # highlight the end point by default
-                start_color, end_color = self._style["neutral_color"], self._style["strong_color"]
+                start_color, end_color = self._nwc_style["neutral_color"], self._nwc_style["strong_color"]
         else:
             start_color, end_color = self.colors
 
@@ -66,14 +66,14 @@ class RangePlot(Chart):
             props = dict(xytext=(0, offset), 
                         textcoords='offset pixels',
                         va="bottom",
-                        fontsize=self._style["annotation.fontsize"],
+                        fontsize=self._nwc_style["annotation.fontsize"],
                         fontweight="bold",
-                        #color=self._style["dark_gray_color"],
+                        #color=self._nwc_style["dark_gray_color"],
                         arrowprops={
                             "arrowstyle": "-",
                             "shrinkA": 0, "shrinkB": dot_size / 2 + 2,
                             "connectionstyle": "angle,angleA=0,angleB=90,rad=0",
-                            "color":self._style["neutral_color"],
+                            "color":self._nwc_style["neutral_color"],
                         })
             start_value, end_value = start_values[-1], end_values[-1]
             end_label = self.ax.annotate(self.labels[1],
@@ -146,7 +146,7 @@ class RangePlot(Chart):
                                  xytext=(offset if is_larger else -offset, 0),
                                  textcoords='offset pixels',
                                  va="center", 
-                                 fontsize=self._style["annotation.fontsize"],
+                                 fontsize=self._nwc_style["annotation.fontsize"],
                                  color=val_label_color,
                                  ha="left" if is_larger else "right")
                 val_label_elems.append(val_label_elem)

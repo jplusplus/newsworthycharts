@@ -26,6 +26,7 @@ def loadstyle(style_name):
     """
 
     style = {}
+    nwc_styles = {}  # for backwards compatibility
     style_file = os.path.join(HERE, '..', 'rc', style_name)
     try:
         # Check rc directory for built in styles first
@@ -52,21 +53,21 @@ def loadstyle(style_name):
     ###
     # Typography
     ###
-    style["title_font"] = [x.strip()
+    nwc_styles["title_font"] = [x.strip()
                            for x in rc_params_newsworthy["title_font"]
                            .split(",")]
 
     # define as pt or reltive ("smaller")
-    style["subtitle.fontsize"] = rc_params_newsworthy.get("subtitle.fontsize",
+    nwc_styles["subtitle.fontsize"] = rc_params_newsworthy.get("subtitle.fontsize",
                                                           None)
 
     # make annotation same font size as ticks by default
     tick_font_size = style.get('xtick.labelsize', "smaller")
-    style["annotation.fontsize"] = rc_params_newsworthy.get("annotation.fontsize",
+    nwc_styles["annotation.fontsize"] = rc_params_newsworthy.get("annotation.fontsize",
                                                             tick_font_size)
-    style["note.fontsize"] = rc_params_newsworthy.get("note.fontsize",
+    nwc_styles["note.fontsize"] = rc_params_newsworthy.get("note.fontsize",
                                                       "smaller")
-    style["caption.fontsize"] = rc_params_newsworthy.get("caption.fontsize",
+    nwc_styles["caption.fontsize"] = rc_params_newsworthy.get("caption.fontsize",
                                                          "smaller")
 
     color = rc_params_newsworthy.get("neutral_color",
@@ -81,30 +82,30 @@ def loadstyle(style_name):
     cold_color = rc_params_newsworthy.get("cold_color", COLD)
     fill_between_color = rc_params_newsworthy.get("fill_between_color", FILL_BETWEEN)
     fill_between_alpha = rc_params_newsworthy.get("fill_between_alpha", 0.5)
-    style["black_color"] = to_rgba("#" + str(black_color), 1)
-    style["dark_gray_color"] = to_rgba("#" + str(dark_gray_color), 1)
-    style["light_gray_color"] = to_rgba("#" + str(light_gray_color), 1)
-    style["neutral_color"] = to_rgba("#" + str(color), 1)
-    style["strong_color"] = to_rgba("#" + str(strong_color), 1)
-    style["positive_color"] = to_rgba("#" + positive_color, 1)
-    style["negative_color"] = to_rgba("#" + negative_color, 1)
-    style["warm_color"] = to_rgba("#" + warm_color, 1)
-    style["cold_color"] = to_rgba("#" + cold_color, 1)
-    style["fill_between_color"] = to_rgba("#" + str(fill_between_color), 1)
-    style["fill_between_alpha"] = float(fill_between_alpha)
+    nwc_styles["black_color"] = to_rgba("#" + str(black_color), 1)
+    nwc_styles["dark_gray_color"] = to_rgba("#" + str(dark_gray_color), 1)
+    nwc_styles["light_gray_color"] = to_rgba("#" + str(light_gray_color), 1)
+    nwc_styles["neutral_color"] = to_rgba("#" + str(color), 1)
+    nwc_styles["strong_color"] = to_rgba("#" + str(strong_color), 1)
+    nwc_styles["positive_color"] = to_rgba("#" + positive_color, 1)
+    nwc_styles["negative_color"] = to_rgba("#" + negative_color, 1)
+    nwc_styles["warm_color"] = to_rgba("#" + warm_color, 1)
+    nwc_styles["cold_color"] = to_rgba("#" + cold_color, 1)
+    nwc_styles["fill_between_color"] = to_rgba("#" + str(fill_between_color), 1)
+    nwc_styles["fill_between_alpha"] = float(fill_between_alpha)
 
     if "qualitative_colors" in rc_params_newsworthy:
-        style["qualitative_colors"] = [
+        nwc_styles["qualitative_colors"] = [
             to_rgba("#" + c.strip(), 1)
             for c in rc_params_newsworthy["qualitative_colors"].split(",")
         ]
 
     else:
-        style["qualitative_colors"] = [to_rgba("#" + c, 1) for c in QUALITATIVE]
+        nwc_styles["qualitative_colors"] = [to_rgba("#" + c, 1) for c in QUALITATIVE]
     if "logo" in rc_params_newsworthy:
-        style["logo"] = rc_params_newsworthy["logo"]
+        nwc_styles["logo"] = rc_params_newsworthy["logo"]
 
-    return style
+    return style, nwc_styles
 
 
 def to_float(val):

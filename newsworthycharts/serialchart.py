@@ -167,12 +167,12 @@ class SerialChart(Chart):
             colors = []
             for timepoint in dates:
                 if highlight_value and timepoint == highlight_date:
-                    colors.append(self._style["strong_color"])
+                    colors.append(self._nwc_style["strong_color"])
                 else:
-                    colors.append(self._style["neutral_color"])
+                    colors.append(self._nwc_style["neutral_color"])
         else:
             # use strong color if there is no highlight
-            colors = [self._style["strong_color"]] * len(dates)
+            colors = [self._nwc_style["strong_color"]] * len(dates)
 
         return colors
 
@@ -248,15 +248,15 @@ class SerialChart(Chart):
 
                 # Use strong color for first series
                 if self.colors == "qualitative_colors":
-                    color = self._style["qualitative_colors"][i]
+                    color = self._nwc_style["qualitative_colors"][i]
 
                 elif self.colors is not None:
                     color = self.colors[i]
                 
                 elif i == 0:
-                    color = self._style["strong_color"]
+                    color = self._nwc_style["strong_color"]
                 else:
-                    color = self._style["neutral_color"]
+                    color = self._nwc_style["neutral_color"]
 
                 line, = self.ax.plot(dates, values,
                                      color=color,
@@ -314,14 +314,14 @@ class SerialChart(Chart):
                 if is_stacked:
                     if self.highlight:
                         if self.highlight == self.labels[i]:
-                            color = self._style["strong_color"]
+                            color = self._nwc_style["strong_color"]
                         else:
-                            color = self._style["neutral_color"]
+                            color = self._nwc_style["neutral_color"]
                     else:
                         if self.colors is not None:
                             color = self.colors[i]
                         else:
-                            color = self._style["qualitative_colors"][i]
+                            color = self._nwc_style["qualitative_colors"][i]
                     colors = [color] * len(values)
 
                 else:
@@ -412,7 +412,7 @@ class SerialChart(Chart):
         #   self.type == "line":
 
         #    self.ax.vlines(highlight_date, y0, y1,
-        #                   colors=self._style["neutral_color"],
+        #                   colors=self._nwc_style["neutral_color"],
         #                   linestyles='dashed')
         #    diff = a_formatter(abs(y0 - y1))
         #    xy = (highlight_date, (y0 + y1) / 2)
@@ -430,8 +430,8 @@ class SerialChart(Chart):
                                  filled_values[1],
                                  where=[(x >= min_x and x <= max_x)
                                         for x in self.data.x_points],
-                                 facecolor=self._style["fill_between_color"],
-                                 alpha=self._style["fill_between_alpha"])
+                                 facecolor=self._nwc_style["fill_between_color"],
+                                 alpha=self._nwc_style["fill_between_alpha"])
 
         # Y axis formatting
         if self.ymin is not None:
@@ -509,7 +509,7 @@ class SerialChart(Chart):
                 marker = 'o'
 
             self.ax.plot(dates, values,
-                         color=self._style["strong_color"], zorder=4,
+                         color=self._nwc_style["strong_color"], zorder=4,
                          marker=marker, linestyle='dashed')
 
             # Annotate points in trendline
@@ -518,7 +518,7 @@ class SerialChart(Chart):
                     xy = (date, values[i])
                     dir = self._get_annotation_direction(i, values)
                     self._annotate_point(a_formatter(values[i]), xy,
-                                         color=self._style["strong_color"],
+                                         color=self._nwc_style["strong_color"],
                                          direction=dir)
 
             # x = [a.xy[0] for a in self._annotations]

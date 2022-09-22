@@ -16,9 +16,9 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
 
     def _add_data(self):
         super(ClimateCarsYearlyEmissionsTo2030, self)._add_data()
-        color_observed = self._style["neutral_color"]
-        color_scen = self._style["strong_color"]
-        color_target = self._style["qualitative_colors"][1]
+        color_observed = self._nwc_style["neutral_color"]
+        color_scen = self._nwc_style["strong_color"]
+        color_target = self._nwc_style["qualitative_colors"][1]
 
         self.ax.set_ylabel("Miljoner ton", style="italic")
         ###
@@ -54,11 +54,11 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
             xytext=(-40, -30), textcoords='offset pixels',
             ha="right", va="center",
             fontweight="normal",
-            fontsize=self._style["annotation.fontsize"],
-            color=self._style["dark_gray_color"],
+            fontsize=self._nwc_style["annotation.fontsize"],
+            color=self._nwc_style["dark_gray_color"],
             path_effects=white_outline,
             arrowprops=dict(
-                color=self._style["dark_gray_color"],
+                color=self._nwc_style["dark_gray_color"],
                 arrowstyle="->",
                 connectionstyle="angle3,angleA=-10,angleB=60",
             ),
@@ -69,14 +69,14 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
 
         self.ax.annotate(
             self.labels[1],
-            color=self._style["dark_gray_color"],
+            color=self._nwc_style["dark_gray_color"],
             va="center", ha="left",
             path_effects=white_outline,
-            fontsize=self._style["annotation.fontsize"],
+            fontsize=self._nwc_style["annotation.fontsize"],
             xytext=(40, 80), textcoords='offset pixels',
             xy=(line_scen1.get_xdata()[i_2030], line_scen1.get_ydata()[i_2030]),
             arrowprops=dict(
-                color=self._style["dark_gray_color"],
+                color=self._nwc_style["dark_gray_color"],
                 arrowstyle="->",
                 connectionstyle="angle3,angleA=0,angleB=60",
             )
@@ -84,15 +84,15 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
 
         # Scenario 2
         self.ax.annotate(self.labels[2],
-                         color=self._style["dark_gray_color"],
+                         color=self._nwc_style["dark_gray_color"],
                          path_effects=white_outline,
                          va="center", ha="right",
                          xytext=(-40, -40), textcoords='offset pixels',
                          xy=(line_scen2.get_xdata()[i_2030],
                              line_scen2.get_ydata()[i_2030]),
-                        fontsize=self._style["annotation.fontsize"],
+                        fontsize=self._nwc_style["annotation.fontsize"],
                         arrowprops=dict(
-                             color=self._style["dark_gray_color"],
+                             color=self._nwc_style["dark_gray_color"],
                              arrowstyle="->",
                             connectionstyle="angle3,angleA=-10,angleB=60")
                              )
@@ -123,9 +123,9 @@ class ClimateCarsCO2BugdetChart(SerialChart):
 
     def _add_data(self):
         super(ClimateCarsCO2BugdetChart, self)._add_data()
-        # color_observed = self._style["neutral_color"]
-        color_scen = self._style["strong_color"]
-        color_budget = self._style["qualitative_colors"][1]
+        # color_observed = self._nwc_style["neutral_color"]
+        color_scen = self._nwc_style["strong_color"]
+        color_budget = self._nwc_style["qualitative_colors"][1]
 
         self.ax.set_ylabel("Miljoner ton", style="italic")
         ###
@@ -169,7 +169,7 @@ class ClimateCarsCO2BugdetChart(SerialChart):
             xytext=(0, 5), textcoords="offset pixels",
             ha="left", va="bottom",
             fontweight="bold",
-            fontsize=self._style["annotation.fontsize"],
+            fontsize=self._nwc_style["annotation.fontsize"],
             color=color_budget,
             # path_effects=white_outline,
         )
@@ -178,14 +178,14 @@ class ClimateCarsCO2BugdetChart(SerialChart):
         a = self.line_annotations[0]
         self.ax.annotate(
             a[2],
-            color=self._style["dark_gray_color"],
+            color=self._nwc_style["dark_gray_color"],
             va="center", ha="right",
             # path_effects=outline(color_budget),
-            fontsize=self._style["annotation.fontsize"],
+            fontsize=self._nwc_style["annotation.fontsize"],
             xytext=(-40, 120), textcoords='offset pixels',
             xy=(datetime.strptime(a[0], "%Y-%m-%d"), a[1]),
             arrowprops=dict(
-                color=self._style["dark_gray_color"],
+                color=self._nwc_style["dark_gray_color"],
                 arrowstyle="->",
                 connectionstyle="angle3,angleA=0,angleB=-60",
             ),
@@ -197,20 +197,20 @@ class ClimateCarsCO2BugdetChart(SerialChart):
             xytext=(-30, 0), textcoords='offset pixels',
             color=color_scen,
             va="bottom", ha="right",
-            fontsize=self._style["annotation.fontsize"],
+            fontsize=self._nwc_style["annotation.fontsize"],
         )
 
         # scen 2: nuvarande utsläpp
         a = self.line_annotations[1]
         self.ax.annotate(
             a[2],
-            color=self._style["dark_gray_color"],
+            color=self._nwc_style["dark_gray_color"],
             va="center", ha="left",
             xytext=(20, -80), textcoords='offset pixels',
             xy=(datetime.strptime(a[0], "%Y-%m-%d"), a[1]),
-            fontsize=self._style["annotation.fontsize"],
+            fontsize=self._nwc_style["annotation.fontsize"],
             arrowprops=dict(
-                color=self._style["dark_gray_color"],
+                color=self._nwc_style["dark_gray_color"],
                 arrowstyle="->",
                 connectionstyle="angle3,angleA=0,angleB=-60"
             )
@@ -222,7 +222,7 @@ class ClimateCarsCO2BugdetChart(SerialChart):
             xytext=(-30, 0), textcoords='offset pixels',
             color=color_scen,
             va="bottom", ha="right",
-            fontsize=self._style["annotation.fontsize"],
+            fontsize=self._nwc_style["annotation.fontsize"],
         )
 
         self.ax.get_legend().remove()

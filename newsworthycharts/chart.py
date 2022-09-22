@@ -16,6 +16,7 @@ from matplotlib.ticker import FuncFormatter
 from langcodes import standardize_tag
 from PIL import Image
 from babel import Locale
+import warnings
 
 
 class Chart(object):
@@ -70,14 +71,16 @@ class Chart(object):
         self._annotations = []  # Automatically added annotations
         self._storage = storage
         self._w, self._h = int(width), int(height)
-        self._style = loadstyle(style)
+        self._style, self._nwc_style = loadstyle(style)
+        if len(self._nwc_style.keys()):
+            warnings.warn("Using custom NWCharts settings in rc files is deprecated. With recent development on Matplotlib, most of them can be migrate to native Matplotlib settings")
         # Standardize and check if language tag is a valid BCP 47 tag
         self._language = standardize_tag(language)
         self._locale = Locale.parse(self._language.replace("-", "_"))
 
         # Dynamic typography
         self._title_font = FontProperties()
-        self._title_font.set_family(self._style["title_font"])
+        self._title_font.set_family(self._nwc_style["title_font"])
         self._title_font.set_size(self._style["figure.titlesize"])
         self._title_font.set_weight(self._style["figure.titleweight"])
 
@@ -164,7 +167,7 @@ class Chart(object):
             raise ValueError("Unknown color rule: {}".format(rule))
 
         if color_name in ["strong", "neutral", "positive", "negative", "warm", "cold"]:
-            c = self._style[color_name + "_color"]
+            c = self._nwc_style[color_name + "_color"]
         else:
             c = color_name
         return c
@@ -184,7 +187,7 @@ class Chart(object):
         # but then we'd need to handle reltive fontsizes (ie "smaller") as well.
         bg_color = self._style.get("figure.facecolor", "white")
         opts = {
-            "fontsize": self._style["annotation.fontsize"],
+            "fontsize": self._nwc_style["annotation.fontsize"],
             "textcoords": "offset pixels",
             "path_effects": outline(bg_color),
         }
@@ -230,8 +233,8 @@ class Chart(object):
         self._set_size(hextent[1] - hextent[0])
         x1 = hextent[0] / self._w
         text = self._fig.text(x1, 0.01, caption,
-                              color=self._style["neutral_color"], wrap=True,
-                              fontsize=self._style["caption.fontsize"])
+                              color=self._nwc_style["neutral_color"], wrap=True,
+                              fontsize=self._nwc_style["caption.fontsize"])
         self._fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
         text.set_text(wrapped_text)
@@ -253,7 +256,7 @@ class Chart(object):
         y_pos = 1 - self._title_rel_height
         text = self._fig.text(0, y_pos, subtitle_text, wrap=True,
                               verticalalignment="top", linespacing=1.4,
-                              fontsize=self._style["subtitle.fontsize"])
+                              fontsize=self._nwc_style["subtitle.fontsize"])
         self._fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
         text.set_text(wrapped_text)
@@ -263,7 +266,7 @@ class Chart(object):
     def _add_note(self, note_text):
         y_pos = self._footer_rel_height
         text = self._fig.text(0, y_pos, note_text, wrap=True,
-                              fontsize=self._style["note.fontsize"])
+                              fontsize=self._nwc_style["note.fontsize"])
         self._fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
         text.set_text(wrapped_text)
@@ -359,7 +362,7 @@ class Chart(object):
         # fit ticks etc.
         self._fig.tight_layout()
 
-        logo = self._style.get("logo", self.logo)
+        logo = self._nwc_style.get("logo", self.logo)
         caption_hextent = None  # set this if adding a logo
         if logo:
             im = Image.open(logo)
