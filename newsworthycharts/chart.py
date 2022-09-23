@@ -85,7 +85,7 @@ class Chart(object):
         self._title_font.set_size(self._style["figure.titlesize"])
         self._title_font.set_weight(self._style["figure.titleweight"])
 
-        self._fig = Figure()
+        self._fig = Figure(layout="constrained")
         FigureCanvas(self._fig)
         self.ax = self._fig.add_subplot(111)
         # self._fig, self.ax = plt.subplots()
@@ -246,7 +246,7 @@ class Chart(object):
     def _add_title(self, title_text):
         """Add a title."""
         # y=1 wraps title heavily, hence .9999
-        text = self._fig.suptitle(title_text, wrap=True, x=0, y=.99999,
+        text = self._fig.suptitle(title_text, wrap=True, x=0, y=0.985,
                                   horizontalalignment="left",
                                   multialignment="left",
                                   fontproperties=self._title_font)
@@ -360,7 +360,9 @@ class Chart(object):
             self._add_subtitle(self.subtitle)
 
         # fit ticks etc.
-        self._fig.tight_layout()
+        # self._fig.tight_layout()
+        self._fig.set_layout_engine("tight")  # constrained
+        # self._fig.get_layout_engine().set(w_pad=15, h_pad=15)
 
         logo = self._nwc_style.get("logo", self.logo)
         caption_hextent = None  # set this if adding a logo
@@ -395,7 +397,6 @@ class Chart(object):
             header_height += self._title_rel_height
         if self._subtitle_elem:
             header_height += self._subtitle_rel_height
-
         self._fig.subplots_adjust(top=1 - header_height)
 
         # Fit area below chart
