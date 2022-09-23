@@ -1,6 +1,8 @@
 """Module for doing (very) simple i18n work."""
 from babel.numbers import format_decimal, format_percent, Locale
 from babel.units import format_unit
+from babel.dates import format_date
+from datetime import datetime
 from decimal import Decimal
 
 
@@ -29,6 +31,12 @@ class Formatter(object):
 
     def __str__(self):
         return self.l.get_display_name()
+
+    def date(self, x, pattern):
+        """ Use a date pattern to format a number """
+        date = datetime.fromisoformat(x)
+        return format_date(date, pattern, locale=self.l)
+
 
     def percent(self, x, *args, **kwargs):
         if x is None:

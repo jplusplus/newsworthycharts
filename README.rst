@@ -114,8 +114,9 @@ To deploy a new version to PyPi:
 
 1. Update Changelog below.
 2. Update `version.py`
-3. Build: `python3 setup.py sdist bdist_wheel`
-4. Upload: `python3 -m twine upload dist/newsworthycharts-X.Y.X*`
+3. Create a git tag: `git tag VERSION` (not strictly needed, but nice)
+4. Build: `python3 setup.py sdist bdist_wheel`
+5. Upload: `python3 -m twine upload dist/newsworthycharts-X.Y.X*`
 
 ...assuming you have Twine installed (`pip install twine`) and configured.
 
@@ -124,14 +125,15 @@ Changelog
 
 - next
 
-  - Matplotlib updated from 3.3.x to 3.6.x, includeing among other things:
+  - Matplotlib updated from 3.3 to 3.6, including among many, many other things:
     - support for .webp
     - a lot of additions and improvements to rcParams
     - new backends
-  - Custom NWCharts parameters to the rc style file is being deprecated, and should eventually be removed.
+  - Custom NWCharts parameters to the rc style file is being deprecated, and should eventually be phased out
   - Matplotlib and related modules are now pinned to a specific version
   - Added support for generating webp images!
   - Upgraded pytest to support Python 3.10+
+  - Fixed date locators to use thecorrect langauge/locale
 
 - 1.29.0
 

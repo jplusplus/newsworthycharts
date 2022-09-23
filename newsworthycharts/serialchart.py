@@ -2,7 +2,9 @@ from typing import no_type_check_decorator
 from .chart import Chart
 from .lib.locator import get_best_locator, get_year_ticks
 from .lib.utils import to_float, to_date
+from .lib.formatter import Formatter
 
+from babel.dates import format_date
 import numpy as np
 from math import inf
 from matplotlib.dates import (DateFormatter, MonthLocator,
@@ -472,14 +474,21 @@ class SerialChart(Chart):
         else:
             loc = get_best_locator(delta, len(dates), self.interval)
             self.ax.xaxis.set_major_locator(loc)
+            formatter = Formatter(self._language)
 
             if isinstance(loc, WeekdayLocator):
                 # We consider dates to be more informative than week numbers
-                fmt = DateFormatter('%-d %b')
+                def fmt(x, pos):
+                    return formatter.date(self.data.x_points[pos], "d MMM")
+                #fmt = DateFormatter('%-d %b')
             elif isinstance(loc, MonthLocator):
-                fmt = DateFormatter('%b')
+                def fmt(x, pos):
+                    return formatter.date(self.data.x_points[pos], "MMM") if pos in self.data.x_points else None
+                # fmt = DateFormatter('%b')
             elif isinstance(loc, DayLocator):
-                fmt = DateFormatter('%-d %b')
+                def fmt(x, pos):
+                    return formatter.date(self.data.x_points[pos], "d MMM")
+                # fmt = DateFormatter('%-d %b')
             else:
                 NotImplementedError("Unable to determine tick formatter")
 
