@@ -134,6 +134,7 @@ Changelog
   - Added support for generating webp images!
   - Upgraded pytest to support Python 3.10+
   - Fixed date locators to use thecorrect langauge/locale
+  - Added padding on top of title, to avoid cropping diactritics
 
 - 1.29.0
 
