@@ -123,7 +123,7 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
-- next
+- 1.30.0
 
   - Matplotlib updated from 3.3 to 3.6, including among many, many other things:
     - support for .webp
