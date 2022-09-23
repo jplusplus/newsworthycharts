@@ -9,6 +9,7 @@ from .lib.datalist import DataList
 from .storage import Storage, LocalStorage
 
 from io import BytesIO
+from matplotlib.path import Path
 from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -73,7 +74,7 @@ class Chart(object):
         self._w, self._h = int(width), int(height)
         self._style, self._nwc_style = loadstyle(style)
         if len(self._nwc_style.keys()):
-            warnings.warn("Using custom NWCharts settings in rc files is deprecated. With recent development on Matplotlib, most of them can be migrate to native Matplotlib settings")
+            warnings.warn("Using custom NWCharts settings in rc files is deprecated. With recent development on Matplotlib, many of them can be migrated to native Matplotlib settings.")
         # Standardize and check if language tag is a valid BCP 47 tag
         self._language = standardize_tag(language)
         self._locale = Locale.parse(self._language.replace("-", "_"))
@@ -293,7 +294,6 @@ class Chart(object):
         """
         if axis != "y":
             raise NotImplementedError("Not able to mark broken x axis yet")
-        from matplotlib.path import Path
         # create a custom marker path
         # Set the relative size of each move 
         x_step = 0.5
