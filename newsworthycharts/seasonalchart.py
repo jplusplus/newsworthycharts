@@ -43,8 +43,8 @@ class SeasonalChart(SerialChart):
 
         # If we want to suppport multiple series
         # if i > 0:
-        #    color_s = self._style["dark_gray_color"]
-        #    color_n = self._style["light_gray_color"]
+        #    color_s = self._nwc_style["dark_gray_color"]
+        #    color_n = self._nwc_style["light_gray_color"]
         #    colors = [color_s if x[1].endswith(date_suffix) else color_n
         #              for x in self.data[0]]
         
