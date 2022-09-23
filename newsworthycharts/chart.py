@@ -234,6 +234,7 @@ class Chart(object):
         self._set_size(hextent[1] - hextent[0])
         x1 = hextent[0] / self._w
         text = self._fig.text(x1, 0.01, caption,
+                              in_layout=True,
                               color=self._nwc_style["neutral_color"], wrap=True,
                               fontsize=self._nwc_style["caption.fontsize"])
         self._fig.canvas.draw()
@@ -330,7 +331,7 @@ class Chart(object):
          rendering file(s). This is where all properties are applied.
         """
         # Apply all changes, in the correct order for consistent rendering
-        self._fig.tight_layout()
+        # self._fig.set_layout_engine("constrained")
         if len(self.data):
             self._add_data()
         if not self.show_ticks:
@@ -360,8 +361,7 @@ class Chart(object):
             self._add_subtitle(self.subtitle)
 
         # fit ticks etc.
-        # self._fig.tight_layout()
-        self._fig.set_layout_engine("tight")  # constrained
+        self._fig.tight_layout()
         # self._fig.get_layout_engine().set(w_pad=15, h_pad=15)
 
         logo = self._nwc_style.get("logo", self.logo)
@@ -417,6 +417,7 @@ class Chart(object):
             #  chart caption and logo (if any)
             + self._footer_rel_height
         )
+        # print(sub_canvas_height, self._note_rel_height, self._footer_rel_height)
         self._fig.subplots_adjust(bottom=sub_canvas_height)
 
     @classmethod
