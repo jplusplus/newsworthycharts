@@ -479,16 +479,30 @@ class SerialChart(Chart):
             if isinstance(loc, WeekdayLocator):
                 # We consider dates to be more informative than week numbers
                 def fmt(x, pos):
-                    return formatter.date(self.data.x_points[pos], "d MMM") if self.data.x_points[pos] else None
+                    if pos > len(self.data.x_points):
+                        return None
+                    try:
+                        return formatter.date(self.data.x_points[pos], "d MMM")
+                    except IndexError:
+                        return None
                 #fmt = DateFormatter('%-d %b')
             elif isinstance(loc, MonthLocator):
                 def fmt(x, pos):
-                    print
-                    return formatter.date(self.data.x_points[pos], "MMM") if self.data.x_points[pos] else None
+                    if pos > len(self.data.x_points):
+                        return None
+                    try:
+                        return formatter.date(self.data.x_points[pos], "MMM")
+                    except IndexError:
+                        return None
                 # fmt = DateFormatter('%b')
             elif isinstance(loc, DayLocator):
                 def fmt(x, pos):
-                    return formatter.date(self.data.x_points[pos], "d MMM") if self.data.x_points[pos] else None
+                    if pos > len(self.data.x_points):
+                        return None
+                    try:
+                        return formatter.date(self.data.x_points[pos], "d MMM")
+                    except IndexError:
+                        return None
                 # fmt = DateFormatter('%-d %b')
             else:
                 NotImplementedError("Unable to determine tick formatter")
