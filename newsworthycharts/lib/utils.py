@@ -53,9 +53,12 @@ def loadstyle(style_name):
     ###
     # Typography
     ###
-    nwc_styles["title_font"] = [x.strip()
-                           for x in rc_params_newsworthy["title_font"]
-                           .split(",")]
+    if "title_font" in rc_params_newsworthy:
+        nwc_styles["title_font"] = [x.strip()
+                            for x in rc_params_newsworthy["title_font"]
+                            .split(",")]
+    else:
+        nwc_styles["title_font"] = style["font.family"]
 
     # define as pt or reltive ("smaller")
     nwc_styles["subtitle.fontsize"] = rc_params_newsworthy.get("subtitle.fontsize",
