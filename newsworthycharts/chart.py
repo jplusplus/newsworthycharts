@@ -332,6 +332,7 @@ class Chart(object):
         """
         # Apply all changes, in the correct order for consistent rendering
         # self._fig.set_layout_engine("constrained")
+        self._fig.tight_layout()
         if len(self.data):
             self._add_data()
         if not self.show_ticks:
