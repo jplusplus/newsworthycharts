@@ -39,7 +39,7 @@ class SerialChart(Chart):
         self.colors = None
 
         # Optional: where to place series label
-        self.label_placement = "legend"  # "legend"|"line|inline"
+        self.label_placement = "legend"  # legend|inline|outside
 
         # Optional: annotate each point with a value label 
         self.value_labels = False
@@ -511,10 +511,13 @@ class SerialChart(Chart):
 
         # Add labels in legend if there are multiple series, otherwise
         # title is assumed to self-explanatory
-        if len(self.labels) > 1 and self.label_placement == "legend":
-            self.ax.legend(loc='best')
-        elif self.label_placement == "inline":
-            labelLines(self.ax.get_lines(), align=False, zorder=3, outline_width=4, fontweight="bold")
+        if len(self.labels) > 1:
+            if self.label_placement == "legend":
+                self.ax.legend(loc="best")
+            elif self.label_placement == "outside":
+                self.ax.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower right")
+            elif self.label_placement == "inline":
+                labelLines(self.ax.get_lines(), align=False, zorder=3, outline_width=4, fontweight="bold")
 
         # Trend/change line
         # Will use first serie
