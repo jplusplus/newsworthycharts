@@ -97,6 +97,32 @@ To set up you own style, copy the build-in default: <https://github.com/jplusplu
 
 Newsworthycharts will look first among the predefined style files for the requested style, so if you have a custom style file in you working directory you need to give it a unique name not already in use.
 
+Options
+-------
+
+**Chart**
+data: A list of datasets
+annotate_trend = True  # Print out values at points on trendline?
+trendline = []  # List of x positions, or data points
+labels = []  # Optionally one label for each dataset
+annotations = []  # Manually added annotations
+interval = None  # yearly|quarterly|monthly|weekly|daily
+show_ticks = True  # toggle category names, dates, etc
+subtitle = None
+note = None
+xlabel = None
+ylabel = None
+caption = None
+highlight = None
+decimals = None
+# number of decimals to show in annotations, value ticks, etc
+# None means automatically chose the best number
+logo = None
+# Path to image that will be embedded in the caption area
+# Can also be set though a style property
+color_fn = None
+# Custom coloring function
+
 Developing
 ----------
 
@@ -122,6 +148,9 @@ To deploy a new version to PyPi:
 
 Changelog
 ---------
+- 1.31.0
+
+  - Added `label_placement='outside'` option to SerialChart
 
 - 1.30.0
 
