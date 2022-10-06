@@ -148,6 +148,11 @@ To deploy a new version to PyPi:
 
 Changelog
 ---------
+
+- 1.32.0
+
+  - `SerialChart`: New options: `line_width` and `highlighted_x_ranges`. 
+
 - 1.31.0
 
   - Added `label_placement='outside'` option to SerialChart
