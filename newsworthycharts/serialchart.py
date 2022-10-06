@@ -25,6 +25,10 @@ class SerialChart(Chart):
         super(SerialChart, self).__init__(*args, **kwargs)
         self.type = "bars"
         self.bar_width = 0.9
+        
+        # Set with of lines explicitly (otherwise determined by style file)
+        self.line_width = None
+
         # Percent of period. 0.85 means a bar in a chart with yearly data will
         # be around 310 or 311 days wide.
         self.max_ticks = 5
@@ -43,6 +47,9 @@ class SerialChart(Chart):
 
         # Optional: annotate each point with a value label 
         self.value_labels = False
+
+        # Optional: Adds background color to part of charts
+        self.highlighted_x_ranges = []
 
     @property
     def ymin(self):
@@ -248,6 +255,11 @@ class SerialChart(Chart):
                 # Put first series on top
                 zo = 2 + (i == 0)
 
+                if self.line_width is None:
+                    lw = self._nwc_style.get("lines.linewidth", 2)
+                else:
+                    lw = self.line_width
+
                 # Use strong color for first series
                 if self.colors == "qualitative_colors":
                     color = self._nwc_style["qualitative_colors"][i]
@@ -262,7 +274,8 @@ class SerialChart(Chart):
 
                 line, = self.ax.plot(dates, values,
                                      color=color,
-                                     zorder=zo)
+                                     zorder=zo,
+                                     lw=lw)
                 # Add single, orphaned data points as markers
                 # None, 1, None, 1, 1, 1 =>  . ---
                 num_values = len(values)
@@ -400,6 +413,12 @@ class SerialChart(Chart):
                         continue
             self._annotate_point(value_label, xy, direction=dir)
 
+        # Add background highlights
+        for (x0, x1) in self.highlighted_x_ranges:
+            x0 = to_date(x0)
+            x1 = to_date(x1)
+            self.ax.axvspan(x0, x1, alpha=.4, color="lightgrey")
+
         # Accentuate y=0
         if self.data.min_val < 0:
             self.ax.axhline(linewidth=1, zorder=0)
@@ -467,10 +486,12 @@ class SerialChart(Chart):
         if self.ticks:
             self.ax.set_xticks([x[0] for x in self.ticks])
             self.ax.set_xticklabels([x[1] for x in self.ticks])
+
         elif delta.days > 365:
             ticks = get_year_ticks(xmin, xmax, max_ticks=self.max_ticks)
             self.ax.set_xticks(ticks)
             self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
+
         else:
             loc = get_best_locator(delta, len(dates), self.interval)
             self.ax.xaxis.set_major_locator(loc)
@@ -494,7 +515,9 @@ class SerialChart(Chart):
                         return formatter.date(self.data.x_points[pos], "MMM")
                     except IndexError:
                         return None
-                # fmt = DateFormatter('%b')
+                
+                #fmt = DateFormatter('%b')
+
             elif isinstance(loc, DayLocator):
                 def fmt(x, pos):
                     if pos > len(self.data.x_points):

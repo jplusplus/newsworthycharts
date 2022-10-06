@@ -381,3 +381,36 @@ def test_inline_labeling():
     c.render("serial_chart_inline_labeling", "png")
 
 
+def test_serial_chart_with_highlighted_area():
+    import json
+    with open("test/data/elpriser.json") as f:
+        series = json.load(f)
+    from datetime import datetime
+    data = series
+
+    chart_obj = {
+        'width': 960,
+        'height': 600,
+        'title': 'Rekordpris i bidding area SE1',
+        'subtitle': 'Spotpris på el på Nordpool',
+        'note': 'Källa: Nordpool',
+        'data': data,
+        'type': 'line',
+        'line_width': 1,
+        "ticks": [
+            ("2021-09-07", "Samma dag\ni fjol"),
+            ("2022-01-01", "2022"),
+            ("2022-04-01", "Apr"),
+            ("2022-07-01", "Jul"),
+            ("2022-09-07", "I dag"),
+        ],
+        'highlighted_x_ranges': [
+            ['2022-08-09', '2022-09-07'],
+            ['2021-08-09', '2021-09-07'],
+        ],
+        'label_placement': 'line',
+        'labels': ['Dagens högsta\ntimpris: 536 kr'],
+        'ymin': 0
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    c.render("serial_chart_with_highlighted_area", "png")
