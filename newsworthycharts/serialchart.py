@@ -456,8 +456,11 @@ class SerialChart(Chart):
 
         # Y axis formatting
         if self.ymin is not None:
-            ymin = self.ymin
-            padding_bottom = 0
+            # Override ymin if the smallest value is smaller than the suggested ymin
+            # For example bar charts with negative values wants a forced ymin=0 if
+            # all values are positive, but also show negatives
+            ymin = min(self.ymin, self.data.min_val)
+            padding_bottom = abs(ymin * 0.15)
         else:
             ymin = self.data.min_val
             padding_bottom = abs(self.data.min_val * 0.15)

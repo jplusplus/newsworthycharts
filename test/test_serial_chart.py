@@ -220,6 +220,26 @@ def test_chart_with_long_y_ticks():
     # visually make sure tick labels are visible
     c.render("serial_bar_chart_with_long_y_ticks", "png")
 
+def test_chart_with_negative_values():
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "data": [
+            [
+                ["2016-01-01", 2],
+                ["2017-01-01", 3],
+                ["2018-01-01", -1],
+                ["2019-01-01", -3]
+            ]
+        ],
+        "ymin": 0,
+        "title": "Look  at the negative values",
+        "type": "bars",
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    # visually make sure tick labels are visible
+    c.render("serial_bar_chart_with_negative_values", "png")
+
 
 def test_weekly_chart():
     container = {}
@@ -414,3 +434,4 @@ def test_serial_chart_with_highlighted_area():
     }
     c = SerialChart.init_from(chart_obj, storage=local_storage)
     c.render("serial_chart_with_highlighted_area", "png")
+
