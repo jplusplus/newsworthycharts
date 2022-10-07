@@ -417,7 +417,7 @@ class SerialChart(Chart):
         for (x0, x1) in self.highlighted_x_ranges:
             x0 = to_date(x0)
             x1 = to_date(x1)
-            self.ax.axvspan(x0, x1, alpha=.4, color="lightgrey")
+            self.ax.axvspan(x0, x1, alpha=.4, color="lightgrey", lw=0)
 
         # Accentuate y=0
         if self.data.min_val < 0:
