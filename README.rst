@@ -149,6 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- next
+
+  - Matplotlib @ 3.6.2
+
 - 1.32.1
 
   - Bug fixes: Handle negative values when `ymin=0` in SerialChart and remove line stroke from `highlighted_x_ranges`.
