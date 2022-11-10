@@ -153,6 +153,10 @@ Changelog
 
   - Matplotlib @ 3.6.2
 
+- 1.32.2
+
+  - `SerialChart`: Better error when timepoints are duplicated.
+
 - 1.32.1
 
   - Bug fixes: Handle negative values when `ymin=0` in SerialChart and remove line stroke from `highlighted_x_ranges`.
