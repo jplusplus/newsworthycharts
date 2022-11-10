@@ -193,6 +193,10 @@ class SerialChart(Chart):
         # parse values
         serie_values = []
         for serie in series:
+            # make sure all timepoints are unique
+            _timepoints = [x[0] for x in serie]
+            if len(_timepoints) > len(set(_timepoints)):
+                raise ValueError(f"Duplicated timepoints: {_timepoints}")
             _values = [to_float(x[1]) for x in serie]
             if self.type == "bars":
                 # Replace None values with 0's to be able to plot bars

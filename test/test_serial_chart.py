@@ -1,5 +1,6 @@
 from newsworthycharts import SerialChart
 from newsworthycharts.storage import DictStorage, LocalStorage
+import pytest
 
 # store test charts to this folder for visual verfication
 OUTPUT_DIR = "test/rendered_charts"
@@ -198,7 +199,7 @@ def test_serial_chart_with_axis_labels():
         "type": "line",
     }
     c = SerialChart.init_from(chart_obj, storage=local_storage)
-    # visually make sure y and x labels are visible
+    # visually make sure quay and x labels are visible
     c.render("serial_chart_with_axis_labels", "png")
 
 def test_chart_with_long_y_ticks():
@@ -435,3 +436,19 @@ def test_serial_chart_with_highlighted_area():
     c = SerialChart.init_from(chart_obj, storage=local_storage)
     c.render("serial_chart_with_highlighted_area", "png")
 
+
+def test_duplicated_timepoint():
+    chart_obj = {'colors': ['#00a39a', '#DBAD58'],
+        'data': [[
+                ('2020', 1294),
+                ('2021', 2038),
+                ('2022', 2176),
+                ('2022', 2178), # <= duplicated!
+        ]],
+        'height': 552.0,
+        'type': 'bars',
+        'width': 920,
+    }
+    with pytest.raises(ValueError):
+        c = SerialChart.init_from(chart_obj, storage=local_storage)
+        c.render("serial_barchart", "png")
