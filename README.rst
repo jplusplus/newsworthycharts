@@ -153,6 +153,10 @@ Changelog
 
   - Matplotlib @ 3.6.2
 
+- 1.32.3
+
+  - `ScatterPlot`: Mark labeled dots more clearly.
+
 - 1.32.2
 
   - `SerialChart`: Better error when timepoints are duplicated.
