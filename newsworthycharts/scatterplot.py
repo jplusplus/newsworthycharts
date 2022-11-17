@@ -80,8 +80,12 @@ class ScatterPlot(Chart):
                     # A point can be both highlighted and annotated
                     if is_highlighted:
                         color = self._nwc_style["strong_color"]
-                        size = markersize * 1.5
+                        size = markersize * 1.7
                         fontsize = "medium"
+                    elif is_labeled:
+                        color = self._nwc_style["strong_color"]
+                        size = markersize 
+                        fontsize = "small"
                     # ...or just annotated
                     else:
                         color = transparent_color
