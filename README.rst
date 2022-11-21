@@ -153,6 +153,10 @@ Changelog
 
   - Matplotlib @ 3.6.2
 
+- 1.33.0:
+  
+  - Adds `transparent` argument to render method.
+
 - 1.32.3
 
   - `ScatterPlot`: Mark labeled dots more clearly.
