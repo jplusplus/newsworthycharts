@@ -460,14 +460,14 @@ class Chart(object):
             chart.ticks = args["ticks"]
         return chart
 
-    def render(self, key: str, img_format: str):
+    def render(self, key: str, img_format: str, transparent=False):
         """Render file, and send to storage."""
         # Apply all changes, in the correct order for consistent rendering
         self._apply_changes_before_rendering()
 
         # Save plot in memory, to write it directly to storage
         buf = BytesIO()
-        self._fig.savefig(buf, format=img_format)
+        self._fig.savefig(buf, format=img_format, transparent=transparent)
         buf.seek(0)
         self._storage.save(key, buf, img_format)
 

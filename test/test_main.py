@@ -32,6 +32,7 @@ def test_generating_webp():
     im = Image.open(container["webp"])
     assert(im.size == (800, 600))
 
+
 def test_dynamic_init():
     engine = "SerialChart"
     container = {}
@@ -141,6 +142,21 @@ def test_setting_subtitle():
     chart_obj["subtitle"] = "Som är lite längre och som kan gå över flera rader. Kolla bara hur den fortsätter, fortsätter och fortsätter."
     c = CategoricalChart.init_from(chart_obj, storage=local_storage)
     c.render("chart_with_long_subtitle", "png")
+
+
+def test_transparent_background():
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "title": "Kolla att bakgrunden är transparent",
+        "data": [
+            [("a", 5),
+           ("b", 5.5),
+           ("c", 6)]
+        ]
+    }
+    c = CategoricalChart.init_from(chart_obj, storage=local_storage)
+    c.render("transparent_background", "png", transparent=True)
 
 
 def test_setting_note():
