@@ -26,7 +26,7 @@ setup(
     install_requires=[
         "boto3>=1.6",
         "matplotlib==3.6.2",
-        "langcodes>=1.1",
+        "langcodes>=3.3",
         "Babel>=2.6",
         "PyYAML>=3",
         "adjustText>=0.4",
