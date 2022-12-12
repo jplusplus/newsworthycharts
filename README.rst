@@ -151,7 +151,8 @@ Changelog
 
 - 1.34.0
 
-  - Added `factor` option to `.render()` and `.render_all()`.
+  - Adds `factor` argument to `.render()` and `.render_all()`.
+  - Adds missing `transparent` argument to `.render_all()`.
   - Matplotlib @ 3.6.2
   - langcodes @ 3.3 to ensure consistent handling of macro languages (`no` is a valid language)
 
