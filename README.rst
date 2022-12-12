@@ -149,9 +149,11 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
-- next
+- 1.34.0
 
+  - Added `factor` option to `.render()` and `.render_all()`.
   - Matplotlib @ 3.6.2
+  - langcodes @ 3.3 to ensure consistent handling of macro languages (`no` is a valid language)
 
 - 1.33.0:
   
