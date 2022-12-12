@@ -373,7 +373,7 @@ class Chart(object):
             # but no more than a quarter of the width
             # if possible
             new_width = max(
-                150 * factor,
+                155 * factor,
                 (self._w * factor) / 4,
             )
             new_width = min(
