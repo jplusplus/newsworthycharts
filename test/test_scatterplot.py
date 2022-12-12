@@ -1,5 +1,5 @@
 from newsworthycharts import ScatterPlot
-from newsworthycharts.storage import DictStorage, LocalStorage
+from newsworthycharts.storage import LocalStorage
 from .data.scatterplot import income_vs_evs
 
 # store test charts to this folder for visual verfication
@@ -29,6 +29,7 @@ def test_basic_scatterplot():
     c = ScatterPlot.init_from(chart_obj, storage=local_storage)
     c.render("scatterplot-basic", "png")
 
+
 def test_large_scatterplot():
 
     chart_obj = {
@@ -40,10 +41,11 @@ def test_large_scatterplot():
         "ylabel": "Andel laddbara\nbilar",
         "ymin": 0,
         "highlight": ["Stockholms kommun"],
-        "labels": ['Danderyd', 'Lidingö', 'Lomma', 'Mölndal', 'Nacka', 
-                   'Solna', 'Stockholms kommun', 'Södertälje',],
+        "labels": [
+            'Danderyd', 'Lidingö', 'Lomma', 'Mölndal', 'Nacka',
+            'Solna', 'Stockholms kommun', 'Södertälje',
+        ],
         "title": "Vilket slående samband!"
     }
     c = ScatterPlot.init_from(chart_obj, storage=local_storage)
     c.render("scatterplot-munis", "png")
-
