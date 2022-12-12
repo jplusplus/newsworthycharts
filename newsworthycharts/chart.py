@@ -325,7 +325,7 @@ class Chart(object):
         self.ax.plot([0], transform=self.ax.transAxes, **kwargs)
 
 
-    def _apply_changes_before_rendering(self):
+    def _apply_changes_before_rendering(self, factor=1):
         """
          To ensure consistent rendering, we call this method just before
          rendering file(s). This is where all properties are applied.
@@ -369,18 +369,26 @@ class Chart(object):
         caption_hextent = None  # set this if adding a logo
         if logo:
             im = Image.open(logo)
-            # scale down image if needed to fit
-            new_width = min(self._w, im.size[0])
+            # Scale up to at least 150 * factor,
+            # but no more than a quarter of the width
+            # if possible
+            new_width = max(
+                150 * factor,
+                (self._w * factor) / 4,
+            )
+            new_width = min(
+                im.size[0],
+                new_width,
+            )
             new_height = new_width * (im.size[1] / im.size[0])
             im.thumbnail((new_width, new_height), Image.ANTIALIAS)
-
             # Position
             if self._locale.text_direction == "rtl":
                 logo_im = self._fig.figimage(im, 0, 0)
                 ext = logo_im.get_extent()
-                caption_hextent = (ext[1], self._w)
+                caption_hextent = (ext[1], self._w * factor)
             else:
-                logo_im = self._fig.figimage(im, self._w - im.size[0], 0)
+                logo_im = self._fig.figimage(im, self._w * factor - new_width, 0)
                 ext = logo_im.get_extent()
                 caption_hextent = (0, ext[0])
             self._logo_elem = logo_im
@@ -463,11 +471,15 @@ class Chart(object):
     def render(self, key: str, img_format: str, transparent=False, factor=1):
         """Render file, and send to storage."""
         # Apply all changes, in the correct order for consistent rendering
-        self._apply_changes_before_rendering()
+        self._apply_changes_before_rendering(factor=factor)
 
         # Save plot in memory, to write it directly to storage
         buf = BytesIO()
-        self._fig.savefig(buf, format=img_format, transparent=transparent, dpi=self._fig.dpi * factor)
+        self._fig.savefig(
+            buf, format=img_format,
+            transparent=transparent,
+            dpi=self._fig.dpi * factor
+        )
         buf.seek(0)
         self._storage.save(key, buf, img_format)
 
@@ -476,7 +488,7 @@ class Chart(object):
         Render all available formats
         """
         # Apply all changes, in the correct order for consistent rendering
-        self._apply_changes_before_rendering()
+        self._apply_changes_before_rendering(factor=factor)
 
         for file_format in self.file_types:
             if file_format == "dw":
@@ -484,7 +496,11 @@ class Chart(object):
 
             # Save plot in memory, to write it directly to storage
             buf = BytesIO()
-            self._fig.savefig(buf, format=file_format, transparent=transparent, dpi=self._fig.dpi * factor)
+            self._fig.savefig(
+                buf, format=file_format,
+                transparent=transparent,
+                dpi=self._fig.dpi * factor
+            )
             buf.seek(0)
             self._storage.save(key, buf, file_format)
 
