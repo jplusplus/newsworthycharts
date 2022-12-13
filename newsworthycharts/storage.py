@@ -102,11 +102,12 @@ class S3Storage(Storage):
         self.bucket = s3_client.Bucket(bucket)
         self.prefix = prefix
 
-    def save(self, key, stream, filetype):
+    def save(self, key, stream, filetype, options={}):
         """
         :param key (str): Used for creating filename. Files may be oberwritten.
         :param stream (BytesIO): A stream containing the file data
         :param filetype (str): File extension
+        :param options (dict): Additional arguments to boto3's put_object, e.g. {'ACL': "private"}
         """
         stream.seek(0)
         if self.prefix is not None:
@@ -116,7 +117,12 @@ class S3Storage(Storage):
             filename = key + "." + filetype
         mime_type = MIME_TYPES[filetype]
         try:
-            self.bucket.put_object(Key=filename, Body=stream,
-                                   ACL='public-read', ContentType=mime_type)
+            args = {
+                'Key': filename,
+                'Body': stream,
+                'ACL': 'public-read',
+                'ContentType': mime_type,
+            }.update(options)
+            self.bucket.put_object(**args)
         except Exception as e:
             raise AmazonUploadError(e)
