@@ -149,6 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.37.1
+
+  - Fixed bug in argument parsing in S3Storage.save()
+
 - 1.37.0
 
   - Added `storage_options` argument to `render()` and `render_all()`
