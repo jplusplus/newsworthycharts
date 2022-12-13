@@ -149,6 +149,11 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.37.0
+
+  - Added `storage_options` argument to `render()` and `render_all()`
+  - Unified function signatures across storage classes.
+
 - 1.36.0
 
   - Added options argument to `S3Storage.save()`
