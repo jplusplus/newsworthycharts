@@ -23,7 +23,7 @@ class Storage(object):
     def __init__(self):
         pass
 
-    def save(self, key, stream, filetype):
+    def save(self, key, stream, filetype, options={}):
         """
         :param key (str): A key for the save object
         :param stream (BytesIO): A stream containing the file data
@@ -48,7 +48,7 @@ class DictStorage(Storage):
         """
         self.dict = dict
 
-    def save(self, key, stream, filetype):
+    def save(self, key, stream, filetype, options={}):
         """
         :param key (str): Disregarded.
         :param stream (BytesIO): A stream containing the file data
@@ -67,7 +67,7 @@ class LocalStorage(Storage):
         """
         self.path = path
 
-    def save(self, key, stream, filetype):
+    def save(self, key, stream, filetype, options={}):
         """
         :param key (str): Used for creating filename. Files may be overwritten.
         :param stream (BytesIO|str): A stream containing the file data or a

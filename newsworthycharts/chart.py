@@ -468,7 +468,14 @@ class Chart(object):
             chart.ticks = args["ticks"]
         return chart
 
-    def render(self, key: str, img_format: str, transparent=False, factor=1):
+    def render(
+        self,
+        key: str,
+        img_format: str,
+        transparent: bool=False,
+        factor: int=1,
+        storage_options: dict={}
+    ):
         """Render file, and send to storage."""
         # Apply all changes, in the correct order for consistent rendering
         self._apply_changes_before_rendering(factor=factor)
@@ -481,9 +488,9 @@ class Chart(object):
             dpi=self._fig.dpi * factor
         )
         buf.seek(0)
-        self._storage.save(key, buf, img_format)
+        self._storage.save(key, buf, img_format, storage_options)
 
-    def render_all(self, key: str, transparent=False, factor=1):
+    def render_all(self, key: str, transparent=False, factor=1, storage_options={}):
         """
         Render all available formats
         """
@@ -502,7 +509,7 @@ class Chart(object):
                 dpi=self._fig.dpi * factor
             )
             buf.seek(0)
-            self._storage.save(key, buf, file_format)
+            self._storage.save(key, buf, file_format, storage_options)
 
     @property
     def title(self):
