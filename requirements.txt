@@ -1,4 +1,4 @@
-boto3==1.26.27
+boto3==1.26.28
 matplotlib==3.6.2
 langcodes==3.3.0
 Babel==2.11.0
