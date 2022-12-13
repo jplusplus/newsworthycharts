@@ -325,7 +325,7 @@ class Chart(object):
         self.ax.plot([0], transform=self.ax.transAxes, **kwargs)
 
 
-    def _apply_changes_before_rendering(self, factor=1):
+    def _apply_changes_before_rendering(self, factor=1, transparent=False):
         """
          To ensure consistent rendering, we call this method just before
          rendering file(s). This is where all properties are applied.
@@ -369,6 +369,16 @@ class Chart(object):
         caption_hextent = None  # set this if adding a logo
         if logo:
             im = Image.open(logo)
+
+            if not transparent:
+                # Convert trnasparency to white,
+                # to avoid some vektor format artifacts
+                im = im.convert(mode="RGBA")
+                _ = Image.new("RGBA", im.size, "WHITE")
+                _.paste(im, (0, 0), im)    
+                _.convert("RGB")
+                im = _
+
             # Scale up to at least 150 * factor,
             # but no more than a quarter of the width
             # if possible
@@ -478,7 +488,7 @@ class Chart(object):
     ):
         """Render file, and send to storage."""
         # Apply all changes, in the correct order for consistent rendering
-        self._apply_changes_before_rendering(factor=factor)
+        self._apply_changes_before_rendering(factor=factor, transparent=transparent)
 
         # Save plot in memory, to write it directly to storage
         buf = BytesIO()
@@ -495,7 +505,7 @@ class Chart(object):
         Render all available formats
         """
         # Apply all changes, in the correct order for consistent rendering
-        self._apply_changes_before_rendering(factor=factor)
+        self._apply_changes_before_rendering(factor=factor, transparent=transparent)
 
         for file_format in self.file_types:
             if file_format == "dw":
