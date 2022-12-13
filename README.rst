@@ -149,6 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.36.0
+
+  - Added options argument to `S3Storage.save()`
+
 - 1.35.0
 
   - Enable logo scaling. Provided logos can now be any size, and will be scaled down to an appopriate format.
