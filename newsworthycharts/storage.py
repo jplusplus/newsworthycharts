@@ -122,7 +122,8 @@ class S3Storage(Storage):
                 'Body': stream,
                 'ACL': 'public-read',
                 'ContentType': mime_type,
-            }.update(options)
+            }
+            args.update(options)
             self.bucket.put_object(**args)
         except Exception as e:
             raise AmazonUploadError(e)
