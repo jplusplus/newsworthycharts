@@ -149,6 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.37.2
+
+  - Fixed rendering bug in non-transparent eps exports with transparent logos
+
 - 1.37.1
 
   - Fixed bug in argument parsing in S3Storage.save()
