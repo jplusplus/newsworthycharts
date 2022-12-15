@@ -153,6 +153,10 @@ Changelog
 
   - Made multi series bar seasonal bar charts work for opposite signs, so that we can make +/- charts
 
+- 1.37.3
+
+  - Bug fix: Don't crash with factor argument in DW charts.
+
 - 1.37.2
 
   - Fixed rendering bug in non-transparent eps exports with transparent logos
