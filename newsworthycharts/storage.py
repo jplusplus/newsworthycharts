@@ -109,7 +109,10 @@ class S3Storage(Storage):
         :param filetype (str): File extension
         :param options (dict): Additional arguments to boto3's put_object, e.g. {'ACL': "private"}
         """
-        stream.seek(0)
+        # streams can be strings as well (when we write text files)
+        if not isinstance(stream, str):
+            stream.seek(0)
+
         if self.prefix is not None:
             filename = "/".join(x.strip("/")
                                 for x in [self.prefix, key]) + "." + filetype
