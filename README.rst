@@ -149,6 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.38.0
+
+  - Made multi series bar seasonal bar charts work for opposite signs, so that we can make +/- charts
+
 - 1.37.2
 
   - Fixed rendering bug in non-transparent eps exports with transparent logos
