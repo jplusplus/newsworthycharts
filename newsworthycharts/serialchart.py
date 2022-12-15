@@ -369,9 +369,15 @@ class SerialChart(Chart):
                 if i > 0:
                     # To make stacked bars we need to set bottom value
                     # aggregate values for stacked bar chart
-                    # TODO: Consider moving this logic to `lib.datalist.DataList`
                     cum_values = np.cumsum(serie_values, axis=0).tolist()
                     bar_kwargs["bottom"] = cum_values[i - 1]
+                    # But only do this if both values have the same sign!
+                    # We want to be able to have opposing (+/-) bars
+                    for j, x in enumerate(values):
+                        last_serie = serie_values[i-1]
+                        if np.sign(x) != np.sign(last_serie[j]):
+                            # assert cum_values[i][j] == 0
+                            bar_kwargs["bottom"][j] = 0
 
                 bars = self.ax.bar(dates, values, **bar_kwargs)
 
