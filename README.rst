@@ -149,6 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.38.2
+  
+  - `S3Storage`: Handle text files.
+
 - 1.38.1
 
   - Prevent logo from ever being > 155px, to restore previous behaviour.
