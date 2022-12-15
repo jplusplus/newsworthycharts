@@ -71,7 +71,7 @@ class DatawrapperChart(Chart):
         self._translations = None
 
 
-    def render(self, key: str, img_format: str):
+    def render(self, key: str, img_format: str, **kwargs):
         """Render file, and send to storage."""
 
         # Save plot in memory, to write it directly to storage
@@ -132,7 +132,7 @@ class DatawrapperChart(Chart):
         self._storage.save(key, buf, img_format)
 
 
-    def render_all(self, key: str):
+    def render_all(self, key: str, **kwargs):
         """
         Render all available formats
         """
