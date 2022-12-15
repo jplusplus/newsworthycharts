@@ -149,6 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.37.3
+
+  - Bug fix: Don't crash with factor argument in DW charts.
+
 - 1.37.2
 
   - Fixed rendering bug in non-transparent eps exports with transparent logos
