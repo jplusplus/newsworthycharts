@@ -382,7 +382,7 @@ class Chart(object):
             # Scale up to at least 150 * factor,
             # but no more than a quarter of the width
             # if possible
-            new_width = max(
+            new_width = min(
                 155 * factor,
                 (self._w * factor) / 4,
             )

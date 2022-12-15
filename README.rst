@@ -149,6 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.38.1
+
+  - Prevent logo from ever being > 155px, to restore previous behaviour.
+
 - 1.38.0
 
   - Made multi series bar seasonal bar charts work for opposite signs, so that we can make +/- charts
