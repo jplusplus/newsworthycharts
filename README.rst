@@ -149,6 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- next
+
+  - Added missing metadata to svg
+
 - 1.39.0
 
   - Added pdf export, now more widely used than eps

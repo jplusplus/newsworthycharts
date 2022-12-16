@@ -508,6 +508,11 @@ class Chart(object):
                 'Author': "Newsworthy",
                 'Software': f"NWCharts {version}",
             }
+        elif img_format == "svg":
+            args["metadata"] = {
+                'Publisher': "Newsworthy",
+                'Creator': f"NWCharts {version}",
+            }
         self._fig.savefig(buf, **args)
         buf.seek(0)
         self._storage.save(key, buf, img_format, storage_options)
@@ -539,6 +544,11 @@ class Chart(object):
                 args["metadata"] = {
                     'Author': "Newsworthy",
                     'Software': f"NWCharts {version}",
+                }
+            elif file_format == "svg":
+                args["metadata"] = {
+                    'Publisher': "Newsworthy",
+                    'Creator': f"NWCharts {version}",
                 }
             self._fig.savefig(buf, **args)
             buf.seek(0)
