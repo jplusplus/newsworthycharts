@@ -1,3 +1,5 @@
+__version__ = "1.39.0"
+
 from .chart import Chart
 from .serialchart import SerialChart
 from .seasonalchart import SeasonalChart

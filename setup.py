@@ -1,5 +1,5 @@
 from setuptools import setup
-from version import version, name, authors, email, short_desc
+from newsworthycharts import __version__ as version
 
 
 def readme():
@@ -11,16 +11,16 @@ def readme():
 repo = "https://github.com/jplusplus/newsworthycharts"
 
 setup(
-    name=name,
+    name="newsworthycharts",
     version=version,
-    description=short_desc,
+    description="Matplotlib wrapper to create charts and publish them on Amazon S3",
     long_description=readme(),
     long_description_content_type='text/x-rst',
     url=repo,
-    author=authors,
-    author_email=email,
+    author="Jens Finnäs and Leo Wallentin, J++ Stockholm",
+    author_email="stockholm@jplusplus.org",
     license="MIT",
-    packages=[name],
+    packages=["newsworthycharts"],
     zip_safe=False,
     python_requires='>=3.5',
     install_requires=[
