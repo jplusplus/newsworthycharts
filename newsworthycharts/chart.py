@@ -7,6 +7,7 @@ from .lib.utils import loadstyle, outline
 from .lib.formatter import Formatter
 from .lib.datalist import DataList
 from .storage import Storage, LocalStorage
+from version import version
 
 from io import BytesIO
 from matplotlib.path import Path
@@ -492,11 +493,22 @@ class Chart(object):
 
         # Save plot in memory, to write it directly to storage
         buf = BytesIO()
-        self._fig.savefig(
-            buf, format=img_format,
-            transparent=transparent,
-            dpi=self._fig.dpi * factor
-        )
+        args = {
+            'format': img_format,
+            'transparent': transparent,
+            'dpi': self._fig.dpi * factor,
+        }
+        if img_format == "pdf":
+            args["metadata"] = {
+                'Creator': "Newsworthy",
+                'Producer': f"NWCharts {version}",
+            }
+        elif img_format == "png":
+            args["metadata"] = {
+                'Author': "Newsworthy",
+                'Software': f"NWCharts {version}",
+            }
+        self._fig.savefig(buf, **args)
         buf.seek(0)
         self._storage.save(key, buf, img_format, storage_options)
 
@@ -513,11 +525,22 @@ class Chart(object):
 
             # Save plot in memory, to write it directly to storage
             buf = BytesIO()
-            self._fig.savefig(
-                buf, format=file_format,
-                transparent=transparent,
-                dpi=self._fig.dpi * factor
-            )
+            args = {
+                'format': file_format,
+                'transparent': transparent,
+                'dpi': self._fig.dpi * factor,
+            }
+            if file_format == "pdf":
+                args["metadata"] = {
+                    'Creator': "Newsworthy",
+                    'Producer': f"NWCharts {version}",
+                }
+            elif file_format == "png":
+                args["metadata"] = {
+                    'Author': "Newsworthy",
+                    'Software': f"NWCharts {version}",
+                }
+            self._fig.savefig(buf, **args)
             buf.seek(0)
             self._storage.save(key, buf, file_format, storage_options)
 

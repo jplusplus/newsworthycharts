@@ -2,9 +2,10 @@
 """
 
 MIME_TYPES = {
-    'webp': "image/webp",
+    'dw': "text/plain",
+    'eps': "application/postscript",
+    'pdf': "application/pdf",
     'png': "image/png",
     'svg': "image/svg+xml",
-    'eps': "application/postscript",
-    'dw': "text/plain",
+    'webp': "image/webp",
 }
