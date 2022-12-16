@@ -7,7 +7,6 @@ from .lib.utils import loadstyle, outline
 from .lib.formatter import Formatter
 from .lib.datalist import DataList
 from .storage import Storage, LocalStorage
-from version import version
 
 from io import BytesIO
 from matplotlib.path import Path
@@ -19,6 +18,7 @@ from langcodes import standardize_tag
 from PIL import Image
 from babel import Locale
 import warnings
+from . import __version__
 
 
 class Chart(object):
@@ -501,17 +501,17 @@ class Chart(object):
         if img_format == "pdf":
             args["metadata"] = {
                 'Creator': "Newsworthy",
-                'Producer': f"NWCharts {version}",
+                'Producer': f"NWCharts {__version__}",
             }
         elif img_format == "png":
             args["metadata"] = {
                 'Author': "Newsworthy",
-                'Software': f"NWCharts {version}",
+                'Software': f"NWCharts {__version__}",
             }
         elif img_format == "svg":
             args["metadata"] = {
                 'Publisher': "Newsworthy",
-                'Creator': f"NWCharts {version}",
+                'Creator': f"NWCharts {__version__}",
             }
         self._fig.savefig(buf, **args)
         buf.seek(0)
@@ -538,17 +538,17 @@ class Chart(object):
             if file_format == "pdf":
                 args["metadata"] = {
                     'Creator': "Newsworthy",
-                    'Producer': f"NWCharts {version}",
+                    'Producer': f"NWCharts {__version__}",
                 }
             elif file_format == "png":
                 args["metadata"] = {
                     'Author': "Newsworthy",
-                    'Software': f"NWCharts {version}",
+                    'Software': f"NWCharts {__version__}",
                 }
             elif file_format == "svg":
                 args["metadata"] = {
                     'Publisher': "Newsworthy",
-                    'Creator': f"NWCharts {version}",
+                    'Creator': f"NWCharts {__version__}",
                 }
             self._fig.savefig(buf, **args)
             buf.seek(0)
