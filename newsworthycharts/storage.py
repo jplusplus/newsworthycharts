@@ -6,7 +6,7 @@ from shutil import copyfileobj
 import boto3
 import os
 from .lib.mimetypes import MIME_TYPES
-from io import BytesIO, StringIO
+from io import BytesIO
 
 
 class AmazonUploadError(Exception):
@@ -29,7 +29,7 @@ class Storage(object):
         :param stream (BytesIO): A stream containing the file data
         :param filetype (str): A filetype. See MIME_TYPES for valid values
         """
-        raise NotImplementedError("The save class must be overwritten.")
+        raise NotImplementedError("The save method must be overwritten.")
 
     def __repr__(self):
         # Use type(self).__name__ to get the right class name for sub classes
@@ -54,7 +54,8 @@ class DictStorage(Storage):
         :param stream (BytesIO): A stream containing the file data
         :param filetype (str): File extension, used as dict key
         """
-        stream.seek(0)
+        if isinstance(stream, BytesIO):
+            stream.seek(0)
         self.dict[filetype] = stream
 
 
@@ -105,17 +106,18 @@ class S3Storage(Storage):
     def save(self, key, stream, filetype, options={}):
         """
         :param key (str): Used for creating filename. Files may be oberwritten.
-        :param stream (BytesIO): A stream containing the file data
+        :param stream (BytesIO|str): A stream containing the file data, or a text string
         :param filetype (str): File extension
         :param options (dict): Additional arguments to boto3's put_object, e.g. {'ACL': "private"}
         """
         # streams can be strings as well (when we write text files)
-        if not isinstance(stream, str):
+        if isinstance(stream, BytesIO):
             stream.seek(0)
 
         if self.prefix is not None:
-            filename = "/".join(x.strip("/")
-                                for x in [self.prefix, key]) + "." + filetype
+            filename = "/".join(
+                x.strip("/") for x in [self.prefix, key]
+            ) + "." + filetype
         else:
             filename = key + "." + filetype
         mime_type = MIME_TYPES[filetype]
