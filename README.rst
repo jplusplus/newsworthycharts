@@ -101,27 +101,23 @@ Options
 -------
 
 **Chart**
-data: A list of datasets
-annotate_trend = True  # Print out values at points on trendline?
-trendline = []  # List of x positions, or data points
-labels = []  # Optionally one label for each dataset
-annotations = []  # Manually added annotations
-interval = None  # yearly|quarterly|monthly|weekly|daily
-show_ticks = True  # toggle category names, dates, etc
-subtitle = None
-note = None
-xlabel = None
-ylabel = None
-caption = None
-highlight = None
-decimals = None
-# number of decimals to show in annotations, value ticks, etc
-# None means automatically chose the best number
-logo = None
-# Path to image that will be embedded in the caption area
-# Can also be set though a style property
-color_fn = None
-# Custom coloring function
+
+- data: A list of datasets
+- annotate_trend = True  # Print out values at points on trendline?
+- trendline = []  # List of x positions, or data points
+- labels = []  # Optionally one label for each dataset
+- annotations = []  # Manually added annotations
+- interval = None  # yearly|quarterly|monthly|weekly|daily
+- show_ticks = True  # toggle category names, dates, etc
+- subtitle = None
+- note = None
+- xlabel = None
+- ylabel = None
+- caption = None
+- highlight = None
+- decimals = None  # None means automatically chose the best number
+- logo = None  # Path to image that will be embedded in the caption area. Can also be set though a style property
+- color_fn = None  # Custom coloring function
 
 Developing
 ----------
@@ -136,15 +132,16 @@ To run tests:
 Deployment
 ----------
 
-To deploy a new version to PyPi:
+To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts/1.39.1/):
 
 1. Update Changelog below.
 2. Update the version number in newsworthycharts/__init__.py
 3. Create a git tag: `git tag VERSION` (not strictly needed, but nice)
 4. Build: `python3 setup.py sdist bdist_wheel`
-5. Upload: `python3 -m twine upload dist/newsworthycharts-X.Y.X*`
+5. Check: `python3 -m twine check dist/newsworthycharts-X.Y.X*`
+6. Upload: `python3 -m twine upload dist/newsworthycharts-X.Y.X*`
 
-...assuming you have Twine installed (`pip install twine`) and configured.
+...assuming you have Twine installed (`pip3 install twine`) and configured.
 
 Changelog
 ---------
