@@ -149,6 +149,11 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
+- 1.39.0
+
+  - Added pdf export, now more widely used than eps
+  - Author and software metadata now added to pdf and png, including the exakt NWCharts version used to produce an image
+
 - 1.38.2
   
   - `S3Storage`: Handle text files.
