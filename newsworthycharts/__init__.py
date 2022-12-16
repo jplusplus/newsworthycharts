@@ -1,4 +1,4 @@
-__version__ = "1.39.0"
+__version__ = "1.39.1"
 
 from .chart import Chart
 from .serialchart import SerialChart

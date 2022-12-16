@@ -149,9 +149,10 @@ To deploy a new version to PyPi:
 Changelog
 ---------
 
-- next
+- 1.39.1
 
   - Added missing metadata to svg
+  - Added .__version__ attribute to the package
 
 - 1.39.0
 
