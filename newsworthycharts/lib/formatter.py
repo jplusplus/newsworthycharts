@@ -80,9 +80,14 @@ class Formatter(object):
         """
         if x is None:
             return self.na_str
+        import math
 
+        def round_half_up(n, decimals=0):
+            multiplier = 10 ** decimals
+            return math.floor(float(n * multiplier) + 0.5) / multiplier
         decimals = self.decimals
-        if decimals is None:
+        if decimals is not None:
+            """
             # Default roundings
             if abs(x) < 0.1:
                 decimals = 2
@@ -90,7 +95,8 @@ class Formatter(object):
                 decimals = 1
             else:
                 decimals = 0
-        x = round(Decimal(x), decimals)
+            """
+            x = round_half_up(Decimal(x), decimals)
         return format_decimal(x, locale=self.l)
 
     def short_month(self, x, *args, **kwargs):
