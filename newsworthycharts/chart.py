@@ -17,7 +17,7 @@ from matplotlib.ticker import FuncFormatter
 from langcodes import standardize_tag
 from PIL import Image
 from babel import Locale
-import warnings
+# import warnings
 from . import __version__
 
 
@@ -74,8 +74,8 @@ class Chart(object):
         self._storage = storage
         self._w, self._h = int(width), int(height)
         self._style, self._nwc_style = loadstyle(style)
-        if len(self._nwc_style.keys()):
-            warnings.warn("Using custom NWCharts settings in rc files is deprecated. With recent development on Matplotlib, many of them can be migrated to native Matplotlib settings.")
+        # if len(self._nwc_style.keys()):
+        #    warnings.warn("Using custom NWCharts settings in rc files is deprecated.")
         # Standardize and check if language tag is a valid BCP 47 tag
         self._language = standardize_tag(language)
         self._locale = Locale.parse(self._language.replace("-", "_"))
@@ -117,20 +117,6 @@ class Chart(object):
         return self._get_formatter(self.units)
 
     def _get_formatter(self, units):
-        if self.decimals is None:
-            # try auto determining
-            span = self.data.max_val - self.data.min_val
-            """
-            if self.units == "percent":
-                span *= 100
-            if span < 5:
-                self.decimals = 1
-            if span < 2:
-                self.decimals = 2
-            if span < 0.2:
-                self.decimals = 3
-            """
-
         formatter = Formatter(self._language,
                               decimals=self.decimals,
                               scale="celsius")
@@ -399,7 +385,7 @@ class Chart(object):
                 # to avoid some vektor format artifacts
                 im = im.convert(mode="RGBA")
                 _ = Image.new("RGBA", im.size, "WHITE")
-                _.paste(im, (0, 0), im)    
+                _.paste(im, (0, 0), im)
                 _.convert("RGB")
                 im = _
 
