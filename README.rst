@@ -146,6 +146,10 @@ To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts/1.39
 Changelog
 ---------
 
+- next
+
+  - Autodecide `.decimals` if None
+
 - 1.39.1
 
   - Added missing metadata to svg

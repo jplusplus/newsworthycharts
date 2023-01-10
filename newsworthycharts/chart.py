@@ -117,6 +117,20 @@ class Chart(object):
         return self._get_formatter(self.units)
 
     def _get_formatter(self, units):
+        if self.decimals is None:
+            # try auto determining
+            span = self.data.max_val - self.data.min_val
+            """
+            if self.units == "percent":
+                span *= 100
+            if span < 5:
+                self.decimals = 1
+            if span < 2:
+                self.decimals = 2
+            if span < 0.2:
+                self.decimals = 3
+            """
+
         formatter = Formatter(self._language,
                               decimals=self.decimals,
                               scale="celsius")
@@ -297,7 +311,7 @@ class Chart(object):
         if axis != "y":
             raise NotImplementedError("Not able to mark broken x axis yet")
         # create a custom marker path
-        # Set the relative size of each move 
+        # Set the relative size of each move
         x_step = 0.5
         y_step = 0.3
         verts = [
@@ -310,13 +324,13 @@ class Chart(object):
             (0, y_step * 5),
             (0, y_step * 6),
         ]
-        codes = [ Path.MOVETO ] + (len(verts) - 1) * [ Path.LINETO]
-        path = Path(verts,codes)
+        codes = [Path.MOVETO] + (len(verts) - 1) * [Path.LINETO]
+        path = Path(verts, codes)
 
         kwargs = dict(
             marker=path,
             # TODO: Make size a function of the size of the chart
-            markersize=25, 
+            markersize=25,
             linestyle='none',
             mec=self._style["ytick.color"],
             mew=0.75,
@@ -324,7 +338,6 @@ class Chart(object):
             clip_on=False
         )
         self.ax.plot([0], transform=self.ax.transAxes, **kwargs)
-
 
     def _apply_changes_before_rendering(self, factor=1, transparent=False):
         """
@@ -339,17 +352,27 @@ class Chart(object):
         if not self.show_ticks:
             self.category_axis.set_visible(False)
         else:
-            # Remove dublicated labels (typically a side effect of using
-            # few decimals while having a lot of values in a small range)
-            pass
-            """
+            # Increase number of decimals until we have no duplicated y axis ticks,
+            # unless .decimals s explicitly set.
             self._fig.canvas.draw()
             tl = [x.get_text() for x in self.value_axis.get_ticklabels()]
-            print(tl)
-            tl = [x if tl[i-1] != x else "" for (i, x) in enumerate(tl)]
-            print(tl)
-            self.value_axis.set_ticklabels(tl)
-            """
+            tl_ = [x for (i, x) in enumerate(tl) if tl[i - 1] != x]
+            if len(tl_) < len(tl) and self.decimals is None:
+                try_dec = 1
+                keep_trying = True
+                while keep_trying:
+                    self.decimals = try_dec
+                    if len(self.data):
+                        self._add_data()
+                    self._fig.canvas.draw()
+                    tl = [x.get_text() for x in self.value_axis.get_ticklabels()]
+                    tl_ = [x for (i, x) in enumerate(tl) if tl[i - 1] != x]
+                    if len(tl) == len(tl_):
+                        keep_trying = False
+                    if try_dec > 2:
+                        keep_trying = False
+                    try_dec += 1
+                # self.value_axis.set_ticklabels(tl)
 
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
