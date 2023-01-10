@@ -37,7 +37,6 @@ class Formatter(object):
         date = datetime.fromisoformat(x)
         return format_date(date, pattern, locale=self.l)
 
-
     def percent(self, x, *args, **kwargs):
         if x is None:
             return self.na_str
