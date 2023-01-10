@@ -339,11 +339,12 @@ class Chart(object):
             self.category_axis.set_visible(False)
         else:
             # Increase number of decimals until we have no duplicated y axis ticks,
-            # unless .decimals s explicitly set.
+            # unless .decimals explicitly set.
             self._fig.canvas.draw()
             tl = [x.get_text() for x in self.value_axis.get_ticklabels()]
             tl_ = [x for (i, x) in enumerate(tl) if tl[i - 1] != x]
-            if len(tl_) < len(tl) and self.decimals is None:
+            autodetect_decimals = self.decimals is None
+            if len(tl_) < len(tl) and autodetect_decimals:
                 try_dec = 1
                 keep_trying = True
                 while keep_trying:
@@ -358,7 +359,12 @@ class Chart(object):
                     if try_dec > 2:
                         keep_trying = False
                     try_dec += 1
-                # self.value_axis.set_ticklabels(tl)
+            # If we still have duplicates; remove them!
+            tl = [x.get_text() for x in self.value_axis.get_ticklabels()]
+            tl_ = [x for (i, x) in enumerate(tl) if tl[i - 1] != x]
+            if len(tl_) < len(tl):
+                tl = [x if i < len(tl) - 1 and tl[i + 1] != x else "" for (i, x) in enumerate(tl)]
+                self.value_axis.set_ticklabels(tl)
 
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
