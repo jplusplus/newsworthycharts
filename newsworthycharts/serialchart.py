@@ -1,10 +1,8 @@
-from typing import no_type_check_decorator
 from .chart import Chart
 from .lib.locator import get_best_locator, get_year_ticks
 from .lib.utils import to_float, to_date
 from .lib.formatter import Formatter
 
-from babel.dates import format_date
 import numpy as np
 from math import inf
 from matplotlib.dates import (DateFormatter, MonthLocator,
@@ -25,7 +23,7 @@ class SerialChart(Chart):
         super(SerialChart, self).__init__(*args, **kwargs)
         self.type = "bars"
         self.bar_width = 0.9
-        
+
         # Set with of lines explicitly (otherwise determined by style file)
         self.line_width = None
 
@@ -45,7 +43,7 @@ class SerialChart(Chart):
         # Optional: where to place series label
         self.label_placement = "legend"  # legend|inline|outside
 
-        # Optional: annotate each point with a value label 
+        # Optional: annotate each point with a value label
         self.value_labels = False
 
         # Optional: Adds background color to part of charts
@@ -270,7 +268,7 @@ class SerialChart(Chart):
 
                 elif self.colors is not None:
                     color = self.colors[i]
-                
+
                 elif i == 0:
                     color = self._nwc_style["strong_color"]
                 else:
@@ -374,7 +372,7 @@ class SerialChart(Chart):
                     # But only do this if both values have the same sign!
                     # We want to be able to have opposing (+/-) bars
                     for j, x in enumerate(values):
-                        last_serie = serie_values[i-1]
+                        last_serie = serie_values[i - 1]
                         if np.sign(x) != np.sign(last_serie[j]):
                             # assert cum_values[i][j] == 0
                             bar_kwargs["bottom"][j] = 0
@@ -391,7 +389,7 @@ class SerialChart(Chart):
                     xy = (date, value)
                     elem = self._annotate_point(value_label, xy, direction=dir, color=color)
                     value_label_elems.append(elem)
-        
+
         # Annotate highlighted points/bars
         for hv in highlight_values:
             value_label = a_formatter(hv)
@@ -474,7 +472,7 @@ class SerialChart(Chart):
         else:
             ymin = self.data.min_val
             padding_bottom = abs(self.data.min_val * 0.15)
-        
+
         if self.ymax is not None:
             ymax = self.ymax
             padding_top = 0
@@ -519,7 +517,7 @@ class SerialChart(Chart):
                         return formatter.date(self.data.x_points[pos], "d MMM")
                     except IndexError:
                         return None
-                #fmt = DateFormatter('%-d %b')
+                # fmt = DateFormatter('%-d %b')
             elif isinstance(loc, MonthLocator):
                 def fmt(x, pos):
                     if pos > len(self.data.x_points):
@@ -528,8 +526,7 @@ class SerialChart(Chart):
                         return formatter.date(self.data.x_points[pos], "MMM")
                     except IndexError:
                         return None
-                
-                #fmt = DateFormatter('%b')
+                # fmt = DateFormatter('%b')
 
             elif isinstance(loc, DayLocator):
                 def fmt(x, pos):
@@ -591,7 +588,7 @@ class SerialChart(Chart):
 
         if len(line_label_elems) > 1:
             self._adust_texts_vertically(line_label_elems)
-        
+
         if len(value_label_elems) > 1:
             self._adust_texts_vertically(value_label_elems, ha="center")
 
