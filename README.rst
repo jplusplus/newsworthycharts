@@ -148,7 +148,8 @@ Changelog
 
 - next
 
-  - Autodecide `.decimals` if None
+  - Auto-decide `.decimals` if None
+  - Remove noisy deprection warning on user settings in rc files
 
 - 1.39.1
 
