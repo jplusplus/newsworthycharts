@@ -149,7 +149,10 @@ Changelog
 - next
 
   - Auto-decide `.decimals` if None
-  - Remove noisy deprection warning on user settings in rc files
+  - Round 0.5 to 1, etc in value axis and annotations
+  - TODO: deprecate count! Make all numbers equal
+  - TODO: remove overriding of decimal settings by units = count
+  - Remove noisy deprecation warning on user settings in rc files
 
 - 1.39.1
 
