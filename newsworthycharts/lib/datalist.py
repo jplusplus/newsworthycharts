@@ -51,7 +51,7 @@ class DataList(MutableSequence):
             self.max_val = max(self.max_val, max(values))
         self._x_points.update([x[0] for x in v])
 
-        # Normalize to 3 digit syntax
+        # Normalize to 3 slot syntax
         v = [x if len(x) > 2
              else (x[0], x[1], None)
              for x in v]
