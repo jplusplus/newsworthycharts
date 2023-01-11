@@ -24,6 +24,8 @@ class SerialChart(Chart):
         self.type = "bars"
         self.bar_width = 0.9
 
+        self.allow_broken_y_axis = kwargs.get("allow_broken_y_axis", True)
+
         # Set with of lines explicitly (otherwise determined by style file)
         self.line_width = None
 
@@ -490,7 +492,7 @@ class SerialChart(Chart):
         self.ax.yaxis.set_major_formatter(y_formatter)
         self.ax.yaxis.grid(True)
 
-        if ymin > 0:
+        if ymin > 0 and self.allow_broken_y_axis:
             self._mark_broken_axis()
 
         # X ticks and formatter
