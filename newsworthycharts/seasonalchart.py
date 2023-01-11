@@ -47,5 +47,5 @@ class SeasonalChart(SerialChart):
         #    color_n = self._nwc_style["light_gray_color"]
         #    colors = [color_s if x[1].endswith(date_suffix) else color_n
         #              for x in self.data[0]]
-        
+
         return colors
