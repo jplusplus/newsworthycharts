@@ -62,7 +62,11 @@ class Formatter(object):
             pattern = pattern.rsplit("0", 1)
             pattern[1] = "." + "0" * decimals + pattern[1]
             pattern = "0".join(pattern)
-        string = format_percent(x, locale=self.l, format=pattern, decimal_quantization=False)
+        else:
+            pattern = pattern.rsplit("0", 1)
+            pattern[1] = ".#" + pattern[1]
+            pattern = "0".join(pattern)
+        string = format_decimal(x, locale=self.l, format=pattern)
         minus = self.l.number_symbols["minusSign"]
         string = string.replace("-", minus)
         return string
