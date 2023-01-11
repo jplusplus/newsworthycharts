@@ -133,16 +133,19 @@ def test_setting_subtitle():
         "height": 600,
         "title": "Hej kolla underrubriken!",
         "subtitle": "...som ger grafen en helt ny kontext",
-        "data": [
-            [("a", 5),
-           ("b", 5.5),
-           ("c", 6)]
-        ]
+        "data": [[
+            ("a", 5),
+            ("b", 5.5),
+            ("c", 6),
+        ]]
     }
     c = CategoricalChart.init_from(chart_obj, storage=local_storage)
     c.render("chart_with_subtitle", "png")
 
-    chart_obj["subtitle"] = "Som är lite längre och som kan gå över flera rader. Kolla bara hur den fortsätter, fortsätter och fortsätter."
+    chart_obj["subtitle"] = """
+Som är lite längre och som kan gå över flera rader.
+Kolla bara hur den fortsätter, fortsätter och fortsätter.
+"""
     c = CategoricalChart.init_from(chart_obj, storage=local_storage)
     c.render("chart_with_long_subtitle", "png")
 
@@ -155,7 +158,7 @@ def test_transparent_background():
         "data": [[
             ("a", 5),
             ("b", 5.5),
-            ("c", 6)
+            ("c", 6),
         ]],
     }
     c = CategoricalChart.init_from(chart_obj, storage=local_storage)
