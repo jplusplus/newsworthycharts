@@ -147,7 +147,7 @@ To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts/1.39
 Changelog
 ---------
 
-- next
+- 1.40.0
 
   - Auto-decide `.decimals` if None
   - Round 0.5 to 1, etc in value axis labels and annotations (the `ROUND_HALF_UP` behaviour)
