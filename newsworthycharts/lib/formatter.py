@@ -1,5 +1,5 @@
 """Module for doing (very) simple i18n work."""
-from babel.numbers import format_decimal, format_percent, Locale
+from babel.numbers import format_decimal, Locale
 from babel.units import format_unit
 from babel.dates import format_date
 from datetime import datetime
