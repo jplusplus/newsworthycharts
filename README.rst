@@ -147,6 +147,11 @@ To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts/1.39
 Changelog
 ---------
 
+- 1.40.1
+
+  - Fix floating point bug in percent labels
+  - Test fixes
+
 - 1.40.0
 
   - Auto-decide `.decimals` if None
