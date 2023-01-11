@@ -108,6 +108,7 @@ Options
 - labels = []  # Optionally one label for each dataset
 - annotations = []  # Manually added annotations
 - interval = None  # yearly|quarterly|monthly|weekly|daily
+- units = 'number'  # number|percent|degrees
 - show_ticks = True  # toggle category names, dates, etc
 - subtitle = None
 - note = None
@@ -149,10 +150,13 @@ Changelog
 - next
 
   - Auto-decide `.decimals` if None
-  - Round 0.5 to 1, etc in value axis and annotations
-  - TODO: deprecate count! Make all numbers equal
-  - TODO: remove overriding of decimal settings by units = count
+  - Round 0.5 to 1, etc in value axis labels and annotations (the `ROUND_HALF_UP` behaviour)
+  - Add `.force_decimals` to print out e.g. ”1.0”. Requires `.decimals` to be explicitly set
+  - Serial Chart: Allow disabling ”broken y axis” feature by setting `allow_broken_y_axis=False`
+  - Deprecated `units="count"`. Make all numbers equal. Use `units="number"` and `decimals=0` to get the earlier behaviour.
+  - Remove overriding of decimal settings by units = count
   - Remove noisy deprecation warning on user settings in rc files
+  - Formatters will now use the correct minus signs for the given locale.
 
 - 1.39.1
 

@@ -58,6 +58,8 @@ class Chart(object):
         self.decimals = None
         # number of decimals to show in annotations, value ticks, etc
         # None means automatically chose the best number
+        self.force_decimals = False
+        # Should we print ”1.0”, rather than ”1” in labels, annotations, etc
         self.logo = None
         # Path to image that will be embedded in the caption area
         # Can also be set though a style property
@@ -67,7 +69,7 @@ class Chart(object):
         # P R I V A T E   P R O P E R T I E S
         # Properties managed through getters/setters
         self._title = None
-        self._units = "count"
+        self._units = "number"
 
         # Calculated properties
         self._annotations = []  # Automatically added annotations
@@ -119,6 +121,7 @@ class Chart(object):
     def _get_formatter(self, units):
         formatter = Formatter(self._language,
                               decimals=self.decimals,
+                              force_decimals=self.force_decimals,
                               scale="celsius")
         if units == "percent":
             return FuncFormatter(formatter.percent)
@@ -360,11 +363,13 @@ class Chart(object):
                         keep_trying = False
                     try_dec += 1
             # If we still have duplicates; remove them!
+            """
             tl = [x.get_text() for x in self.value_axis.get_ticklabels()]
             tl_ = [x for (i, x) in enumerate(tl) if tl[i - 1] != x]
             if len(tl_) < len(tl):
                 tl = [x if i < len(tl) - 1 and tl[i + 1] != x else "" for (i, x) in enumerate(tl)]
                 self.value_axis.set_ticklabels(tl)
+            """
 
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
@@ -596,12 +601,15 @@ class Chart(object):
         In some languages there are typographical differences between
         angles and short temperature notation (e.g. 45° vs 45 °).
         """
-        allowed_units = ["count", "percent", "degrees"]
+        if val == "count":
+            val = "number"
+            raise DeprecationWarning(
+                "'count' is deprecated. "
+                + "Use 'number', and manually set decimals=0 to get the same behaviour"
+            )
+        allowed_units = ["number", "percent", "degrees"]
         if val in allowed_units:
             self._units = val
-            # By default no decimals if unit is “count”
-            if self.decimals is None and self._units == "count":
-                self.decimals = 0
         else:
             raise ValueError("Supported units are: {}".format(allowed_units))
 
