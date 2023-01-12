@@ -54,24 +54,32 @@ def loadstyle(style_name):
     # Typography
     ###
     if "title_font" in rc_params_newsworthy:
-        nwc_styles["title_font"] = [x.strip()
-                            for x in rc_params_newsworthy["title_font"]
-                            .split(",")]
+        nwc_styles["title_font"] = [
+            x.strip() for x in rc_params_newsworthy["title_font"].split(",")
+        ]
     else:
         nwc_styles["title_font"] = style["font.family"]
 
     # define as pt or reltive ("smaller")
-    nwc_styles["subtitle.fontsize"] = rc_params_newsworthy.get("subtitle.fontsize",
-                                                          None)
+    nwc_styles["subtitle.fontsize"] = rc_params_newsworthy.get(
+        "subtitle.fontsize",
+        None,
+    )
 
     # make annotation same font size as ticks by default
     tick_font_size = style.get('xtick.labelsize', "smaller")
-    nwc_styles["annotation.fontsize"] = rc_params_newsworthy.get("annotation.fontsize",
-                                                            tick_font_size)
-    nwc_styles["note.fontsize"] = rc_params_newsworthy.get("note.fontsize",
-                                                      "smaller")
-    nwc_styles["caption.fontsize"] = rc_params_newsworthy.get("caption.fontsize",
-                                                         "smaller")
+    nwc_styles["annotation.fontsize"] = rc_params_newsworthy.get(
+        "annotation.fontsize",
+        tick_font_size,
+    )
+    nwc_styles["note.fontsize"] = rc_params_newsworthy.get(
+        "note.fontsize",
+        "smaller",
+    )
+    nwc_styles["caption.fontsize"] = rc_params_newsworthy.get(
+        "caption.fontsize",
+        "smaller",
+    )
 
     color = rc_params_newsworthy.get("neutral_color",
                                      rcParams["figure.edgecolor"])
@@ -132,8 +140,7 @@ def to_date(val):
 
     except ValueError:
         return datetime.strptime(val, "%Y")
-    
-    except:
+    except Exception:
         raise ValueError(f"Unable to parse date from {val}")
 
 
@@ -146,6 +153,7 @@ def adjust_lightness(color, amount=0.5):
         c = color
     c = colorsys.rgb_to_hls(*to_rgb(c))
     return colorsys.hls_to_rgb(c[0], max(0, min(1, amount * c[1])), c[2])
+
 
 def outline(color="white", linewidth=3, **kwargs):
     """Short-cut for generering an outline with `path_effects`
