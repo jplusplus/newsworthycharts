@@ -17,7 +17,7 @@ from matplotlib.ticker import FuncFormatter
 from langcodes import standardize_tag
 from PIL import Image
 from babel import Locale
-# import warnings
+import warnings
 from . import __version__
 
 
@@ -603,7 +603,7 @@ class Chart(object):
         """
         if val == "count":
             val = "number"
-            raise DeprecationWarning(
+            warnings.warn(
                 "'count' is deprecated. "
                 + "Use 'number', and manually set decimals=0 to get the same behaviour"
             )
