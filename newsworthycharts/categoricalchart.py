@@ -112,8 +112,8 @@ class CategoricalChart(Chart):
                         )
 
                     if self.highlight is not None:
-                        if (self.highlight == d[0] or 
-                            (isinstance(self.highlight, list) and d[0] in self.highlight)):
+                        if (self.highlight == d[0]
+                           or (isinstance(self.highlight, list) and d[0] in self.highlight)):
 
                             colors[j] = highlight_color
 
@@ -172,6 +172,7 @@ class CategoricalChart(Chart):
             # hide legend
             self.ax.get_legend().remove()
 
+
 class CategoricalChartWithReference(CategoricalChart):
     """ A two categorical chart with two series where the latter is treated
     as a reference line.
@@ -189,7 +190,7 @@ class CategoricalChartWithReference(CategoricalChart):
             self.value_axis = self.ax.xaxis
             self.category_axis = self.ax.yaxis
 
-        a_formatter = self._get_annotation_formatter()
+        # a_formatter = self._get_annotation_formatter()
         va_formatter = self._get_value_axis_formatter()
         self.value_axis.set_major_formatter(va_formatter)
         self.value_axis.grid(True)
@@ -207,7 +208,7 @@ class CategoricalChartWithReference(CategoricalChart):
                 elif self.highlight is None:
                     color = self._nwc_style["strong_color"]
                 else:
-                    is_highlighted = [x == self.highlight or x in self.highlight 
+                    is_highlighted = [x == self.highlight or x in self.highlight
                                       for x in categories]
                     color_highlight = self._nwc_style["strong_color"]
                     color_non_highlight = self._nwc_style["neutral_color"]
@@ -265,7 +266,7 @@ class ProgressChart(CategoricalChart):
 
         if len(self.data) > 1:
             raise ValueError("ProgressChart takes one data series only.")
-        
+
         has_multiple_targets = isinstance(self.target, list)
 
         s_progress = self.data[0]
@@ -281,14 +282,12 @@ class ProgressChart(CategoricalChart):
         # Replace missing values
         s_progress_na_filled = [(x[0], 0 if x[1] is None else x[1]) for x in s_progress]
         s_remaining = [(x[0], max(0, targets[i] - x[1])) for i, x in enumerate(s_progress_na_filled)]
-        
-        categories = [x[0] for x in s_progress]
 
         self.data.append(s_remaining)
 
         super(ProgressChart, self)._add_data()
         n_bars = len(self.data[0])
-        color_progress = self._nwc_style["strong_color"]
+        # color_progress = self._nwc_style["strong_color"]
         color_remaining = self._nwc_style["light_gray_color"]
 
         # BAR STYLING
@@ -329,7 +328,7 @@ class ProgressChart(CategoricalChart):
             fmt = self._get_value_axis_formatter()
             if self.value_labels == "progress":
                 val_labels = [fmt(x[1]) for x in s_progress]
-                val_label_orient = ["inside" if (x[1] / target) > .1 else "outside" 
+                val_label_orient = ["inside" if (x[1] / target) > .1 else "outside"
                                     for x, target in zip(s_progress_na_filled, targets)]
                 val_label_xpos = [x[1] for x in s_progress_na_filled]
                 # TODO: Dynamic coloring based on background
