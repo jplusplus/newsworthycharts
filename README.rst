@@ -147,6 +147,11 @@ To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts/1.39
 Changelog
 ---------
 
+- next
+
+  - Matplotlib==3.6.3
+  - Pin some critical requirement versions
+
 - 1.40.1
 
   - Fix floating point bug in percent labels
