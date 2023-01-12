@@ -32,6 +32,7 @@ setup(
         "adjustText==0.7.3",
         "numpy>=1.19.1,<2",
         "python-dateutil>=2",
+        "Pillow>=8",
         "requests>=2.22",
         "matplotlib-label-lines==0.5.1",
     ],
