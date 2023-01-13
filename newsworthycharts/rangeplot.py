@@ -18,7 +18,7 @@ class RangePlot(Chart):
         # Custom colors for start and end points
         self.colors = None  # ["red", "green"]
 
-        # should value labels be rendered? 
+        # should value labels be rendered?
         self.value_labels = None  # "start"|"end"|"difference"|"percent_change"
 
     def _add_data(self):
@@ -40,7 +40,7 @@ class RangePlot(Chart):
         lines = self.ax.hlines(y=categories, xmin=start_values, xmax=end_values,
                                lw=dot_size * .6, zorder=1)
 
-        # COLORING: 
+        # COLORING:
         if self.colors is None:
             if self.value_labels == "both":
                 # use categorical coloring by default if both ends are to labelsed
@@ -60,7 +60,7 @@ class RangePlot(Chart):
         if self.labels:
             offset = 25
             props = dict(
-                xytext=(0, offset), 
+                xytext=(0, offset),
                 textcoords='offset pixels',
                 va="bottom",
                 fontsize=self._nwc_style["annotation.fontsize"],
@@ -87,7 +87,7 @@ class RangePlot(Chart):
                 start_label = self.ax.annotate(
                     self.labels[0],
                     (start_value, categories[-1]),
-                    color=start_color, 
+                    color=start_color,
                     ha="right" if start_value < end_value else "left",
                     **props
                 )
@@ -112,17 +112,17 @@ class RangePlot(Chart):
                 val_label_end = "end"
 
             elif self.value_labels == "both":
-                val_labels = ([fmt(v) for v in start_values] +
-                              [fmt(v) for v in end_values])
+                val_labels = ([fmt(v) for v in start_values]
+                              + [fmt(v) for v in end_values])
                 val_label_end = "both"
 
             elif self.value_labels == "difference":
-                val_labels = [change_fmt(v - start_values[i], fmt) 
+                val_labels = [change_fmt(v - start_values[i], fmt)
                               for i, v in enumerate(end_values)]
                 val_label_end = "end"
 
             elif self.value_labels == "percent_change":
-                val_labels = [change_fmt(v / start_values[i] - 1, pct_fmt) 
+                val_labels = [change_fmt(v / start_values[i] - 1, pct_fmt)
                               for i, v in enumerate(end_values)]
                 val_label_end = "end"
 
@@ -139,8 +139,8 @@ class RangePlot(Chart):
                 val_label_colors = [end_color] * n_bars
 
             elif val_label_end == "both":
-                val_label_xpos = ([(v, v > end_values[i]) for i, v in enumerate(start_values)] +
-                                  [(v, v > start_values[i]) for i, v in enumerate(end_values)])
+                val_label_xpos = ([(v, v > end_values[i]) for i, v in enumerate(start_values)]
+                                  + [(v, v > start_values[i]) for i, v in enumerate(end_values)])
                 val_label_colors = [start_color] * n_bars + [end_color] * n_bars
                 categories = categories + categories
 
@@ -152,7 +152,7 @@ class RangePlot(Chart):
                     (xpos, ypos),
                     xytext=(offset if is_larger else -offset, 0),
                     textcoords='offset pixels',
-                    va="center", 
+                    va="center",
                     fontsize=self._nwc_style["annotation.fontsize"],
                     color=val_label_color,
                     ha="left" if is_larger else "right",
