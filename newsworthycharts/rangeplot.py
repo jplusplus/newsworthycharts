@@ -2,8 +2,6 @@ from .chart import Chart
 from .lib.utils import adjust_lightness
 from .lib.formatter import Formatter
 
-import numpy as np
-
 
 class RangePlot(Chart):
     """ Plot categorical data with two data points, for example change over time.
