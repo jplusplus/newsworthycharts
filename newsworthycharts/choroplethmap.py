@@ -132,10 +132,16 @@ class ChoroplethMap(Chart):
                 ax=self.ax,
                 column="data",
                 categorical=True,
+                legend=True,
+                legend_kwds={
+                    "loc": "upper right",
+                },
+                # cmap=self.color_ramp,
                 edgecolor='white',
                 linewidth=0.2,
                 missing_kwds={
                     "color": "lightgrey",
+                    "label": "Uppgift saknas",
                 },
             )
         else:
@@ -158,13 +164,12 @@ class ChoroplethMap(Chart):
                 _df = df[df["id"].str.startswith(inset["prefix"])].copy()
             else:
                 _df = df[df["id"].isin(inset["list"])].copy()
-            # _df["data"] = _df["id"].map(datamap)
             _df.plot(
                 ax=axin,
                 column="data",
                 categorical=True,
                 # cmap=self.color_ramp,
-                edgecolor='lightgray',
+                edgecolor='white',
                 linewidth=0.2,
                 missing_kwds={
                     "color": "lightgrey",
