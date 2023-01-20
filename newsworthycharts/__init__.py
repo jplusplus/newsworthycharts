@@ -1,6 +1,7 @@
 __version__ = "1.40.2"
 
 from .chart import Chart
+from .choroplethmap import ChoroplethMap
 from .serialchart import SerialChart
 from .seasonalchart import SeasonalChart
 from .categoricalchart import CategoricalChart, CategoricalChartWithReference, ProgressChart

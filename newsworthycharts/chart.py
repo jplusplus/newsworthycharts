@@ -5,7 +5,7 @@ from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
 from .lib.utils import loadstyle, outline
 from .lib.formatter import Formatter
-from .lib.datalist import DataList
+from .lib.datalist import DataList, DataSet
 from .storage import Storage, LocalStorage
 
 from io import BytesIO
@@ -40,7 +40,7 @@ class Chart(object):
 
         # P U B L I C   P R O P E R T I E S
         # The user can alter these at any time
-        self.data = DataList()  # A list of datasets
+        self.data = DataSet() if self._uses_categorical_data else DataList()  # A list of datasets
         self.annotate_trend = True  # Print out values at points on trendline?
         self.trendline = []  # List of x positions, or data points
         self.labels = []  # Optionally one label for each dataset
