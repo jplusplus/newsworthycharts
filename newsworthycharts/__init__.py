@@ -21,6 +21,7 @@ CHART_ENGINES = {
     "RangePlot": RangePlot,
     "ScatterPlot": ScatterPlot,
     "DatawrapperChart": DatawrapperChart,
+    "ChoroplethMap": ChoroplethMap,
 
     # custom
     "ClimateCarsYearlyEmissionsTo2030": ClimateCarsYearlyEmissionsTo2030,
