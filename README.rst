@@ -147,6 +147,9 @@ To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts/1.39
 Changelog
 ---------
 
+- 1.41.0
+  - New chart type: Choropleth maps! Supports both categorical and continuous data. 
+
 - 1.40.2
 
   - Don't crash on deprecation warning
