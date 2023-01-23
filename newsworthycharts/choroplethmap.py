@@ -114,7 +114,7 @@ class ChoroplethMap(Chart):
         else:
             _has_value = df[~df["data"].isna()].copy()
             binning = mapclassify.classify(
-                np.asarray(_has_value["data"]),
+                np.asarray(_has_value["data"]),  # .astype("category")
                 self.binning_method,
                 k=self.bins
             )
@@ -134,7 +134,8 @@ class ChoroplethMap(Chart):
                 categorical=True,
                 legend=True,
                 legend_kwds={
-                    "loc": "upper right",
+                    "loc": "upper left",
+                    "bbox_to_anchor": (1.05, 1.0),
                 },
                 # cmap=self.color_ramp,
                 edgecolor='white',
@@ -150,6 +151,11 @@ class ChoroplethMap(Chart):
                 column="data",
                 categorical=True,
                 cmap=self.color_ramp,
+                legend=True,  # bug in geopandas, fixed in master but not released
+                legend_kwds={
+                    "loc": "upper left",
+                    "bbox_to_anchor": (1.05, 1.0),
+                },
                 edgecolor='white',
                 linewidth=0.2,
                 missing_kwds={
