@@ -35,6 +35,7 @@ setup(
         "Pillow>=8",
         "requests>=2.22",
         "matplotlib-label-lines==0.5.1",
+        "geopandas==0.12.2",
     ],
     include_package_data=True,
     download_url="{}/archive/{}.tar.gz".format(repo, version),
