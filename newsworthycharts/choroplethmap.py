@@ -83,6 +83,7 @@ class ChoroplethMap(Chart):
         self.binning_method = kwargs.get("binning_method", "natural_breaks")
         self.color_ramp = kwargs.get("color_ramp", "YlOrRd")
         self.categorical = kwargs.get("categorical", False)
+        self.base_map = None
 
     def _add_data(self):
         _bm = self.base_map  # ["se-7-inset", "se-7", "se-4", "se01-7", ...]
