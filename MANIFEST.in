@@ -2,6 +2,7 @@ include newsworthycharts/rc/*
 include newsworthycharts/lib/*
 include newsworthycharts/custom/*
 include newsworthycharts/translations/*
+include newsworthycharts/maps/*.gpkg
 global-exclude *.pyc
 global-exclude *.gitignore
 exclude .travis.yml
