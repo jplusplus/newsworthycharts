@@ -6,6 +6,7 @@ import geopandas as gpd
 import numpy as np
 import pandas as pd
 import mapclassify
+import pathlib
 
 
 INSETS = {
@@ -96,7 +97,8 @@ class ChoroplethMap(Chart):
 
         series = self.data[0]
         datamap = {x[0]: x[1] for x in series}
-        df = gpd.read_file(f"newsworthycharts/maps/{base_map}-{subdivisions}.gpkg")
+        __dir = pathlib.Path(__file__).parent.resolve()
+        df = gpd.read_file(f"{__dir}/maps/{base_map}-{subdivisions}.gpkg")
         df["data"] = df["id"].map(datamap)  # .astype("category")
 
         if self.categorical:
