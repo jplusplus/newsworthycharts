@@ -101,7 +101,7 @@ def test_tall_chart():
         "bar_orientation": "horizontal",
         "title": "Oj vad det finns många kommuner i Västra Götland",
         "subtitle": "Se till så att de får plats.",
-        "note": "Här kommer en anteckning. Och verifiera att den här faktiskt kan gå över två rader utan att det blir nåt problem.",
+        "note": "Här kommer en anteckning. Och verifiera att den här faktiskt kan gå över två rader utan att det blir nåt problem.",  # NOQA
     }
     c = CategoricalChart.init_from(chart_obj, storage=local_storage)
     c.render("categorical_chart_tall", "png")
@@ -127,7 +127,7 @@ def test_bar_highlight():
     bar_sthlm, bar_täby, bar_solna = c.ax.patches
 
     assert bar_sthlm.get_fc() == c._nwc_style["strong_color"]
-    assert bar_täby.get_fc() == c._nwc_style["neutral_color"] 
+    assert bar_täby.get_fc() == c._nwc_style["neutral_color"]
 
     # Render multiple
     chart_obj["highlight"] = ["Täby", "Stockholm"]
