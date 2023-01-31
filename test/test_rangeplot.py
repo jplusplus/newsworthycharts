@@ -16,20 +16,20 @@ def test_basic_rangeplot():
         "subtitle": "Antal grejer som finns kvar efter en stor händelse.",
         "data": [
             [
-                ("Stockholm", 10), 
-                ("Göteborg", 8), 
+                ("Stockholm", 10),
+                ("Göteborg", 8),
                 ("Malmö", 4),
             ],
             [
-                ("Stockholm", 7), 
-                ("Göteborg", 11), 
+                ("Stockholm", 7),
+                ("Göteborg", 11),
                 ("Malmö", -3),
             ],
         ],
         "labels": ["Före", "Efter"],
         "value_labels": "percent_change",
         "highlight": "Göteborg",
-        "caption": "Källa: SCB" 
+        "caption": "Källa: SCB",
     }
     # basic
     c = RangePlot.init_from(chart_obj, storage=local_storage)
@@ -72,7 +72,7 @@ def test_basic_rangeplot():
         'units': 'percent',
         'labels': ['2018', '2019'],
         'highlight': 'Söderköping',
-        'value_labels': 'difference'
+        'value_labels': 'difference',
     }
 
     c = RangePlot.init_from(chart_obj, storage=local_storage)
@@ -87,7 +87,7 @@ def test_rangeplot_with_double_labeling():
         "data": [
             [
                 ("Stockholm", 10),
-                ("Göteborg", 8)
+                ("Göteborg", 8),
                 ("Malmö", 4),
             ],
             [
