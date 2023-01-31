@@ -7,6 +7,7 @@ import numpy as np
 from math import inf
 from matplotlib.dates import (DateFormatter, MonthLocator,
                               DayLocator, WeekdayLocator)
+from matplotlib.dates import num2date
 from dateutil.relativedelta import relativedelta
 from adjustText import adjust_text
 from labellines import labelLines
@@ -501,7 +502,7 @@ class SerialChart(Chart):
             self.ax.set_xticks([x[0] for x in self.ticks])
             self.ax.set_xticklabels([x[1] for x in self.ticks])
 
-        elif delta.days > 365:
+        elif delta.days > 500:
             ticks = get_year_ticks(xmin, xmax, max_ticks=self.max_ticks)
             self.ax.set_xticks(ticks)
             self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
@@ -523,12 +524,15 @@ class SerialChart(Chart):
                 # fmt = DateFormatter('%-d %b')
             elif isinstance(loc, MonthLocator):
                 def fmt(x, pos):
+                    d = num2date(x).isoformat()[:10]
+                    if d not in self.data.x_points:
+                        return None
                     if pos > len(self.data.x_points):
                         return None
-                    try:
-                        return formatter.date(self.data.x_points[pos], "MMM")
-                    except IndexError:
-                        return None
+                    if len(self.data.x_points) > 12 and d[5:7] == "01":
+                        return formatter.date(d, "MMM\ny")
+                    else:
+                        return formatter.date(d, "MMM")
                 # fmt = DateFormatter('%b')
 
             elif isinstance(loc, DayLocator):

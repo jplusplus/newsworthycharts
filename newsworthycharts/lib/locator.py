@@ -44,9 +44,9 @@ def get_best_locator(delta, points, interval=None):
     """
     if delta.days > 365 * 150:
         return YearLocator(100)
-    if delta.days > 365 * 45:
+    elif delta.days > 365 * 45:
         return YearLocator(20)
-    elif delta.days > 365:
+    elif delta.days > 500:
         if points > 20:
             return YearLocator(10)
         elif points > 10:
@@ -58,7 +58,10 @@ def get_best_locator(delta, points, interval=None):
     else:
         # Less than a year:
         if interval == "monthly":
-            return MonthLocator()
+            if points > 12:
+                return MonthLocator()
+            else:
+                return MonthLocator()
 
         elif interval == "weekly":
             # NB The threshold are not tested thoroughly. Consider adjusting.
