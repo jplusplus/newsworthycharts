@@ -26,6 +26,7 @@ class Chart(object):
     """
 
     file_types = MIME_TYPES.keys()
+    _uses_categorical_data = None
 
     def __init__(self, width: int, height: int, storage: Storage=LocalStorage(),
                  style: str='newsworthy', language: str='en-GB'):
