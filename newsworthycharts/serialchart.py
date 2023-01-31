@@ -18,6 +18,7 @@ class SerialChart(Chart):
     Data should be a list of iterables of (value, date string) tuples, eg:
     `[ [("2010-01-01", 2), ("2010-02-01", 2.3)] ]`
     """
+    _uses_categorical_data = False
 
     def __init__(self, *args, **kwargs):
         super(SerialChart, self).__init__(*args, **kwargs)

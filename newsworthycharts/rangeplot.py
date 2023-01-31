@@ -8,6 +8,7 @@ class RangePlot(Chart):
 
     Mimics Datawrapper's dito in form and functionality
     """
+    _uses_categorical_data = False
 
     def __init__(self, *args, **kwargs):
         super(RangePlot, self).__init__(*args, **kwargs)

@@ -18,6 +18,7 @@ class ScatterPlot(Chart):
 
     NAME is optional. Points are labeled based on NAME, if listed under `self.labels`
     """
+    _uses_categorical_data = False
 
     def __init__(self, *args, **kwargs):
         super(ScatterPlot, self).__init__(*args, **kwargs)

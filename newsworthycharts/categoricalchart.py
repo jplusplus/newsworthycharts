@@ -7,6 +7,7 @@ import numpy as np
 class CategoricalChart(Chart):
     """ Plot categorical data to a bar chart, e.g. number of llamas per country
     """
+    _uses_categorical_data = True
 
     def __init__(self, *args, **kwargs):
         super(CategoricalChart, self).__init__(*args, **kwargs)
