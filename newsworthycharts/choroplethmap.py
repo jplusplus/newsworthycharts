@@ -33,7 +33,7 @@ INSETS = {
                 "SE-1485",  # Uddevalla
                 "SE-1421",  # Orust
                 "SE-1484",  # Lysekil
-                "SE-1427",  # Sotenäs                
+                "SE-1427",  # Sotenäs
             ],
             "axes": [-0.28, 0.14, 0.3, 0.4],
         },
@@ -107,13 +107,6 @@ class ChoroplethMap(Chart):
                 df["data"],
                 ordered=True,
             )
-            """
-            categories = df["data"].unique()
-            color_map = {
-                cat: "blue"
-                for cat, idx in enumerate(categories)
-            }
-            """
         else:
             _has_value = df[~df["data"].isna()].copy()
             binning = mapclassify.classify(
@@ -127,45 +120,28 @@ class ChoroplethMap(Chart):
                 ordered=True
             )
             _has_value["cats"] = values
-            # df["cats"] = df["id"].apply(lambda x: _has_value[_has_value["id"] == x].iloc[0].get("cats", None) if len(_has_value[_has_value["id"] == x]) else None)
             df["data"] = pd.merge(_has_value, df, on="id", how="right")["cats"]
 
-        if self.categorical:
-            df.plot(
-                ax=self.ax,
-                column="data",
-                categorical=True,
-                legend=True,
-                legend_kwds={
-                    "loc": "upper left",
-                    "bbox_to_anchor": (1.05, 1.0),
-                },
-                # cmap=self.color_ramp,
-                edgecolor='white',
-                linewidth=0.2,
-                missing_kwds={
-                    "color": "lightgrey",
-                    "label": "Uppgift saknas",
-                },
-            )
-        else:
-            df.plot(
-                ax=self.ax,
-                column="data",
-                categorical=True,
-                cmap=self.color_ramp,
-                legend=True,  # bug in geopandas, fixed in master but not released
-                legend_kwds={
-                    "loc": "upper left",
-                    "bbox_to_anchor": (1.05, 1.0),
-                },
-                edgecolor='white',
-                linewidth=0.2,
-                missing_kwds={
-                    "color": "lightgrey",
-                },
-            )
+        args = {
+            "column": "data",
+            "categorical": True,
+            "cmap": self.color_ramp,
+            "legend": True,  # bug in geopandas, fixed in master but not released
+            "legend_kwds": {
+                "loc": "upper left",
+                "bbox_to_anchor": (1.05, 1.0),
+            },
+            "edgecolor": "white",
+            "linewidth": 0.2,
+            "missing_kwds": {
+                "color": "lightgrey",
+            },
+        }
+        if not self.categorical:
+            args["cmap"] = self.color_ramp
+        df.plot(ax=self.ax, **args)
         self.ax.axis("off")
+
         for inset in self.insets:
             axin = self.ax.inset_axes(inset["axes"])
             axin.axis('off')
@@ -187,4 +163,3 @@ class ChoroplethMap(Chart):
             r, (a, b, c, d) = self.ax.indicate_inset_zoom(axin)
             for _line in [a, b, c, d]:
                 _line.set_visible(False)
-
