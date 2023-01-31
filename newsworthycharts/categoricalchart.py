@@ -101,7 +101,7 @@ class CategoricalChart(Chart):
                         dir = "down"
 
                 if not isinstance(self, ProgressChart):
-                    if d[2] is not None:
+                    if len(d) > 2 and d[2] is not None:
                         self._annotate_point(d[2], xy, direction=dir, rotation=self.annotation_rotation)
                     elif self.highlight is not None and self.highlight == d[0]:
                         # Only add highlight value if not already annotated
