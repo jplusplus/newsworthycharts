@@ -133,7 +133,7 @@ To run tests:
 Deployment
 ----------
 
-To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts/1.39.1/):
+To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts):
 
 1. Update Changelog below.
 2. Update the version number in newsworthycharts/__init__.py
@@ -148,7 +148,7 @@ Changelog
 ---------
 
 - 1.41.0
-  - New chart type: Choropleth maps! Supports both categorical and continuous data. 
+  - New, experimental chart type: Choropleth maps! Supports both categorical and continuous data. 
 
 - 1.40.2
 
