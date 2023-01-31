@@ -3,6 +3,7 @@ from .chart import Chart
 from adjustText import adjust_text
 from matplotlib.ticker import MaxNLocator
 
+
 class ScatterPlot(Chart):
     """ Make two-dimensional scatterplots
 
@@ -29,8 +30,6 @@ class ScatterPlot(Chart):
         self.ymin = None
         self.xmin = None
 
-
-
     def _add_data(self):
         # Set up axes
         x_formatter = self._get_formatter(self.units_x)
@@ -50,7 +49,6 @@ class ScatterPlot(Chart):
         max_ticks = 5
         self.ax.yaxis.set_major_locator(MaxNLocator(nbins=max_ticks))
         self.ax.xaxis.set_major_locator(MaxNLocator(nbins=max_ticks))
-
 
         for data in self.data:
             x = [float(d[0]) for d in data]
@@ -74,9 +72,9 @@ class ScatterPlot(Chart):
                 if point_label is not None:
                     is_labeled = point_label in self.labels
                     is_highlighted = (self.highlight is not None) and \
-                            (point_label == self.highlight or point_label in self.highlight)
+                        (point_label == self.highlight or point_label in self.highlight)
                     markersize = 3
-                    
+
                     # A point can be both highlighted and annotated
                     if is_highlighted:
                         color = self._nwc_style["strong_color"]
@@ -84,7 +82,7 @@ class ScatterPlot(Chart):
                         fontsize = "medium"
                     elif is_labeled:
                         color = self._nwc_style["strong_color"]
-                        size = markersize 
+                        size = markersize
                         fontsize = "small"
                     # ...or just annotated
                     else:
@@ -93,22 +91,26 @@ class ScatterPlot(Chart):
                         fontsize = "small"
 
                     # the dot
-                    self.ax.plot(x[i], y[i],
-                                 color=color,
-                                 markeredgecolor=color,
-                                 zorder=5,
-                                 marker='o',
-                                 markersize=size)
+                    self.ax.plot(
+                        x[i], y[i],
+                        color=color,
+                        markeredgecolor=color,
+                        zorder=5,
+                        marker='o',
+                        markersize=size,
+                    )
 
                     # the text
                     if is_highlighted or is_labeled:
-                        label = self._annotate_point(point_label,
-                                            (x[i], y[i]),
-                                            "up",
-                                            fontsize=fontsize,
-                                            zorder=5)
+                        label = self._annotate_point(
+                            point_label,
+                            (x[i], y[i]),
+                            "up",
+                            fontsize=fontsize,
+                            zorder=5,
+                        )
                         label_elems.append(label)
-                        
+
             # These settings could be fine-tuned
             # Weren't able to add lines between points and labels for example
             adjust_text(self._annotations, ax=self.ax, autoalign="y",
@@ -120,7 +122,6 @@ class ScatterPlot(Chart):
         if self.xmin is not None:
             self.ax.set_xlim(self.xmin)
 
-
     # scatterplot has custom axis labels
     @property
     def _axis_label_props(self):
@@ -129,10 +130,11 @@ class ScatterPlot(Chart):
         return dict(textcoords="offset pixels", xycoords="axes fraction",
                     fontsize="small", style="italic",
                     transform=self.ax.transAxes)
+
     def _add_xlabel(self, label):
-        self.ax.annotate(label, (1, 0),  ha="right", va="bottom", xytext=(0, 5),
+        self.ax.annotate(label, (1, 0), ha="right", va="bottom", xytext=(0, 5),
                          **self._axis_label_props)
 
     def _add_ylabel(self, label):
-        self.ax.annotate(label, (0, 1), ha="left", va="top",  xytext=(5, 0),
+        self.ax.annotate(label, (0, 1), ha="left", va="top", xytext=(5, 0),
                          **self._axis_label_props)
