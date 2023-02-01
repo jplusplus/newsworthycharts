@@ -5,9 +5,7 @@ from .lib.formatter import Formatter
 
 import numpy as np
 from math import inf
-from matplotlib.dates import (DateFormatter, MonthLocator,
-                              DayLocator, WeekdayLocator)
-from matplotlib.dates import num2date
+from matplotlib.dates import DateFormatter, num2date
 from dateutil.relativedelta import relativedelta
 from adjustText import adjust_text
 from labellines import labelLines
@@ -512,7 +510,8 @@ class SerialChart(Chart):
             self.ax.xaxis.set_major_locator(loc)
             formatter = Formatter(self._language)
 
-            if isinstance(loc, WeekdayLocator):
+            # if isinstance(loc, WeekdayLocator):
+            if self.interval == "weekly":
                 # We consider dates to be more informative than week numbers
                 def fmt(x, pos):
                     if pos > len(self.data.x_points):
@@ -522,7 +521,8 @@ class SerialChart(Chart):
                     except IndexError:
                         return None
                 # fmt = DateFormatter('%-d %b')
-            elif isinstance(loc, MonthLocator):
+            # elif isinstance(loc, MonthLocator):
+            elif self.interval == "monthly":
                 def fmt(x, pos):
                     d = num2date(x).isoformat()[:10]
                     if d not in self.data.x_points:
@@ -535,7 +535,8 @@ class SerialChart(Chart):
                         return formatter.date(d, "MMM")
                 # fmt = DateFormatter('%b')
 
-            elif isinstance(loc, DayLocator):
+            # elif isinstance(loc, DayLocator):
+            elif self.interval == "daily":
                 def fmt(x, pos):
                     if pos > len(self.data.x_points):
                         return None
