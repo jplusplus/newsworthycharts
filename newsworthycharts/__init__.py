@@ -1,4 +1,4 @@
-__version__ = "1.41.0-rc1"
+__version__ = "1.41.0"
 
 from .chart import Chart
 from .choroplethmap import ChoroplethMap

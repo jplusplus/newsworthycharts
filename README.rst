@@ -150,6 +150,7 @@ Changelog
 - 1.41.0
   - New, experimental chart type: Choropleth maps! Supports both categorical and continuous data. 
   - Better support for monthly time series spanning years
+  - Fixed bug where missing annotation slots could crash CategoricalChart
 
 - 1.40.2
 
