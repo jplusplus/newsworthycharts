@@ -147,6 +147,13 @@ To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts):
 Changelog
 ---------
 
+- next
+  - Fixed bug in .allow_broken_y_axis implementation, causing broken y-axis in too many places
+  - Don't break y axis if data is close to 0
+  - TODO: Matplotlib 3.7.0
+  - TODO: Label outside in maps (mpl3.7 feature)
+  - TODO: more base maps
+
 - 1.41.0
   - New, experimental chart type: Choropleth maps! Supports both categorical and continuous data. 
   - Better support for monthly time series spanning years

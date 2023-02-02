@@ -465,15 +465,22 @@ class SerialChart(Chart):
                                  alpha=self._nwc_style["fill_between_alpha"])
 
         # Y axis formatting
+        padding_bottom = 0
         if self.ymin is not None:
             # Override ymin if the smallest value is smaller than the suggested ymin
             # For example bar charts with negative values wants a forced ymin=0 if
             # all values are positive, but also show negatives
             ymin = min(self.ymin, self.data.min_val)
             padding_bottom = abs(ymin * 0.15)
+        elif self.allow_broken_y_axis:
+            if (self.data.max_val - self.data.min_val) < self.data.min_val:
+                # Only break y axis if data variation is less than distance from ymin to 0
+                ymin = self.data.min_val
+                padding_bottom = abs(self.data.min_val * 0.15)
+            else:
+                ymin = 0
         else:
-            ymin = self.data.min_val
-            padding_bottom = abs(self.data.min_val * 0.15)
+            ymin = 0
 
         if self.ymax is not None:
             ymax = self.ymax
