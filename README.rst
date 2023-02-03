@@ -155,19 +155,19 @@ Roadmap
 Changelog
 ---------
 
-- next
-  - Fixed bug in .allow_broken_y_axis implementation, causing broken y-axis in too many places
-  - Don't break y axis if data is close to 0
+- 1.42.0
   - Added `.baseline` setting for bar charts
   - `warm_cold` coloring algorithm now works relative `.baseline`
   - Added `.baseline_annotation`
   - `.color_fn` can now be a lambda function (or the name of one of the built in functions), e.g. `chart.color_fn = lambda x: "red" if x < 1.4 else "green"`
+  - Bar charts will now always have a small white edge
+  - Don't break y axis if data is close to 0
+  - Offset quarters will be recognosed as quarters now (e.g. Feb, May, Aug, Nov)
+  - Fixed bug in .allow_broken_y_axis implementation, causing y-axis to be broken in too many places
   - Various dependency updates
   - Replaced deprecated PIL.Image.ANTIALIAS with PIL.Image.Resampling.LANCZOS for logotype resizing.
-  - Bar charts will now always have a small white edge
   - Get rid of warnings about missing “glyph 10” when prerendering text to calculate text bos sizes
   - Fixed bug where single values surrounded my None's were not printed out in serial-data line charts. This was an earlier regression that was not noticed for many releases.
-  - Offset quarters will be recognosed as quarters now (e.g. Feb, May, Aug, Nov)
 
 - 1.41.0
   - New, experimental chart type: Choropleth maps! Supports both categorical and continuous data. 
