@@ -168,7 +168,7 @@ def test_bar_chart_with_ymax():
                 ["2019-01-01", .99],
             ]
         ],
-        "title": "Max sure I start at 100 %",
+        "title": "Make sure I start at 100 %",
         "ymax": 1,
         "type": "line",
         "units": "percent",
