@@ -25,8 +25,9 @@ class SerialChart(Chart):
         self.bar_width = 0.9
 
         self.allow_broken_y_axis = kwargs.get("allow_broken_y_axis", True)
-        # draw bars from this line
+        # draw bars and cut ay axis from this line
         self.baseline = kwargs.get("baseline", 0)
+        self.baseline_annotation = kwargs.get("baseline_annotation", None)
 
         # Set with of lines explicitly (otherwise determined by style file)
         self.line_width = None
@@ -439,9 +440,23 @@ class SerialChart(Chart):
             self.ax.axvspan(x0, x1, alpha=.4, color="lightgrey", lw=0)
 
         # Accentuate y=0 || y=baseline
-        if self.data.min_val < self.baseline:
-            self.ax.axhline(linewidth=1, zorder=0)
-
+        if (self.data.min_val < self.baseline) or self.baseline_annotation:
+            self.ax.axhline(
+                y=self.baseline,
+                linewidth=1,
+                color="#444444",
+                zorder=3,
+                linestyle="--" if self.baseline else "-"
+            )
+            if self.baseline_annotation:
+                xy = (to_date(self.data.inner_max_x), self.baseline)
+                self._annotate_point(
+                    self.baseline_annotation,
+                    xy,
+                    direction="right",
+                    color=self._nwc_style["neutral_color"],
+                )
+                                         
         # Highlight diff
         # y0, y1 = highlight_diff['y0'], highlight_diff['y1']
         # Only if more than one series has a value at this point, and they
