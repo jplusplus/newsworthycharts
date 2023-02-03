@@ -146,7 +146,7 @@ class Chart(object):
         self._fig.canvas.draw()  # Draw text to find out how big it is
         t = obj.get_text()
         r = self._fig.canvas.renderer
-        # Get dimension of each line
+        # Get real line height
         w, h, d = r.get_text_width_height_descent(
             t.replace("\n", ""),  # avoid warning
             obj._fontproperties,
