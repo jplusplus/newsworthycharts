@@ -36,15 +36,15 @@ def positive_negative(value):
 
 
 @color_fn
-def warm_cold(value):
+def warm_cold(value, baseline=0):
     """ Return warm/cold color based on a value being
-    above/below 0.
+    above/below a baseline.
     """
     if value is None:
         color_name = "neutral"
-    elif value < 0:
+    elif value < baseline:
         color_name = "cold"
-    elif value > 0:
+    elif value > baseline:
         color_name = "warm"
     else:
         color_name = "neutral"

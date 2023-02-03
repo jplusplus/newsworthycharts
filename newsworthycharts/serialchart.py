@@ -25,6 +25,8 @@ class SerialChart(Chart):
         self.bar_width = 0.9
 
         self.allow_broken_y_axis = kwargs.get("allow_broken_y_axis", True)
+        # draw bars from this line
+        self.baseline = kwargs.get("baseline", 0)
 
         # Set with of lines explicitly (otherwise determined by style file)
         self.line_width = None
@@ -171,7 +173,7 @@ class SerialChart(Chart):
         """
         if self.color_fn:
             # Pick color based on value of each bar
-            colors = [self._color_by(v) for v in values]
+            colors = [self._color_by(v, baseline=self.baseline) for v in values]
         elif self.highlight:
             colors = []
             for timepoint in dates:
@@ -347,19 +349,22 @@ class SerialChart(Chart):
                     colors = self._get_bar_colors(i, values, dates, highlight_value, highlight_date)
 
                 # Set bar width, based on interval
+                """
                 if self.interval == "monthly":
                     # Keep all months the same width, to make it look cleaner
                     bar_widths_ = [self._days_in(self.interval) for d in dates]
                 else:
                     bar_widths_ = [self._days_in(self.interval, d) for d in dates]
+                """
                 bar_widths_ = [self._days_in(self.interval, d) for d in dates]
 
                 # If there are too many ticks per pixel,
                 # don't put whitespace betw bars. Make widths = 1
                 bbox = self.ax.get_window_extent()
-                bar_widths = [round(w * 0.85) for w in bar_widths_]
-                if (sum(bar_widths) * 2 / len(dates)) > bbox.width:
+                if (sum(bar_widths_) * 2 / len(dates)) > bbox.width:
                     bar_widths = bar_widths_
+                else:
+                    bar_widths = [round(w * 0.85) for w in bar_widths_]
 
                 bar_kwargs = dict(
                     color=colors,
@@ -367,6 +372,8 @@ class SerialChart(Chart):
                     zorder=2
                 )
                 if i > 0:
+                    if self.baseline != 0:
+                        raise Exception("Setting a baseline is not supported for stacked bars")
                     # To make stacked bars we need to set bottom value
                     # aggregate values for stacked bar chart
                     cum_values = np.cumsum(serie_values, axis=0).tolist()
@@ -378,6 +385,8 @@ class SerialChart(Chart):
                         if np.sign(x) != np.sign(last_serie[j]):
                             # assert cum_values[i][j] == 0
                             bar_kwargs["bottom"][j] = 0
+                else:
+                    bar_kwargs["bottom"] = self.baseline
 
                 bars = self.ax.bar(dates, values, **bar_kwargs)
 

@@ -168,7 +168,7 @@ class Chart(object):
             color_name = color_fn.positive_negative(value)
         elif rule == "warm_cold":
             value = args[0]
-            color_name = color_fn.warm_cold(value)
+            color_name = color_fn.warm_cold(value, *args, **kwargs)
         else:
             raise ValueError("Unknown color rule: {}".format(rule))
 
