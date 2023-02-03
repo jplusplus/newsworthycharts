@@ -131,7 +131,12 @@ class SerialChart(Chart):
             weeks = [str(x.year) + str(x.isocalendar()[1]) for x in dates]
             if len(years) > len(set(years)):
                 # there are years with more than one point
-                if all(m in [1, 4, 7, 10] for m in months):
+                unique_months = sorted(list(set(months)))
+                if len(unique_months) == 4 \
+                   and unique_months[0] + 3 == unique_months[1] \
+                   and unique_months[1] + 3 == unique_months[2] \
+                   and unique_months[2] + 3 == unique_months[3]:
+                    # all in all four months, and they are non-conscutive 
                     interval = "quarterly"
                 else:
                     interval = "monthly"
@@ -303,7 +308,6 @@ class SerialChart(Chart):
                                 plot_me = True
                             elif nullish(values[j - 1]) and nullish(values[j + 1]):
                                 plot_me = True
-                        print(j, v, plot_me)
                         if plot_me:
                             self.ax.plot(dates[j], v,
                                          c=color,
