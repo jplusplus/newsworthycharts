@@ -81,6 +81,8 @@ class Formatter(object):
         string = format_unit(x, 'temperature-generic', "short", locale=self.l)
         minus = self.l.number_symbols["minusSign"]
         string = string.replace("-", minus)
+        # if x > 0:
+        #     string = "+" + string
         return string
 
     def temperature(self, x, *args, **kwargs):
