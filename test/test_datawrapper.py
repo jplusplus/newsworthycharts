@@ -374,9 +374,7 @@ def test_pie_chart2():
             'type': 'd3-donuts'
         },
         'labels': [],
-        'measures': [],
-        'periodicity':
-        'yearly',
+        'periodicity': 'yearly',
         'series': [],
         'source': None,
         'type': 'bars',

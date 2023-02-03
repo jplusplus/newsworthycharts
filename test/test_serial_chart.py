@@ -386,7 +386,6 @@ def test_line_labeling():
             ]
         ],
         'labels': ['Ängelholm', 'Skåne län'],
-        'measures': [None, None],
         'type': 'line',
         'units': 'percent',
         'width': 900,
@@ -472,7 +471,6 @@ def test_inline_labeling():
             ]
         ],
         'labels': ['Ängelholm', 'Skåne län'],
-        'measures': [None, None],
         'type': 'line',
         'units': 'percent',
         'width': 900,
