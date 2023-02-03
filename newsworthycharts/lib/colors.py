@@ -1,5 +1,5 @@
 # Default colors
-STRONG = "5aa69d" # primary color (for highlighting etc)
+STRONG = "5aa69d"  # primary color (for highlighting etc)
 NEUTRAL = "999999"
 POSITIVE = "47b358"
 NEGATIVE = "ec6b56"

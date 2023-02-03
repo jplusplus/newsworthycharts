@@ -1,4 +1,4 @@
-""" Functions for deteriming colors accoriding to some rule.
+""" Functions for determining colors accoriding to some rule.
 """
 
 
