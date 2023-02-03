@@ -406,7 +406,7 @@ class SerialChart(Chart):
             value_label = a_formatter(hv)
             xy = (highlight_date, hv)
             if self.type == "bars":
-                if hv >= 0:
+                if hv >= self.baseline:
                     dir = "up"
                 else:
                     dir = "down"
