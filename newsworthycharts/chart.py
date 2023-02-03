@@ -413,7 +413,7 @@ class Chart(object):
                 new_width,
             )
             new_height = new_width * (im.size[1] / im.size[0])
-            im.thumbnail((new_width, new_height), Image.ANTIALIAS)
+            im.thumbnail((new_width, new_height), Image.Resampling.LANCZOS)
             # Position
             if self._locale.text_direction == "rtl":
                 logo_im = self._fig.figimage(im, 0, 0)
