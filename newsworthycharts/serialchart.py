@@ -452,10 +452,12 @@ class SerialChart(Chart):
             )
             if self.baseline_annotation:
                 xy = (to_date(self.data.outer_min_x), self.baseline)
+                # We only allow baseline to be set for single series bar charts
+                first_val = self.data.values[0][0]
                 self._annotate_point(
                     self.baseline_annotation,
                     xy,
-                    direction="down" if self.data.values[0][0] > self.baseline else "up",
+                    direction="down" if first_val >= self.baseline else "up",
                     color=self._nwc_style["neutral_color"],
                 )
                                          
