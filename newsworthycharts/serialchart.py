@@ -438,8 +438,8 @@ class SerialChart(Chart):
             x1 = to_date(x1)
             self.ax.axvspan(x0, x1, alpha=.4, color="lightgrey", lw=0)
 
-        # Accentuate y=0
-        if self.data.min_val < 0:
+        # Accentuate y=0 || y=baseline
+        if self.data.min_val < self.baseline:
             self.ax.axhline(linewidth=1, zorder=0)
 
         # Highlight diff
@@ -481,19 +481,19 @@ class SerialChart(Chart):
             # all values are positive, but also show negatives
             ymin = min(self.ymin, self.data.min_val)
             padding_bottom = abs(ymin * 0.15)
-        elif self.data.min_val > 0 and self.allow_broken_y_axis:
+        elif self.data.min_val > self.baseline and self.allow_broken_y_axis:
             # Boken y axis?
             if (self.data.max_val - self.data.min_val) < self.data.min_val:
                 # Only break y axis if data variation is less than distance from ymin to 0
                 ymin = self.data.min_val
                 padding_bottom = abs(self.data.min_val * 0.15)
             else:
-                ymin = 0
-        elif self.data.min_val < 0:
+                ymin = self.baseline
+        elif self.data.min_val < self.baseline:
             ymin = self.data.min_val
             padding_bottom = abs(-ymin * 0.15)
         else:
-            ymin = 0
+            ymin = self.baseline
 
         if self.ymax is not None:
             ymax = self.ymax
@@ -512,7 +512,7 @@ class SerialChart(Chart):
         self.ax.yaxis.set_major_formatter(y_formatter)
         self.ax.yaxis.grid(True)
 
-        if ymin > 0 and self.allow_broken_y_axis:
+        if ymin > self.baseline and self.allow_broken_y_axis:
             self._mark_broken_axis()
 
         # X ticks and formatter
