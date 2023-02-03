@@ -1,6 +1,7 @@
 """ Create charts and store them as images.
 For use with Newsworthy's robot writer and other similar projects.
 """
+import types
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
 from .lib.utils import loadstyle, outline
@@ -163,11 +164,12 @@ class Chart(object):
         """
         color_name = None
         rule = self.color_fn
-        if rule == "positive_negative":
-            value = args[0]
+        value = args[0]
+        if isinstance(rule, types.LambdaType):
+            color_name = rule(value)
+        elif rule == "positive_negative":
             color_name = color_fn.positive_negative(value)
         elif rule == "warm_cold":
-            value = args[0]
             color_name = color_fn.warm_cold(value, *args, **kwargs)
         else:
             raise ValueError("Unknown color rule: {}".format(rule))
