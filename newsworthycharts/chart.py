@@ -146,8 +146,9 @@ class Chart(object):
         self._fig.canvas.draw()  # Draw text to find out how big it is
         t = obj.get_text()
         r = self._fig.canvas.renderer
+        # Get dimension of each line
         w, h, d = r.get_text_width_height_descent(
-            t,
+            t.replace("\n", ""),  # avoid warning
             obj._fontproperties,
             ismath=False,
         )
@@ -266,9 +267,15 @@ class Chart(object):
 
     def _add_subtitle(self, subtitle_text):
         y_pos = 1 - self._title_rel_height
-        text = self._fig.text(0, y_pos, subtitle_text, wrap=True,
-                              verticalalignment="top", linespacing=1.4,
-                              fontsize=self._nwc_style["subtitle.fontsize"])
+        text = self._fig.text(
+            0,
+            y_pos,
+            subtitle_text,
+            wrap=True,
+            verticalalignment="top",
+            linespacing=1.4,
+            fontsize=self._nwc_style["subtitle.fontsize"],
+        )
         self._fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
         text.set_text(wrapped_text)
