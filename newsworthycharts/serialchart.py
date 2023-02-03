@@ -293,14 +293,17 @@ class SerialChart(Chart):
                                  zorder=2)
                 elif num_values > 1:
                     for j, v in enumerate(values):
+                        def nullish(val):
+                            return val is None or np.isnan(val)
                         plot_me = False
-                        if v is not None:
-                            if j == 0 and (values[j + 1] is None):
+                        if not nullish(v):
+                            if j == 0 and nullish(values[1]):
                                 plot_me = True
-                            elif j == num_values - 1 and (values[j - 1] is None):
+                            elif j == num_values - 1 and nullish(values[j - 1]):
                                 plot_me = True
-                            elif (values[j - 1] is None) and (values[j + 1] is None):
+                            elif nullish(values[j - 1]) and nullish(values[j + 1]):
                                 plot_me = True
+                        print(j, v, plot_me)
                         if plot_me:
                             self.ax.plot(dates[j], v,
                                          c=color,
