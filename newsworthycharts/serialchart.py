@@ -370,7 +370,9 @@ class SerialChart(Chart):
                 bar_kwargs = dict(
                     color=colors,
                     width=bar_widths,
-                    zorder=2
+                    zorder=2,
+                    edgecolor="white",
+                    linewidth=1,
                 )
                 if i > 0:
                     if self.baseline != 0:
@@ -449,11 +451,11 @@ class SerialChart(Chart):
                 linestyle="--" if self.baseline else "-"
             )
             if self.baseline_annotation:
-                xy = (to_date(self.data.inner_max_x), self.baseline)
+                xy = (to_date(self.data.outer_min_x), self.baseline)
                 self._annotate_point(
                     self.baseline_annotation,
                     xy,
-                    direction="right",
+                    direction="down" if self.data.values[0][0] > self.baseline else "up",
                     color=self._nwc_style["neutral_color"],
                 )
                                          
