@@ -202,7 +202,7 @@ class SerialChart(Chart):
             _values = [to_float(x[1]) for x in serie]
             if self.type == "bars":
                 # Replace None values with 0's to be able to plot bars
-                _values = [0 if v is None else v for v in _values]
+                _values = [self.baseline if v is None else v for v in _values]
             serie_values.append(_values)
 
         #  Select a date to highlight
