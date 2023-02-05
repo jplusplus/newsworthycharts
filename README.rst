@@ -146,14 +146,18 @@ To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts):
 
 Roadmap
 -------
-  - TODO: Label outside in maps (Matplotlib 3.7 feature)
-  - TODO: more base maps
+  - Label outside in maps (Matplotlib 3.7 feature)
+  - Adding more base maps
   - Getting rid of custom settings-hack
   - Custom month locator with equal-width month bars
 
 
 Changelog
 ---------
+
+- 1.43.0
+  - Default to weekdays on x-axis if data spans 7 days or less
+  - Added `.color_labels` to label bar colors set by `.color_fn`
 
 - 1.42.0
   - Added `.baseline` setting for bar charts
