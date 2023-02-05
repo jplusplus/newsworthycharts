@@ -155,6 +155,11 @@ Roadmap
 Changelog
 ---------
 
+- 1.43.1
+  - Fixed cut off-bug with negative baseline
+  - Fix coloring bug in warm_cold color_fn with baseline 
+  - Fix regression with quarterly locator
+
 - 1.43.0
   - Default to weekdays on x-axis if data spans 7 days or less
   - Added `.color_labels` to label bar colors set by `.color_fn`
