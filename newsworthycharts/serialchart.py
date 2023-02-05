@@ -582,7 +582,7 @@ class SerialChart(Chart):
                         return None
                 # fmt = DateFormatter('%-d %b')
             # elif isinstance(loc, MonthLocator):
-            elif self.interval == "monthly":
+            elif self.interval in ["monthly", "quarterly"]:
                 def fmt(x, pos):
                     d = num2date(x).isoformat()[:10]
                     if d not in self.data.x_points:
