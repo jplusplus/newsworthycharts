@@ -136,7 +136,7 @@ class SerialChart(Chart):
                    and unique_months[0] + 3 == unique_months[1] \
                    and unique_months[1] + 3 == unique_months[2] \
                    and unique_months[2] + 3 == unique_months[3]:
-                    # all in all four months, and they are non-conscutive 
+                    # all in all four months, and they are non-conscutive
                     interval = "quarterly"
                 else:
                     interval = "monthly"
@@ -467,7 +467,7 @@ class SerialChart(Chart):
                     direction="down" if first_val >= self.baseline else "up",
                     color=self._nwc_style["neutral_color"],
                 )
-                                         
+                          
         # Highlight diff
         # y0, y1 = highlight_diff['y0'], highlight_diff['y1']
         # Only if more than one series has a value at this point, and they
@@ -587,7 +587,12 @@ class SerialChart(Chart):
                     if pos > len(self.data.x_points):
                         return None
                     try:
-                        return formatter.date(self.data.x_points[pos], "d MMM")
+                        if len(self.data.x_points) > 7:
+                            return formatter.date(self.data.x_points[pos], "d MMM")
+                        elif pos == 0:
+                            return formatter.date(self.data.x_points[pos], "EE d/M")
+                        else:
+                            return formatter.date(self.data.x_points[pos], "EEE")
                     except IndexError:
                         return None
                 # fmt = DateFormatter('%-d %b')
