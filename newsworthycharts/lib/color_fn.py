@@ -19,7 +19,7 @@ def color_fn(func):
 
 
 @color_fn
-def positive_negative(value):
+def positive_negative(value, baseline=0):
     """ Return positive/negative color based on a value being
     above/below 0.
     """
@@ -42,9 +42,9 @@ def warm_cold(value, baseline=0):
     """
     if value is None:
         color_name = "neutral"
-    elif value < baseline:
+    elif value < 0:
         color_name = "cold"
-    elif value > baseline:
+    elif value > 0:
         color_name = "warm"
     else:
         color_name = "neutral"
