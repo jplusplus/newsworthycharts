@@ -529,11 +529,13 @@ class SerialChart(Chart):
                 padding_bottom = abs(self.data.min_val * 0.15)
             else:
                 ymin = self.baseline
+                padding_bottom = abs(self.baseline * 0.15)
         elif self.data.min_val < 0:
             ymin = self.baseline + self.data.min_val
             padding_bottom = abs(-ymin * 0.15)
         else:
             ymin = self.baseline
+            padding_bottom = abs(self.baseline * 0.15)
 
         if self.ymax is not None:
             ymax = self.ymax
@@ -542,7 +544,7 @@ class SerialChart(Chart):
             if is_stacked:
                 ymax = self.data.stacked_max_val
             else:
-                ymax = self.data.max_val
+                ymax = self.data.max_val + self.baseline
 
             padding_top = ymax * 0.15
 

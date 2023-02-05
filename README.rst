@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.43.2
+  - Fixed weird ymax in some baseline cases
+  - Added bottom padding when baseline was below data-min  
+
 - 1.43.1
   - Fixed cut off-bug with negative baseline
   - Fix coloring bug in warm_cold color_fn with baseline 
