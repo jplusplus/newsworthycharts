@@ -29,6 +29,8 @@ class SerialChart(Chart):
         self.baseline = kwargs.get("baseline", 0)
         self.baseline_annotation = kwargs.get("baseline_annotation", None)
 
+        self.color_labels = kwargs.get("color_labels", None)
+
         # Set with of lines explicitly (otherwise determined by style file)
         self.line_width = None
 
@@ -410,6 +412,18 @@ class SerialChart(Chart):
                     xy = (date, value)
                     elem = self._annotate_point(value_label, xy, direction=dir, color=color)
                     value_label_elems.append(elem)
+            if self.color_labels:
+                import matplotlib.patches as mpatches
+                patches = []
+                for color, label in self.color_labels.items():
+                    # A bit of an hack:
+                    # Check if this corresponds to one of our predefined
+                    # color names:
+                    if f"{color}_color" in self._nwc_style:
+                        color = self._nwc_style[f"{color}_color"]
+                    patch = mpatches.Patch(color=color, label=label)
+                    patches.append(patch)
+                self.ax.legend(handles=patches)
 
         # Annotate highlighted points/bars
         for hv in highlight_values:
