@@ -521,7 +521,7 @@ class SerialChart(Chart):
             # all values are positive, but also show negatives
             ymin = min(self.ymin, self.data.min_val)
             padding_bottom = abs(ymin * 0.15)
-        elif self.data.min_val > self.baseline and self.allow_broken_y_axis:
+        elif self.data.min_val > 0 and self.allow_broken_y_axis:
             # Boken y axis?
             if (self.data.max_val - self.data.min_val) < self.data.min_val:
                 # Only break y axis if data variation is less than distance from ymin to 0
@@ -529,8 +529,8 @@ class SerialChart(Chart):
                 padding_bottom = abs(self.data.min_val * 0.15)
             else:
                 ymin = self.baseline
-        elif self.data.min_val < self.baseline:
-            ymin = self.data.min_val
+        elif self.data.min_val < 0:
+            ymin = self.baseline + self.data.min_val
             padding_bottom = abs(-ymin * 0.15)
         else:
             ymin = self.baseline
