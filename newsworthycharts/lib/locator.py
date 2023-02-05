@@ -57,7 +57,7 @@ def get_best_locator(delta, points, interval=None):
             return YearLocator()
     else:
         # Less than a year:
-        if interval == "monthly":
+        if interval in ["monthly", "quarterly"]:
             if points > 12:
                 return MonthLocator()
             else:
