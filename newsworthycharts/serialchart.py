@@ -481,7 +481,7 @@ class SerialChart(Chart):
                     direction="down" if first_val >= self.baseline else "up",
                     color=self._nwc_style["neutral_color"],
                 )
-                          
+
         # Highlight diff
         # y0, y1 = highlight_diff['y0'], highlight_diff['y1']
         # Only if more than one series has a value at this point, and they
