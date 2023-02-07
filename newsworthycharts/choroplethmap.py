@@ -177,6 +177,13 @@ class ChoroplethMap(Chart):
             )
 
         df.plot(ax=self.ax, **args)
+        for uu in df.unary_union.geoms:
+            gpd.GeoSeries(uu).plot(
+                ax=self.ax,
+                edgecolor="lightgrey",
+                linewidth=0.2,
+                facecolor="none",
+            )
         self.ax.axis("off")
 
         for inset in self.insets:
@@ -192,6 +199,12 @@ class ChoroplethMap(Chart):
                 args["color"] = _df["color"]
             args["legend"] = False
             axin = self.ax.inset_axes(inset["axes"])
+            gpd.GeoSeries(_df.unary_union).plot(
+                ax=axin,
+                edgecolor="lightgrey",
+                linewidth=0.3,
+                facecolor="none",
+            )
             axin.axis('off')
             _df.plot(
                 ax=axin,
