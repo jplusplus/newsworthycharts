@@ -352,7 +352,7 @@ class Chart(object):
         self._fig.tight_layout()
         if len(self.data):
             self._add_data()
-        
+
         # Legend / data labels
         if self.legend_title:
             # Legend can contain data labels (.labels[]),
