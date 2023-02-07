@@ -155,6 +155,9 @@ Roadmap
 Changelog
 ---------
 
+- next
+  - Added grey outline to choropleth maps
+
 - 1.43.4
   - Add more space for label title on se-7 maps
 
