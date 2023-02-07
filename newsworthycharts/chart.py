@@ -46,6 +46,7 @@ class Chart(object):
         self.annotate_trend = True  # Print out values at points on trendline?
         self.trendline = []  # List of x positions, or data points
         self.labels = []  # Optionally one label for each dataset
+        self.legend_title = None  # Experimental
         self.annotations = []  # Manually added annotations
         self.interval = None  # yearly|quarterly|monthly|weekly|daily
         # We will try to guess interval based on the data,
@@ -351,6 +352,14 @@ class Chart(object):
         self._fig.tight_layout()
         if len(self.data):
             self._add_data()
+        
+        # Legend / data labels
+        if self.legend_title:
+            # Legend can contain data labels (.labels[]),
+            # or custom legends set by specific charts,
+            # e.g. choropleth map colors or bar chart colors
+            self.ax.get_legend().set_title(self.legend_title)
+
         if not self.show_ticks:
             self.category_axis.set_visible(False)
         else:
