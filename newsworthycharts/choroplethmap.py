@@ -82,6 +82,7 @@ class ChoroplethMap(Chart):
         super(ChoroplethMap, self).__init__(*args, **kwargs)
         self.bins = kwargs.get("bins", 9)
         self.binning_method = kwargs.get("binning_method", "natural_breaks")
+        self.colors = kwargs.get("colors", None)
         self.color_ramp = kwargs.get("color_ramp", "YlOrRd")
         self.categorical = kwargs.get("categorical", False)
         self.base_map = None
@@ -102,12 +103,17 @@ class ChoroplethMap(Chart):
         df["data"] = df["id"].map(datamap)  # .astype("category")
 
         if self.categorical:
-            # Custom colors
-            df["data"] = pd.Categorical(
-                df["data"],
-                ordered=True,
-            )
+            # We'll categorize manually below,
+            # to easier implement custom coloring
+            pass
+            # df["data"] = pd.Categorical(
+            #     df["data"],
+            #     ordered=True,
+            # )
         else:
+            # mapclassify doesn't work well with nan values,
+            # but we to keep them for plotting, hence
+            # this hack with cutting out nan's and re-pasting them below
             _has_value = df[~df["data"].isna()].copy()
             binning = mapclassify.classify(
                 np.asarray(_has_value["data"]),  # .astype("category")
@@ -123,9 +129,7 @@ class ChoroplethMap(Chart):
             df["data"] = pd.merge(_has_value, df, on="id", how="right")["cats"]
 
         args = {
-            "column": "data",
             "categorical": True,
-            "cmap": self.color_ramp,
             "legend": True,  # bug in geopandas, fixed in master but not released
             "legend_kwds": {
                 "loc": "upper left",
@@ -139,26 +143,39 @@ class ChoroplethMap(Chart):
         }
         if not self.categorical:
             args["cmap"] = self.color_ramp
+            args["column"] = "data"
+        if self.categorical:
+            cat = df[~df["data"].isna()]["data"].unique()
+            args["categories"] = cat
+            if self.colors:
+                color_map = self.colors
+            else:
+                color_map = {}
+                for idx, cat in enumerate(cat):
+                    color_map[cat] = self._nwc_style["qualitative_colors"][idx]
+            df["color"] = df["data"].map(color_map)
+            df["color"] = df["color"].fillna("lightgrey")
+            args["color"] = df["color"]
+
         df.plot(ax=self.ax, **args)
         self.ax.axis("off")
 
         for inset in self.insets:
-            axin = self.ax.inset_axes(inset["axes"])
-            axin.axis('off')
             if "prefix" in inset:
                 _df = df[df["id"].str.startswith(inset["prefix"])].copy()
             else:
                 _df = df[df["id"].isin(inset["list"])].copy()
+            if _df["data"].isnull().all():
+                # Skip if no data
+                continue
+            if self.categorical:
+                # We need a series matching the filtered data
+                args["color"] = _df["color"]
+            axin = self.ax.inset_axes(inset["axes"])
+            axin.axis('off')
             _df.plot(
                 ax=axin,
-                column="data",
-                categorical=True,
-                # cmap=self.color_ramp,
-                edgecolor='white',
-                linewidth=0.2,
-                missing_kwds={
-                    "color": "lightgrey",
-                },
+                **args,
             )
             r, (a, b, c, d) = self.ax.indicate_inset_zoom(axin)
             for _line in [a, b, c, d]:
