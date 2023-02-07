@@ -155,6 +155,9 @@ Roadmap
 Changelog
 ---------
 
+- 1.43.4
+  - Add more space for label title on se-7 maps
+
 - 1.43.3
   - Don't try to render map insets with no data
   - Use style colors in categorical choropleth maps

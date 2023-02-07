@@ -359,6 +359,7 @@ class Chart(object):
             # or custom legends set by specific charts,
             # e.g. choropleth map colors or bar chart colors
             self.ax.get_legend().set_title(self.legend_title)
+        # self._fig.tight_layout()
 
         if not self.show_ticks:
             self.category_axis.set_visible(False)
