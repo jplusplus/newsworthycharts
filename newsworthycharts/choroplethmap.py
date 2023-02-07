@@ -138,7 +138,7 @@ class ChoroplethMap(Chart):
             "edgecolor": "white",
             "linewidth": 0.2,
             "missing_kwds": {
-                "color": "lightgrey",
+                "color": "gainsboro",
             },
         }
         if not self.categorical:
@@ -154,8 +154,27 @@ class ChoroplethMap(Chart):
                 for idx, cat in enumerate(cat):
                     color_map[cat] = self._nwc_style["qualitative_colors"][idx]
             df["color"] = df["data"].map(color_map)
-            df["color"] = df["color"].fillna("lightgrey")
+            df["color"] = df["color"].fillna("gainsboro")
             args["color"] = df["color"]
+
+            # Geopandas does not handle legend if color keyword is used
+            # We need to add it ourselves
+            import matplotlib.patches as mpatches
+            patches = []
+            for label, color in color_map.items():
+                # A bit of an hack:
+                # Check if this corresponds to one of our predefined
+                # color names:
+                if f"{color}_color" in self._nwc_style:
+                    color = self._nwc_style[f"{color}_color"]
+                patch = mpatches.Patch(color=color, label=label)
+                patches.append(patch)
+            self.ax.legend(
+                handles=patches,
+                # This have to be adjusted per basemap
+                bbox_to_anchor=(1.8, 1.0),
+                loc="upper right",
+            )
 
         df.plot(ax=self.ax, **args)
         self.ax.axis("off")
