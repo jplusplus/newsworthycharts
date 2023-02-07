@@ -172,7 +172,7 @@ class ChoroplethMap(Chart):
             self.ax.legend(
                 handles=patches,
                 # This have to be adjusted per basemap
-                bbox_to_anchor=(1, 0.95),
+                bbox_to_anchor=(0.92, 0.95),
                 loc="upper left",
             )
 
