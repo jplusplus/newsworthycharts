@@ -155,6 +155,14 @@ Roadmap
 Changelog
 ---------
 
+- 1.43.3
+  - Don't try to render map insets with no data
+  - Use style colors in categorical choropleth maps
+  - Added missing support for coloring categorical maps with `.colors`
+  - Make automatic labeling work on categorical maps with `.colors`
+  - Somewhat lighter fill for missing values in choropleth maps (lightgray -> gainsboro)
+  - Testing experimental label_title support, to be documented in 1.44.0
+
 - 1.43.2
   - Fixed weird ymax in some baseline cases
   - Added bottom padding when baseline was below data-min  
