@@ -171,6 +171,7 @@ class ChoroplethMap(Chart):
             if self.categorical:
                 # We need a series matching the filtered data
                 args["color"] = _df["color"]
+            args["legend"] = False
             axin = self.ax.inset_axes(inset["axes"])
             axin.axis('off')
             _df.plot(
