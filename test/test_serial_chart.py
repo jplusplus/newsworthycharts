@@ -316,7 +316,6 @@ def test_value_labeling():
                 ["2019-01-01", .4]
             ],
         ],
-        "colors": "qualitative_colors",
         "labels": ["Region A", "Region B"],
         "label_placement": "line",
         "value_labels": True,
