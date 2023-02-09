@@ -512,8 +512,6 @@ class Chart(object):
             chart.title = args["title"]
         if "units" in args:
             chart.units = args["units"]
-        if "type" in args:
-            chart.type = args["type"]
         if "ymin" in args:
             chart.ymin = args["ymin"]
         if "ymax" in args:

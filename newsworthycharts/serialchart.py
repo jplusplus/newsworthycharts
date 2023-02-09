@@ -73,17 +73,6 @@ class SerialChart(Chart):
     def ymax(self, val):
         self._ymax = val
 
-    @property
-    def type(self):
-        return self._type
-
-    @type.setter
-    def type(self, val):
-        if val in ["bars", "line"]:
-            self._type = val
-        else:
-            raise ValueError("Supported types are bars and line")
-
     def _days_in(self, interval, d=None):
         """Return number of days in a given period.
 
