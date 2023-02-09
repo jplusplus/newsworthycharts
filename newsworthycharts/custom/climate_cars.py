@@ -1,7 +1,7 @@
 """Custom charts for climate report on cars
 """
 
-from math import atan2,degrees
+from math import atan2, degrees
 import numpy as np
 from newsworthycharts import SerialChart
 from datetime import datetime
@@ -90,26 +90,23 @@ class ClimateCarsYearlyEmissionsTo2030(SerialChart):
                          xytext=(-40, -40), textcoords='offset pixels',
                          xy=(line_scen2.get_xdata()[i_2030],
                              line_scen2.get_ydata()[i_2030]),
-                        fontsize=self._nwc_style["annotation.fontsize"],
-                        arrowprops=dict(
+                         fontsize=self._nwc_style["annotation.fontsize"],
+                         arrowprops=dict(
                              color=self._nwc_style["dark_gray_color"],
                              arrowstyle="->",
-                            connectionstyle="angle3,angleA=-10,angleB=60")
-                             )
+                             connectionstyle="angle3,angleA=-10,angleB=60")
+                         )
 
         ###
         # Legend
         ###
 
-        leg = self.ax.get_legend().remove()
-        from matplotlib.lines import Line2D
-
-        #colors = [color_observed, color_scen]
+        # colors = [color_observed, color_scen]
         lines = self.ax.get_lines()[:2]
         labels = ['Historiska utsläpp', 'Utsläppsscenarier']
         self.ax.legend(lines, labels)
         tick_years = [line_observed.get_xdata()[0].year, 2010, 2020, 2030, 2045]
-        self.ax.set_xticks([datetime(x,1,1) for x in tick_years])
+        self.ax.set_xticks([datetime(x, 1, 1) for x in tick_years])
 
 
 class ClimateCarsCO2BugdetChart(SerialChart):
