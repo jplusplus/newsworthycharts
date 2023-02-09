@@ -59,6 +59,7 @@ class Chart(object):
         self.caption = None
         self.highlight = None
         self.decimals = None
+        self.type = None
         # number of decimals to show in annotations, value ticks, etc
         # None means automatically chose the best number
         self.force_decimals = False
@@ -498,8 +499,7 @@ class Chart(object):
         for k, v in args.items():
             if (not k.startswith("_")) and \
                (k in class_attrs) and \
-               (k not in ["data", "labels", "type", "ymin", "ymax", "title",
-                          "units"]):
+               (k not in ["data", "labels", "ymin", "ymax", "title", "units"]):
                 setattr(chart, k, v)
         if "data" in args:
             for data in args["data"].copy():

@@ -178,26 +178,32 @@ class SerialChart(Chart):
                     colors.append(self._nwc_style["strong_color"])
                 else:
                     colors.append(self._nwc_style["neutral_color"])
-        else:
+        elif i == 0:
             # use strong color if there is no highlight
             colors = [self._nwc_style["strong_color"]] * len(dates)
+        else:
+            colors = [self._nwc_style["neutral_color"]] * len(dates)
 
         return colors
 
     def _add_data(self):
 
         series = self.data
-        is_stacked = (len(series) > 1) and (self.type == "bars")
+
+        # For backwards compatibility: Convert type = "line" -> type = ["line"]
+        if type(self.type) == str:
+            self.type = [self.type] * len(series)
+        is_stacked = (len(series) > 1) and all([t == "bars" for t in self.type])
 
         # parse values
         serie_values = []
-        for serie in series:
+        for i, serie in enumerate(series):
             # make sure all timepoints are unique
             _timepoints = [x[0] for x in serie]
             if len(_timepoints) > len(set(_timepoints)):
                 raise ValueError(f"Duplicated timepoints: {_timepoints}")
             _values = [to_float(x[1]) for x in serie]
-            if self.type == "bars":
+            if self.type[i] == "bars":
                 # Replace None values with 0's to be able to plot bars
                 _values = [self.baseline if v is None else v for v in _values]
             serie_values.append(_values)
@@ -254,7 +260,7 @@ class SerialChart(Chart):
                                            highlight_value)
                 highlight_diff['y1'] = max(highlight_diff['y1'],
                                            highlight_value)
-            if self.type == "line":
+            if self.type[i] == "line":
                 # Put first series on top
                 zo = 2 + (i == 0)
 
@@ -263,13 +269,8 @@ class SerialChart(Chart):
                 else:
                     lw = self.line_width
 
-                # Use strong color for first series
-                if self.colors == "qualitative_colors":
-                    color = self._nwc_style["qualitative_colors"][i]
-
-                elif self.colors is not None:
+                if self.colors is not None:
                     color = self.colors[i]
-
                 elif i == 0:
                     color = self._nwc_style["strong_color"]
                 else:
@@ -329,7 +330,10 @@ class SerialChart(Chart):
                                  markersize=5,
                                  zorder=zo)
 
-            elif self.type == "bars":
+            elif self.type[i] == "bars":
+                # Put first series on top, if mixed types
+                zo = 2 + (i == 0)
+
                 # Create colors
                 if is_stacked:
                     if self.highlight:
@@ -343,7 +347,15 @@ class SerialChart(Chart):
                         else:
                             color = self._nwc_style["qualitative_colors"][i]
                     colors = [color] * len(values)
-
+                elif self.highlight:
+                    colors = []
+                    for timepoint in dates:
+                        if highlight_value and timepoint == highlight_date:
+                            colors.append(self._nwc_style["strong_color"])
+                        else:
+                            colors.append(self._nwc_style["neutral_color"])
+                elif i > 0:
+                    colors = [self._nwc_style["neutral_color"]] * len(values)
                 else:
                     colors = self._get_bar_colors(i, values, dates, highlight_value, highlight_date)
 
@@ -368,11 +380,11 @@ class SerialChart(Chart):
                 bar_kwargs = dict(
                     color=colors,
                     width=bar_widths,
-                    zorder=2,
+                    zorder=zo,
                     edgecolor="white",
                     linewidth=1,
                 )
-                if i > 0:
+                if is_stacked and i > 0:
                     if self.baseline != 0:
                         raise Exception("Setting a baseline is not supported for stacked bars")
                     # To make stacked bars we need to set bottom value
@@ -418,12 +430,12 @@ class SerialChart(Chart):
         for hv in highlight_values:
             value_label = a_formatter(hv)
             xy = (highlight_date, hv)
-            if self.type == "bars":
+            if self.type[i] == "bars":
                 if hv >= self.baseline:
                     dir = "up"
                 else:
                     dir = "down"
-            if self.type == "line":
+            if self.type[i] == "line":
                 if len(highlight_values) > 1:
                     # When highlighting two values on the same point,
                     # put them in opposite direction
@@ -471,25 +483,10 @@ class SerialChart(Chart):
                     color=self._nwc_style["neutral_color"],
                 )
 
-        # Highlight diff
-        # y0, y1 = highlight_diff['y0'], highlight_diff['y1']
-        # Only if more than one series has a value at this point, and they
-        # actually look different
-        # if self.highlight and\
-        #   (len(highlight_values) > 1) and\
-        #   (a_formatter(y0) != a_formatter(y1)) and\
-        #   self.type == "line":
-
-        #    self.ax.vlines(highlight_date, y0, y1,
-        #                   colors=self._nwc_style["neutral_color"],
-        #                   linestyles='dashed')
-        #    diff = a_formatter(abs(y0 - y1))
-        #    xy = (highlight_date, (y0 + y1) / 2)
-        #    self._annotate_point(diff, xy, direction="right")
-
         # Shade area between lines if there are exactly 2 series
+        # and both are lines
         # For more series, the chart will get messy with shading
-        if len(series) == 2:
+        if len(series) == 2 and self.type[0] == "line" and self.type[0] == "bars":
             # Fill any gaps in series
             filled_values = self.data.filled_values
             min_x = self.data.inner_min_x
