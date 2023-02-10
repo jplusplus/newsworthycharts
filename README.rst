@@ -156,9 +156,12 @@ Roadmap
 Changelog
 ---------
 
+- 1.44.1
+  - Fix regression in SeasonalChart bar coloring
+
 - 1.44.0
   - Added grey outline to choropleth maps
-  - The `type` argument is not a list with one type per data serie. Using a string is still supported for backwards compability. This makes it possible to make mixed type charts.
+  - The `type` argument is now a list with one type per data serie. Using a string is still supported for backwards compability. This makes it possible to make mixed type charts.
   - Reworked, simpler and more stable bar coloring algorithm
   - The `type` argument is no longer a getter/setter
   - Reduced edge for bar chartswith many bars

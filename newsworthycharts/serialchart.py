@@ -116,7 +116,6 @@ class SerialChart(Chart):
         interval = "yearly"
         for serie in self.data:
             dates = [to_date(x[0]) for x in serie]
-            dates_str = [x[0] for x in serie]
             years = [x.year for x in dates]
             months = [x.month for x in dates]
             yearmonths = [x.strftime("%Y-%m") for x in dates]
@@ -316,7 +315,10 @@ class SerialChart(Chart):
 
                 # Create colors
                 colors = None
-                if self.color_fn:
+                if self._get_bar_colors:
+                    # Hook for sub classes
+                    colors = self._get_bar_colors(i)
+                elif self.color_fn:
                     # Custom function has priority
                     # TODO: These functions probably want to know
                     # about stacking and highlighting, but we have
