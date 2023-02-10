@@ -372,9 +372,13 @@ class SerialChart(Chart):
                     color=colors,
                     width=bar_widths,
                     zorder=zo,
-                    edgecolor="white",
-                    linewidth=1,
                 )
+                if len(dates) < 100:
+                    # FIXME: We should base this on real bar widths,
+                    # but that requires rendering
+                    bar_kwargs["edgecolor"] = "white"
+                    bar_kwargs["linewidth"] = 1
+
                 if is_stacked and i > 0:
                     if self.baseline != 0:
                         raise Exception("Setting a baseline is not supported for stacked bars")
