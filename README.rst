@@ -157,9 +157,11 @@ Changelog
 ---------
 
 - 1.44.1
+  
   - Fix regression in SeasonalChart bar coloring
 
 - 1.44.0
+  
   - Added grey outline to choropleth maps
   - The `type` argument is now a list with one type per data serie. Using a string is still supported for backwards compability. This makes it possible to make mixed type charts.
   - Reworked, simpler and more stable bar coloring algorithm
@@ -169,9 +171,11 @@ Changelog
   - Removed unused, undocumented support for highlighting a series by label, rather than a value. The first series is highlighted by default, and that behaviour can already be overriden by the `.colors` setting
 
 - 1.43.4
+
   - Add more space for label title on se-7 maps
 
 - 1.43.3
+
   - Don't try to render map insets with no data
   - Use style colors in categorical choropleth maps
   - Added missing support for coloring categorical maps with `.colors`
@@ -180,19 +184,23 @@ Changelog
   - Testing experimental label_title support, to be documented in 1.44.0
 
 - 1.43.2
+
   - Fixed weird ymax in some baseline cases
   - Added bottom padding when baseline was below data-min  
 
 - 1.43.1
+
   - Fixed cut off-bug with negative baseline
   - Fix coloring bug in warm_cold color_fn with baseline 
   - Fix regression with quarterly locator
 
 - 1.43.0
+
   - Default to weekdays on x-axis if data spans 7 days or less
   - Added `.color_labels` to label bar colors set by `.color_fn`
 
 - 1.42.0
+
   - Added `.baseline` setting for bar charts
   - `warm_cold` coloring algorithm now works relative `.baseline`
   - Added `.baseline_annotation`
@@ -207,6 +215,7 @@ Changelog
   - Fixed bug where single values surrounded my None's were not printed out in serial-data line charts. This was an earlier regression that was not noticed for many releases.
 
 - 1.41.0
+
   - New, experimental chart type: Choropleth maps! Supports both categorical and continuous data. 
   - Better support for monthly time series spanning years
   - Fixed bug where missing annotation slots could crash CategoricalChart
