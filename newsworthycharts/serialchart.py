@@ -116,6 +116,7 @@ class SerialChart(Chart):
         interval = "yearly"
         for serie in self.data:
             dates = [to_date(x[0]) for x in serie]
+            dates_str = [x[0] for x in serie]
             years = [x.year for x in dates]
             months = [x.month for x in dates]
             yearmonths = [x.strftime("%Y-%m") for x in dates]
@@ -163,28 +164,6 @@ class SerialChart(Chart):
         if val == min(values[index - 1:index + 2]):
             return "down"
         return "up"
-
-    def _get_bar_colors(self, i, values, dates, highlight_value, highlight_date):
-        """
-        Return a list of color values for each value in a series (i)
-        """
-        if self.color_fn:
-            # Pick color based on value of each bar
-            colors = [self._color_by(v, baseline=self.baseline) for v in values]
-        elif self.highlight:
-            colors = []
-            for timepoint in dates:
-                if highlight_value and timepoint == highlight_date:
-                    colors.append(self._nwc_style["strong_color"])
-                else:
-                    colors.append(self._nwc_style["neutral_color"])
-        elif i == 0:
-            # use strong color if there is no highlight
-            colors = [self._nwc_style["strong_color"]] * len(dates)
-        else:
-            colors = [self._nwc_style["neutral_color"]] * len(dates)
-
-        return colors
 
     def _add_data(self):
 
@@ -245,6 +224,7 @@ class SerialChart(Chart):
 
             values = np.array(serie_values[i], dtype=float)
             dates = [to_date(x[0]) for x in serie]
+            dates_str = [x[0] for x in serie]
 
             highlight_value = None
             if self.highlight:
@@ -335,30 +315,41 @@ class SerialChart(Chart):
                 zo = 2 + (i == 0)
 
                 # Create colors
-                if is_stacked:
-                    if self.highlight:
-                        if self.highlight == self.labels[i]:
-                            color = self._nwc_style["strong_color"]
-                        else:
-                            color = self._nwc_style["neutral_color"]
-                    else:
-                        if self.colors is not None:
-                            color = self.colors[i]
-                        else:
-                            color = self._nwc_style["qualitative_colors"][i]
-                    colors = [color] * len(values)
-                elif self.highlight:
-                    colors = []
-                    for timepoint in dates:
-                        if highlight_value and timepoint == highlight_date:
-                            colors.append(self._nwc_style["strong_color"])
-                        else:
-                            colors.append(self._nwc_style["neutral_color"])
-                elif i > 0:
-                    colors = [self._nwc_style["neutral_color"]] * len(values)
+                colors = None
+                if self.color_fn:
+                    # Custom function has priority
+                    # TODO: These functions probably want to know
+                    # about stacking and highlighting, but we have
+                    # no such usecase yet
+                    colors = [
+                        self._color_by(v, baseline=self.baseline) for v in values
+                    ]
+                elif self.colors:
+                    colors = [self.colors[i]] * len(values)
+                elif i == 0 and self.highlight:
+                    base_color_for_series = self._nwc_style["neutral_color"]
+                    hl_color_for_series = self._nwc_style["strong_color"]
+                elif i == 0:
+                    base_color_for_series = self._nwc_style["strong_color"]
+                elif is_stacked:
+                    hl_color_for_series = self._nwc_style["strong_color"]
+                    base_color_for_series = self._nwc_style["qualitative_colors"][i]
                 else:
-                    colors = self._get_bar_colors(i, values, dates, highlight_value, highlight_date)
+                    """ i > 0 in mixed mode charts. Use secondary hl color """
+                    base_color_for_series = self._nwc_style["neutral_color"]
+                    hl_color_for_series = self._nwc_style["qualitative_colors"][i]
 
+                if not colors:
+                    print(self.highlight, dates_str)
+                    if self.highlight in dates_str:
+                        colors = []
+                        for v in dates_str:
+                            if v == self.highlight:
+                                colors.append(hl_color_for_series)
+                            else:
+                                colors.append(base_color_for_series)
+                    else:
+                        colors = [base_color_for_series] * len(values)
                 # Set bar width, based on interval
                 """
                 if self.interval == "monthly":

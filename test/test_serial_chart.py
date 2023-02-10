@@ -118,17 +118,8 @@ def test_stacked_bar_chart():
     assert bar_colors[0] == qualitative_colors[0]
     assert bar_colors[-1] == qualitative_colors[1]
 
-    # now highlight
-    chart_obj["highlight"] = "the good"
-    c = SerialChart.init_from(chart_obj, storage=local_storage)
-    c.render("stacked_bar_chart_highlighted", "png")
-    bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
-    assert bar_colors[0] == c._nwc_style["strong_color"]
-    assert bar_colors[-1] == c._nwc_style["neutral_color"]
-
     # specify colors
     chart_obj["colors"] = ["red", "green"]
-    chart_obj["highlight"] = None
     c = SerialChart.init_from(chart_obj, storage=local_storage)
     c.render("stacked_bar_chart_spec_colors", "png")
     bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
