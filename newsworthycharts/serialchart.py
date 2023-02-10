@@ -360,8 +360,7 @@ class SerialChart(Chart):
                 """
                 bar_widths_ = [self._days_in(self.interval, d) for d in dates]
 
-                # If there are too many ticks per pixel,
-                # don't put whitespace betw bars. Make widths = 1
+                # Put whitespace betw bars, unless there are a lot of bars
                 bbox = self.ax.get_window_extent()
                 if (sum(bar_widths_) * 2 / len(dates)) > bbox.width:
                     bar_widths = bar_widths_
@@ -374,8 +373,10 @@ class SerialChart(Chart):
                     zorder=zo,
                 )
                 if len(dates) < 100:
-                    # FIXME: We should base this on real bar widths,
-                    # but that requires rendering
+                    # FIXME: This complements the bar_width hack above
+                    # For some charts edges give better results (n_bars ~50?)
+                    # This should be better tested, and implemented in a
+                    # more robust way
                     bar_kwargs["edgecolor"] = "white"
                     bar_kwargs["linewidth"] = 1
 
