@@ -115,10 +115,11 @@ Options
 - xlabel = None
 - ylabel = None
 - caption = None
-- highlight = None
+- highlight = A position (typically a date, category label or index) to highlight. The semantics may differ somewhat between chart types.
 - decimals = None  # None means automatically chose the best number
 - logo = None  # Path to image that will be embedded in the caption area. Can also be set though a style property
 - color_fn = None  # Custom coloring function
+
 
 Developing
 ----------
@@ -155,8 +156,14 @@ Roadmap
 Changelog
 ---------
 
-- next
+- 1.44.0
   - Added grey outline to choropleth maps
+  - The `type` argument is not a list with one type per data serie. Using a string is still supported for backwards compability. This makes it possible to make mixed type charts.
+  - Reworked, simpler and more stable bar coloring algorithm
+  - The `type` argument is no longer a getter/setter
+  - Reduced edge for bar chartswith many bars
+  - Removed unused, undocumented special colors value `"qualitative_colors"`. We have reasonable defaults for all chart types, that can already be overridden. The qualitative colors are used by deafult for qualitative data.
+  - Removed unused, undocumented support for highlighting a series by label, rather than a value. The first series is highlighted by default, and that behaviour can already be overriden by the `.colors` setting
 
 - 1.43.4
   - Add more space for label title on se-7 maps
