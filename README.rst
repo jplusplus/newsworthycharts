@@ -156,6 +156,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.44.2
+  
+  - Fix crash in serialchart coloring chain
+
 - 1.44.1
   
   - Fix regression in SeasonalChart bar coloring
