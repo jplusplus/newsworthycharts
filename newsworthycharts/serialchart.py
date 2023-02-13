@@ -315,7 +315,7 @@ class SerialChart(Chart):
 
                 # Create colors
                 colors = None
-                if self._get_bar_colors:
+                if hasattr(self, "_get_bar_colors"):
                     # Hook for sub classes
                     colors = self._get_bar_colors(i)
                 elif self.color_fn:
