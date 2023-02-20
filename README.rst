@@ -156,6 +156,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.44.4
+  
+  - Do not default to broken y axis if chart contains a bar series.
+
 - 1.44.3
   
   - Fix bug and occasional crash when using baseline with None values
