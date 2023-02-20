@@ -183,7 +183,7 @@ class SerialChart(Chart):
             _values = [to_float(x[1]) for x in serie]
             if self.type[i] == "bars":
                 # Replace None values with 0's to be able to plot bars
-                _values = [self.baseline if v is None else v for v in _values]
+                _values = [0 if v is None else v for v in _values]
             serie_values.append(_values)
 
         #  Select a date to highlight
@@ -477,7 +477,7 @@ class SerialChart(Chart):
                 self._annotate_point(
                     self.baseline_annotation,
                     xy,
-                    direction="down" if first_val >= self.baseline else "up",
+                    direction="down" if first_val and first_val >= self.baseline else "up",
                     color=self._nwc_style["neutral_color"],
                 )
 
