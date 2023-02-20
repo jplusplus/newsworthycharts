@@ -156,6 +156,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.44.3
+  
+  - Fix bug and occasional crash when using baseline with None values
+
 - 1.44.2
   
   - Fix crash in serialchart coloring chain
