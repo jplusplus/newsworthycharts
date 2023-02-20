@@ -24,7 +24,7 @@ class SerialChart(Chart):
         self.type = "bars"
         self.bar_width = 0.9
 
-        self.allow_broken_y_axis = kwargs.get("allow_broken_y_axis", True)
+        self.allow_broken_y_axis = kwargs.get("allow_broken_y_axis", None)
         # draw bars and cut ay axis from this line
         self.baseline = kwargs.get("baseline", 0)
         self.baseline_annotation = kwargs.get("baseline_annotation", None)
@@ -172,6 +172,12 @@ class SerialChart(Chart):
         if type(self.type) == str:
             self.type = [self.type] * len(series)
         is_stacked = (len(series) > 1) and all([t == "bars" for t in self.type])
+
+        if self.allow_broken_y_axis is None:
+            if "bars" in self.type:
+                self.allow_broken_y_axis = False
+            else:
+                self.allow_broken_y_axis = True
 
         # parse values
         serie_values = []
@@ -342,7 +348,6 @@ class SerialChart(Chart):
                     hl_color_for_series = self._nwc_style["qualitative_colors"][i]
 
                 if not colors:
-                    print(self.highlight, dates_str)
                     if self.highlight in dates_str:
                         colors = []
                         for v in dates_str:
