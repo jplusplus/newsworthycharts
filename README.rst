@@ -159,6 +159,7 @@ Changelog
 - next
   
   - Added .missing_label to ChoroplethMap. If None (default), no label will be printed.
+  - Always accentuate base_line (/y=0), and make sure that line is on top of any bars to avoid ”floating” bars bug
 
 
 - 1.45.0

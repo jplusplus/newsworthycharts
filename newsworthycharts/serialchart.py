@@ -468,24 +468,24 @@ class SerialChart(Chart):
             self.ax.axvspan(x0, x1, alpha=.4, color="lightgrey", lw=0)
 
         # Accentuate y=0 || y=baseline
-        if (self.data.min_val < self.baseline) or self.baseline_annotation:
-            self.ax.axhline(
-                y=self.baseline,
-                linewidth=1,
-                color="#444444",
-                zorder=3,
-                linestyle="--" if self.baseline else "-"
+        # if (self.data.min_val < self.baseline) or self.baseline_annotation:
+        self.ax.axhline(
+            y=self.baseline,
+            linewidth=1,
+            color="#444444",
+            zorder=4,
+            linestyle="--" if self.baseline else "-"
+        )
+        if self.baseline_annotation:
+            xy = (to_date(self.data.outer_min_x), self.baseline)
+            # We only allow baseline to be set for single series bar charts
+            first_val = self.data.values[0][0]
+            self._annotate_point(
+                self.baseline_annotation,
+                xy,
+                direction="down" if first_val and first_val >= self.baseline else "up",
+                color=self._nwc_style["neutral_color"],
             )
-            if self.baseline_annotation:
-                xy = (to_date(self.data.outer_min_x), self.baseline)
-                # We only allow baseline to be set for single series bar charts
-                first_val = self.data.values[0][0]
-                self._annotate_point(
-                    self.baseline_annotation,
-                    xy,
-                    direction="down" if first_val and first_val >= self.baseline else "up",
-                    color=self._nwc_style["neutral_color"],
-                )
 
         # Shade area between lines if there are exactly 2 series
         # and both are lines
@@ -665,7 +665,6 @@ class SerialChart(Chart):
             # but it might just be that I haven't worked out how to use it properly
             from adjustText import get_bboxes
             bb1, bb2 = get_bboxes(elements, self._fig.canvas.get_renderer(), (1.0, 1.0), self.ax)
-            print(bb1.y0, bb2.y0)
             if (
                 # first label is above
                 (bb1.y0 < bb2.y0) and (bb1.y1 > bb2.y0)
