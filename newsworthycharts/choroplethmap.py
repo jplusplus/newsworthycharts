@@ -86,6 +86,7 @@ class ChoroplethMap(Chart):
         self.color_ramp = kwargs.get("color_ramp", "YlOrRd")
         self.categorical = kwargs.get("categorical", False)
         self.base_map = None
+        self.missing_label = None
 
     def _normalize_region_code(self, code):
         code = code.upper().replace("_", "-")
@@ -152,6 +153,11 @@ class ChoroplethMap(Chart):
                 "color": "gainsboro",
             },
         }
+        # This should be adjusted per basemap
+        label_kwargs = {
+            "bbox_to_anchor": (0.92, 0.95),
+            "loc": "upper left",
+        }
         if not self.categorical:
             args["cmap"] = self.color_ramp
             args["column"] = "data"
@@ -182,9 +188,7 @@ class ChoroplethMap(Chart):
                 patches.append(patch)
             self.ax.legend(
                 handles=patches,
-                # This have to be adjusted per basemap
-                bbox_to_anchor=(0.92, 0.95),
-                loc="upper left",
+                **label_kwargs
             )
 
         fig = df.plot(ax=self.ax, **args)
@@ -201,11 +205,24 @@ class ChoroplethMap(Chart):
         # Format numbers in legend
         if not self.categorical:
             leg = fig.get_legend()
+            fmt = self._get_value_axis_formatter()
+            remove_last = False
             for lbl in leg.get_texts():
-                val = float(lbl.get_text())
-                fmt = self._get_value_axis_formatter()
-                val = fmt(val)
+                val = lbl.get_text()
+                if val == "NaN":  # as returned by mapclassify
+                    if self.missing_label is not None:
+                        val = self.missing_label
+                    else:
+                        remove_last = "True"
+                        val = ""
+                else:
+                    val = float(val)
+                    val = fmt(val)
                 lbl.set_text(val)
+            if remove_last:
+                del leg.legend_handles[-1]
+                texts = [lbl.get_text() for lbl in leg.get_texts()]
+                fig.legend(handles=leg.legend_handles, labels=texts, **label_kwargs)
 
         for inset in self.insets:
             if "prefix" in inset:
