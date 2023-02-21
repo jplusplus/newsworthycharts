@@ -349,9 +349,9 @@ class Chart(object):
          rendering file(s). This is where all properties are applied.
         """
         # Apply all changes, in the correct order for consistent rendering
-        # Too tight: self._fig.set_layout_engine("constrained")
+        self._fig.set_layout_engine("tight") # constrained is too tight
         # Was: self._fig.tight_layout()
-        self._fig.set_tight_layout(True)
+        # self._fig.set_tight_layout(True)
         if len(self.data):
             self._add_data()
 
