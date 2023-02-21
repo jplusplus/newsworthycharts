@@ -1,9 +1,9 @@
-boto3==1.26.63
-matplotlib==3.6.3
+boto3==1.26.75
+matplotlib==3.7.0
 langcodes==3.3.0
 Babel==2.11.0
 PyYAML==6.0
-adjustText==0.7.3
+adjustText==0.8.0
 numpy==1.24.2
 python-dateutil==2.8.2
 pytest==7.2.1

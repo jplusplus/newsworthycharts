@@ -25,11 +25,11 @@ setup(
     python_requires='>=3.5',
     install_requires=[
         "boto3>=1.26",
-        "matplotlib==3.6.3",
+        "matplotlib==3.7.0",
         "langcodes>=3.3",
         "Babel>=2.11",
         "PyYAML>=3",
-        "adjustText==0.7.3",
+        "adjustText==0.8.0",
         "numpy>=1.19.1,<2",
         "python-dateutil>=2",
         "Pillow>=8",
