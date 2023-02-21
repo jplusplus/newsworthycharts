@@ -349,8 +349,9 @@ class Chart(object):
          rendering file(s). This is where all properties are applied.
         """
         # Apply all changes, in the correct order for consistent rendering
-        # self._fig.set_layout_engine("constrained")
-        self._fig.tight_layout()
+        # Too tight: self._fig.set_layout_engine("constrained")
+        # Was: self._fig.tight_layout()
+        self._fig.set_tight_layout(True)
         if len(self.data):
             self._add_data()
 
@@ -360,7 +361,6 @@ class Chart(object):
             # or custom legends set by specific charts,
             # e.g. choropleth map colors or bar chart colors
             self.ax.get_legend().set_title(self.legend_title)
-        # self._fig.tight_layout()
 
         if not self.show_ticks:
             self.category_axis.set_visible(False)
