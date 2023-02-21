@@ -87,6 +87,10 @@ class ChoroplethMap(Chart):
         self.categorical = kwargs.get("categorical", False)
         self.base_map = None
 
+    def _normalize_region_code(self, code):
+        code = code.upper().replace("_", "-")
+        return code
+
     def _add_data(self):
         _bm = self.base_map  # ["se-7-inset", "se-7", "se-4", "se01-7", ...]
         base_map, subdivisions, *opts = _bm.split("-")
@@ -96,7 +100,10 @@ class ChoroplethMap(Chart):
         else:
             self.insets = []
 
+        if len(self.data) > 1:
+            raise Exception("Choropleth maps can onlky print one data series at a time")
         series = self.data[0]
+        series = [(self._normalize_region_code(x[0]), x[1]) for x in series]
         datamap = {x[0]: x[1] for x in series}
         __dir = pathlib.Path(__file__).parent.resolve()
         df = gpd.read_file(f"{__dir}/maps/{base_map}-{subdivisions}.gpkg")
