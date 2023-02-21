@@ -22,6 +22,9 @@ class SerialChart(Chart):
     def __init__(self, *args, **kwargs):
         super(SerialChart, self).__init__(*args, **kwargs)
         self.type = "bars"
+
+        # Percent of period. 0.85 means a bar in a chart with yearly data will
+        # be around 310 or 311 days wide.
         self.bar_width = 0.9
 
         self.allow_broken_y_axis = kwargs.get("allow_broken_y_axis", None)
@@ -34,9 +37,7 @@ class SerialChart(Chart):
         # Set with of lines explicitly (otherwise determined by style file)
         self.line_width = None
 
-        # Percent of period. 0.85 means a bar in a chart with yearly data will
-        # be around 310 or 311 days wide.
-        self.max_ticks = 5
+        self.max_ticks = 7
 
         # Manually set tick locations and labels? Provide a list of tuples:
         # [(2013-01-01, "-13"), (2014-01-01, "-14"), (2015-01-01, "-15")]
