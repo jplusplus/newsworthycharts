@@ -664,7 +664,7 @@ class SerialChart(Chart):
             # `adjust_text` tended to offset labels unnecessarily
             # but it might just be that I haven't worked out how to use it properly
             from adjustText import get_bboxes
-            bb1, bb2 = get_bboxes(elements, self._fig.canvas.renderer, (1.0, 1.0), self.ax)
+            bb1, bb2 = get_bboxes(elements, self._fig.canvas.get_renderer(), (1.0, 1.0), self.ax)
             print(bb1.y0, bb2.y0)
             if (
                 # first label is above

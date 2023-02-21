@@ -147,7 +147,7 @@ class Chart(object):
 
         self._fig.canvas.draw()  # Draw text to find out how big it is
         t = obj.get_text()
-        r = self._fig.canvas.renderer
+        r = self._fig.canvas.get_renderer()
         # Get real line height
         w, h, d = r.get_text_width_height_descent(
             t.replace("\n", ""),  # avoid warning
@@ -349,9 +349,8 @@ class Chart(object):
          rendering file(s). This is where all properties are applied.
         """
         # Apply all changes, in the correct order for consistent rendering
-        self._fig.set_layout_engine("tight") # constrained is too tight
+        self._fig.set_layout_engine("tight")  # constrained is too tight
         # Was: self._fig.tight_layout()
-        # self._fig.set_tight_layout(True)
         if len(self.data):
             self._add_data()
 

@@ -152,7 +152,7 @@ class CategoricalChart(Chart):
             self.ax.margins(0, margin)
 
             # Make sure labels are not cropped
-            yaxis_bbox = self.ax.yaxis.get_tightbbox(self._fig.canvas.renderer)
+            yaxis_bbox = self.ax.yaxis.get_tightbbox(self._fig.canvas.get_renderer())
             margin = self._style["figure.subplot.left"]
             margin -= yaxis_bbox.min[0] / float(self._w)
             self._fig.subplots_adjust(left=margin)
@@ -238,7 +238,7 @@ class CategoricalChartWithReference(CategoricalChart):
                 self.ax.xaxis.set_ticks_position('none')
 
         # Make sure labels are not cropped
-        yaxis_bbox = self.ax.yaxis.get_tightbbox(self._fig.canvas.renderer)
+        yaxis_bbox = self.ax.yaxis.get_tightbbox(self._fig.canvas.get_renderer())
         margin = self._style["figure.subplot.left"]
         margin -= yaxis_bbox.min[0] / float(self._w)
         self._fig.subplots_adjust(left=margin)
