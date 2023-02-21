@@ -2,6 +2,7 @@
 Simple choropleths for common administrative areas
 """
 from .chart import Chart
+from fiona.errors import DriverError
 import geopandas as gpd
 import numpy as np
 import pandas as pd
@@ -107,7 +108,12 @@ class ChoroplethMap(Chart):
         series = [(self._normalize_region_code(x[0]), x[1]) for x in series]
         datamap = {x[0]: x[1] for x in series}
         __dir = pathlib.Path(__file__).parent.resolve()
-        df = gpd.read_file(f"{__dir}/maps/{base_map}-{subdivisions}.gpkg")
+        try:
+            df = gpd.read_file(f"{__dir}/maps/{base_map}-{subdivisions}.gpkg")
+        except DriverError:
+            raise ValueError(
+                f"No such basemap: {_bm} (parsed as base: {base_map}, subdivisions: {subdivisions})"
+            )
         available_codes = df["id"].to_list()
         if not all([x[0] in available_codes for x in series]):
             invalid_codes = [x[0] for x in series if not x[0] in available_codes]
