@@ -114,7 +114,7 @@ class ChoroplethMap(Chart):
         df["data"] = df["id"].map(datamap)  # .astype("category")
 
         if self.categorical:
-            # We'll categorize manually below,
+            # We'll categorize manually further down the line,
             # to easier implement custom coloring
             pass
             # df["data"] = pd.Categorical(
@@ -187,7 +187,8 @@ class ChoroplethMap(Chart):
                 loc="upper left",
             )
 
-        df.plot(ax=self.ax, **args)
+        fig = df.plot(ax=self.ax, **args)
+        # Add outer edge
         for uu in df.unary_union.geoms:
             gpd.GeoSeries(uu).plot(
                 ax=self.ax,
@@ -196,6 +197,15 @@ class ChoroplethMap(Chart):
                 facecolor="none",
             )
         self.ax.axis("off")
+
+        # Format numbers in legend
+        if not self.categorical:
+            leg = fig.get_legend()
+            for lbl in leg.get_texts():
+                val = float(lbl.get_text())
+                fmt = self._get_value_axis_formatter()
+                val = fmt(val)
+                lbl.set_text(val)
 
         for inset in self.insets:
             if "prefix" in inset:
