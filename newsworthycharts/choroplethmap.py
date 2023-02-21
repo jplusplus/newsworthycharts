@@ -101,12 +101,16 @@ class ChoroplethMap(Chart):
             self.insets = []
 
         if len(self.data) > 1:
-            raise Exception("Choropleth maps can onlky print one data series at a time")
+            raise ValueError("Choropleth maps can onlky print one data series at a time")
         series = self.data[0]
         series = [(self._normalize_region_code(x[0]), x[1]) for x in series]
         datamap = {x[0]: x[1] for x in series}
         __dir = pathlib.Path(__file__).parent.resolve()
         df = gpd.read_file(f"{__dir}/maps/{base_map}-{subdivisions}.gpkg")
+        available_codes = df["id"].to_list()
+        if not all([x[0] in available_codes for x in series]):
+            invalid_codes = [x[0] for x in series if not x[0] in available_codes]
+            raise ValueError(f"Invalid region code(s): {', '.join(invalid_codes)}")
         df["data"] = df["id"].map(datamap)  # .astype("category")
 
         if self.categorical:
