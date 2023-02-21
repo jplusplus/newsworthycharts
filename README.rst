@@ -156,6 +156,11 @@ Roadmap
 Changelog
 ---------
 
+- next
+  
+  - Added .missing_label to ChoroplethMap. If None (default), no label will be printed.
+
+
 - 1.45.0
 
   - Increased default `max_ticks` in SerialChart to 7
