@@ -156,6 +156,17 @@ Roadmap
 Changelog
 ---------
 
+- 1.45.0
+
+  - Increased default `max_ticks` in SerialChart to 7
+  - Matplotlib==3.7.0
+  - adjustText==0.8.0
+  - ChoroplethMap legend formatting, following language, decimals and units settings, etc
+  - Minor tweaks to the layout algorithm. Might affect padding in some charts.
+  - ChoroplethMap now does some basic normalizing of region codes
+  - Added some data sanity checks, and improved error messages in ChoroplethMap
+  - Added tests for ChoroplethMap
+
 - 1.44.4
   
   - Do not default to broken y axis if chart contains a bar series.
