@@ -381,7 +381,6 @@ def test_line_labeling():
         'width': 900,
         'height': 474,
         'ymin': 0,
-        'periodicity': 'monthly',
         'label_placement': 'line', 'highlight': '2021-11-01',
         'title': 'Lägre arbetslöshet i Ängelholm än i Skåne',
         'subtitle': 'Arbetssökande som andel av den registerbaserade arbetskraften månad för månad.'
@@ -466,7 +465,6 @@ def test_inline_labeling():
         'width': 900,
         'height': 474,
         'decimals': 1,
-        'periodicity': 'monthly',
         'label_placement': 'inline',
         'highlight': '2021-11-01',
         'title': 'Lägre arbetslöshet i Ängelholm än i Skåne',

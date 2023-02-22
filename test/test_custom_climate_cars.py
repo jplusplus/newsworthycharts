@@ -244,7 +244,6 @@ def test_co2_budget_chart():
             "Reduktion\ni linje med\nklimatmålet",
         ],
         "note": 'Klimatmålet innebär att transporternas utsläppens ska reduceras med 70 procent till år 2030 i förhållande till 2010. Scenario 1 är baserat på utsläppsdata för 2019, scenario 2 på en jämn utsläppsminskning till och med år 2030.',
-        "periodicity": "yearly",
         "series": [],
         "source": "scb",
         "subtitle": "Ackumulerade koldioxidutsl\u00e4pp fr\u00e5n transportsektorn i två olika scenarier",
