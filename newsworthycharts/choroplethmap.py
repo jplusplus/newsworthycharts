@@ -2,7 +2,9 @@
 Simple choropleths for common administrative areas
 """
 from .chart import Chart
+from .lib.geography import haversine
 from fiona.errors import DriverError
+from shapely.geometry.multipolygon import MultiPolygon
 import geopandas as gpd
 import numpy as np
 import pandas as pd
@@ -88,14 +90,55 @@ class ChoroplethMap(Chart):
         self.categorical = kwargs.get("categorical", False)
         self.base_map = None
         self.missing_label = None
+        self.df = None
 
     def _normalize_region_code(self, code):
         code = code.upper().replace("_", "-")
         return code
 
-    def _add_data(self):
+    def _get_height(self, w):
+
+        (minx, miny, maxx, maxy) = self.df.total_bounds
+
+        # Calculate height from bbox, but limiting aspect to at most 1:1
+        if self.df.crs.is_projected:
+            dist_w = maxx - minx
+            dist_h = maxy - miny
+        else:
+            dist_w = haversine(minx, maxy, maxx, maxy)
+            dist_h = haversine(minx, miny, minx, maxy)
+        dist_ratio = dist_h / dist_w
+        height = int(float(w) * dist_ratio)
+        if height > w:
+            height = w
+        return height
+
+    def parse_basemap(self):
+        # FIXME: Make a basemap setter that handles parsing
         _bm = self.base_map  # ["se-7-inset", "se-7", "se-4", "se01-7", ...]
         base_map, subdivisions, *opts = _bm.split("-")
+        # Save save precious AWS Lambda bytes by reusing geodata
+        # se|03-7 filter se by prefix 03
+        _ = base_map.split("|")
+        subset = None
+        if len(_) > 1:
+            [base_map, subset] = _
+
+        if not self.df:
+            __dir = pathlib.Path(__file__).parent.resolve()
+            try:
+                self.df = gpd.read_file(f"{__dir}/maps/{base_map}-{subdivisions}.gpkg")
+            except DriverError:
+                raise ValueError(
+                    f"No such basemap: {_bm} (parsed as base: {base_map}, subdivisions: {subdivisions})"
+                )
+        return base_map, subdivisions, subset, *opts
+
+    def _add_data(self):
+
+        base_map, subdivisions, subset, *opts = self.parse_basemap()
+        df = self.df
+
         if "inset" in opts:
             inset = "-".join([base_map, subdivisions])
             self.insets = INSETS[inset]
@@ -103,21 +146,26 @@ class ChoroplethMap(Chart):
             self.insets = []
 
         if len(self.data) > 1:
-            raise ValueError("Choropleth maps can onlky print one data series at a time")
+            raise ValueError("Choropleth maps can only display one data series at a time")
+
         series = self.data[0]
         series = [(self._normalize_region_code(x[0]), x[1]) for x in series]
-        datamap = {x[0]: x[1] for x in series}
-        __dir = pathlib.Path(__file__).parent.resolve()
-        try:
-            df = gpd.read_file(f"{__dir}/maps/{base_map}-{subdivisions}.gpkg")
-        except DriverError:
-            raise ValueError(
-                f"No such basemap: {_bm} (parsed as base: {base_map}, subdivisions: {subdivisions})"
-            )
+
+        if subset:
+            def norm(id_):
+                # This is a hack to allow `se|03-7` rather than `se|'SE-03'-7`
+                id_ = id_.replace("-", "").replace("_", "").lower()
+                if id_.startswith(base_map):
+                    id_ = id_[len(base_map):]
+                return id_
+            df["_norm_id"] = df["id"].apply(norm)
+            df = df[df["_norm_id"].str.startswith(subset)].copy()
+
         available_codes = df["id"].to_list()
         if not all([x[0] in available_codes for x in series]):
             invalid_codes = [x[0] for x in series if not x[0] in available_codes]
             raise ValueError(f"Invalid region code(s): {', '.join(invalid_codes)}")
+        datamap = {x[0]: x[1] for x in series}
         df["data"] = df["id"].map(datamap)  # .astype("category")
 
         if self.categorical:
@@ -144,7 +192,10 @@ class ChoroplethMap(Chart):
                 ordered=True
             )
             _has_value["cats"] = values
-            df["data"] = pd.merge(_has_value, df, on="id", how="right")["cats"]
+
+            # df["data"] = pd.merge(_has_value, df, on="id", how="right")["cats"]
+            _dict = _has_value[["id", "cats"]].set_index("id").to_dict()
+            df["data"] = df["id"].map(_dict["cats"])
 
         args = {
             "categorical": True,
@@ -199,7 +250,11 @@ class ChoroplethMap(Chart):
 
         fig = df.plot(ax=self.ax, **args)
         # Add outer edge
-        for uu in df.unary_union.geoms:
+        unary = df.unary_union
+        if unary.geom_type == "Polygon":
+            # We don't know in advance if unary_union will produce a polugon or a multipolygon
+            unary = MultiPolygon([unary])
+        for uu in unary.geoms:
             gpd.GeoSeries(uu).plot(
                 ax=self.ax,
                 edgecolor="lightgrey",

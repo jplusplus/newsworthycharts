@@ -78,7 +78,6 @@ class Chart(object):
         # Calculated properties
         self._annotations = []  # Automatically added annotations
         self._storage = storage
-        self._w, self._h = int(width), int(height)
         self._style, self._nwc_style = loadstyle(style)
         # if len(self._nwc_style.keys()):
         #    warnings.warn("Using custom NWCharts settings in rc files is deprecated.")
@@ -92,7 +91,7 @@ class Chart(object):
         self._title_font.set_size(self._style["figure.titlesize"])
         self._title_font.set_weight(self._style["figure.titleweight"])
 
-        self._fig = Figure(layout="constrained")
+        self._fig = Figure(layout="tight")
         FigureCanvas(self._fig)
         self.ax = self._fig.add_subplot(111)
         # self._fig, self.ax = plt.subplots()
@@ -100,7 +99,12 @@ class Chart(object):
         self.category_axis = self.ax.xaxis
 
         # Calculate size in inches
-        self._set_size(width, height)
+        # Deferred from 1.46.0 to allow charts to override height!
+        # self._set_size(width, height)
+        self.requested_width, self.requested_height = width, height
+        self._w = int(width)
+        if height:
+            self._h = int(height)
 
         # Chart elements. Made available for fitting.
         self._title_elem = None
@@ -108,6 +112,11 @@ class Chart(object):
         self._note_elem = None
         self._caption_elem = None
         self._logo_elem = None
+
+    def _get_height(self, w):
+        """ This can be overridden by chart classes to provide optimal ratios """
+        # Default to 1:1
+        return w
 
     def _set_size(self, w, h=None):
         """ Set figure size, in pixels """
@@ -349,10 +358,17 @@ class Chart(object):
          rendering file(s). This is where all properties are applied.
         """
         # Apply all changes, in the correct order for consistent rendering
-        self._fig.set_layout_engine("tight")  # constrained is too tight
-        # Was: self._fig.tight_layout()
         if len(self.data):
             self._add_data()
+
+        # Calculate size in inches
+        # Until 1.45 we did this on init, but now we'd like to enable dynamic heights
+        if self.requested_height is None:
+            h = self._get_height(int(self.requested_width))
+        else:
+            h = int(self.requested_height)
+        self._h = h  # This was tentatively set in init. Overwritten here!
+        self._set_size(self._w, h)
 
         # Legend / data labels
         if self.legend_title:
@@ -407,7 +423,6 @@ class Chart(object):
 
         # fit ticks etc.
         self._fig.tight_layout()
-        # self._fig.get_layout_engine().set(w_pad=15, h_pad=15)
 
         logo = self._nwc_style.get("logo", self.logo)
         caption_hextent = None  # set this if adding a logo
