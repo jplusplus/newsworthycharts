@@ -156,11 +156,14 @@ Roadmap
 Changelog
 ---------
 
-- next
+- 1.46.0
   
+  - `height` can be set to None for automatic ratio, for chart types that support it. Will default to 1:1 for most chart types, but maps will try to provide a reasonable default based on geometry. Some chart types still require explicit height
+  - It is now possible to use subsets of basemaps, by specifying a prefix: `se|03-7` means regions starting with `03` in `se-7`
   - Added .missing_label to ChoroplethMap. If None (default), no label will be printed.
-  - Always accentuate base_line (/y=0), and make sure that line is on top of any bars to avoid ”floating” bars bug
-
+  - Always accentuate base_line (/y=0), and make sure that line is on top of any bars to avoid “floating” bars
+  - Improved error handling in ChoroplethMap
+  - Clean up figure layout logic (this should speed up rendering somewhat)
 
 - 1.45.0
 
