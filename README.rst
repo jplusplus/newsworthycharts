@@ -147,7 +147,6 @@ To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts):
 
 Roadmap
 -------
-  - Label outside in maps (Matplotlib 3.7 feature)
   - Adding more base maps
   - Getting rid of custom settings-hack
   - Custom month locator with equal-width month bars
@@ -155,6 +154,14 @@ Roadmap
 
 Changelog
 ---------
+
+- 1.46.2
+
+  - Fix tag mismatch in dist
+
+- 1.46.1
+
+  - Add missing haversine transform for non-projected crs
 
 - 1.46.0
   
