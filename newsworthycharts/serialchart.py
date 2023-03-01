@@ -248,7 +248,7 @@ class SerialChart(Chart):
                                            highlight_value)
             if self.type[i] == "line":
                 # Put first series on top
-                zo = 2 + (i == 0)
+                zo = len(series) - i + 1
 
                 if self.line_width is None:
                     lw = self._nwc_style.get("lines.linewidth", 2)
@@ -317,8 +317,8 @@ class SerialChart(Chart):
                                  zorder=zo)
 
             elif self.type[i] == "bars":
-                # Put first series on top, if mixed types
-                zo = 2 + (i == 0)
+                # Put first series on top
+                zo = len(series) - i + 1
 
                 # Create colors
                 colors = None
