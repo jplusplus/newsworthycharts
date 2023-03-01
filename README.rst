@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.46.3
+
+  - Fix z-ordering issue on multiple series (n > 2)
+
 - 1.46.2
 
   - Fix tag mismatch in dist
