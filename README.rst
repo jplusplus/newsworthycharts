@@ -155,6 +155,12 @@ Roadmap
 Changelog
 ---------
 
+- 1.47.0
+
+  - Support for rendering jpeg files, as `jpg`
+  - Minimum required Python version is now 3.7 (jumping from 3.5)
+  - Matplotlib@3.7.1
+
 - 1.46.3
 
   - Fix z-ordering issue on multiple series (n > 2)
