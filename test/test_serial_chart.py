@@ -291,6 +291,86 @@ def test_multi_color_lines():
         assert c.ax.get_lines()[i].get_color() == color
 
 
+def test_qualitative_colors_in_line_chart():
+    chart_obj = {
+        "width": 750,
+        "height": 550,
+        "type": "line",
+        "chart_engine": "SerialChart",
+        "title": "Så stor del av ytan har mobiltäcknig",
+        "subtitle": "Andel av hela Alingsås kommuns yta som har täckning.",
+        "data": [
+            [
+            [
+                2016,
+                0.1073357335733573
+            ],
+            [
+                2017,
+                0.1406390639063906
+            ],
+            [
+                2018,
+                0.2965796579657966
+            ],
+            [
+                2019,
+                0.33708370837083695
+            ],
+            [
+                2020,
+                0.4088967394243074
+            ],
+            [
+                2021,
+                0.503055099944125
+            ]
+            ],
+            [
+            [
+                2016,
+                0.960958595859586
+            ],
+            [
+                2017,
+                0.9687218721872188
+            ],
+            [
+                2018,
+                0.9711971197119712
+            ],
+            [
+                2019,
+                0.9846984698469848
+            ],
+            [
+                2020,
+                0.9934391954002272
+            ],
+            [
+                2021,
+                0.995782339900146
+            ]
+            ]
+        ],
+        "source": "PTS",
+        "labels": [
+            "30 Mbit/s",
+            "10 Mbit/s"
+        ],
+        "units": "percent",
+        "value_labels": True,
+        "label_placement": "line",
+        "max_ticks": 7,
+        "colors": "qualitative_colors"
+    }
+    c = SerialChart.init_from(chart_obj, storage=local_storage)
+    c.render("serial_line_with_qualitative_colors", "png")
+    qualitative_colors = c._nwc_style["qualitative_colors"]
+    bar_colors = [bar.get_facecolor() for bar in c.ax.patches]
+    assert bar_colors[0] == qualitative_colors[0]
+    assert bar_colors[-1] == qualitative_colors[1]
+
 def test_value_labeling():
     chart_obj = {
         "width": 600,
@@ -526,3 +606,6 @@ def test_duplicated_timepoint():
     with pytest.raises(ValueError):
         c = SerialChart.init_from(chart_obj, storage=local_storage)
         c.render("serial_barchart", "png")
+
+
+
