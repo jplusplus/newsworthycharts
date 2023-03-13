@@ -8,4 +8,5 @@ MIME_TYPES = {
     'png': "image/png",
     'svg': "image/svg+xml",
     'webp': "image/webp",
+    'jpg': "image/jpeg",
 }
