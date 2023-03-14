@@ -256,7 +256,10 @@ class SerialChart(Chart):
                     lw = self.line_width
 
                 if self.colors is not None:
-                    color = self.colors[i]
+                    if self.colors == "qualitative_colors":
+                        color = self._nwc_style["qualitative_colors"][i]
+                    else:
+                        color = self.colors[i]
                 elif i == 0:
                     color = self._nwc_style["strong_color"]
                 else:
