@@ -410,6 +410,12 @@ class SerialChart(Chart):
                 if len(self.labels) > i:
                     bars.set_label(self.labels[i])
 
+            # Add annotations
+            for idx, p in enumerate(serie):
+                if p[2]:
+                    dir = "up" if p[1] > self.baseline else "down"
+                    self._annotate_point(p[2], (dates[idx], p[1]), direction=dir)
+
             if self.value_labels:
                 for date, value in zip(dates, values):
                     dir = "up"

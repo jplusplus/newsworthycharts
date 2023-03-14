@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- next
+
+  - Data point annotation now works for serial charts as well
+
 - 1.47.0
 
   - Support for rendering jpeg files, as `jpg`
