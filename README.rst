@@ -224,7 +224,7 @@ Changelog
   - Reworked, simpler and more stable bar coloring algorithm
   - The `type` argument is no longer a getter/setter
   - Reduced edge for bar chartswith many bars
-  - Removed unused, undocumented special colors value `"qualitative_colors"`. We have reasonable defaults for all chart types, that can already be overridden. The qualitative colors are used by deafult for qualitative data.
+  - Removed unused, undocumented special colors value `"qualitative_colors"`. We have reasonable defaults for all chart types, that can already be overridden. The qualitative colors are used by default for qualitative data.
   - Removed unused, undocumented support for highlighting a series by label, rather than a value. The first series is highlighted by default, and that behaviour can already be overriden by the `.colors` setting
 
 - 1.43.4
