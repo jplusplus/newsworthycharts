@@ -171,7 +171,9 @@ class CategoricalChart(Chart):
     def _setup_legend(self):
         if self.legend is False:
             # hide legend
-            self.ax.get_legend().remove()
+            legend = self.ax.get_legend()
+            if legend:
+                legend.remove()
 
 
 class CategoricalChartWithReference(CategoricalChart):
