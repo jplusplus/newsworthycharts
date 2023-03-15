@@ -301,6 +301,7 @@ def test_progress_chart():
                 ("Kalmar län", .6332),
             ],
         ],
+        "legend": False,
         "target": .95,
         "target_label": "Mål: 95 %",
         "labels": ["Täckning i dag", "Kvar till målet"],
