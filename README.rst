@@ -159,6 +159,10 @@ Changelog
 
   - Data point annotation now works for serial charts as well
 
+- 1.47.2
+
+  - Bug fix: Fixes legend issue in `ProgressChart`. 
+
 - 1.47.1
 
   - Bug fix: Re-enable `qualitative_colors` as `color` argument in SerialChart (line). 
