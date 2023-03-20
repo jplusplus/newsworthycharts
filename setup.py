@@ -38,6 +38,7 @@ setup(
         "geopandas==0.12.2",
         "mapclassify==2.5.0",
     ],
+    setup_requires=["flake8"],
     include_package_data=True,
     download_url="{}/archive/{}.tar.gz".format(repo, version),
 )
