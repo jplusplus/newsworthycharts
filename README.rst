@@ -159,6 +159,10 @@ Changelog
 
   - Data point annotation now works for serial charts as well
 
+- 1.48.2
+  
+  - Bug fix: Handle translation in inset maps in `ChoroplethMap`. 
+
 - 1.48.1
 
   - Bug fix: Path to translation file in `ChoroplethMap`. 

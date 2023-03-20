@@ -71,6 +71,7 @@ INSETS = {
 
 REGION_TRANSLATIONS = {
     "se-7": NW_MUNI_TO_CLDR,
+    "se-7-inset": NW_MUNI_TO_CLDR,
 }
 
 class ChoroplethMap(Chart):

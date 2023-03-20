@@ -31,7 +31,7 @@ def test_map_with_nw_regions():
     chart_obj = {
         "width": 800,
         "height": 600,
-        "base_map": "se-7",
+        "base_map": "se-7-inset",
         "data": [
             [
                 ("Stockholms kommun", 3),
