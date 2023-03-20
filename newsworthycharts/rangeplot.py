@@ -83,7 +83,7 @@ class RangePlot(Chart):
                 **props,
             )
             if start_value != end_value:
-                start_label = self.ax.annotate(
+                self.ax.annotate(
                     self.labels[0],
                     (start_value, categories[-1]),
                     color=start_color,
