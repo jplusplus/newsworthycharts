@@ -2,7 +2,6 @@
 max-line-length = 110
 ignore = E252, W503
 filename = 
-  ./test/*py
   ./newsworthycharts/*py
 per-file-ignores = 
   ./newsworthycharts/__init__.py:F401, F403
