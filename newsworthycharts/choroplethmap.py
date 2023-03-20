@@ -3,6 +3,7 @@ Simple choropleths for common administrative areas
 """
 from .chart import Chart
 from .lib.geography import haversine
+from .translations.regions import NW_MUNI_TO_CLDR 
 from fiona.errors import DriverError
 from shapely.geometry.multipolygon import MultiPolygon
 import geopandas as gpd
@@ -68,12 +69,17 @@ INSETS = {
     ],
 }
 
+REGION_TRANSLATIONS = {
+    "se-7": NW_MUNI_TO_CLDR,
+}
 
 class ChoroplethMap(Chart):
     """Plot a dataset on a coropleth map
 
     Data should be an iterables of (region, value) tuples, eg:
     `[("SE-8", 2), ("SE-9", 2.3)]`
+    Newsworthy region names are also supported:
+    `[("Stockholms kommun", 2), ("Solna kommun", 2.3)]`
     Note that unlike many other chart types, this one only allows
     a single dataset to be plotted, and the data is hence provided
     as a single iterable, rather than a list of iterables.
@@ -94,6 +100,10 @@ class ChoroplethMap(Chart):
 
     def _normalize_region_code(self, code):
         code = code.upper().replace("_", "-")
+        # Apply translation, if we find and applicable one
+        region_translation = REGION_TRANSLATIONS.get(self.base_map, {})
+        region_translation = { k.upper(): v for k, v in region_translation.items() }
+        code = region_translation.get(code, code)
         return code
 
     def _get_height(self, w):
@@ -274,7 +284,7 @@ class ChoroplethMap(Chart):
                     if self.missing_label is not None:
                         val = self.missing_label
                     else:
-                        remove_last = "True"
+                        remove_last = True
                         val = ""
                 else:
                     val = float(val)
