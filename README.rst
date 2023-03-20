@@ -157,7 +157,6 @@ Changelog
 
 - next
 
-  - Data point annotation now works for serial charts as well
 
 - 1.48.2
   
@@ -178,6 +177,7 @@ Changelog
 
 - 1.47.1
 
+  - Data point annotation now works for serial charts as well
   - Bug fix: Re-enable `qualitative_colors` as `color` argument in SerialChart (line). 
 
 - 1.47.0
