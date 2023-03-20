@@ -159,6 +159,11 @@ Changelog
 
   - Data point annotation now works for serial charts as well
 
+- 1.48.0
+
+  - `ChoroplethMap`: Allow Newsworthy region names.
+  - `RangePlot`: Re-add `start_label` that had been (mistakenly?) commented out.
+
 - 1.47.2
 
   - Bug fix: Fixes legend issue in `ProgressChart`. 
