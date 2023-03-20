@@ -3,7 +3,7 @@ Simple choropleths for common administrative areas
 """
 from .chart import Chart
 from .lib.geography import haversine
-from .translations.regions import NW_MUNI_TO_CLDR 
+from .translations.regions import NW_MUNI_TO_CLDR
 from fiona.errors import DriverError
 from shapely.geometry.multipolygon import MultiPolygon
 import geopandas as gpd
@@ -74,6 +74,7 @@ REGION_TRANSLATIONS = {
     "se-7-inset": NW_MUNI_TO_CLDR,
 }
 
+
 class ChoroplethMap(Chart):
     """Plot a dataset on a coropleth map
 
@@ -103,7 +104,7 @@ class ChoroplethMap(Chart):
         code = code.upper().replace("_", "-")
         # Apply translation, if we find and applicable one
         region_translation = REGION_TRANSLATIONS.get(self.base_map, {})
-        region_translation = { k.upper(): v for k, v in region_translation.items() }
+        region_translation = {k.upper(): v for k, v in region_translation.items()}
         code = region_translation.get(code, code)
         return code
 
