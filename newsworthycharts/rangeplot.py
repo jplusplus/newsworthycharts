@@ -82,8 +82,6 @@ class RangePlot(Chart):
                 ha="right" if start_value > end_value else "left",
                 **props,
             )
-
-            """
             if start_value != end_value:
                 start_label = self.ax.annotate(
                     self.labels[0],
@@ -92,8 +90,6 @@ class RangePlot(Chart):
                     ha="right" if start_value < end_value else "left",
                     **props
                 )
-            """
-
             # end of labeling
 
         # VALUE LABELS
