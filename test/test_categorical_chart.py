@@ -278,7 +278,7 @@ def test_progress_chart():
     chart_obj = {
         "data": [
             [
-                ("Stockholms län", .9404),
+                ("Stockholms län", .9604, ">95 %"),
                 ("Gotlands län", .8868),
                 ("Västra Götalands län", .8260),
                 ("Hallands län", .8193),
