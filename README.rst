@@ -157,6 +157,9 @@ Changelog
 
 - next
 
+- 1.49.0
+
+  - `ProgressChart`: Enable custom value labels as third argument in data serie.
 
 - 1.48.2
   
