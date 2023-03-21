@@ -53,9 +53,8 @@ class DatawrapperChart(Chart):
         self.dw_data = {}  # The DW data structure that defines the chart
         self._dw_id = None  # Datawrapper chart id
 
-
-        # P R I V A T E   P R O P E R T I E S
-        # Properties managed through getters/setters
+        #  P R I V A T E   P R O P E R T I E S
+        #  Properties managed through getters/setters
         self._title = None
         self._units = "count"
 
@@ -69,7 +68,6 @@ class DatawrapperChart(Chart):
 
         # For renaming regions to DW conventions
         self._translations = None
-
 
     def render(self, key: str, img_format: str, **kwargs):
         """Render file, and send to storage."""
@@ -86,7 +84,7 @@ class DatawrapperChart(Chart):
         r = requests.post(url, headers=auth_header, json=dw_data)
         try:
             r.raise_for_status()
-        except:
+        except Exception():
             msg = r.json()["message"]
             raise Exception(msg)
 
@@ -97,7 +95,7 @@ class DatawrapperChart(Chart):
         r = requests.get(url, headers=auth_header)
 
         # 2. add data
-        #print("Add data")
+        # print("Add data")
         url = f"https://api.datawrapper.de/v3/charts/{chart_id}/data"
         csv_data = self._prepare_dw_chart_data()
 
@@ -106,9 +104,8 @@ class DatawrapperChart(Chart):
         r = requests.put(url, headers=headers, data=csv_data)
         r.raise_for_status()
 
-
         # 3. render (and store) chart
-        #print("Store chart")
+        # print("Store chart")
         url = f"https://api.datawrapper.de/v3/charts/{chart_id}/export/{img_format}"
 
         params = {
@@ -130,7 +127,6 @@ class DatawrapperChart(Chart):
         buf = BytesIO(r.content)
         buf.seek(0)
         self._storage.save(key, buf, img_format)
-
 
     def render_all(self, key: str, **kwargs):
         """
@@ -241,7 +237,6 @@ class DatawrapperChart(Chart):
 
         return csv_str.encode("utf-8")
 
-
     def _apply_highlight(self, dw_data):
         """
         """
@@ -262,8 +257,8 @@ class DatawrapperChart(Chart):
 
             if len(self.labels) == 2 and self.highlight:
                 dw_data["metadata"]["visualize"].update({
-                "fill-between": True,
-                'area-fill-color-between': '#cccccc',
+                    "fill-between": True,
+                    'area-fill-color-between': '#cccccc',
                 })
 
         elif chart_type in ["column-chart", "d3-bars"]:
