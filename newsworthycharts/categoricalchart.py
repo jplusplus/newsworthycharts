@@ -330,7 +330,7 @@ class ProgressChart(CategoricalChart):
         if self.value_labels:
             fmt = self._get_value_axis_formatter()
             if self.value_labels == "progress":
-                val_labels = [x[2] if len(x) == 3 else fmt(x[1]) 
+                val_labels = [x[2] if len(x) == 3 else fmt(x[1])
                               for x in s_progress]
                 val_label_orient = ["inside" if (x[1] / target) > .1 else "outside"
                                     for x, target in zip(s_progress_na_filled, targets)]
@@ -339,7 +339,7 @@ class ProgressChart(CategoricalChart):
                 val_label_color = ["white"] * n_bars
 
             elif self.value_labels == "remaining":
-                val_labels = [-x[2] if len(x) == 3 else fmt(x[1]) 
+                val_labels = [-x[2] if len(x) == 3 else fmt(x[1])
                               for x in s_remaining]
                 # We might want to reconsider placement
                 val_label_orient = ["inside"] * n_bars
