@@ -332,11 +332,15 @@ class ProgressChart(CategoricalChart):
             if self.value_labels == "progress":
                 val_labels = [x[2] if len(x) == 3 else fmt(x[1])
                               for x in s_progress]
-                val_label_orient = ["inside" if (x[1] / target) > .1 else "outside"
+                # Hackish: The value label orientation is determined based on value now
+                # rather than actual overlap detection.
+                place_outside_at = .2 # @ 20% of total
+                val_label_orient = ["inside" if (x[1] / target) > place_outside_at else "outside"
                                     for x, target in zip(s_progress_na_filled, targets)]
                 val_label_xpos = [x[1] for x in s_progress_na_filled]
                 # TODO: Dynamic coloring based on background
-                val_label_color = ["white"] * n_bars
+                val_label_color = ["white" if orient == "inside" else self._style["text.color"] 
+                                   for orient in val_label_orient]
 
             elif self.value_labels == "remaining":
                 val_labels = [-x[2] if len(x) == 3 else fmt(x[1])
