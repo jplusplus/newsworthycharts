@@ -157,6 +157,10 @@ Changelog
 
 - next
 
+- 1.49.1
+
+  - `ProgressChart`: Better value label placement. 
+
 - 1.49.0
 
   - `ProgressChart`: Enable custom value labels as third argument in data serie.
