@@ -159,3 +159,30 @@ def outline(color="white", linewidth=3, **kwargs):
     """Short-cut for generering an outline with `path_effects`
     """
     return [pe.withStroke(linewidth=linewidth, foreground=color, **kwargs)]
+
+
+def guess_date_interval(data):
+    """Return a probable interval, e.g. "montly", given current data."""
+    interval = "yearly"
+    for serie in data:
+        dates = [to_date(x[0]) for x in serie]
+        years = [x.year for x in dates]
+        months = [x.month for x in dates]
+        yearmonths = [x.strftime("%Y-%m") for x in dates]
+        weeks = [str(x.year) + str(x.isocalendar()[1]) for x in dates]
+        if len(years) > len(set(years)):
+            # there are years with more than one point
+            unique_months = sorted(list(set(months)))
+            if len(unique_months) == 4 \
+                    and unique_months[0] + 3 == unique_months[1] \
+                    and unique_months[1] + 3 == unique_months[2] \
+                    and unique_months[2] + 3 == unique_months[3]:
+                # all in all four months, and they are non-conscutive
+                interval = "quarterly"
+            else:
+                interval = "monthly"
+                if len(yearmonths) > len(set(yearmonths)):
+                    interval = "weekly"
+                if len(weeks) > len(set(weeks)):
+                    interval = "daily"
+    return interval
