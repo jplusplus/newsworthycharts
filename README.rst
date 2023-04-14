@@ -155,8 +155,10 @@ Roadmap
 Changelog
 ---------
 
-- next
+- 1.50.0
 
+  - Dropped Python 3.7 support (upstream)
+  - Pinned Babel to exact version in setup.py, for consistent rendering
   - `StripeChart`: First draft
 
 - 1.49.1
