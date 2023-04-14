@@ -1,11 +1,8 @@
 from .chart import Chart
-from .lib.locator import get_best_locator, get_year_ticks
-from .lib.utils import to_float, to_date
-from .lib.formatter import Formatter
+from .lib.utils import to_float, to_date, guess_date_interval
 
 import numpy as np
 from math import inf
-from matplotlib.dates import DateFormatter, num2date
 from dateutil.relativedelta import relativedelta
 from adjustText import adjust_text
 from labellines import labelLines
@@ -112,32 +109,6 @@ class SerialChart(Chart):
             elif interval == "daily":
                 return 1
 
-    def _guess_interval(self):
-        """Return a probable interval, e.g. "montly", given current data."""
-        interval = "yearly"
-        for serie in self.data:
-            dates = [to_date(x[0]) for x in serie]
-            years = [x.year for x in dates]
-            months = [x.month for x in dates]
-            yearmonths = [x.strftime("%Y-%m") for x in dates]
-            weeks = [str(x.year) + str(x.isocalendar()[1]) for x in dates]
-            if len(years) > len(set(years)):
-                # there are years with more than one point
-                unique_months = sorted(list(set(months)))
-                if len(unique_months) == 4 \
-                   and unique_months[0] + 3 == unique_months[1] \
-                   and unique_months[1] + 3 == unique_months[2] \
-                   and unique_months[2] + 3 == unique_months[3]:
-                    # all in all four months, and they are non-conscutive
-                    interval = "quarterly"
-                else:
-                    interval = "monthly"
-                    if len(yearmonths) > len(set(yearmonths)):
-                        interval = "weekly"
-                    if len(weeks) > len(set(weeks)):
-                        interval = "daily"
-        return interval
-
     def _get_annotation_direction(self, index, values):
         """ Given an index and series of values, provide the estimated best
         direction for an annotation. This will be an educated guess, and the
@@ -204,15 +175,11 @@ class SerialChart(Chart):
 
         # Make an educated guess about the interval of the data
         if self.interval is None:
-            self.interval = self._guess_interval()
+            self.interval = guess_date_interval(self.data)
 
         # Formatters for axis and annotations
         y_formatter = self._get_value_axis_formatter()
         a_formatter = self._get_annotation_formatter()
-
-        # Number of days on x axis (Matplotlib will use days as unit here)
-        xmin, xmax = to_date(self.data.x_points[0]), to_date(self.data.x_points[-1])
-        delta = xmax - xmin
 
         # Store y values while we are looping the data, to adjust axis,
         # and highlight diff
@@ -556,65 +523,7 @@ class SerialChart(Chart):
         if ymin > self.baseline and self.allow_broken_y_axis:
             self._mark_broken_axis()
 
-        # X ticks and formatter
-        if self.ticks:
-            self.ax.set_xticks([x[0] for x in self.ticks])
-            self.ax.set_xticklabels([x[1] for x in self.ticks])
-
-        elif delta.days > 500:
-            ticks = get_year_ticks(xmin, xmax, max_ticks=self.max_ticks)
-            self.ax.set_xticks(ticks)
-            self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
-
-        else:
-            loc = get_best_locator(delta, len(dates), self.interval)
-            self.ax.xaxis.set_major_locator(loc)
-            formatter = Formatter(self._language)
-
-            # if isinstance(loc, WeekdayLocator):
-            if self.interval == "weekly":
-                # We consider dates to be more informative than week numbers
-                def fmt(x, pos):
-                    if pos > len(self.data.x_points):
-                        return None
-                    try:
-                        return formatter.date(self.data.x_points[pos], "d MMM")
-                    except IndexError:
-                        return None
-                # fmt = DateFormatter('%-d %b')
-            # elif isinstance(loc, MonthLocator):
-            elif self.interval in ["monthly", "quarterly"]:
-                def fmt(x, pos):
-                    d = num2date(x).isoformat()[:10]
-                    if d not in self.data.x_points:
-                        return None
-                    if pos > len(self.data.x_points):
-                        return None
-                    if len(self.data.x_points) > 12 and d[5:7] == "01":
-                        return formatter.date(d, "MMM\ny")
-                    else:
-                        return formatter.date(d, "MMM")
-                # fmt = DateFormatter('%b')
-
-            # elif isinstance(loc, DayLocator):
-            elif self.interval == "daily":
-                def fmt(x, pos):
-                    if pos > len(self.data.x_points):
-                        return None
-                    try:
-                        if len(self.data.x_points) > 7:
-                            return formatter.date(self.data.x_points[pos], "d MMM")
-                        elif pos == 0:
-                            return formatter.date(self.data.x_points[pos], "EE d/M")
-                        else:
-                            return formatter.date(self.data.x_points[pos], "EEE")
-                    except IndexError:
-                        return None
-                # fmt = DateFormatter('%-d %b')
-            else:
-                NotImplementedError("Unable to determine tick formatter")
-
-            self.ax.xaxis.set_major_formatter(fmt)
+        self._set_date_ticks(dates)
 
         # Add labels in legend if there are multiple series, otherwise
         # title is assumed to self-explanatory

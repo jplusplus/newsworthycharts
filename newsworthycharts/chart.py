@@ -4,9 +4,11 @@ For use with Newsworthy's robot writer and other similar projects.
 import types
 from .lib import color_fn
 from .lib.mimetypes import MIME_TYPES
-from .lib.utils import loadstyle, outline
+from .lib.utils import loadstyle, outline, to_date
+
 from .lib.formatter import Formatter
 from .lib.datalist import DataList, DataSet
+from .lib.locator import get_best_locator, get_year_ticks
 from .storage import Storage, LocalStorage
 
 from io import BytesIO
@@ -15,6 +17,7 @@ from matplotlib.font_manager import FontProperties
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.ticker import FuncFormatter
+from matplotlib.dates import DateFormatter, num2date
 from langcodes import standardize_tag
 from PIL import Image
 from babel import Locale
@@ -351,6 +354,73 @@ class Chart(object):
             clip_on=False
         )
         self.ax.plot([0], transform=self.ax.transAxes, **kwargs)
+
+    def _set_date_ticks(self, dates):
+        """ Set x ticks and formatters for chart types working on date series """
+
+        # Number of days on x axis (Matplotlib will use days as unit here)
+        xmin, xmax = to_date(self.data.x_points[0]), to_date(self.data.x_points[-1])
+        delta = xmax - xmin
+
+        # X ticks
+        if self.ticks:
+            self.ax.set_xticks([x[0] for x in self.ticks])
+            self.ax.set_xticklabels([x[1] for x in self.ticks])
+
+        elif delta.days > 500:
+            ticks = get_year_ticks(xmin, xmax, max_ticks=self.max_ticks)
+            self.ax.set_xticks(ticks)
+            self.ax.xaxis.set_major_formatter(DateFormatter('%Y'))
+
+        else:
+            loc = get_best_locator(delta, len(dates), self.interval)
+            self.ax.xaxis.set_major_locator(loc)
+            formatter = Formatter(self._language)
+
+            # if isinstance(loc, WeekdayLocator):
+            if self.interval == "weekly":
+                # We consider dates to be more informative than week numbers
+                def fmt(x, pos):
+                    if pos > len(self.data.x_points):
+                        return None
+                    try:
+                        return formatter.date(self.data.x_points[pos], "d MMM")
+                    except IndexError:
+                        return None
+                # fmt = DateFormatter('%-d %b')
+            # elif isinstance(loc, MonthLocator):
+            elif self.interval in ["monthly", "quarterly"]:
+                def fmt(x, pos):
+                    d = num2date(x).isoformat()[:10]
+                    if d not in self.data.x_points:
+                        return None
+                    if pos > len(self.data.x_points):
+                        return None
+                    if len(self.data.x_points) > 12 and d[5:7] == "01":
+                        return formatter.date(d, "MMM\ny")
+                    else:
+                        return formatter.date(d, "MMM")
+                # fmt = DateFormatter('%b')
+
+            # elif isinstance(loc, DayLocator):
+            elif self.interval == "daily":
+                def fmt(x, pos):
+                    if pos > len(self.data.x_points):
+                        return None
+                    try:
+                        if len(self.data.x_points) > 7:
+                            return formatter.date(self.data.x_points[pos], "d MMM")
+                        elif pos == 0:
+                            return formatter.date(self.data.x_points[pos], "EE d/M")
+                        else:
+                            return formatter.date(self.data.x_points[pos], "EEE")
+                    except IndexError:
+                        return None
+                # fmt = DateFormatter('%-d %b')
+            else:
+                NotImplementedError("Unable to determine tick formatter")
+
+            self.ax.xaxis.set_major_formatter(fmt)
 
     def _apply_changes_before_rendering(self, factor=1, transparent=False):
         """

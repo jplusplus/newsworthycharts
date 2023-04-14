@@ -8,20 +8,22 @@ from .categoricalchart import CategoricalChart, CategoricalChartWithReference, P
 from .scatterplot import ScatterPlot
 from .datawrapper import DatawrapperChart
 from .rangeplot import RangePlot
+from .stripechart import StripeChart
 from .custom.climate_cars import ClimateCarsYearlyEmissionsTo2030, ClimateCarsCO2BugdetChart
 from .storage import *
 
 CHART_ENGINES = {
-    "Chart": Chart,
-    "SerialChart": SerialChart,
-    "SeasonalChart": SeasonalChart,
     "CategoricalChart": CategoricalChart,
     "CategoricalChartWithReference": CategoricalChartWithReference,
+    "Chart": Chart,
+    "ChoroplethMap": ChoroplethMap,
+    "DatawrapperChart": DatawrapperChart,
     "ProgressChart": ProgressChart,
     "RangePlot": RangePlot,
     "ScatterPlot": ScatterPlot,
-    "DatawrapperChart": DatawrapperChart,
-    "ChoroplethMap": ChoroplethMap,
+    "SeasonalChart": SeasonalChart,
+    "SerialChart": SerialChart,
+    "StripeChart": StripeChart,
 
     # custom
     "ClimateCarsYearlyEmissionsTo2030": ClimateCarsYearlyEmissionsTo2030,
