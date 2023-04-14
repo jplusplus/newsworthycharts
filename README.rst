@@ -157,6 +157,8 @@ Changelog
 
 - next
 
+  - `StripeChart`: First draft
+
 - 1.49.1
 
   - `ProgressChart`: Better value label placement. 
