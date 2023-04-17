@@ -34,7 +34,7 @@ setup(
         "python-dateutil>=2",
         "Pillow==9.5.0",
         "requests>=2.22",
-        "matplotlib-label-lines==0.5.2",
+        "matplotlib-label-lines==0.5.1",
         "geopandas==0.12.2",
         "mapclassify==2.5.0",
     ],
