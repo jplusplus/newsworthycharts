@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.50.1
+
+  - Revert `matplotlib-label-lines` to previous version. 
+
 - 1.50.0
 
   - Dropped Python 3.7 support (upstream)
