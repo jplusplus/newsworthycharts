@@ -155,7 +155,7 @@ Roadmap
 Changelog
 ---------
 
-- 1.50.1
+- 1.50.2
 
   - Revert `matplotlib-label-lines` to previous version. 
 
