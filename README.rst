@@ -155,6 +155,12 @@ Roadmap
 Changelog
 ---------
 
+- next
+
+  - Added `BubbleMap`
+  - Added `se-4` basemap for Swedish counties
+  - Basemaps can now have multiplygons
+
 - 1.50.2
 
   - Revert `matplotlib-label-lines` to previous version. 
