@@ -112,6 +112,15 @@ class ChoroplethMap(Map):
 
         fig = df.plot(ax=self.ax, **args)
         # Add outer edge
+        # unary_union does not work with Multipolygons
+        mp = MultiPolygon([g for g in df.explode(index_parts=True).geometry])
+        gpd.GeoSeries(mp.boundary).plot(
+            ax=self.ax,
+            edgecolor="lightgrey",
+            linewidth=0.2,
+            color="none",
+        )
+        """
         unary = df.unary_union
         if unary.geom_type == "Polygon":
             # We don't know in advance if unary_union will produce a polugon or a multipolygon
@@ -123,6 +132,7 @@ class ChoroplethMap(Map):
                 linewidth=0.2,
                 facecolor="none",
             )
+        """
         self.ax.axis("off")
 
         # Format numbers in legend
