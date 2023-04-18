@@ -22,6 +22,8 @@ class BubbleMap(Map):
 
     def __init__(self, *args, **kwargs):
         super(BubbleMap, self).__init__(*args, **kwargs)
+        self.bubble_size = kwargs.get("bubble_size", 1)
+        print(self.bubble_size)
 
     def _add_data(self):
 
@@ -68,7 +70,9 @@ class BubbleMap(Map):
         ax_width = self.ax.get_xlim()[1] - self.ax.get_xlim()[0]
         unit_per_pixel = ax_width / self._w
 
-        centroids["size"] = (centroids["data"] / centroids["data"].max()) * factor / unit_per_pixel
+        centroids["size"] = \
+            (centroids["data"] / centroids["data"].max()) \
+            * factor / unit_per_pixel * self.bubble_size
         centroids.plot(markersize="size", ax=self.ax, alpha=0.5, facecolor=color)
 
         self.ax.axis("off")
