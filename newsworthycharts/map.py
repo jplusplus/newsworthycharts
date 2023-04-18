@@ -5,11 +5,7 @@ from .chart import Chart
 from .lib.geography import haversine
 from .translations.regions import NW_MUNI_TO_CLDR
 from fiona.errors import DriverError
-from shapely.geometry.multipolygon import MultiPolygon
 import geopandas as gpd
-import numpy as np
-import pandas as pd
-import mapclassify
 import pathlib
 
 
