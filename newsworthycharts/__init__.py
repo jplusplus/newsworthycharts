@@ -2,6 +2,7 @@ __version__ = "1.50.2"
 
 from .chart import Chart
 from .choroplethmap import ChoroplethMap
+from .bubblemap import BubbleMap
 from .serialchart import SerialChart
 from .seasonalchart import SeasonalChart
 from .categoricalchart import CategoricalChart, CategoricalChartWithReference, ProgressChart
@@ -13,6 +14,7 @@ from .custom.climate_cars import ClimateCarsYearlyEmissionsTo2030, ClimateCarsCO
 from .storage import *
 
 CHART_ENGINES = {
+    "BubbleMap": BubbleMap,
     "CategoricalChart": CategoricalChart,
     "CategoricalChartWithReference": CategoricalChartWithReference,
     "Chart": Chart,
