@@ -155,11 +155,12 @@ Roadmap
 Changelog
 ---------
 
-- next
+- 1.51.0
 
   - Added `BubbleMap`
   - Added `se-4` basemap for Swedish counties
   - Basemaps can now have multiplygons
+  - Downgraded adjustText to 0.7.3, as upgrade broke rendering constistency in some places
 
 - 1.50.2
 

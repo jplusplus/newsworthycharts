@@ -1,0 +1,5 @@
+repos:
+  - repo: https://github.com/jplusplus/newsworthycharts
+    rev: master
+    hooks:
+      - id: flake8
