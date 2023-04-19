@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.51.1
+
+  - Fix error in dependency verison
+
 - 1.51.0
 
   - Added `BubbleMap`
