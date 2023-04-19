@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.51.2
+
+  - _Really_ fix dependencies
+
 - 1.51.1
 
   - Fix error in dependency verison
