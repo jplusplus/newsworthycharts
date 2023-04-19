@@ -29,7 +29,7 @@ setup(
         "langcodes>=3.3",
         "Babel>=2.12",
         "PyYAML>=3",
-        "adjustText==0.8.0",
+        "adjustText==0.7.3",
         "numpy>=1.19.1,<2",
         "python-dateutil>=2",
         "Pillow==9.5.0",
