@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.52.0
+
+  - No longer render eps files by default.
+
 - 1.51.2
 
   - _Really_ fix dependencies
