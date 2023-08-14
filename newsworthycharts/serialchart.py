@@ -141,7 +141,7 @@ class SerialChart(Chart):
         series = self.data
 
         # For backwards compatibility: Convert type = "line" -> type = ["line"]
-        if type(self.type) == str:
+        if type(self.type) is str:
             self.type = [self.type] * len(series)
         is_stacked = (len(series) > 1) and all([t == "bars" for t in self.type])
 
