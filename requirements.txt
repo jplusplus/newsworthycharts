@@ -1,10 +1,10 @@
 boto3==1.26.138
-matplotlib==3.7.1
+matplotlib==3.7.2
 langcodes==3.3.0
 Babel==2.12.1
-PyYAML==6.0
+PyYAML==6.0.1
 adjustText==0.7.3
-numpy==1.24.3
+numpy==1.24.4
 python-dateutil==2.8.2
 pytest==7.3.1
 flake8==6.0.0
@@ -12,5 +12,5 @@ requests==2.31.0
 python-dotenv==1.0.0
 matplotlib-label-lines==0.5.1
 Pillow==9.5.0
-geopandas==0.13.0
+geopandas==0.13.2
 mapclassify==2.5.0
