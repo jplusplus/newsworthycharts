@@ -376,6 +376,7 @@ class Chart(object):
             loc = get_best_locator(delta, len(dates), self.interval)
             self.ax.xaxis.set_major_locator(loc)
             formatter = Formatter(self._language)
+            print(self._language)
 
             # if isinstance(loc, WeekdayLocator):
             if self.interval == "weekly":
@@ -405,18 +406,18 @@ class Chart(object):
             # elif isinstance(loc, DayLocator):
             elif self.interval == "daily":
                 def fmt(x, pos):
+                    d = num2date(x).isoformat()[:10]
                     if pos > len(self.data.x_points):
                         return None
                     try:
                         if len(self.data.x_points) > 7:
-                            return formatter.date(self.data.x_points[pos], "d MMM")
+                            return formatter.date(d, "d MMM")
                         elif pos == 0:
-                            return formatter.date(self.data.x_points[pos], "EE d/M")
+                            return formatter.date(d, "EE d/M")
                         else:
-                            return formatter.date(self.data.x_points[pos], "EEE")
+                            return formatter.date(d, "EEE")
                     except IndexError:
                         return None
-                # fmt = DateFormatter('%-d %b')
             else:
                 NotImplementedError("Unable to determine tick formatter")
 

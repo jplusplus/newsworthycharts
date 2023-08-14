@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.52.1
+
+  - Fixed date formatting issue in daily charts
+
 - 1.52.0
 
   - No longer render EPS files by default.
