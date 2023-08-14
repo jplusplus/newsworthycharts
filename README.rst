@@ -138,7 +138,7 @@ To deploy a new version to [PyPi](https://pypi.org/project/newsworthycharts):
 
 1. Update Changelog below.
 2. Update the version number in newsworthycharts/__init__.py
-3. Create a git tag: `git tag VERSION` (not strictly needed, but nice)
+3. Create and push a git tag: `git tag VERSION; git push --tags` (not strictly needed, but nice)
 4. Build: `python3 setup.py sdist bdist_wheel`
 5. Check: `python3 -m twine check dist/newsworthycharts-X.Y.X*`
 6. Upload: `python3 -m twine upload dist/newsworthycharts-X.Y.X*`
