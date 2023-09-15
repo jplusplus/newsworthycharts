@@ -18,3 +18,5 @@ env
 *.csv#
 .env
 .vscode
+venv
+.venv
