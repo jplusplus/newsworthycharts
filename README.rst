@@ -155,6 +155,13 @@ Roadmap
 Changelog
 ---------
 
+- 1.53.0
+
+  - Fixed bug in value_labels, trying to access a color value that didn't exist
+  - Dropped Python 3.7 support (upstream)
+  - Uses Matplotlib 3.8
+  - Uses Pillow 10
+
 - 1.52.1
 
   - Fixed date formatting issue in daily charts
