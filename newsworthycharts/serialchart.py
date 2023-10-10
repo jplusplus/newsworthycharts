@@ -391,7 +391,7 @@ class SerialChart(Chart):
                     dir = "up"
                     value_label = a_formatter(value)
                     xy = (date, value)
-                    elem = self._annotate_point(value_label, xy, direction=dir, color=color)
+                    elem = self._annotate_point(value_label, xy, direction=dir)
                     value_label_elems.append(elem)
             if self.color_labels:
                 import matplotlib.patches as mpatches
