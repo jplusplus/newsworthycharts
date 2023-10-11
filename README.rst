@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- next
+
+  - Metadata is now added to jpeg images as well
+
 - 1.53.0
 
   - Fixed bug in value_labels, trying to access a color value that didn't exist
