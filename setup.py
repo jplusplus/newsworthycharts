@@ -32,7 +32,7 @@ setup(
         "adjustText==0.7.3",
         "numpy>=1.19.1,<2",
         "python-dateutil>=2",
-        "Pillow==10.0.1",
+        "Pillow==10.1.0",
         "requests>=2.22",
         "matplotlib-label-lines==0.5.1",
         "geopandas==0.14.0",
