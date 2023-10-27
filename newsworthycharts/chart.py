@@ -639,13 +639,13 @@ class Chart(object):
                 'Publisher': "Newsworthy",
                 'Creator': f"NWCharts {__version__}",
             }
-        elif img_format == "jpg":
+        elif img_format in ["jpg", "jpeg"]:
             args["pil_kwargs"] = {
                 "quality": 100,
                 "optimize": True,
             }
-            """
             # Not currently supported https://github.com/matplotlib/matplotlib/issues/25401
+            """
             args["metadata"] = {
                 'Publisher': "Newsworthy",
                 'Creator': f"NWCharts {__version__}",
@@ -688,15 +688,18 @@ class Chart(object):
                     'Publisher': "Newsworthy",
                     'Creator': f"NWCharts {__version__}",
                 }
-            elif file_format == "jpg":
+            elif file_format in ["jpg", "jpeg"]:
                 args["pil_kwargs"] = {
                     "quality": 100,
                     "optimize": True,
                 }
+                """
+                Not yet implemented in Pillow
                 args["metadata"] = {
                     'Publisher': "Newsworthy",
                     'Creator': f"NWCharts {__version__}",
                 }
+                """
             self._fig.savefig(buf, **args)
             buf.seek(0)
             self._storage.save(key, buf, file_format, storage_options)
