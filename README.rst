@@ -155,10 +155,11 @@ Roadmap
 Changelog
 ---------
 
-- next
+- 1.54.0
 
+  - Treat 'jpeg' format as 'jpg'
   - Fixed a rendering bug in stacked bar charts with multiple values being 0
-  - Metadata is now added to jpeg images as well
+  - Pillow upgraded to 10.1
 
 - 1.53.0
 
