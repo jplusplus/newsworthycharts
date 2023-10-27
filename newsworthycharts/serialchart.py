@@ -369,7 +369,7 @@ class SerialChart(Chart):
                     # We want to be able to have opposing (+/-) bars
                     for j, x in enumerate(values):
                         last_serie = serie_values[i - 1]
-                        if np.sign(x) != np.sign(last_serie[j]):
+                        if x != 0 and last_serie[j] != 0 and (np.sign(x) != np.sign(last_serie[j])):
                             # assert cum_values[i][j] == 0
                             bar_kwargs["bottom"][j] = 0
                 else:

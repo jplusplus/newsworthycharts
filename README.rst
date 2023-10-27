@@ -157,6 +157,7 @@ Changelog
 
 - next
 
+  - Fixed a rendering bug in stacked bar charts with multiple values being 0
   - Metadata is now added to jpeg images as well
 
 - 1.53.0
