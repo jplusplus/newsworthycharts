@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.54.1
+
+  - Patch upgrade Matplotlib to 3.8.1
+
 - 1.54.0
 
   - Treat 'jpeg' format as 'jpg'
