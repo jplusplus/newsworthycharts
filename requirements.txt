@@ -1,5 +1,5 @@
 boto3==1.28.72
-matplotlib==3.8.1
+matplotlib==3.7.3
 langcodes==3.3.0
 Babel==2.13.1
 PyYAML==6.0.1

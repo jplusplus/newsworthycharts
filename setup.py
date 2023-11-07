@@ -22,10 +22,10 @@ setup(
     license="MIT",
     packages=["newsworthycharts"],
     zip_safe=False,
-    python_requires='>=3.9',
+    python_requires='>=3.8',
     install_requires=[
         "boto3>=1.26",
-        "matplotlib==3.8.1",
+        "matplotlib==3.7.3",
         "langcodes>=3.3",
         "Babel>=2.12",
         "PyYAML>=3",
