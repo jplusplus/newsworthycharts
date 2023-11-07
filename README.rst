@@ -155,6 +155,8 @@ Roadmap
 Changelog
 ---------
 
+- 1.52.3
+
 - 1.52.2
 
   - Backport all bugfixes in 1.53 and 1.54 to a version copmatible with Python 3.8

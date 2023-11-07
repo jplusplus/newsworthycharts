@@ -12,5 +12,5 @@ requests==2.31.0
 python-dotenv==1.0.0
 matplotlib-label-lines==0.5.1
 Pillow==10.1.0
-geopandas==0.14.0
+geopandas==0.13.2
 mapclassify==2.6.1
