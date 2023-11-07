@@ -36,7 +36,7 @@ setup(
         "requests>=2.22",
         "matplotlib-label-lines==0.5.1",
         "geopandas==0.13.2",
-        "mapclassify==2.6.1",
+        "mapclassify==2.6.0",
     ],
     setup_requires=["flake8"],
     include_package_data=True,

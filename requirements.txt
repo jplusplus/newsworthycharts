@@ -13,4 +13,4 @@ python-dotenv==1.0.0
 matplotlib-label-lines==0.5.1
 Pillow==10.1.0
 geopandas==0.13.2
-mapclassify==2.6.1
+mapclassify==2.6.0
