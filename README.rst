@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.52.5
+
+  - Make sure that legend is always on top of bars in stacked bar charts
+
 - 1.52.4 / 1.52.3 / 1.52.2
 
   - Backport all bugfixes in 1.53.x and 1.54.x to a version copmatible with Python 3.8
