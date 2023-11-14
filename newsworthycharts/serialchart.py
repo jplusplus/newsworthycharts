@@ -530,7 +530,7 @@ class SerialChart(Chart):
         if len(self.labels) > 1:
             if self.label_placement == "legend":
                 _ = self.ax.legend(loc="best")
-                _.set(zorder=5)
+                _.set(zorder=10)
             elif self.label_placement == "outside":
                 self.ax.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower right")
             elif self.label_placement == "inline":

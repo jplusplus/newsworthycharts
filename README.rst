@@ -155,7 +155,12 @@ Roadmap
 Changelog
 ---------
 
-- 1.52.5
+- 1.54.2
+
+  - TODO: Port 1.52.5 fix to 1.54.x
+  - TODO: Fler cat-färger
+
+- 1.52.5 / 1.52.6
 
   - Make sure that legend is always on top of bars in stacked bar charts
 
