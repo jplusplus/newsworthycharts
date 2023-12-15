@@ -55,7 +55,7 @@ lines.markersize : 8
 
 #! neutral_color      : 6f6e75
 #! strong_color       : 00a39a
-#! qualitative_colors : 00a39a, DBAD58, A6426A, 93003a
+#! qualitative_colors : 00a39a, DBAD58, A6426A, 93003a, 42404F, C8C7D1
 #! positive_color     : 00a39a
 #! negative_color     : 93003a
 
