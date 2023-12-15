@@ -376,7 +376,6 @@ class Chart(object):
             loc = get_best_locator(delta, len(dates), self.interval)
             self.ax.xaxis.set_major_locator(loc)
             formatter = Formatter(self._language)
-            print(self._language)
 
             # if isinstance(loc, WeekdayLocator):
             if self.interval == "weekly":
