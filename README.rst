@@ -155,16 +155,20 @@ Roadmap
 Changelog
 ---------
 
+- 1.54.3
+
+  - Fix bug in y axis where integer ticks were sometimes duplicated
+
 - 1.54.2
 
-  - TODO: Port 1.52.5 fix to 1.54.x
-  - TODO: Fler cat-färger
+  - Port 1.52.5 fix to 1.54.x
+  - Support more stacked categories in serial bar charts
 
 - 1.52.5 / 1.52.6
 
   - Make sure that legend is always on top of bars in stacked bar charts
 
-- 1.52.4 / 1.52.3 / 1.52.2
+- 1.52.6 / 1.52.5 / 1.52.4 / 1.52.3 / 1.52.2
 
   - Backport all bugfixes in 1.53.x and 1.54.x to a version copmatible with Python 3.8
 

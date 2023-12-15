@@ -473,13 +473,19 @@ class Chart(object):
                         keep_trying = False
                     try_dec += 1
             # If we still have duplicates; remove them!
-            """
-            tl = [x.get_text() for x in self.value_axis.get_ticklabels()]
-            tl_ = [x for (i, x) in enumerate(tl) if tl[i - 1] != x]
-            if len(tl_) < len(tl):
-                tl = [x if i < len(tl) - 1 and tl[i + 1] != x else "" for (i, x) in enumerate(tl)]
-                self.value_axis.set_ticklabels(tl)
-            """
+            ticks = self.value_axis.get_ticklabels()
+            ticks_ = [x for (i, x) in enumerate(ticks) if ticks[i - 1].get_text() != x.get_text()]
+            if len(ticks_) < len(ticks):
+                y = [float(x._y) for x in ticks_]
+                if self.decimals == 0:
+                    # Recrate with integeres
+                    import math
+                    _bottom = min(y)
+                    _top = math.ceil(max(y))
+                    _bottom, _top = int(_bottom), int(_top)
+                    y = range(_bottom, _top + 1)
+                    y = [float(x) for x in y]
+                self.value_axis.set_ticks(y)
 
         for a in self.annotations:
             self._annotate_point(a["text"], a["xy"], a["direction"])
