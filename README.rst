@@ -155,6 +155,19 @@ Roadmap
 Changelog
 ---------
 
+- 1.54.3
+
+  - Fix duplicated integer values in y axis
+
+- 1.54.2
+
+  - Make sure that legend is always on top of bars in stacked bar charts
+  - Support more stacked categories in serial bar charts
+
+- 1.52.2+
+
+  - Backport various 1.54.x fixes
+
 - 1.54.1
 
   - Patch upgrade Matplotlib to 3.8.1
