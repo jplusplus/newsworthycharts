@@ -155,6 +155,12 @@ Roadmap
 Changelog
 ---------
 
+- 1.54.4
+
+  - Use Babel 2.14, and pin version
+  - Require numpy>=1.21.0 (now required by Matplotlib)
+  - Patch upgrades: matplotlib==3.8.2; geopandas==0.14.1
+
 - 1.54.3
 
   - Fix duplicated integer values in y axis
