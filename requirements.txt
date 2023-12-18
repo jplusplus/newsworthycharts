@@ -1,7 +1,7 @@
 boto3==1.28.72
 matplotlib==3.8.1
 langcodes==3.3.0
-Babel==2.13.1
+Babel==2.14.0
 PyYAML==6.0.1
 adjustText==0.7.3
 numpy==1.26.1
