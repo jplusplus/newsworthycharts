@@ -67,7 +67,10 @@ class Formatter(object):
             pattern[1] = ".#" + pattern[1]
             pattern = "0".join(pattern)
         string = format_decimal(x, locale=self.l, format=pattern)
-        minus = self.l.number_symbols["minusSign"]
+        try:
+            minus = self.l.number_symbols["minusSign"]
+        except KeyError:
+            minus = "−"
         string = string.replace("-", minus)
         return string
 
@@ -79,7 +82,10 @@ class Formatter(object):
 
         x = round(Decimal(x), decimals)
         string = format_unit(x, 'temperature-generic', "short", locale=self.l)
-        minus = self.l.number_symbols["minusSign"]
+        try:
+            minus = self.l.number_symbols["minusSign"]
+        except KeyError:
+            minus = "−"
         string = string.replace("-", minus)
         # if x > 0:
         #     string = "+" + string
@@ -94,7 +100,10 @@ class Formatter(object):
         scale = "temperature-{}".format(self.scale)
         x = round(Decimal(x), decimals)
         string = format_unit(x, scale, "short", locale=self.l)
-        minus = self.l.number_symbols["minusSign"]
+        try:
+            minus = self.l.number_symbols["minusSign"]
+        except KeyError:
+            minus = "−"
         string = string.replace("-", minus)
         return string
 
@@ -117,7 +126,10 @@ class Formatter(object):
             pattern[1] = "0" * decimals + pattern[1]
             pattern = ".".join(pattern)
         string = format_decimal(x, locale=self.l, format=pattern)
-        minus = self.l.number_symbols["minusSign"]
+        try:
+            minus = self.l.number_symbols["minusSign"]
+        except KeyError:
+            minus = "−"
         string = string.replace("-", minus)
         return string
 
