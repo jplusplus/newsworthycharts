@@ -79,7 +79,10 @@ def get_best_locator(delta, points, interval=None):
 
         elif interval == "daily" or interval is None:
             if delta.days > 30:
-                # FIXME dont print every month
                 return MonthLocator()
+            elif delta.days > 21:
+                return DayLocator(interval=10)
+            elif delta.days > 7:
+                return DayLocator(interval=5)
             else:
                 return DayLocator()
