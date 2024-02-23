@@ -155,6 +155,11 @@ Roadmap
 Changelog
 ---------
 
+- 1.54.5
+
+  - Improved tick placement in daily charts
+  - Minor upgrades: matplotlib==3.8.3; Pillow==10.2.0; geopandas==0.14.3
+
 - 1.54.4
 
   - Use Babel 2.14, and pin version
