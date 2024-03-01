@@ -539,6 +539,11 @@ class SerialChart(Chart):
         # Trend/change line
         # Will use first serie
         if self.trendline:
+            trendline_color = self._nwc_style["strong_color"]
+            if len(set(colors)) == 1 and colors[0] == self._nwc_style["strong_color"]:
+                # All series are the same, strong color, use neutral color for trendline
+                trendline_color = self._nwc_style["neutral_color"]
+
             # Check if we have a list of single (x-) values, or data points
             if all(len(x) == 2 for x in self.trendline):
                 # data points
@@ -553,7 +558,8 @@ class SerialChart(Chart):
                 marker = 'o'
 
             self.ax.plot(dates, values,
-                         color=self._nwc_style["strong_color"], zorder=4,
+                         color=trendline_color, zorder=4,
+                         linewidth=1,
                          marker=marker, linestyle='dashed')
 
             # Annotate points in trendline
@@ -562,7 +568,7 @@ class SerialChart(Chart):
                     xy = (date, values[i])
                     dir = self._get_annotation_direction(i, values)
                     self._annotate_point(a_formatter(values[i]), xy,
-                                         color=self._nwc_style["strong_color"],
+                                         color=trendline_color,
                                          direction=dir)
 
             # x = [a.xy[0] for a in self._annotations]
