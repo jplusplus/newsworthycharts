@@ -155,6 +155,11 @@ Roadmap
 Changelog
 ---------
 
+- 1.54.6
+
+  - Improved logic for trendline coloring
+  - Somewhat thinner trendline
+
 - 1.54.5
 
   - Improved tick placement in daily charts
