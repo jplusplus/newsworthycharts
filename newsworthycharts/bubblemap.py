@@ -23,7 +23,6 @@ class BubbleMap(Map):
     def __init__(self, *args, **kwargs):
         super(BubbleMap, self).__init__(*args, **kwargs)
         self.bubble_size = kwargs.get("bubble_size", 1)
-        print(self.bubble_size)
 
     def _add_data(self):
 
