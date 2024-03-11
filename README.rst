@@ -155,6 +155,10 @@ Roadmap
 Changelog
 ---------
 
+- 1.55.0
+
+  - Always use neutral color for trendline
+
 - 1.54.6
 
   - Improved logic for trendline coloring
