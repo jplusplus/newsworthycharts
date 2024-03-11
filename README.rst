@@ -155,6 +155,11 @@ Roadmap
 Changelog
 ---------
 
+- 1.56.0
+
+  - Reverted trendline behaviour to 1.54
+  - Added `yline` to add a horizontal line across the chart (Matplotlib: axhline).
+
 - 1.55.0
 
   - Always use neutral color for trendline
