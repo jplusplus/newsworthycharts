@@ -537,12 +537,15 @@ class SerialChart(Chart):
                 labelLines(self.ax.get_lines(), align=False, zorder=3, outline_width=4, fontweight="bold")
 
         # Trend/change line
-        # Will use first serie
         if self.trendline:
-            trendline_color = self._nwc_style["strong_color"]
-            if len(set(colors)) == 1 and colors[0] == self._nwc_style["strong_color"]:
-                # All series are the same, strong color, use neutral color for trendline
+            trendline_color = self._nwc_style["neutral_color"]
+            """
+            if len(set(self.type)) == 1 and self.type[0] == "bars" and colors and len(set(colors)) == 1 and colors[0] == self._nwc_style["strong_color"]:
+                # All bar charts, there are colors, and 
+                # all series are the same, strong color.
+                # Use neutral color for trendline
                 trendline_color = self._nwc_style["neutral_color"]
+            """
 
             # Check if we have a list of single (x-) values, or data points
             if all(len(x) == 2 for x in self.trendline):
