@@ -439,7 +439,7 @@ class Chart(object):
                 linewidth=0.8,
                 xmin=0,
                 xmax=1,
-                clip_on = False
+                clip_on=False,
             )
 
         # Calculate size in inches
