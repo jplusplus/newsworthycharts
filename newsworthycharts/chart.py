@@ -62,6 +62,7 @@ class Chart(object):
         self.caption = None
         self.highlight = None
         self.decimals = None
+        self.yline = None
         self.type = None
         # number of decimals to show in annotations, value ticks, etc
         # None means automatically chose the best number
@@ -430,6 +431,16 @@ class Chart(object):
         # Apply all changes, in the correct order for consistent rendering
         if len(self.data):
             self._add_data()
+
+        if (self.yline):
+            self.ax.axhline(
+                y=self.yline,
+                color=self._nwc_style["neutral_color"],
+                linewidth=0.8,
+                xmin=0,
+                xmax=1,
+                clip_on = False
+            )
 
         # Calculate size in inches
         # Until 1.45 we did this on init, but now we'd like to enable dynamic heights
