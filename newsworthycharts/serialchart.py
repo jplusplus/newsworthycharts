@@ -538,17 +538,17 @@ class SerialChart(Chart):
 
         # Trend/change line
         if self.trendline:
-            trendline_color = self._nwc_style["neutral_color"]
-            """
-            if len(set(self.type)) == 1 and
-                self.type[0] == "bars" and
-                colors and len(set(colors)) == 1
-                and colors[0] == self._nwc_style["strong_color"]:
+            trendline_color = self._nwc_style["strong_color"]
+            if (
+                    len(set(self.type)) == 1 and
+                    self.type[0] == "bars" and
+                    colors and len(set(colors)) == 1
+                    and colors[0] == self._nwc_style["strong_color"]
+                ):
                 # All bar charts, there are colors, and
                 # all series are the same, strong color.
                 # Use neutral color for trendline
                 trendline_color = self._nwc_style["neutral_color"]
-            """
 
             # Check if we have a list of single (x-) values, or data points
             if all(len(x) == 2 for x in self.trendline):
