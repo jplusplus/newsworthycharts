@@ -540,8 +540,11 @@ class SerialChart(Chart):
         if self.trendline:
             trendline_color = self._nwc_style["neutral_color"]
             """
-            if len(set(self.type)) == 1 and self.type[0] == "bars" and colors and len(set(colors)) == 1 and colors[0] == self._nwc_style["strong_color"]:
-                # All bar charts, there are colors, and 
+            if len(set(self.type)) == 1 and
+                self.type[0] == "bars" and
+                colors and len(set(colors)) == 1
+                and colors[0] == self._nwc_style["strong_color"]:
+                # All bar charts, there are colors, and
                 # all series are the same, strong color.
                 # Use neutral color for trendline
                 trendline_color = self._nwc_style["neutral_color"]
