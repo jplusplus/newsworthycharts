@@ -102,9 +102,12 @@ Options
 
 **Chart**
 
+These settings are available for all chart types:
+
 - data: A list of datasets
 - annotate_trend = True  # Print out values at points on trendline?
 - trendline = []  # List of x positions, or data points
+- yline = None  # A horizontal line across the chart (Matplotlib: axhline)
 - labels = []  # Optionally one label for each dataset
 - annotations = []  # Manually added annotations
 - interval = None  # yearly|quarterly|monthly|weekly|daily
@@ -120,6 +123,59 @@ Options
 - logo = None  # Path to image that will be embedded in the caption area. Can also be set though a style property
 - color_fn = None  # Custom coloring function
 
+**SerialChart**
+
+- type = 'line'  # line|bar|stacked_bar
+- bar_width = 0.9  # percent of data point width
+- allow_broken_y_axis = True|False  # default depends on chart type
+- baseline = 0  # The “zero” line. Useful for plotting deviations, e.g. temperatures above/below mean
+- baseline_annotation = None  # A label for the baseline
+- line_width = None  # To override style settings
+- max_ticks = 7  # Maximum number of ticks on the x axis
+- ticks = None  # Custom ticks on the x axis, as a list of lists or tuples: `[(2013-01-01, "-13"), (2014-01-01, "-14"), (2015-01-01, "-15")]`
+- ymin = None  # Minimum value on y axis. If None, it will be calculated from data
+- ymax = None  # Maximum value on y axis. If None, it will be calculated from data
+- colors = None  # A list of colors, each correspoding to one dataseries. Default behaviour is to use the style colors
+- value_labels = False  # Print out values at points on line?
+- highlighted_x_ranges = []  # List of tuples with start and end of highlighted areas
+- label_placement = "legend"  # legend|inline|outside
+- color_labels = None  # A dictionary of label/color, to override style colors
+
+**SeasonalChart**
+
+**BubbleMap**
+
+- bubble_size = 1  # The size of the bubbles
+
+**CategoricalChart**
+
+- bar_orientation = "horizontal"  # [horizontal|vertical]
+- annotation_rotation = 0
+- stacked = False
+- legend = True
+- colors = None
+
+**CategoricalChartWithReference**
+
+**Map**
+
+- bins = 9  # Number of bins for continuous data
+- binning_method = "natural_breaks"
+- colors = None
+- color_ramp = "YlOrRd"
+- categorical = False  # If True, the map will be colored by category. If False, it will be colored by a continuous value
+- base_map = None
+- missing_label = None  # Add a label for no data
+
+**ChoroplethMap**
+
+**ProgressChart**
+
+**RangePlot**
+
+**ScatterPlot**
+
+**StripeChart**
 
 Developing
 ----------
