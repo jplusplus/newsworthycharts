@@ -216,6 +216,7 @@ class SerialChart(Chart):
             if self.type[i] == "line":
                 # Put first series on top
                 zo = len(series) - i + 1
+                zo += 10  # Make sure lines are on top of bars
 
                 if self.line_width is None:
                     lw = self._nwc_style.get("lines.linewidth", 2)
@@ -243,7 +244,7 @@ class SerialChart(Chart):
                     self.ax.plot(dates[0], values[0],
                                  c=color,
                                  marker='.',
-                                 zorder=2)
+                                 zorder=12)
                 elif num_values > 1:
                     for j, v in enumerate(values):
                         def nullish(val):
@@ -260,7 +261,7 @@ class SerialChart(Chart):
                             self.ax.plot(dates[j], v,
                                          c=color,
                                          marker='.',
-                                         zorder=2)
+                                         zorder=12)
 
                 if len(self.labels) > i:
                     line.set_label(self.labels[i])
@@ -449,7 +450,7 @@ class SerialChart(Chart):
             y=self.baseline,
             linewidth=1,
             color="#444444",
-            zorder=4,
+            zorder=6,
             linestyle="--" if self.baseline else "-"
         )
         if self.baseline_annotation:
@@ -530,11 +531,11 @@ class SerialChart(Chart):
         if len(self.labels) > 1:
             if self.label_placement == "legend":
                 _ = self.ax.legend(loc="best")
-                _.set(zorder=10)
+                _.set(zorder=20)
             elif self.label_placement == "outside":
                 self.ax.legend(bbox_to_anchor=(0, 1, 1, 0), loc="lower right")
             elif self.label_placement == "inline":
-                labelLines(self.ax.get_lines(), align=False, zorder=3, outline_width=4, fontweight="bold")
+                labelLines(self.ax.get_lines(), align=False, zorder=13, outline_width=4, fontweight="bold")
 
         # Trend/change line
         if self.trendline:
@@ -551,6 +552,10 @@ class SerialChart(Chart):
                 # Use neutral color for trendline
                 trendline_color = self._nwc_style["neutral_color"]
 
+            if len(self.data) == 1 and self.type[0] == "line":
+                # If we have a single line,
+                # avoid using the same color for trendline
+                trendline_color = self._nwc_style["neutral_color"]
             # Check if we have a list of single (x-) values, or data points
             if all(len(x) == 2 for x in self.trendline):
                 # data points
@@ -565,7 +570,7 @@ class SerialChart(Chart):
                 marker = 'o'
 
             self.ax.plot(dates, values,
-                         color=trendline_color, zorder=4,
+                         color=trendline_color, zorder=14,
                          linewidth=1,
                          marker=marker, linestyle='dashed')
 
@@ -588,6 +593,18 @@ class SerialChart(Chart):
 
         if len(value_label_elems) > 1:
             self._adust_texts_vertically(value_label_elems, ha="center")
+
+        # yline
+        if (self.yline):
+            self.ax.axhline(
+                y=self.yline,
+                color=self._nwc_style["neutral_color"],
+                linewidth=0.8,
+                xmin=0,
+                xmax=1,
+                clip_on=False,
+                zorder=6,
+            )
 
     def _adust_texts_vertically(self, elements, ha="left"):
         if len(elements) == 2:

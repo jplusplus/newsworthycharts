@@ -432,16 +432,6 @@ class Chart(object):
         if len(self.data):
             self._add_data()
 
-        if (self.yline):
-            self.ax.axhline(
-                y=self.yline,
-                color=self._nwc_style["neutral_color"],
-                linewidth=0.8,
-                xmin=0,
-                xmax=1,
-                clip_on=False,
-            )
-
         # Calculate size in inches
         # Until 1.45 we did this on init, but now we'd like to enable dynamic heights
         if self.requested_height is None:
