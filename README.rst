@@ -211,6 +211,12 @@ Roadmap
 Changelog
 ---------
 
+- 1.57.0
+
+  - Changes z-ordering so that line are always on top of bars, and ylines/zero lines are behind lines but in front of bars
+  - Avoid using the same color for trendline and lines
+  - `yline` was moved to the SerialChart class, where it makes sense.
+
 - 1.56.0
 
   - Reverted trendline behaviour to 1.54
