@@ -211,9 +211,10 @@ Roadmap
 Changelog
 ---------
 
-- next
+- 1.57.1
 
-  - matplotlib==3.8.4
+  - Fix missing outline in choropleth maps
+  - matplotlib==3.8.4; Pillow==10.3.0
 
 - 1.57.0
 
