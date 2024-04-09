@@ -123,7 +123,7 @@ class ChoroplethMap(Map):
         """
         unary = df.unary_union
         if unary.geom_type == "Polygon":
-            # We don't know in advance if unary_union will produce a polugon or a multipolygon
+            # We don't know in advance if unary_union will produce a polygon or a multipolygon
             unary = MultiPolygon([unary])
         for uu in unary.geoms:
             gpd.GeoSeries(uu).plot(
