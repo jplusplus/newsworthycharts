@@ -2,7 +2,6 @@
 Simple choropleths for common administrative areas
 """
 from .map import Map
-from shapely.geometry.multipolygon import MultiPolygon
 import geopandas as gpd
 import numpy as np
 import pandas as pd
