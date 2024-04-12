@@ -16,7 +16,7 @@ class CategoricalChart(Chart):
         self.stacked = False
         self.legend = True
 
-        # Optional: specify a list of colors (for mulitple datasets)
+        # Optional: specify a list of colors (for multiple datasets)
         self.colors = None
 
     def _add_data(self):
@@ -144,8 +144,8 @@ class CategoricalChart(Chart):
                     kwargs["bottom"] = cum_values[i - 1]
                 self.ax.bar(bar_pos, values, **kwargs)
 
-        margin = 0.02  # above and below first/last bar on horizontal
         if self.bar_orientation == "horizontal":
+            margin = 0.02  # above and below first/last bar on horizontal
             self.ax.set_yticks(bar_pos)
             self.ax.set_yticklabels(categories)
             self.ax.invert_yaxis()
@@ -158,6 +158,7 @@ class CategoricalChart(Chart):
             self._fig.subplots_adjust(left=margin)
 
         elif self.bar_orientation == "vertical":
+            margin = 0.01  # above and below first/last bar on horizontal
             self.ax.margins(margin, 0)
             self.ax.set_xticks(bar_pos)
             self.ax.set_xticklabels(categories)
