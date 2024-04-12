@@ -211,6 +211,11 @@ Roadmap
 Changelog
 ---------
 
+- 1.57.2
+
+  - reduce excessive padding in ctagoerical vertical charts
+  - improved padding and margin logic for titles/subtitles (taking line spacing into account)
+
 - 1.57.1
 
   - Fix missing outline in choropleth maps
