@@ -168,7 +168,7 @@ class Chart(object):
             ismath=False,
         )
         num_lines = len(obj._get_wrapped_text().split("\n"))
-        return (h * num_lines) / float(self._h)
+        return (h * (num_lines * 1.4)) / float(self._h)  # 1.4 is the line spacing used everywhere
 
     def _rel_height(self, obj):
         """ Get the relative height of a chart object to the whole canvas.
@@ -273,7 +273,7 @@ class Chart(object):
     def _add_title(self, title_text):
         """Add a title."""
         # y=1 wraps title heavily, hence .9999
-        text = self._fig.suptitle(title_text, wrap=True, x=0, y=0.985,
+        text = self._fig.suptitle(title_text, wrap=True, x=0, y=0.999,
                                   horizontalalignment="left",
                                   multialignment="left",
                                   fontproperties=self._title_font)
@@ -755,7 +755,7 @@ class Chart(object):
         rel_height = 0
         if self._title_elem:
             rel_height += self._text_rel_height(self._title_elem)
-            # Adds a fixes margin below
+            # Adds a fixed margin below
             rel_height += 30 / self._h
         return rel_height
 
@@ -764,8 +764,8 @@ class Chart(object):
         rel_height = 0
         if self._subtitle_elem:
             rel_height += self._text_rel_height(self._subtitle_elem)
-            # Adds a fixes margin below
-            rel_height += 30 / self._h
+            # Adds a fixed margin below
+            rel_height += 15 / self._h
         return rel_height
 
     @property
@@ -773,7 +773,7 @@ class Chart(object):
         rel_height = 0
         if self._note_elem:
             rel_height += self._text_rel_height(self._note_elem)
-            # Adds a fixes margin below
+            # Adds a fixed margin below
             rel_height += 10 / self._h
         return rel_height
 
