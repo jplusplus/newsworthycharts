@@ -24,6 +24,7 @@ def test_rendering():
     c = ChoroplethMap.init_from(chart_obj, storage=ds)
     c.render("test", "png")
 
+
 def test_map_with_nw_regions():
     container = {}
     ds = DictStorage(container)
@@ -40,8 +41,28 @@ def test_map_with_nw_regions():
             ]
         ],
     }
-    c = ChoroplethMap.init_from(chart_obj, storage=local_storage)
+    c = ChoroplethMap.init_from(chart_obj, storage=ds)
     c.render("map_with_nw_ids", "png")
+
+
+def test_map_with_nw_regions_and_subsets():
+    container = {}
+    ds = DictStorage(container)
+
+    chart_obj = {
+        "width": 800,
+        "height": 600,
+        "base_map": "se|03-7",
+        "data": [
+            [
+                ("Uppsala kommun", 3),
+                ("Enköpings kommun", 2),
+            ]
+        ],
+    }
+    c = ChoroplethMap.init_from(chart_obj, storage=ds)
+    c.render("map_with_nw_ids", "png")
+
 
 def test_invalid_region():
     container = {}

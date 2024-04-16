@@ -99,7 +99,12 @@ class Map(Chart):
     def _normalize_region_code(self, code):
         code = code.upper().replace("_", "-")
         # Apply translation, if we find and applicable one
-        region_translation = REGION_TRANSLATIONS.get(self.base_map, {})
+
+        # normalize basemap name, so that `se|03-7` is treated as `se-7
+        # region_translation = REGION_TRANSLATIONS.get(self.base_map, {})
+        _base_map, _subdivisions, _subset, *opts = self.parse_basemap()
+        region_translation = REGION_TRANSLATIONS.get(f"{_base_map}-{_subdivisions}", {})
+
         region_translation = {k.upper(): v for k, v in region_translation.items()}
         code = region_translation.get(code, code)
         return code
@@ -132,7 +137,7 @@ class Map(Chart):
         if len(_) > 1:
             [base_map, subset] = _
 
-        if not self.df:
+        if self.df is None:
             __dir = pathlib.Path(__file__).parent.resolve()
             try:
                 self.df = gpd.read_file(f"{__dir}/maps/{base_map}-{subdivisions}.gpkg")

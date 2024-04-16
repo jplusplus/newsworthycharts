@@ -167,7 +167,12 @@ These settings are available for all chart types:
 - base_map = None
 - missing_label = None  # Add a label for no data
 
+`basemap` can be `{ISO}-{level}` or `{ISO}|{subset}-{level}`. 
+For example, `se-4` will show Swedish counties, while `se|03-7` will show municipalities (`se-7`) starting with `03`.
+
 **ChoroplethMap**
+
+_Inherits from Map_
 
 **ProgressChart**
 
@@ -211,9 +216,14 @@ Roadmap
 Changelog
 ---------
 
+- next
+
+  - Make NW region keys work with map subsets (e.g. `SE|03-7`)
+  - Don't crash on subsequent calls to basemap parser
+
 - 1.57.2
 
-  - reduce excessive padding in ctagoerical vertical charts
+  - reduce excessive padding in categorical vertical charts
   - improved padding and margin logic for titles/subtitles (taking line spacing into account)
 
 - 1.57.1
