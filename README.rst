@@ -172,7 +172,7 @@ For example, `se-4` will show Swedish counties, while `se|03-7` will show munici
 
 **ChoroplethMap**
 
-_Inherits from Map_
+_ Inherits from Map _
 
 **ProgressChart**
 
