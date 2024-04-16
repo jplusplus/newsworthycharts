@@ -216,7 +216,7 @@ Roadmap
 Changelog
 ---------
 
-- next
+- 1.57.3
 
   - Make NW region keys work with map subsets (e.g. `SE|03-7`)
   - Don't crash on subsequent calls to basemap parser
