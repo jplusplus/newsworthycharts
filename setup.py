@@ -25,7 +25,7 @@ setup(
     python_requires='>=3.9',
     install_requires=[
         "boto3>=1.26",
-        "matplotlib==3.8.4",
+        "matplotlib==3.9.0",
         "langcodes>=3.3",
         "Babel>=2.14.0,<3",
         "PyYAML>=3",
@@ -35,7 +35,7 @@ setup(
         "Pillow==10.3.0",
         "requests>=2.22",
         "matplotlib-label-lines==0.5.1",
-        "geopandas==0.14.3",
+        "geopandas==0.14.4",
         "mapclassify==2.6.1",
     ],
     setup_requires=["flake8"],
