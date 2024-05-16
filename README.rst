@@ -138,6 +138,7 @@ These settings are available for all chart types:
 - colors = None  # A list of colors, each correspoding to one dataseries. Default behaviour is to use the style colors
 - value_labels = False  # Print out values at points on line?
 - highlighted_x_ranges = []  # List of tuples with start and end of highlighted areas
+- x_range_labels = []  # List of labels for highlighted areas
 - label_placement = "legend"  # legend|inline|outside
 - color_labels = None  # A dictionary of label/color, to override style colors
 
@@ -212,9 +213,14 @@ Roadmap
   - Getting rid of custom settings-hack
   - Custom month locator with equal-width month bars
 
-
 Changelog
 ---------
+
+- next
+
+  - Matplotlib 3.9
+  - Added `.x_range_labels` to SerialChart
+  - Some tweaks to title placement to avoid cropping of diactritics
 
 - 1.57.3
 

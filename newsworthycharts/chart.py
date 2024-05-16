@@ -273,7 +273,7 @@ class Chart(object):
     def _add_title(self, title_text):
         """Add a title."""
         # y=1 wraps title heavily, hence .9999
-        text = self._fig.suptitle(title_text, wrap=True, x=0, y=0.999,
+        text = self._fig.suptitle(title_text, wrap=True, x=0, y=0.985,
                                   horizontalalignment="left",
                                   multialignment="left",
                                   fontproperties=self._title_font)

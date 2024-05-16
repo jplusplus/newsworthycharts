@@ -53,6 +53,7 @@ class SerialChart(Chart):
 
         # Optional: Adds background color to part of charts
         self.highlighted_x_ranges = []
+        self.x_range_labels = []
 
     @property
     def ymin(self):
@@ -443,6 +444,20 @@ class SerialChart(Chart):
             x0 = to_date(x0)
             x1 = to_date(x1)
             self.ax.axvspan(x0, x1, alpha=.4, color="lightgrey", lw=0)
+        for idx, t in enumerate(self.x_range_labels):
+            if idx >= len(self.highlighted_x_ranges):
+                continue
+            (x0, x1) = self.highlighted_x_ranges[idx]
+            x0 = to_date(x0)
+            x1 = to_date(x1)
+            _y = self.ymax or self.data.max_val + self.baseline
+            self.ax.text(
+                x0 + (x1 - x0) / 2,
+                _y,
+                t,
+                ha='center',
+                color=self._nwc_style["dark_gray_color"],
+            )
 
         # Accentuate y=0 || y=baseline
         # if (self.data.min_val < self.baseline) or self.baseline_annotation:
