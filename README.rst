@@ -216,9 +216,9 @@ Roadmap
 Changelog
 ---------
 
-- next
+- 1.58.0
 
-  - Matplotlib 3.9
+  - Matplotlib==3.9
   - Added `.x_range_labels` to SerialChart
   - Some tweaks to title placement to avoid cropping of diactritics
 
