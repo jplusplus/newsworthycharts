@@ -119,6 +119,7 @@ These settings are available for all chart types:
 - ylabel = None
 - caption = None
 - highlight = A position (typically a date, category label or index) to highlight. The semantics may differ somewhat between chart types.
+- highlight_annotation = True  # Print out values at highlighted point?
 - decimals = None  # None means automatically chose the best number
 - logo = None  # Path to image that will be embedded in the caption area. Can also be set though a style property
 - color_fn = None  # Custom coloring function
@@ -215,6 +216,10 @@ Roadmap
 
 Changelog
 ---------
+
+- 1.59.0
+
+  - Added `.highlight_annotation` to enable turning off the textual annotation on the highlighted point
 
 - 1.58.0
 
