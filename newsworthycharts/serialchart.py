@@ -409,35 +409,36 @@ class SerialChart(Chart):
                 self.ax.legend(handles=patches)
 
         # Annotate highlighted points/bars
-        for hv in highlight_values:
-            value_label = a_formatter(hv)
-            xy = (highlight_date, hv)
-            if self.type[i] == "bars":
-                if hv >= self.baseline:
-                    dir = "up"
-                else:
-                    dir = "down"
-            if self.type[i] == "line":
-                if len(highlight_values) > 1:
-                    # When highlighting two values on the same point,
-                    # put them in opposite direction
-                    if hv == max(highlight_values):
+        if self.highlight_annotation:
+            for hv in highlight_values:
+                value_label = a_formatter(hv)
+                xy = (highlight_date, hv)
+                if self.type[i] == "bars":
+                    if hv >= self.baseline:
                         dir = "up"
-                    elif hv == min(highlight_values):
+                    else:
                         dir = "down"
+                if self.type[i] == "line":
+                    if len(highlight_values) > 1:
+                        # When highlighting two values on the same point,
+                        # put them in opposite direction
+                        if hv == max(highlight_values):
+                            dir = "up"
+                        elif hv == min(highlight_values):
+                            dir = "down"
+                        else:
+                            dir = "left"  # To the right we have diff annotation
                     else:
-                        dir = "left"  # To the right we have diff annotation
-                else:
-                    # Otherwise, use what works best with the line shape
-                    if highlight_date in dates:
-                        i = dates.index(highlight_date)
-                        dir = self._get_annotation_direction(i, values)
-                    else:
-                        # This highlight is probably out of range for this dataset
-                        # Could happen if we have two or more lines,
-                        # with different start and end points.
-                        continue
-            self._annotate_point(value_label, xy, direction=dir)
+                        # Otherwise, use what works best with the line shape
+                        if highlight_date in dates:
+                            i = dates.index(highlight_date)
+                            dir = self._get_annotation_direction(i, values)
+                        else:
+                            # This highlight is probably out of range for this dataset
+                            # Could happen if we have two or more lines,
+                            # with different start and end points.
+                            continue
+                self._annotate_point(value_label, xy, direction=dir)
 
         # Add background highlights
         for (x0, x1) in self.highlighted_x_ranges:

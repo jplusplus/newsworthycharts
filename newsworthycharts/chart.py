@@ -61,6 +61,7 @@ class Chart(object):
         self.ylabel = None
         self.caption = None
         self.highlight = None
+        self.highlight_annotation = True
         self.decimals = None
         self.yline = None
         self.type = None
@@ -259,10 +260,15 @@ class Chart(object):
             hextent = (0, self._w)
         self._set_size(hextent[1] - hextent[0])
         x1 = hextent[0] / self._w
-        text = self._fig.text(x1, 0.01, caption,
-                              in_layout=True,
-                              color=self._nwc_style["neutral_color"], wrap=True,
-                              fontsize=self._nwc_style["caption.fontsize"])
+        text = self._fig.text(
+            x1,
+            0.01,
+            caption,
+            in_layout=True,
+            color=self._nwc_style["neutral_color"],
+            wrap=True,
+            fontsize=self._nwc_style["caption.fontsize"],
+        )
         self._fig.canvas.draw()
         wrapped_text = text._get_wrapped_text()
         text.set_text(wrapped_text)
@@ -272,11 +278,14 @@ class Chart(object):
 
     def _add_title(self, title_text):
         """Add a title."""
-        # y=1 wraps title heavily, hence .9999
-        text = self._fig.suptitle(title_text, wrap=True, x=0, y=0.985,
-                                  horizontalalignment="left",
-                                  multialignment="left",
-                                  fontproperties=self._title_font)
+        text = self._fig.suptitle(
+            title_text, wrap=True,
+            x=0,
+            y=0.985,  # default: 0.98
+            horizontalalignment="left",
+            multialignment="left",
+            fontproperties=self._title_font,
+        )
 
         self._title_elem = text
 
